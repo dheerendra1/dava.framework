@@ -1,0 +1,267 @@
+####
+#### FONTS 
+####
+# every item create specific type of item / this create FTFont that can be referenced later in controls
+fontNewlandBig:
+    type: FTFont                # type of item
+    name: "~res:/Fonts/MahJongCamb.ttf"      # path to font
+    size: 9.0                   # size of font
+    color: DDD3AFFF            # font color
+    #shadowColor: 00FF00FF     # shadow color
+    #shadowOffset: [1, 1]       # shadow offset
+    
+# every item create specific type of item / this create FTFont that can be referenced later in controls
+fontNewland:
+    type: FTFont                # type of item
+    name: "~res:/Fonts/MahJongCamb.ttf"      # path to font
+    size: 6.0                   # size of font
+    color: D3D3A3FF             # font color 0.87, 0.83, 0.69
+    #shadowColor: #00FF00FF     # shadow color
+    #shadowOffset: [1, 1]       # shadow offset
+
+# every item create specific type of item / this create FTFont that can be referenced later in controls
+fontNewlandSmall:
+    type: FTFont                # type of item
+    name: "~res:/Fonts/MahJongCamb.ttf"      # path to font
+    size: 5.0                   # size of font
+    color: D3D3A3FF             # font color 0.87, 0.83, 0.69
+    #shadowColor: #00FF00FF     # shadow color
+    #shadowOffset: [1, 1]       # shadow offset
+    
+# every item create specific type of item / this create FTFont that can be referenced later in controls
+fontBack:
+    type: FTFont                
+    name: "~res:/Fonts/Newlandn.ttf"
+    size: 7.0                   
+    color: 282107FF            
+    shadowColor: DDF0B9FF     
+
+####
+#### CONTROLS 
+####
+#version: 
+#    type: UIStaticText
+#    rect: [0, 0, 480, 20]
+#    align: [right, vcenter]
+#    font: fontNewland
+#    text: VERSION
+
+# firstly we create control background
+controlBg:    
+    # 
+    type: UIControl             # type of item
+    frame: 0                    # this is default value, so we can not use it if it unavailable
+    rect: [61, 0, 800, 600]        # if size is -1 we should get value from sprite width, so here we put size of rect as size of sprite
+    color: D0D0D0FF
+    
+    contents:
+        type: UIControl
+        rect: [35, 55, 292, 191]
+        clip: yes
+
+        gameTitle: 
+            type: UIStaticText
+            rect: [0, 0, 292, 25]
+            align: [HCENTER, VCENTER]
+            font: fontNewlandBig
+            text: iWin Mah Jong
+
+        iWinLogo:
+            type: UIControl
+            sprite: "~res:/Gfx/Credits/iWin_logo"
+            rect: [0, 25, 292, -1]
+            align: [HCENTER, VCENTER]
+    
+        text0: 
+            type: UIStaticText
+            rect: [0, 85, 292, 20]
+            align: [HCENTER, VCENTER]
+            font: fontNewlandBig
+            text: Executive Producer
+
+        text1: 
+            type: UIStaticText
+            rect: [0, 105, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Peter Traugot
+
+        text2: 
+            type: UIStaticText
+            rect: [0, 125, 292, 20]
+            align: [HCENTER, VCENTER]
+            font: fontNewlandBig
+            text: Producers
+
+        text3: 
+            type: UIStaticText
+            rect: [0, 145, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Scott Hansen
+
+        text4: 
+            type: UIStaticText
+            rect: [0, 165, 292, 20]
+            align: [HCENTER, VCENTER]
+            font: fontNewland
+            text: Lee Lakas
+
+        text5: 
+            type: UIStaticText
+            rect: [0, 185, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: Lead QA
+            
+        text6: 
+            type: UIStaticText
+            rect: [0, 205, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Edison Dimaano
+
+        DAVALogo:
+            type: UIControl
+            sprite: "~res:/Gfx/Credits/DAVA_logo"
+            rect: [0, 235, 292, -1]
+            align: [HCENTER, VCENTER]
+            
+        text7: 
+            type: UIStaticText
+            rect: [0, 285, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: Project Manager
+            
+        text8: 
+            type: UIStaticText
+            rect: [0, 305, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Vitaliy Borodovsky
+             
+        text9: 
+            type: UIStaticText
+            rect: [0, 325, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: Lead developer
+
+        text10: 
+            type: UIStaticText
+            rect: [0, 345, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Ivan Petrochenko
+
+        text11: 
+            type: UIStaticText
+            rect: [0, 365, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: Developers
+
+        text12: 
+            type: UIStaticText
+            rect: [0, 385, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Denis Fileev
+
+        text13: 
+            type: UIStaticText
+            rect: [0, 405, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Alexey Alexeev
+
+        text14: 
+            type: UIStaticText
+            rect: [0, 425, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: Artists
+
+        text15: 
+            type: UIStaticText
+            rect: [0, 445, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Dmitry Bobrovnichiy
+            
+        text16: 
+            type: UIStaticText
+            rect: [0, 465, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Alexey Korzenev
+            
+        text17: 
+            type: UIStaticText
+            rect: [0, 485, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewlandBig
+            text: QA
+
+        text18: 
+            type: UIStaticText
+            rect: [0, 505, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Stepan Drozd
+
+        text19: 
+            type: UIStaticText
+            rect: [0, 525, 292, 20]
+            align: [HCENTER, VCENTER]
+
+            font: fontNewland
+            text: Andrey Vilkotskiy
+
+        gameTitle2: 
+            type: UIStaticText
+            rect: [0, 545, 292, 25]
+            align: [HCENTER, VCENTER]
+            font: fontNewlandSmall
+            text: Developed by iWin, Inc. 
+        
+        gameTitle3: 
+            type: UIStaticText
+            rect: [0, 560, 292, 25]
+            align: [HCENTER, VCENTER]
+            font: fontNewlandSmall
+            text: Copyright © 2004-2010 All Rights Reserved.
+             
+# create back button
+backButton:
+    type: UIButton
+    rect: [0, 0, 95, 37]
+    stateSpriteNormal: ["~res:/Gfx/MainMenu/back_button", 0]
+    stateSpriteHighlighted: ["~res:/Gfx/MainMenu/back_button", 1]
+    stateTextNormal: "Back"
+    stateFontNormal: fontBack
+    
+    
+    #stateSprite0: [STATE_NORMAL, /XGfx/MainMenu/back_button, 0]
+    #stateSprite1: [STATE_HIGHLIGHTED, /XGfx/MainMenu/back_button, 1]
+    #stateFont0: [[STATE_NORMAL, STATE_HIGHLIGHTED], fontBack]
+    #stateText0: [[STATE_NORMAL, STATE_HIGHLIGHTED], "Back"]
+
+        

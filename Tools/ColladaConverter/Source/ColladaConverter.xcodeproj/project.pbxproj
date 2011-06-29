@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6517D3290FE91A9E006DCF10 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6517D3280FE91A9E006DCF10 /* ApplicationServices.framework */; };
+		656113490F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113430F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp */; };
+		6561134A0F6E8B6B007C4A55 /* ColladaConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */; };
+		6561134B0F6E8B6B007C4A55 /* ColladaCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113460F6E8B6B007C4A55 /* ColladaCamera.cpp */; };
+		6561134C0F6E8B6B007C4A55 /* ColladaAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113480F6E8B6B007C4A55 /* ColladaAnimation.cpp */; };
+		656113620F6E8B7D007C4A55 /* ColladaMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561134E0F6E8B7D007C4A55 /* ColladaMesh.cpp */; };
+		656113630F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561134F0F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp */; };
+		656113640F6E8B7D007C4A55 /* ColladaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113520F6E8B7D007C4A55 /* ColladaScene.cpp */; };
+		656113660F6E8B7D007C4A55 /* ColladaTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113550F6E8B7D007C4A55 /* ColladaTexture.cpp */; };
+		656113670F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113570F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp */; };
+		656113680F6E8B7D007C4A55 /* ColladaMeshInstance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656113590F6E8B7D007C4A55 /* ColladaMeshInstance.cpp */; };
+		656113690F6E8B7D007C4A55 /* ColladaMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561135B0F6E8B7D007C4A55 /* ColladaMaterial.cpp */; };
+		6561136A0F6E8B7D007C4A55 /* ColladaLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561135D0F6E8B7D007C4A55 /* ColladaLight.cpp */; };
+		6561136B0F6E8B7D007C4A55 /* ColladaSceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */; };
+		656113D40F728357007C4A55 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656113D30F728357007C4A55 /* GLUT.framework */; };
+		656114CE0F729EE6007C4A55 /* ColladaDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */; };
+		656115590F72A619007C4A55 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656115580F72A619007C4A55 /* CoreServices.framework */; };
+		656115F30F72ACDB007C4A55 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656115F20F72ACDB007C4A55 /* OpenGL.framework */; };
+		6561182D0F73B370007C4A55 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6561182C0F73B370007C4A55 /* CommandLineParser.cpp */; };
+		8DD76F6A0486A84900D96B5E /* ColladaConverter.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* ColladaConverter.1 */; };
+		C272E12C119196BB0039A275 /* libFColladaS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C272E114119195840039A275 /* libFColladaS.a */; };
+		FE08F5D01191AFF100E59B9D /* AutoreleasePool.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE08F5CE1191AFF100E59B9D /* AutoreleasePool.mm */; };
+		FE341CEC119085BC00122028 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE341CEB119085BC00122028 /* AppKit.framework */; };
+		FE341D091190A2E100122028 /* ColladaConverter in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD76F6C0486A84900D96B5E /* ColladaConverter */; };
+		FE8D86F611984DD1008F8551 /* ColladaSceneNodeAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE8D86F511984DD1008F8551 /* ColladaSceneNodeAnimation.cpp */; };
+		FEDEF57E13792F85000B5FDC /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEDEF57D13792F85000B5FDC /* OpenAL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C272E113119195840039A275 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C272E108119195840039A275 /* FCollada.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C315DFDB097840EB005D77BE;
+			remoteInfo = FColladaS;
+		};
+		C272E115119195840039A275 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C272E108119195840039A275 /* FCollada.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C3D608B40ADFD5FC00019D9C;
+			remoteInfo = FColladaSU;
+		};
+		C272E117119195840039A275 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C272E108119195840039A275 /* FCollada.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D09B10BA0B866F5500122B1F;
+			remoteInfo = FColladaTest;
+		};
+		C272E119119195840039A275 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C272E108119195840039A275 /* FCollada.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D09F2DB30BD9527300447337;
+			remoteInfo = FColladaU;
+		};
+		FE08F6721191B4BE00E59B9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C272E108119195840039A275 /* FCollada.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C315DFDA097840EB005D77BE;
+			remoteInfo = FColladaS;
+		};
+		FE341C7111907E1300122028 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE341C6511907E1300122028 /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Framework;
+		};
+		FE341C7311907E1E00122028 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE341C6511907E1300122028 /* Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* ColladaConverter.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		FE341D081190A2BC00122028 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PROJECT_DIR)/../../Bin";
+			dstSubfolderSpec = 0;
+			files = (
+				FE341D091190A2E100122028 /* ColladaConverter in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6517D3280FE91A9E006DCF10 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		656113420F6E8B6B007C4A55 /* ColladaAnimatedMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaAnimatedMesh.h; sourceTree = "<group>"; };
+		656113430F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaAnimatedMesh.cpp; sourceTree = "<group>"; };
+		656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaConverter.cpp; sourceTree = "<group>"; };
+		656113450F6E8B6B007C4A55 /* ColladaCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaCamera.h; sourceTree = "<group>"; };
+		656113460F6E8B6B007C4A55 /* ColladaCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaCamera.cpp; sourceTree = "<group>"; };
+		656113470F6E8B6B007C4A55 /* ColladaAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaAnimation.h; sourceTree = "<group>"; };
+		656113480F6E8B6B007C4A55 /* ColladaAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaAnimation.cpp; sourceTree = "<group>"; };
+		6561134D0F6E8B7D007C4A55 /* ColladaMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaMesh.h; sourceTree = "<group>"; };
+		6561134E0F6E8B7D007C4A55 /* ColladaMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaMesh.cpp; sourceTree = "<group>"; };
+		6561134F0F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaPolygonGroup.cpp; sourceTree = "<group>"; };
+		656113500F6E8B7D007C4A55 /* ColladaDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaDocument.h; sourceTree = "<group>"; };
+		656113510F6E8B7D007C4A55 /* ColladaScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaScene.h; sourceTree = "<group>"; };
+		656113520F6E8B7D007C4A55 /* ColladaScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaScene.cpp; sourceTree = "<group>"; };
+		656113540F6E8B7D007C4A55 /* ColladaTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaTexture.h; sourceTree = "<group>"; };
+		656113550F6E8B7D007C4A55 /* ColladaTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaTexture.cpp; sourceTree = "<group>"; };
+		656113560F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaPolygonGroupInstance.h; sourceTree = "<group>"; };
+		656113570F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaPolygonGroupInstance.cpp; sourceTree = "<group>"; };
+		656113580F6E8B7D007C4A55 /* ColladaMeshInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaMeshInstance.h; sourceTree = "<group>"; };
+		656113590F6E8B7D007C4A55 /* ColladaMeshInstance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaMeshInstance.cpp; sourceTree = "<group>"; };
+		6561135A0F6E8B7D007C4A55 /* ColladaMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaMaterial.h; sourceTree = "<group>"; };
+		6561135B0F6E8B7D007C4A55 /* ColladaMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaMaterial.cpp; sourceTree = "<group>"; };
+		6561135C0F6E8B7D007C4A55 /* ColladaLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaLight.h; sourceTree = "<group>"; };
+		6561135D0F6E8B7D007C4A55 /* ColladaLight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaLight.cpp; sourceTree = "<group>"; };
+		6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaSceneNode.cpp; sourceTree = "<group>"; };
+		6561135F0F6E8B7D007C4A55 /* ColladaIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaIncludes.h; sourceTree = "<group>"; };
+		656113600F6E8B7D007C4A55 /* ColladaSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaSceneNode.h; sourceTree = "<group>"; };
+		656113610F6E8B7D007C4A55 /* ColladaPolygonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaPolygonGroup.h; sourceTree = "<group>"; };
+		656113D30F728357007C4A55 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaDocument.cpp; sourceTree = "<group>"; };
+		656115580F72A619007C4A55 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		656115F20F72ACDB007C4A55 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		6561182B0F73B370007C4A55 /* CommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineParser.h; sourceTree = "<group>"; };
+		6561182C0F73B370007C4A55 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
+		8DD76F6C0486A84900D96B5E /* ColladaConverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ColladaConverter; sourceTree = BUILT_PRODUCTS_DIR; };
+		C272E108119195840039A275 /* FCollada.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FCollada.xcodeproj; path = ../Collada15/FCollada/FCollada.xcodeproj; sourceTree = SOURCE_ROOT; };
+		C6859E8B029090EE04C91782 /* ColladaConverter.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ColladaConverter.1; sourceTree = "<group>"; };
+		FE08F5CE1191AFF100E59B9D /* AutoreleasePool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AutoreleasePool.mm; sourceTree = "<group>"; };
+		FE08F5CF1191AFF100E59B9D /* AutoreleasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoreleasePool.h; sourceTree = "<group>"; };
+		FE341C6511907E1300122028 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../../../dava.framework/Projects/MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE341CEB119085BC00122028 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		FE8D86F411984DD1008F8551 /* ColladaSceneNodeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColladaSceneNodeAnimation.h; sourceTree = "<group>"; };
+		FE8D86F511984DD1008F8551 /* ColladaSceneNodeAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColladaSceneNodeAnimation.cpp; sourceTree = "<group>"; };
+		FEDEF57D13792F85000B5FDC /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C272E12C119196BB0039A275 /* libFColladaS.a in Frameworks */,
+				656113D40F728357007C4A55 /* GLUT.framework in Frameworks */,
+				656115590F72A619007C4A55 /* CoreServices.framework in Frameworks */,
+				656115F30F72ACDB007C4A55 /* OpenGL.framework in Frameworks */,
+				6517D3290FE91A9E006DCF10 /* ApplicationServices.framework in Frameworks */,
+				FE341CEC119085BC00122028 /* AppKit.framework in Frameworks */,
+				FEDEF57E13792F85000B5FDC /* OpenAL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* ColladaConverter */ = {
+			isa = PBXGroup;
+			children = (
+				C272E108119195840039A275 /* FCollada.xcodeproj */,
+				FE341CEB119085BC00122028 /* AppKit.framework */,
+				FE341C6511907E1300122028 /* Framework.xcodeproj */,
+				6517D3280FE91A9E006DCF10 /* ApplicationServices.framework */,
+				656115F20F72ACDB007C4A55 /* OpenGL.framework */,
+				656115580F72A619007C4A55 /* CoreServices.framework */,
+				656113D30F728357007C4A55 /* GLUT.framework */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+				FEDEF57D13792F85000B5FDC /* OpenAL.framework */,
+			);
+			name = ColladaConverter;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6561182E0F73B388007C4A55 /* Main */,
+				6561133F0F6E8B53007C4A55 /* Collada */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* ColladaConverter */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6561133F0F6E8B53007C4A55 /* Collada */ = {
+			isa = PBXGroup;
+			children = (
+				656113420F6E8B6B007C4A55 /* ColladaAnimatedMesh.h */,
+				656113430F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp */,
+				656113450F6E8B6B007C4A55 /* ColladaCamera.h */,
+				656113460F6E8B6B007C4A55 /* ColladaCamera.cpp */,
+				656113470F6E8B6B007C4A55 /* ColladaAnimation.h */,
+				656113480F6E8B6B007C4A55 /* ColladaAnimation.cpp */,
+				6561134D0F6E8B7D007C4A55 /* ColladaMesh.h */,
+				6561134E0F6E8B7D007C4A55 /* ColladaMesh.cpp */,
+				656113610F6E8B7D007C4A55 /* ColladaPolygonGroup.h */,
+				6561134F0F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp */,
+				656113500F6E8B7D007C4A55 /* ColladaDocument.h */,
+				656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */,
+				656113510F6E8B7D007C4A55 /* ColladaScene.h */,
+				656113520F6E8B7D007C4A55 /* ColladaScene.cpp */,
+				656113600F6E8B7D007C4A55 /* ColladaSceneNode.h */,
+				6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */,
+				FE8D86F411984DD1008F8551 /* ColladaSceneNodeAnimation.h */,
+				FE8D86F511984DD1008F8551 /* ColladaSceneNodeAnimation.cpp */,
+				656113540F6E8B7D007C4A55 /* ColladaTexture.h */,
+				656113550F6E8B7D007C4A55 /* ColladaTexture.cpp */,
+				656113560F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.h */,
+				656113570F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp */,
+				656113580F6E8B7D007C4A55 /* ColladaMeshInstance.h */,
+				656113590F6E8B7D007C4A55 /* ColladaMeshInstance.cpp */,
+				6561135A0F6E8B7D007C4A55 /* ColladaMaterial.h */,
+				6561135B0F6E8B7D007C4A55 /* ColladaMaterial.cpp */,
+				6561135C0F6E8B7D007C4A55 /* ColladaLight.h */,
+				6561135D0F6E8B7D007C4A55 /* ColladaLight.cpp */,
+				6561135F0F6E8B7D007C4A55 /* ColladaIncludes.h */,
+			);
+			name = Collada;
+			sourceTree = "<group>";
+		};
+		6561182E0F73B388007C4A55 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				FE08F5CF1191AFF100E59B9D /* AutoreleasePool.h */,
+				FE08F5CE1191AFF100E59B9D /* AutoreleasePool.mm */,
+				6561182B0F73B370007C4A55 /* CommandLineParser.h */,
+				6561182C0F73B370007C4A55 /* CommandLineParser.cpp */,
+				656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		C272E109119195840039A275 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C272E114119195840039A275 /* libFColladaS.a */,
+				C272E116119195840039A275 /* libFColladaSU.a */,
+				C272E118119195840039A275 /* FColladaTest */,
+				C272E11A119195840039A275 /* libFColladaU.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* ColladaConverter.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		FE341C6611907E1300122028 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE341C7211907E1300122028 /* libFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* ColladaConverter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "ColladaConverter" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+				FE341D081190A2BC00122028 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE341C7411907E1E00122028 /* PBXTargetDependency */,
+				FE08F6731191B4BE00E59B9D /* PBXTargetDependency */,
+			);
+			name = ColladaConverter;
+			productInstallPath = "$(HOME)/bin";
+			productName = ColladaConverter;
+			productReference = 8DD76F6C0486A84900D96B5E /* ColladaConverter */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "ColladaConverter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* ColladaConverter */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C272E109119195840039A275 /* Products */;
+					ProjectRef = C272E108119195840039A275 /* FCollada.xcodeproj */;
+				},
+				{
+					ProductGroup = FE341C6611907E1300122028 /* Products */;
+					ProjectRef = FE341C6511907E1300122028 /* Framework.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* ColladaConverter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C272E114119195840039A275 /* libFColladaS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFColladaS.a;
+			remoteRef = C272E113119195840039A275 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C272E116119195840039A275 /* libFColladaSU.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFColladaSU.a;
+			remoteRef = C272E115119195840039A275 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C272E118119195840039A275 /* FColladaTest */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = FColladaTest;
+			remoteRef = C272E117119195840039A275 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C272E11A119195840039A275 /* libFColladaU.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libFColladaU.dylib;
+			remoteRef = C272E119119195840039A275 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE341C7211907E1300122028 /* libFramework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFramework.a;
+			remoteRef = FE341C7111907E1300122028 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				656113490F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp in Sources */,
+				6561134A0F6E8B6B007C4A55 /* ColladaConverter.cpp in Sources */,
+				6561134B0F6E8B6B007C4A55 /* ColladaCamera.cpp in Sources */,
+				6561134C0F6E8B6B007C4A55 /* ColladaAnimation.cpp in Sources */,
+				656113620F6E8B7D007C4A55 /* ColladaMesh.cpp in Sources */,
+				656113630F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp in Sources */,
+				656113640F6E8B7D007C4A55 /* ColladaScene.cpp in Sources */,
+				656113660F6E8B7D007C4A55 /* ColladaTexture.cpp in Sources */,
+				656113670F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp in Sources */,
+				656113680F6E8B7D007C4A55 /* ColladaMeshInstance.cpp in Sources */,
+				656113690F6E8B7D007C4A55 /* ColladaMaterial.cpp in Sources */,
+				6561136A0F6E8B7D007C4A55 /* ColladaLight.cpp in Sources */,
+				6561136B0F6E8B7D007C4A55 /* ColladaSceneNode.cpp in Sources */,
+				656114CE0F729EE6007C4A55 /* ColladaDocument.cpp in Sources */,
+				6561182D0F73B370007C4A55 /* CommandLineParser.cpp in Sources */,
+				FE08F5D01191AFF100E59B9D /* AutoreleasePool.mm in Sources */,
+				FE8D86F611984DD1008F8551 /* ColladaSceneNodeAnimation.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE08F6731191B4BE00E59B9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FColladaS;
+			targetProxy = FE08F6721191B4BE00E59B9D /* PBXContainerItemProxy */;
+		};
+		FE341C7411907E1E00122028 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Framework;
+			targetProxy = FE341C7311907E1E00122028 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/Frameworks/ApplicationServices.framework/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/../Collada15/FCollada/build/Release\"",
+					/opt/local,
+				);
+				PRODUCT_NAME = ColladaConverter;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/Frameworks/ApplicationServices.framework/Frameworks\"",
+				);
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/../Collada15/FCollada/build/Release\"",
+					/opt/local,
+				);
+				PRODUCT_NAME = ColladaConverter;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include/,
+					".//..//Collada15//FCollada",
+					".//..//Collada15//FCollada//libXML//include",
+					".//..//..//..//SDK//Sources",
+					".//..//..//..//SDK//External",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					"$(PROJECT_DIR)/../../../Projects/MacOSFramework/build/$(CONFIGURATION)",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lFramework",
+					"-ObjC",
+					"-lglew",
+					"-lIL",
+					"-lILU",
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					".//..//Collada15//FCollada",
+					".//..//Collada15//FCollada//libXML//include",
+					".//..//..//..//Engine//Include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					"./../../../Projects/MacOSFramework/build/$(CONFIGURATION)",
+				);
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "ColladaConverter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "ColladaConverter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

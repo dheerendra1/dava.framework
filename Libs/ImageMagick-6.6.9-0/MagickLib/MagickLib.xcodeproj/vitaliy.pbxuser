@@ -1,0 +1,147 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeTarget = D2AAC045055464E500DB518D /* MagickLib */;
+		addToTargets = (
+			D2AAC045055464E500DB518D /* MagickLib */,
+		);
+		codeSenseManager = FEC3E7421341DB1400442ADD /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					833,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 323083018;
+			PBXWorkspaceStateSaveDate = 323083018;
+		};
+		perUserProjectItems = {
+			FEC3E9141341DBF200442ADD /* PBXTextBookmark */ = FEC3E9141341DBF200442ADD /* PBXTextBookmark */;
+			FEC3E9191341DCE900442ADD /* PBXTextBookmark */ = FEC3E9191341DCE900442ADD /* PBXTextBookmark */;
+			FEC3ECFB13435F4600442ADD /* PBXTextBookmark */ = FEC3ECFB13435F4600442ADD /* PBXTextBookmark */;
+			FEC3ECFC13435F4600442ADD /* PBXBookmark */ = FEC3ECFC13435F4600442ADD /* PBXBookmark */;
+			FEC3ECFD13435F4600442ADD /* PBXTextBookmark */ = FEC3ECFD13435F4600442ADD /* PBXTextBookmark */;
+		};
+		sourceControlManager = FEC3E7411341DB1400442ADD /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	D2AAC045055464E500DB518D /* MagickLib */ = {
+		activeExec = 0;
+	};
+	FEC3E7411341DB1400442ADD /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	FEC3E7421341DB1400442ADD /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	FEC3E7431341DB3D00442ADD /* accelerate.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 10176}}";
+			sepNavSelRange = "{3322, 0}";
+			sepNavVisRange = "{2941, 862}";
+		};
+	};
+	FEC3E7481341DB3D00442ADD /* annotate.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 32592}}";
+			sepNavSelRange = "{3840, 24}";
+			sepNavVisRange = "{3407, 653}";
+		};
+	};
+	FEC3E9141341DBF200442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEC3E7431341DB3D00442ADD /* accelerate.c */;
+		name = "accelerate.c: 48";
+		rLen = 0;
+		rLoc = 3322;
+		rType = 0;
+		vrLen = 862;
+		vrLoc = 2941;
+	};
+	FEC3E9191341DCE900442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEC3E7481341DB3D00442ADD /* annotate.c */;
+		name = "annotate.c: 80";
+		rLen = 24;
+		rLoc = 3840;
+		rType = 0;
+		vrLen = 653;
+		vrLoc = 3407;
+	};
+	FEC3E91D1341DCE900442ADD /* ft2build.h */ = {
+		isa = PBXFileReference;
+		name = ft2build.h;
+		path = /opt/local/include/ft2build.h;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 992}}";
+			sepNavSelRange = "{3805, 38}";
+			sepNavVisRange = "{1718, 2172}";
+		};
+	};
+	FEC3E9311341DDC900442ADD /* Blob.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {495, 1408}}";
+			sepNavSelRange = "{259, 30}";
+			sepNavVisRange = "{0, 307}";
+		};
+	};
+	FEC3EB271341F5B000442ADD /* analyze.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1011, 3824}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{7714, 2200}";
+		};
+	};
+	FEC3ECFB13435F4600442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEC3E91D1341DCE900442ADD /* ft2build.h */;
+		name = "ft2build.h: 56";
+		rLen = 38;
+		rLoc = 3805;
+		rType = 0;
+		vrLen = 2172;
+		vrLoc = 1718;
+	};
+	FEC3ECFC13435F4600442ADD /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = FEC3EB271341F5B000442ADD /* analyze.c */;
+	};
+	FEC3ECFD13435F4600442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEC3EB271341F5B000442ADD /* analyze.c */;
+		name = "analyze.c: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 2200;
+		vrLoc = 7714;
+	};
+}

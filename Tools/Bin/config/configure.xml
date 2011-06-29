@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuremap [
+<!ELEMENT configuremap (configure)+>
+<!ELEMENT configure (#PCDATA)>
+<!ATTLIST configure name CDATA #REQUIRED>
+<!ATTLIST configure value CDATA #REQUIRED>
+]>
+<configuremap>
+  <configure name="NAME" value="ImageMagick"/>
+  <configure name="LIB_VERSION" value="0x668"/>
+  <configure name="LIB_VERSION_NUMBER" value="6,6,8,1"/>
+  <configure name="RELEASE_DATE" value="2011-03-15"/>
+  <configure name="CONFIGURE" value="./configure  '--prefix=/opt/local' '--enable-shared' '--enable-static' '--disable-ltdl-install' '--with-frozenpaths' '--without-openexr' '--disable-hdri' '--with-dps' '--with-bzlib' '--with-fontconfig' '--with-gslib' '--with-jpeg' '--with-lcms' '--with-png' '--with-tiff' '--with-zlib' '--with-modules' '--with-xml' '--with-x' '--without-perl' '--without-fpx' '--without-jbig' '--without-jp2' '--without-wmf' '--without-gvc' '--without-rsvg' '--without-lqr' '--with-gs-font-dir=/opt/local/share/fonts/urw-fonts' '--with-quantum-depth=16' 'CC=/usr/bin/gcc-4.2' 'CFLAGS=-O2 -arch x86_64' 'LDFLAGS=-L/opt/local/lib -arch x86_64' 'CPPFLAGS=-I/opt/local/include' 'CXX=/usr/bin/g++-4.2' 'CXXFLAGS=-O2 -arch x86_64'"/>
+  <configure name="PREFIX" value="/opt/local"/>
+  <configure name="EXEC-PREFIX" value="/opt/local"/>
+  <configure name="VERSION" value="6.6.8"/>
+  <configure name="CC" value="/usr/bin/gcc-4.2 -std=gnu99 -std=gnu99"/>
+  <configure name="CFLAGS" value="-D_THREAD_SAFE -D_THREAD_SAFE -pthread -fopenmp -O2 -arch x86_64 -Wall -D_THREAD_SAFE -pthread"/>
+  <configure name="CPPFLAGS" value="-I/opt/local/include/ImageMagick"/>
+  <configure name="PCFLAGS" value="-fopenmp"/>
+  <configure name="DEFS" value="-DHAVE_CONFIG_H"/>
+  <configure name="LDFLAGS" value="-L/opt/local/lib -L/opt/local/lib -arch x86_64 -L/opt/local/lib"/>
+  <configure name="LIBS" value="-lMagickCore -llcms -ltiff -lfreetype -ljpeg -L/opt/local/lib -lfontconfig -lXext -lSM -lICE -lX11 -lXt -lbz2 -lz -lm -lgomp -lclparser -Wl,-framework,OpenCL -L/System/Library/Frameworks/OpenCL.framework/Versions/A/Libraries -lm -lpthread -lltdl"/>
+  <configure name="CXX" value="/usr/bin/g++-4.2"/>
+  <configure name="CXXFLAGS" value="-O2 -arch x86_64 -D_THREAD_SAFE -pthread"/>
+  <configure name="DISTCHECK_CONFIG_FLAGS" value="'CC=/usr/bin/gcc-4.2' 'CFLAGS=-O2 -arch x86_64' 'CPPFLAGS=-I/opt/local/include' 'CXX=/usr/bin/g++-4.2' 'LDFLAGS=-L/opt/local/lib -arch x86_64' --disable-deprecated --with-quantum-depth=16 --with-umem=no --with-autotrace=no --with-fpx=no --with-fontpath= --with-gs-font-dir=/opt/local/share/fonts/urw-fonts --with-gvc=no --with-jp2=no --with-lqr=no --with-openexr=no --with-rsvg=no --with-wmf=no --with-perl=no"/>
+  <configure name="HOST" value="x86_64-apple-darwin10.6.0"/>
+  <configure name="FEATURES" value="OpenMP "/>
+  <configure name="DELEGATES" value="bzlib fontconfig freetype gs jpeg jng lcms png tiff x11 xml zlib"/>
+  <configure name="COPYRIGHT" value="Copyright (C) 1999-2011 ImageMagick Studio LLC"/>
+  <configure name="WEBSITE" value="http://www.imagemagick.org"/>
+  <configure name="QuantumDepth" value="16"/>
+</configuremap>

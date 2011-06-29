@@ -1,0 +1,1676 @@
+// !$*UTF8*$!
+{
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeArchitecturePreference = x86_64;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = FE444444114FC41300F5EFD6 /* TemplateProjectMacOS */;
+		activeSDKPreference = macosx10.5;
+		activeTarget = 8D1107260486CEB800E47090 /* TemplateProjectMacOS */;
+		addToTargets = (
+			8D1107260486CEB800E47090 /* TemplateProjectMacOS */,
+		);
+		breakpoints = (
+			FEE981C412756E3A00FBD2E1 /* MainWindowController.mm:587 */,
+			FEE982591275805B00FBD2E1 /* OpenGLView.mm:107 */,
+			FEE982621275806A00FBD2E1 /* OpenGLView.mm:100 */,
+			FE213F761301606D00CB258D /* FontUsageScreen.cpp:77 */,
+			FE213FA01301652A00CB258D /* FontUsageScreen.cpp:69 */,
+			FE2140731301A25200CB258D /* FontUsageScreen.cpp:68 */,
+			FEDA0098131562F000C4BA70 /* GameObjectTestScreen.cpp:53 */,
+		);
+		codeSenseManager = FE44444A114FC43200F5EFD6 /* Code sense */;
+		executables = (
+			FE444444114FC41300F5EFD6 /* TemplateProjectMacOS */,
+		);
+		expressions = (
+			"spr->rectsAndOffsets[i][0]",
+			"spr->rectsAndOffsets[i][1]",
+			"spr->rectsAndOffsets[i][4]",
+			"spr->rectsAndOffsets[i][5]",
+			"fontAscent + fontDescent",
+		);
+		ignoreBreakpointsInProjectsDict = {
+			Framework = Ignored;
+			TransportControl = Ignored;
+		};
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					398,
+					20,
+					185,
+					176,
+					10,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					613,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					725,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFindDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFindDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					739,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFindDataSource_MessageID,
+					PBXFindDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					685,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 329324531;
+			PBXWorkspaceStateSaveDate = 329324531;
+		};
+		perUserProjectItems = {
+			FE4D272213390A85003B2807 /* PBXTextBookmark */ = FE4D272213390A85003B2807 /* PBXTextBookmark */;
+			FE4D273113390B5A003B2807 /* PBXTextBookmark */ = FE4D273113390B5A003B2807 /* PBXTextBookmark */;
+			FE4D2745133933F2003B2807 /* PBXTextBookmark */ = FE4D2745133933F2003B2807 /* PBXTextBookmark */;
+			FE4D277513393C72003B2807 /* PBXTextBookmark */ = FE4D277513393C72003B2807 /* PBXTextBookmark */;
+			FE5288D6132FFEC5000FE4F0 /* PBXTextBookmark */ = FE5288D6132FFEC5000FE4F0 /* PBXTextBookmark */;
+			FE54EC1D13A2224400912810 /* PBXTextBookmark */ = FE54EC1D13A2224400912810 /* PBXTextBookmark */;
+			FE54EC1E13A2224400912810 /* PBXTextBookmark */ = FE54EC1E13A2224400912810 /* PBXTextBookmark */;
+			FE54EC1F13A2224400912810 /* PBXTextBookmark */ = FE54EC1F13A2224400912810 /* PBXTextBookmark */;
+			FE5789E7131D091A0081BDE9 /* PBXTextBookmark */ = FE5789E7131D091A0081BDE9 /* PBXTextBookmark */;
+			FE5789E8131D091A0081BDE9 /* PBXTextBookmark */ = FE5789E8131D091A0081BDE9 /* PBXTextBookmark */;
+			FE5789EA131D091A0081BDE9 /* PBXTextBookmark */ = FE5789EA131D091A0081BDE9 /* PBXTextBookmark */;
+			FE578A0D131D2B560081BDE9 /* PBXTextBookmark */ = FE578A0D131D2B560081BDE9 /* PBXTextBookmark */;
+			FE578A83131D40070081BDE9 /* PBXTextBookmark */ = FE578A83131D40070081BDE9 /* PBXTextBookmark */;
+			FE578A9F131D4E600081BDE9 /* PBXTextBookmark */ = FE578A9F131D4E600081BDE9 /* PBXTextBookmark */;
+			FE578AEA131FE2270081BDE9 /* PBXTextBookmark */ = FE578AEA131FE2270081BDE9 /* PBXTextBookmark */;
+			FE709254115A2D510075592A /* PBXTextBookmark */ = FE709254115A2D510075592A /* PBXTextBookmark */;
+			FE80C931123030F000582925 /* PBXTextBookmark */ = FE80C931123030F000582925 /* PBXTextBookmark */;
+			FE811599115916E7006E3D55 /* PBXTextBookmark */ = FE811599115916E7006E3D55 /* PBXTextBookmark */;
+			FE83978C11561C85007335A4 /* PBXTextBookmark */ = FE83978C11561C85007335A4 /* PBXTextBookmark */;
+			FE94205913325F4600515418 /* PBXTextBookmark */ = FE94205913325F4600515418 /* PBXTextBookmark */;
+			FE9C99931337AE4B00D53F37 /* PBXTextBookmark */ = FE9C99931337AE4B00D53F37 /* PBXTextBookmark */;
+			FE9C99941337AE4B00D53F37 /* PBXTextBookmark */ = FE9C99941337AE4B00D53F37 /* PBXTextBookmark */;
+			FEA307F412311ECC00E691CC /* PlistBookmark */ = FEA307F412311ECC00E691CC /* PlistBookmark */;
+			FEA4DAB6132CF88600E261D0 /* PBXTextBookmark */ = FEA4DAB6132CF88600E261D0 /* PBXTextBookmark */;
+			FEB27E7112F756EF008B12C0 /* PBXTextBookmark */ = FEB27E7112F756EF008B12C0 /* PBXTextBookmark */;
+			FEB27E7312F756EF008B12C0 /* PBXTextBookmark */ = FEB27E7312F756EF008B12C0 /* PBXTextBookmark */;
+			FEB27E9912F75A38008B12C0 /* PBXTextBookmark */ = FEB27E9912F75A38008B12C0 /* PBXTextBookmark */;
+			FEC3E0CD1339513600442ADD /* PBXTextBookmark */ = FEC3E0CD1339513600442ADD /* PBXTextBookmark */;
+			FEC3E0CE1339513600442ADD /* PBXTextBookmark */ = FEC3E0CE1339513600442ADD /* PBXTextBookmark */;
+			FEC3E0ED1339D83200442ADD /* PBXTextBookmark */ = FEC3E0ED1339D83200442ADD /* PBXTextBookmark */;
+			FEDAF995131300D500C4BA70 /* PBXTextBookmark */ = FEDAF995131300D500C4BA70 /* PBXTextBookmark */;
+			FEDAF99B131300D500C4BA70 /* PBXTextBookmark */ = FEDAF99B131300D500C4BA70 /* PBXTextBookmark */;
+			FEDAFEAB13140F9500C4BA70 /* PBXTextBookmark */ = FEDAFEAB13140F9500C4BA70 /* PBXTextBookmark */;
+			FEE981601275673300FBD2E1 /* PBXTextBookmark */ = FEE981601275673300FBD2E1 /* PBXTextBookmark */;
+			FEEA760A12DC90CA00F5396F /* PBXTextBookmark */ = FEEA760A12DC90CA00F5396F /* PBXTextBookmark */;
+			FEEB63DA1316A9E000958ACB /* PBXTextBookmark */ = FEEB63DA1316A9E000958ACB /* PBXTextBookmark */;
+			FEEB65471317B5B200958ACB /* PBXTextBookmark */ = FEEB65471317B5B200958ACB /* PBXTextBookmark */;
+			FEEB66301317F07A00958ACB /* PBXTextBookmark */ = FEEB66301317F07A00958ACB /* PBXTextBookmark */;
+			FEEB66681317F9AA00958ACB /* PBXTextBookmark */ = FEEB66681317F9AA00958ACB /* PBXTextBookmark */;
+			FEEB6EFF131BF04A00958ACB /* PBXTextBookmark */ = FEEB6EFF131BF04A00958ACB /* PBXTextBookmark */;
+			FEF11424130428C0004DE405 /* PBXTextBookmark */ = FEF11424130428C0004DE405 /* PBXTextBookmark */;
+			FEF11426130428C0004DE405 /* PBXTextBookmark */ = FEF11426130428C0004DE405 /* PBXTextBookmark */;
+			FEF1144F130429BD004DE405 /* PBXTextBookmark */ = FEF1144F130429BD004DE405 /* PBXTextBookmark */;
+			FEF11450130429BD004DE405 /* PBXTextBookmark */ = FEF11450130429BD004DE405 /* PBXTextBookmark */;
+			FEF11451130429BD004DE405 /* PBXTextBookmark */ = FEF11451130429BD004DE405 /* PBXTextBookmark */;
+			FEF11452130429BD004DE405 /* PBXTextBookmark */ = FEF11452130429BD004DE405 /* PBXTextBookmark */;
+			FEF11456130429BD004DE405 /* PBXTextBookmark */ = FEF11456130429BD004DE405 /* PBXTextBookmark */;
+			FEF114A01304304E004DE405 /* PBXTextBookmark */ = FEF114A01304304E004DE405 /* PBXTextBookmark */;
+			FEF114A71304306E004DE405 /* PBXTextBookmark */ = FEF114A71304306E004DE405 /* PBXTextBookmark */;
+			FEF115C91305662B004DE405 /* PBXTextBookmark */ = FEF115C91305662B004DE405 /* PBXTextBookmark */;
+			FEF302381333EAEA0078054F /* PBXTextBookmark */ = FEF302381333EAEA0078054F /* PBXTextBookmark */;
+			FEF302C21333FD560078054F /* PBXTextBookmark */ = FEF302C21333FD560078054F /* PBXTextBookmark */;
+			FEF3036A133548E90078054F /* PBXTextBookmark */ = FEF3036A133548E90078054F /* PBXTextBookmark */;
+			FEF3036C133548E90078054F /* PBXTextBookmark */ = FEF3036C133548E90078054F /* PBXTextBookmark */;
+			FEF3036D133548E90078054F /* PBXTextBookmark */ = FEF3036D133548E90078054F /* PBXTextBookmark */;
+			FEF303D41335D4800078054F /* PBXTextBookmark */ = FEF303D41335D4800078054F /* PBXTextBookmark */;
+			FEF303D71335D4800078054F /* PBXTextBookmark */ = FEF303D71335D4800078054F /* PBXTextBookmark */;
+			FEF303ED1335D6030078054F /* PBXTextBookmark */ = FEF303ED1335D6030078054F /* PBXTextBookmark */;
+			FEF304CF133693F30078054F /* PBXTextBookmark */ = FEF304CF133693F30078054F /* PBXTextBookmark */;
+			FEF306EF1336A31A0078054F /* PBXTextBookmark */ = FEF306EF1336A31A0078054F /* PBXTextBookmark */;
+			FEF306F01336A31A0078054F /* PBXTextBookmark */ = FEF306F01336A31A0078054F /* PBXTextBookmark */;
+			FEF306F11336A31A0078054F /* PBXTextBookmark */ = FEF306F11336A31A0078054F /* PBXTextBookmark */;
+			FEF306F21336A31A0078054F /* PBXTextBookmark */ = FEF306F21336A31A0078054F /* PBXTextBookmark */;
+			FEF306F31336A31A0078054F /* PBXTextBookmark */ = FEF306F31336A31A0078054F /* PBXTextBookmark */;
+			FEF3076413374CFC0078054F /* PlistBookmark */ = FEF3076413374CFC0078054F /* PlistBookmark */;
+			FEF30A12133793630078054F /* PBXTextBookmark */ = FEF30A12133793630078054F /* PBXTextBookmark */;
+			FEF3FA721332B1920078054F /* PBXTextBookmark */ = FEF3FA721332B1920078054F /* PBXTextBookmark */;
+			FEFCD31B12A9A2FA0060A1A1 /* PBXTextBookmark */ = FEFCD31B12A9A2FA0060A1A1 /* PBXTextBookmark */;
+			FEFCD59812AE3E280060A1A1 /* PBXTextBookmark */ = FEFCD59812AE3E280060A1A1 /* PBXTextBookmark */;
+		};
+		sourceControlManager = FE444449114FC43200F5EFD6 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 593}}";
+			sepNavSelRange = "{171, 0}";
+			sepNavVisRange = "{0, 171}";
+		};
+	};
+	8D1107260486CEB800E47090 /* TemplateProjectMacOS */ = {
+		activeExec = 0;
+		executables = (
+			FE444444114FC41300F5EFD6 /* TemplateProjectMacOS */,
+		);
+	};
+	FE07A3691158E0B000109D63 /* CGDirectDisplay.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CGDirectDisplay.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Headers/CGDirectDisplay.h;
+		sourceTree = "<absolute>";
+	};
+	FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = GameObjectTestScreen.cpp;
+		path = /Sources/dava.framework/Tools/ResourceEditor/Classes/GameObjectTestScreen.cpp;
+		sourceTree = "<absolute>";
+	};
+	FE0D6CC6128AE6C100ECAE3B /* stl_iterator.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = stl_iterator.h;
+		path = "/Developer/SDKs/MacOSX10.5.sdk/usr/include/c++/4.0.0/bits/stl_iterator.h";
+		sourceTree = "<absolute>";
+	};
+	FE213F761301606D00CB258D /* FontUsageScreen.cpp:77 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FED0812712C250FF00A36675 /* FontUsageScreen.cpp */;
+		functionName = "FontUsageScreen::DrawGraphicsFont(GraphicsFont * font, Vector2 position, float32 fontSize)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 77;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.311265;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FE213FA01301652A00CB258D /* FontUsageScreen.cpp:69 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FED0812712C250FF00A36675 /* FontUsageScreen.cpp */;
+		functionName = "FontUsageScreen::DrawGraphicsFont(GraphicsFont * font, Vector2 position, float32 fontSize)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 69;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.31128;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FE2140731301A25200CB258D /* FontUsageScreen.cpp:68 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FED0812712C250FF00A36675 /* FontUsageScreen.cpp */;
+		functionName = "FontUsageScreen::DrawGraphicsFont(GraphicsFont * font, Vector2 position, float32 fontSize)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 68;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.311319;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FE444444114FC41300F5EFD6 /* TemplateProjectMacOS */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = TemplateProjectMacOS;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+			"c-char16-DAVA::GraphicsFont::DrawString" = 1;
+		};
+	};
+	FE444449114FC43200F5EFD6 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	FE44444A114FC43200F5EFD6 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	FE444F0A1153A1DF00F5EFD6 /* NSApplication.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = NSApplication.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AppKit.framework/Versions/C/Headers/NSApplication.h;
+		sourceTree = "<absolute>";
+	};
+	FE4D272213390A85003B2807 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE4D272313390A85003B2807 /* BaseTypes.h */;
+		name = "BaseTypes.h: 188";
+		rLen = 32;
+		rLoc = 4043;
+		rType = 0;
+		vrLen = 957;
+		vrLoc = 2914;
+	};
+	FE4D272313390A85003B2807 /* BaseTypes.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = BaseTypes.h;
+		path = /Sources/dava.framework/SDK/Sources/Base/BaseTypes.h;
+		sourceTree = "<absolute>";
+	};
+	FE4D273113390B5A003B2807 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE4D273213390B5A003B2807 /* UIControlBackground.h */;
+		name = "UIControlBackground.h: 31";
+		rLen = 28;
+		rLoc = 542;
+		rType = 0;
+		vrLen = 689;
+		vrLoc = 0;
+	};
+	FE4D273213390B5A003B2807 /* UIControlBackground.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIControlBackground.h;
+		path = /Sources/dava.framework/SDK/Sources/UI/UIControlBackground.h;
+		sourceTree = "<absolute>";
+	};
+	FE4D2745133933F2003B2807 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE94204013325A1400515418 /* AppScreens.h */;
+		name = "AppScreens.h: 18";
+		rLen = 0;
+		rLoc = 300;
+		rType = 0;
+		vrLen = 352;
+		vrLoc = 0;
+	};
+	FE4D277513393C72003B2807 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF304E11336953A0078054F /* UISpriteEditor.h */;
+		name = "UISpriteEditor.h: 44";
+		rLen = 0;
+		rLoc = 1044;
+		rType = 0;
+		vrLen = 929;
+		vrLoc = 271;
+	};
+	FE5288D6132FFEC5000FE4F0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */;
+		name = "TemplateProjectMacOS_Prefix.pch: 8";
+		rLen = 0;
+		rLoc = 171;
+		rType = 0;
+		vrLen = 171;
+		vrLoc = 0;
+	};
+	FE54EC1D13A2224400912810 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEA30C291231362D00E691CC /* main.mm */;
+		name = "main.mm: 14";
+		rLen = 0;
+		rLoc = 241;
+		rType = 0;
+		vrLen = 280;
+		vrLoc = 0;
+	};
+	FE54EC1E13A2224400912810 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */;
+		name = "ResourcePackerScreen.cpp: 11";
+		rLen = 22;
+		rLoc = 198;
+		rType = 0;
+		vrLen = 795;
+		vrLoc = 0;
+	};
+	FE54EC1F13A2224400912810 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB6613335B000078054F /* CommandLineParser.h */;
+		name = "CommandLineParser.h: 20";
+		rLen = 0;
+		rLoc = 417;
+		rType = 0;
+		vrLen = 711;
+		vrLoc = 0;
+	};
+	FE5789E7131D091A0081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB658B1317BDBD00958ACB /* sparkles_clockmaster_time_2.yaml */;
+		name = "sparkles_clockmaster_time_2.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 954;
+		vrLoc = 0;
+	};
+	FE5789E8131D091A0081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB648F1316E72500958ACB /* sparkles_clockmaster_time_1.yaml */;
+		name = "sparkles_clockmaster_time_1.yaml: 24";
+		rLen = 0;
+		rLoc = 869;
+		rType = 0;
+		vrLen = 1346;
+		vrLoc = 26;
+	};
+	FE5789EA131D091A0081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB65011317124C00958ACB /* sparkles_clockmaster_time_0.yaml */;
+		name = "sparkles_clockmaster_time_0.yaml: 23";
+		rLen = 0;
+		rLoc = 916;
+		rType = 0;
+		vrLen = 1123;
+		vrLoc = 0;
+	};
+	FE578A0D131D2B560081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB65D81317C62100958ACB /* sparkles_clockmaster_skolesika.yaml */;
+		name = "sparkles_clockmaster_skolesika.yaml: 16";
+		rLen = 0;
+		rLoc = 656;
+		rType = 0;
+		vrLen = 1063;
+		vrLoc = 0;
+	};
+	FE578A83131D40070081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB63C71316A68800958ACB /* sparkles_clockmaster_clear.yaml */;
+		name = "sparkles_clockmaster_clear.yaml: 16";
+		rLen = 0;
+		rLoc = 551;
+		rType = 0;
+		vrLen = 997;
+		vrLoc = 0;
+	};
+	FE578A9F131D4E600081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEB6F3C131C590500958ACB /* sparkles_clockmaster_otkat_2.yaml */;
+		name = "sparkles_clockmaster_otkat_2.yaml: 41";
+		rLen = 0;
+		rLoc = 1142;
+		rType = 0;
+		vrLen = 1104;
+		vrLoc = 26;
+	};
+	FE578AA1131D4E600081BDE9 /* sparkles_clockmaster_otkat_1.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_otkat_1.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_otkat_1.yaml;
+		sourceTree = "<absolute>";
+	};
+	FE578AEA131FE2270081BDE9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE578AA1131D4E600081BDE9 /* sparkles_clockmaster_otkat_1.yaml */;
+		name = "sparkles_clockmaster_otkat_1.yaml: 42";
+		rLen = 0;
+		rLoc = 1167;
+		rType = 0;
+		vrLen = 1103;
+		vrLoc = 0;
+	};
+	FE70914B115A25DB0075592A /* glu.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = glu.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/glu.h;
+		sourceTree = "<absolute>";
+	};
+	FE709254115A2D510075592A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE70914B115A25DB0075592A /* glu.h */;
+		name = "glu.h: 287";
+		rLen = 87;
+		rLoc = 15103;
+		rType = 0;
+		vrLen = 2794;
+		vrLoc = 10523;
+	};
+	FE80C931123030F000582925 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE80C932123030F000582925 /* Appearance.h */;
+		name = "Appearance.h: 1290";
+		rLen = 0;
+		rLoc = 41422;
+		rType = 0;
+		vrLen = 851;
+		vrLoc = 40824;
+	};
+	FE80C932123030F000582925 /* Appearance.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = Appearance.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/Carbon.framework/Frameworks/HIToolbox.framework/Headers/Appearance.h;
+		sourceTree = "<absolute>";
+	};
+	FE811599115916E7006E3D55 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE81159A115916E7006E3D55 /* OpenGL.h */;
+		name = "OpenGL.h: 102";
+		rLen = 100;
+		rLoc = 4731;
+		rType = 0;
+		vrLen = 1622;
+		vrLoc = 3863;
+	};
+	FE81159A115916E7006E3D55 /* OpenGL.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = OpenGL.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers/OpenGL.h;
+		sourceTree = "<absolute>";
+	};
+	FE83978C11561C85007335A4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE444F0A1153A1DF00F5EFD6 /* NSApplication.h */;
+		name = "NSApplication.h: 253";
+		rLen = 14;
+		rLoc = 9899;
+		rType = 0;
+		vrLen = 1574;
+		vrLoc = 9262;
+	};
+	FE83A18D1157CA5C007335A4 /* NSOpenGLView.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = NSOpenGLView.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/AppKit.framework/Versions/C/Headers/NSOpenGLView.h;
+		sourceTree = "<absolute>";
+	};
+	FE941EC51331DF4800515418 /* main.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = main.cpp;
+		path = /Sources/dava.framework/Projects/TemplateProject/Win32Specific/main.cpp;
+		sourceTree = "<absolute>";
+	};
+	FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1601, 9152}}";
+			sepNavSelRange = "{16252, 1}";
+			sepNavVisRange = "{16372, 306}";
+		};
+	};
+	FE94203E13325A0B00515418 /* ResourcePackerScreen.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 864}}";
+			sepNavSelRange = "{1136, 0}";
+			sepNavVisRange = "{335, 970}";
+		};
+	};
+	FE94204013325A1400515418 /* AppScreens.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 593}}";
+			sepNavSelRange = "{300, 0}";
+			sepNavVisRange = "{0, 352}";
+		};
+	};
+	FE94205913325F4600515418 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE941EC51331DF4800515418 /* main.cpp */;
+		name = "main.cpp: 11";
+		rLen = 0;
+		rLoc = 246;
+		rType = 0;
+		vrLen = 610;
+		vrLoc = 0;
+	};
+	FE9892E211638EF700500198 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {907, 593}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 92}";
+			sepNavWindowFrame = "{{15, 67}, {1212, 711}}";
+		};
+	};
+	FE98930111638F2B00500198 /* TestScreen.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = TestScreen.h;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/TestScreen.h;
+		sourceTree = "<absolute>";
+	};
+	FE98930211638F2B00500198 /* GameCore.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = GameCore.h;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/GameCore.h;
+		sourceTree = "<absolute>";
+	};
+	FE98930511638F2B00500198 /* TestScreen.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = TestScreen.cpp;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/TestScreen.cpp;
+		sourceTree = "<absolute>";
+	};
+	FE9C99931337AE4B00D53F37 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB6513335B000078054F /* CommandLineParser.cpp */;
+		name = "CommandLineParser.cpp: 63";
+		rLen = 0;
+		rLoc = 998;
+		rType = 0;
+		vrLen = 891;
+		vrLoc = 774;
+	};
+	FE9C99941337AE4B00D53F37 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB6613335B000078054F /* CommandLineParser.h */;
+		name = "CommandLineParser.h: 8";
+		rLen = 0;
+		rLoc = 172;
+		rType = 0;
+		vrLen = 1004;
+		vrLoc = 86;
+	};
+	FEA307F412311ECC00E691CC /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = FE98931D11638FBB00500198 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Sources/dava.framework/Projects/TemplateProject/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	FEA30C291231362D00E691CC /* main.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 399}}";
+			sepNavSelRange = "{241, 0}";
+			sepNavVisRange = "{0, 280}";
+		};
+	};
+	FEA30C2B1231362D00E691CC /* MainWindowController.mm */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.objcpp;
+		name = MainWindowController.mm;
+		path = /Sources/dava.framework/Projects/TemplateProject/MacOSSpecific/MainWindowController.mm;
+		sourceTree = "<absolute>";
+	};
+	FEA30C2D1231362D00E691CC /* OpenGLView.mm */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.objcpp;
+		name = OpenGLView.mm;
+		path = /Sources/dava.framework/Projects/TemplateProject/MacOSSpecific/OpenGLView.mm;
+		sourceTree = "<absolute>";
+	};
+	FEA4DAB6132CF88600E261D0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE98930211638F2B00500198 /* GameCore.h */;
+		name = "GameCore.h: 43";
+		rLen = 0;
+		rLoc = 877;
+		rType = 0;
+		vrLen = 910;
+		vrLoc = 488;
+	};
+	FEB27E7112F756EF008B12C0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEB27E7212F756EF008B12C0 /* CGDirectDisplay.h */;
+		name = "CGDirectDisplay.h: 18";
+		rLen = 16;
+		rLoc = 482;
+		rType = 0;
+		vrLen = 1225;
+		vrLoc = 0;
+	};
+	FEB27E7212F756EF008B12C0 /* CGDirectDisplay.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CGDirectDisplay.h;
+		path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Headers/CGDirectDisplay.h;
+		sourceTree = "<absolute>";
+	};
+	FEB27E7312F756EF008B12C0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEB27E7412F756EF008B12C0 /* CGDirectDisplay.h */;
+		name = "CGDirectDisplay.h: 18";
+		rLen = 16;
+		rLoc = 482;
+		rType = 0;
+		vrLen = 1225;
+		vrLoc = 0;
+	};
+	FEB27E7412F756EF008B12C0 /* CGDirectDisplay.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CGDirectDisplay.h;
+		path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework/Versions/A/Headers/CGDirectDisplay.h;
+		sourceTree = "<absolute>";
+	};
+	FEB27E9912F75A38008B12C0 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE83A18D1157CA5C007335A4 /* NSOpenGLView.h */;
+		name = "NSOpenGLView.h: 12";
+		rLen = 35;
+		rLoc = 200;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 0;
+	};
+	FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 832}}";
+			sepNavSelRange = "{767, 0}";
+			sepNavVisRange = "{254, 1009}";
+		};
+	};
+	FEC3CA701283557F00541220 /* FrameworkMain.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 569}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 187}";
+		};
+	};
+	FEC3CA711283557F00541220 /* GameCore.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 1120}}";
+			sepNavSelRange = "{608, 0}";
+			sepNavVisRange = "{243, 502}";
+		};
+	};
+	FEC3CA721283557F00541220 /* GameCore.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 608}}";
+			sepNavSelRange = "{597, 0}";
+			sepNavVisRange = "{0, 682}";
+		};
+	};
+	FEC3E0CD1339513600442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF30864133766070078054F /* ResourcePackerScreen.yaml */;
+		name = "ResourcePackerScreen.yaml: 28";
+		rLen = 0;
+		rLoc = 609;
+		rType = 0;
+		vrLen = 609;
+		vrLoc = 0;
+	};
+	FEC3E0CE1339513600442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF308D6133787240078054F /* SpriteEditor.yaml */;
+		name = "SpriteEditor.yaml: 17";
+		rLen = 0;
+		rLoc = 303;
+		rType = 0;
+		vrLen = 714;
+		vrLoc = 17;
+	};
+	FEC3E0ED1339D83200442ADD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEC3E0EE1339D83200442ADD /* UIControl.h */;
+		name = "UIControl.h: 696";
+		rLen = 0;
+		rLoc = 23393;
+		rType = 0;
+		vrLen = 1940;
+		vrLoc = 22864;
+	};
+	FEC3E0EE1339D83200442ADD /* UIControl.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIControl.h;
+		path = /Sources/dava.framework/SDK/Sources/UI/UIControl.h;
+		sourceTree = "<absolute>";
+	};
+	FECA0B38119BF991004C721B /* AnimationTestScreen.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = AnimationTestScreen.h;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/AnimationTestScreen.h;
+		sourceTree = "<absolute>";
+	};
+	FECA0B39119BF991004C721B /* AnimationTestScreen.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = AnimationTestScreen.cpp;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/AnimationTestScreen.cpp;
+		sourceTree = "<absolute>";
+	};
+	FED0812712C250FF00A36675 /* FontUsageScreen.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = FontUsageScreen.cpp;
+		path = /Sources/dava.framework/Tools/ResourceEditor/Classes/FontUsageScreen.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEDA0098131562F000C4BA70 /* GameObjectTestScreen.cpp:53 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */;
+		functionName = "GameObjectTestScreen::LoadResources()";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 53;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.311332;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FEDAF995131300D500C4BA70 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE98930111638F2B00500198 /* TestScreen.h */;
+		name = "TestScreen.h: 19";
+		rLen = 0;
+		rLoc = 417;
+		rType = 0;
+		vrLen = 715;
+		vrLoc = 0;
+	};
+	FEDAF99B131300D500C4BA70 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FECA0B39119BF991004C721B /* AnimationTestScreen.cpp */;
+		name = "AnimationTestScreen.cpp: 82";
+		rLen = 0;
+		rLoc = 1678;
+		rType = 0;
+		vrLen = 976;
+		vrLoc = 1203;
+	};
+	FEDAFE221314049200C4BA70 /* sparkles_clockmaster_collect5.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_collect5.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_collect5.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEDAFEAB13140F9500C4BA70 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE0D6CC6128AE6C100ECAE3B /* stl_iterator.h */;
+		name = "stl_iterator.h: 614";
+		rLen = 0;
+		rLoc = 19531;
+		rType = 0;
+		vrLen = 1171;
+		vrLoc = 18597;
+	};
+	FEE981601275673300FBD2E1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE07A3691158E0B000109D63 /* CGDirectDisplay.h */;
+		name = "CGDirectDisplay.h: 178";
+		rLen = 115;
+		rLoc = 7241;
+		rType = 0;
+		vrLen = 1648;
+		vrLoc = 6372;
+	};
+	FEE98180127567FE00FBD2E1 /* ClipTestScreen.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = ClipTestScreen.cpp;
+		path = /Sources/dava.framework/Projects/TemplateProject/Classes/ClipTestScreen.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEE981C412756E3A00FBD2E1 /* MainWindowController.mm:587 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FEA30C2B1231362D00E691CC /* MainWindowController.mm */;
+		functionName = "-applicationDidChangeScreenParameters:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 587;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.311205;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FEE982591275805B00FBD2E1 /* OpenGLView.mm:107 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FEA30C2D1231362D00E691CC /* OpenGLView.mm */;
+		functionName = "-drawRect:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 107;
+		location = TemplateProjectMacOS;
+		modificationTime = 329327805.31122;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	FEE982621275806A00FBD2E1 /* OpenGLView.mm:100 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FEA30C2D1231362D00E691CC /* OpenGLView.mm */;
+		functionName = "-userFireTimer:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 100;
+		modificationTime = 329327805.311241;
+		originalNumberOfMultipleMatches = 1;
+		state = 0;
+	};
+	FEEA75AA12DC871C00F5396F /* b2ContactSolver.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = b2ContactSolver.cpp;
+		path = /Sources/dava.framework/Libs/Box2D/Projects/Box2D_MacOS/../../../Box2D/Box2D/Box2D/Dynamics/Contacts/b2ContactSolver.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEEA760A12DC90CA00F5396F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEEA75AA12DC871C00F5396F /* b2ContactSolver.cpp */;
+		name = "b2ContactSolver.cpp: 127";
+		rLen = 0;
+		rLoc = 4039;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 3573;
+	};
+	FEEB63C71316A68800958ACB /* sparkles_clockmaster_clear.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_clear.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_clear.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEEB63DA1316A9E000958ACB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11455130429BD004DE405 /* cm_lightning1.yaml */;
+		name = "cm_lightning1.yaml: 10";
+		rLen = 484;
+		rLoc = 444;
+		rType = 0;
+		vrLen = 990;
+		vrLoc = 0;
+	};
+	FEEB648F1316E72500958ACB /* sparkles_clockmaster_time_1.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_time_1.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_time_1.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEEB65011317124C00958ACB /* sparkles_clockmaster_time_0.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_time_0.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_time_0.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEEB65471317B5B200958ACB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11429130428C0004DE405 /* sparkles.yaml */;
+		name = "sparkles.yaml: 27";
+		rLen = 0;
+		rLoc = 830;
+		rType = 0;
+		vrLen = 1045;
+		vrLoc = 0;
+	};
+	FEEB658B1317BDBD00958ACB /* sparkles_clockmaster_time_2.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_time_2.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_time_2.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEEB65D81317C62100958ACB /* sparkles_clockmaster_skolesika.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_skolesika.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_skolesika.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEEB66301317F07A00958ACB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEE98180127567FE00FBD2E1 /* ClipTestScreen.cpp */;
+		name = "ClipTestScreen.cpp: 41";
+		rLen = 0;
+		rLoc = 895;
+		rType = 0;
+		vrLen = 909;
+		vrLoc = 633;
+	};
+	FEEB66681317F9AA00958ACB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE98930511638F2B00500198 /* TestScreen.cpp */;
+		name = "TestScreen.cpp: 35";
+		rLen = 0;
+		rLoc = 1127;
+		rType = 0;
+		vrLen = 853;
+		vrLoc = 1225;
+	};
+	FEEB6EFF131BF04A00958ACB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEDAFE221314049200C4BA70 /* sparkles_clockmaster_collect5.yaml */;
+		name = "sparkles_clockmaster_collect5.yaml: 22";
+		rLen = 0;
+		rLoc = 734;
+		rType = 0;
+		vrLen = 1010;
+		vrLoc = 0;
+	};
+	FEEB6F3C131C590500958ACB /* sparkles_clockmaster_otkat_2.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_clockmaster_otkat_2.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_clockmaster_otkat_2.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF1140813042168004DE405 /* sparkles_linda.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_linda.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_linda.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF1140A13042168004DE405 /* sparkles_linda_menu.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_linda_menu.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_linda_menu.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF1141F130428C0004DE405 /* laser_smoke.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = laser_smoke.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/laser_smoke.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11421130428C0004DE405 /* base_fire_fall.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = base_fire_fall.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/base_fire_fall.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11423130428C0004DE405 /* perf_sparkles.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = perf_sparkles.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/perf_sparkles.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11424130428C0004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11425130428C0004DE405 /* shoot_rotating_smoke.yaml */;
+		name = "shoot_rotating_smoke.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1002;
+		vrLoc = 0;
+	};
+	FEF11425130428C0004DE405 /* shoot_rotating_smoke.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = shoot_rotating_smoke.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/shoot_rotating_smoke.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11426130428C0004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11427130428C0004DE405 /* shoot_smoke.yaml */;
+		name = "shoot_smoke.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 992;
+		vrLoc = 0;
+	};
+	FEF11427130428C0004DE405 /* shoot_smoke.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = shoot_smoke.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/shoot_smoke.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11429130428C0004DE405 /* sparkles.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF1144F130429BD004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF1140813042168004DE405 /* sparkles_linda.yaml */;
+		name = "sparkles_linda.yaml: 8";
+		rLen = 0;
+		rLoc = 439;
+		rType = 0;
+		vrLen = 1040;
+		vrLoc = 0;
+	};
+	FEF11450130429BD004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11423130428C0004DE405 /* perf_sparkles.yaml */;
+		name = "perf_sparkles.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1046;
+		vrLoc = 0;
+	};
+	FEF11451130429BD004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11421130428C0004DE405 /* base_fire_fall.yaml */;
+		name = "base_fire_fall.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 760;
+		vrLoc = 408;
+	};
+	FEF11452130429BD004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF11453130429BD004DE405 /* base_glow.yaml */;
+		name = "base_glow.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1004;
+		vrLoc = 0;
+	};
+	FEF11453130429BD004DE405 /* base_glow.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = base_glow.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/base_glow.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11455130429BD004DE405 /* cm_lightning1.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = cm_lightning1.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/cm_lightning1.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF11456130429BD004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF1141F130428C0004DE405 /* laser_smoke.yaml */;
+		name = "laser_smoke.yaml: 38";
+		rLen = 75;
+		rLoc = 1027;
+		rType = 0;
+		vrLen = 750;
+		vrLoc = 493;
+	};
+	FEF114A01304304E004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF114A11304304E004DE405 /* sparkles_linda_2_op.yaml */;
+		name = "sparkles_linda_2_op.yaml: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1044;
+		vrLoc = 0;
+	};
+	FEF114A11304304E004DE405 /* sparkles_linda_2_op.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = sparkles_linda_2_op.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Particles/Sparkles/sparkles_linda_2_op.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF114A71304306E004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF1140A13042168004DE405 /* sparkles_linda_menu.yaml */;
+		name = "sparkles_linda_menu.yaml: 19";
+		rLen = 0;
+		rLoc = 666;
+		rType = 0;
+		vrLen = 1030;
+		vrLoc = 0;
+	};
+	FEF115C91305662B004DE405 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEFCD59B12AE3E280060A1A1 /* particle_test_screen.yaml */;
+		name = "particle_test_screen.yaml: 7";
+		rLen = 0;
+		rLoc = 126;
+		rType = 0;
+		vrLen = 1002;
+		vrLoc = 0;
+	};
+	FEF302381333EAEA0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF302391333EAEA0078054F /* main.cpp */;
+		name = "main.cpp: 72";
+		rLen = 174;
+		rLoc = 1424;
+		rType = 0;
+		vrLen = 826;
+		vrLoc = 1133;
+	};
+	FEF302391333EAEA0078054F /* main.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = main.cpp;
+		path = /Sources/dava.framework/Tools/PSDTool/src/main.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEF302C21333FD560078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FA771332B1920078054F /* FileSystem.h */;
+		name = "FileSystem.h: 48";
+		rLen = 0;
+		rLoc = 1689;
+		rType = 0;
+		vrLen = 1126;
+		vrLoc = 553;
+	};
+	FEF3036A133548E90078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB471333580F0078054F /* ImagePacker.cpp */;
+		name = "ImagePacker.cpp: 88";
+		rLen = 6;
+		rLoc = 1816;
+		rType = 0;
+		vrLen = 885;
+		vrLoc = 1368;
+	};
+	FEF3036C133548E90078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB4B1333580F0078054F /* TexturePacker.cpp */;
+		name = "TexturePacker.cpp: 43";
+		rLen = 0;
+		rLoc = 1130;
+		rType = 0;
+		vrLen = 1196;
+		vrLoc = 347;
+	};
+	FEF3036D133548E90078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB451333580F0078054F /* DefinitionFile.cpp */;
+		name = "DefinitionFile.cpp: 162";
+		rLen = 0;
+		rLoc = 4230;
+		rType = 0;
+		vrLen = 729;
+		vrLoc = 3792;
+	};
+	FEF303B31335CFC50078054F /* UIFileTree.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1094, 4128}}";
+			sepNavSelRange = "{3971, 0}";
+			sepNavVisRange = "{3452, 390}";
+			sepNavWindowFrame = "{{15, 98}, {1201, 675}}";
+		};
+	};
+	FEF303B41335CFC50078054F /* UIFileTree.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 2272}}";
+			sepNavSelRange = "{883, 0}";
+			sepNavVisRange = "{700, 890}";
+		};
+	};
+	FEF303B51335CFC50078054F /* UIFileTreeCell.cpp */ = {
+		uiCtxt = {
+			sepNavFolds = "{\n    c =     (\n                {\n            l = \"bool rectInAbsoluteCoordinates\";\n            r = \"{641, 34}\";\n            s = 1;\n        }\n    );\n    r = \"{0, 1284}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {903, 944}}";
+			sepNavSelRange = "{615, 0}";
+			sepNavVisRange = "{496, 754}";
+		};
+	};
+	FEF303B61335CFC50078054F /* UIFileTreeCell.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 656}}";
+			sepNavSelRange = "{320, 0}";
+			sepNavVisRange = "{45, 939}";
+		};
+	};
+	FEF303D41335D4800078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF303D51335D4800078054F /* FileList.h */;
+		name = "FileList.h: 13";
+		rLen = 36;
+		rLoc = 224;
+		rType = 0;
+		vrLen = 937;
+		vrLoc = 0;
+	};
+	FEF303D51335D4800078054F /* FileList.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FileList.h;
+		path = /Sources/dava.framework/SDK/Sources/FileSystem/FileList.h;
+		sourceTree = "<absolute>";
+	};
+	FEF303D71335D4800078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF303D81335D4800078054F /* UIButton.h */;
+		name = "UIButton.h: 25";
+		rLen = 35;
+		rLoc = 569;
+		rType = 0;
+		vrLen = 1577;
+		vrLoc = 604;
+	};
+	FEF303D81335D4800078054F /* UIButton.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIButton.h;
+		path = /Sources/dava.framework/SDK/Sources/UI/UIButton.h;
+		sourceTree = "<absolute>";
+	};
+	FEF303DA1335D4800078054F /* UIListCell.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = UIListCell.h;
+		path = /Sources/dava.framework/SDK/Sources/UI/UIListCell.h;
+		sourceTree = "<absolute>";
+	};
+	FEF303ED1335D6030078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF303EE1335D6030078054F /* RecordsTable.cpp */;
+		name = "RecordsTable.cpp: 25";
+		rLen = 0;
+		rLoc = 543;
+		rType = 0;
+		vrLen = 744;
+		vrLoc = 1019;
+	};
+	FEF303EE1335D6030078054F /* RecordsTable.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = RecordsTable.cpp;
+		path = /Sources/dava.clockmaster/Classes/RecordsTable/RecordsTable.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEF304CF133693F30078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF303DA1335D4800078054F /* UIListCell.h */;
+		name = "UIListCell.h: 18";
+		rLen = 37;
+		rLoc = 261;
+		rType = 0;
+		vrLen = 454;
+		vrLoc = 130;
+	};
+	FEF304E01336953A0078054F /* UISpriteEditor.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 1808}}";
+			sepNavSelRange = "{2687, 0}";
+			sepNavVisRange = "{1596, 1295}";
+		};
+	};
+	FEF304E11336953A0078054F /* UISpriteEditor.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1117, 800}}";
+			sepNavSelRange = "{994, 0}";
+			sepNavVisRange = "{602, 603}";
+		};
+	};
+	FEF304E3133695BB0078054F /* UIScrollView.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1174, 10016}}";
+			sepNavSelRange = "{9359, 0}";
+			sepNavVisRange = "{8765, 666}";
+		};
+	};
+	FEF304E4133695BB0078054F /* UIScrollView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 1648}}";
+			sepNavSelRange = "{735, 0}";
+			sepNavVisRange = "{226, 1095}";
+		};
+	};
+	FEF306EF1336A31A0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB461333580F0078054F /* DefinitionFile.h */;
+		name = "DefinitionFile.h: 35";
+		rLen = 6;
+		rLoc = 584;
+		rType = 0;
+		vrLen = 611;
+		vrLoc = 43;
+	};
+	FEF306F01336A31A0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB4C1333580F0078054F /* TexturePacker.h */;
+		name = "TexturePacker.h: 55";
+		rLen = 0;
+		rLoc = 1770;
+		rType = 0;
+		vrLen = 1415;
+		vrLoc = 388;
+	};
+	FEF306F11336A31A0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB481333580F0078054F /* ImagePacker.h */;
+		name = "ImagePacker.h: 69";
+		rLen = 0;
+		rLoc = 1815;
+		rType = 0;
+		vrLen = 618;
+		vrLoc = 1220;
+	};
+	FEF306F21336A31A0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB491333580F0078054F /* PngImage.cpp */;
+		name = "PngImage.cpp: 257";
+		rLen = 0;
+		rLoc = 6018;
+		rType = 0;
+		vrLen = 979;
+		vrLoc = 5805;
+	};
+	FEF306F31336A31A0078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FB4A1333580F0078054F /* PngImage.h */;
+		name = "PngImage.h: 60";
+		rLen = 0;
+		rLoc = 1084;
+		rType = 0;
+		vrLen = 629;
+		vrLoc = 456;
+	};
+	FEF3076413374CFC0078054F /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = FEA30C2E1231362D00E691CC /* version.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Sources/dava.framework/Tools/ResourceEditor/MacOSSpecific/version.plist;
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	FEF30864133766070078054F /* ResourcePackerScreen.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = ResourcePackerScreen.yaml;
+		path = /Sources/dava.framework/Tools/ResourceEditor/Data/Screens/ResourcePackerScreen.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF308D6133787240078054F /* SpriteEditor.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = SpriteEditor.yaml;
+		path = /Sources/dava.framework/Tools/ResourceEditor/Data/Screens/SpriteEditor.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEF30A12133793630078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF30A13133793630078054F /* UIYamlLoader.cpp */;
+		name = "UIYamlLoader.cpp: 241";
+		rLen = 0;
+		rLoc = 7246;
+		rType = 0;
+		vrLen = 1099;
+		vrLoc = 6782;
+	};
+	FEF30A13133793630078054F /* UIYamlLoader.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = UIYamlLoader.cpp;
+		path = /Sources/dava.framework/SDK/Sources/UI/UIYamlLoader.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEF3FA721332B1920078054F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEF3FA731332B1920078054F /* CommandLineParser.cpp */;
+		name = "CommandLineParser.cpp: 75";
+		rLen = 0;
+		rLoc = 1788;
+		rType = 0;
+		vrLen = 1146;
+		vrLoc = 1077;
+	};
+	FEF3FA731332B1920078054F /* CommandLineParser.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = CommandLineParser.cpp;
+		path = /Sources/dava.framework/Tools/TexturePack/CommandLineParser.cpp;
+		sourceTree = "<absolute>";
+	};
+	FEF3FA771332B1920078054F /* FileSystem.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FileSystem.h;
+		path = /Sources/dava.framework/SDK/Sources/FileSystem/FileSystem.h;
+		sourceTree = "<absolute>";
+	};
+	FEF3FB451333580F0078054F /* DefinitionFile.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 3072}}";
+			sepNavSelRange = "{4230, 0}";
+			sepNavVisRange = "{3792, 729}";
+			sepNavWindowFrame = "{{38, 77}, {1201, 675}}";
+		};
+	};
+	FEF3FB461333580F0078054F /* DefinitionFile.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 640}}";
+			sepNavSelRange = "{584, 6}";
+			sepNavVisRange = "{43, 611}";
+		};
+	};
+	FEF3FB471333580F0078054F /* ImagePacker.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1117, 1760}}";
+			sepNavSelRange = "{1808, 0}";
+			sepNavVisRange = "{1413, 672}";
+		};
+	};
+	FEF3FB481333580F0078054F /* ImagePacker.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 1120}}";
+			sepNavSelRange = "{1815, 0}";
+			sepNavVisRange = "{1220, 618}";
+		};
+	};
+	FEF3FB491333580F0078054F /* PngImage.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 8096}}";
+			sepNavSelRange = "{6018, 0}";
+			sepNavVisRange = "{5805, 979}";
+		};
+	};
+	FEF3FB4A1333580F0078054F /* PngImage.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 976}}";
+			sepNavSelRange = "{1084, 0}";
+			sepNavVisRange = "{456, 629}";
+		};
+	};
+	FEF3FB4B1333580F0078054F /* TexturePacker.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {985, 10832}}";
+			sepNavSelRange = "{1130, 0}";
+			sepNavVisRange = "{347, 1196}";
+		};
+	};
+	FEF3FB4C1333580F0078054F /* TexturePacker.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {985, 912}}";
+			sepNavSelRange = "{1770, 0}";
+			sepNavVisRange = "{388, 1415}";
+			sepNavWindowFrame = "{{15, 98}, {1201, 675}}";
+		};
+	};
+	FEF3FB6513335B000078054F /* CommandLineParser.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 3264}}";
+			sepNavSelRange = "{998, 0}";
+			sepNavVisRange = "{774, 891}";
+		};
+	};
+	FEF3FB6613335B000078054F /* CommandLineParser.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {903, 720}}";
+			sepNavSelRange = "{417, 0}";
+			sepNavVisRange = "{0, 711}";
+			sepNavWindowFrame = "{{15, 98}, {1201, 675}}";
+		};
+	};
+	FEFCD31B12A9A2FA0060A1A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FECA0B38119BF991004C721B /* AnimationTestScreen.h */;
+		name = "AnimationTestScreen.h: 10";
+		rLen = 71;
+		rLoc = 172;
+		rType = 0;
+		vrLen = 743;
+		vrLoc = 0;
+	};
+	FEFCD59812AE3E280060A1A1 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FEFCD59912AE3E280060A1A1 /* test_screen.yaml */;
+		name = "test_screen.yaml: 34";
+		rLen = 0;
+		rLoc = 1476;
+		rType = 0;
+		vrLen = 1430;
+		vrLoc = 296;
+	};
+	FEFCD59912AE3E280060A1A1 /* test_screen.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = test_screen.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Screens/test_screen.yaml;
+		sourceTree = "<absolute>";
+	};
+	FEFCD59B12AE3E280060A1A1 /* particle_test_screen.yaml */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = text;
+		name = particle_test_screen.yaml;
+		path = /Sources/dava.framework/Projects/TemplateProject/Data/Screens/particle_test_screen.yaml;
+		sourceTree = "<absolute>";
+	};
+}

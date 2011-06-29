@@ -1,0 +1,509 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		47A1423A12CBD3EC003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1423812CBD3EC003E267E /* StaticTextScreen.cpp */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE0D6C52128AE27A00ECAE3B /* GameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */; };
+		FE0D6C58128AE36300ECAE3B /* SpritePerfScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0D6C56128AE36300ECAE3B /* SpritePerfScreen.cpp */; };
+		FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */; };
+		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
+		FE9892E511638EF700500198 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E111638EF700500198 /* InfoPlist.strings */; };
+		FE9892E611638EF700500198 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E311638EF700500198 /* MainMenu.xib */; };
+		FEA024E312DCEEC600935314 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE98931811638F3C00500198 /* libFramework.a */; };
+		FEA02A8912E39D8900935314 /* CollisionTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA02A8712E39D8900935314 /* CollisionTestScreen.cpp */; };
+		FEA30C331231362D00E691CC /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEA30C291231362D00E691CC /* main.mm */; };
+		FEA30C361231362D00E691CC /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEA30C2E1231362D00E691CC /* version.plist */; };
+		FEC3CA7F1283557F00541220 /* AnimationTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA6A1283557F00541220 /* AnimationTestScreen.cpp */; };
+		FEC3CA801283557F00541220 /* ClipTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA6D1283557F00541220 /* ClipTestScreen.cpp */; };
+		FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */; };
+		FEC3CA821283557F00541220 /* GameCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA711283557F00541220 /* GameCore.cpp */; };
+		FEC3CA841283557F00541220 /* MainMenuScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA751283557F00541220 /* MainMenuScreen.cpp */; };
+		FEC3CA851283557F00541220 /* RenderTargetTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA771283557F00541220 /* RenderTargetTestScreen.cpp */; };
+		FEC3CA861283557F00541220 /* SpriteBasicsScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA791283557F00541220 /* SpriteBasicsScreen.cpp */; };
+		FEC3CA871283557F00541220 /* TestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA7B1283557F00541220 /* TestScreen.cpp */; };
+		FEC3CA881283557F00541220 /* TouchEffectsControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA7D1283557F00541220 /* TouchEffectsControl.cpp */; };
+		FEC3CA931283628600541220 /* ParticleTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA911283628600541220 /* ParticleTestScreen.cpp */; };
+		FED0812912C250FF00A36675 /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED0812712C250FF00A36675 /* FontUsageScreen.cpp */; };
+		FEF4E25F12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF4E25D12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp */; };
+		FEFCD2F712A99FB80060A1A1 /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEFCD2F512A99FB80060A1A1 /* PropertyLineEditControl.cpp */; };
+		FEFCD5EE12AE50860060A1A1 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = FEFCD5E712AE50860060A1A1 /* Data */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE93072A12C28C1100A33E69 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = Framework;
+		};
+		FE98931711638F3C00500198 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectMacOS_Prefix.pch; sourceTree = "<group>"; };
+		47A1423812CBD3EC003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StaticTextScreen.cpp; path = Classes/StaticTextScreen.cpp; sourceTree = "<group>"; };
+		47A1423912CBD3EC003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StaticTextScreen.h; path = Classes/StaticTextScreen.h; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameObjectTestScreen.cpp; path = Classes/GameObjectTestScreen.cpp; sourceTree = "<group>"; };
+		FE0D6C51128AE27A00ECAE3B /* GameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameObjectTestScreen.h; path = Classes/GameObjectTestScreen.h; sourceTree = "<group>"; };
+		FE0D6C56128AE36300ECAE3B /* SpritePerfScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpritePerfScreen.cpp; path = Classes/SpritePerfScreen.cpp; sourceTree = "<group>"; };
+		FE0D6C57128AE36300ECAE3B /* SpritePerfScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpritePerfScreen.h; path = Classes/SpritePerfScreen.h; sourceTree = "<group>"; };
+		FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		FE9892E211638EF700500198 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = MacOSSpecific/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FE9892E411638EF700500198 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MacOSSpecific/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FE98930B11638F3C00500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE98931D11638FBB00500198 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEA02A8712E39D8900935314 /* CollisionTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CollisionTestScreen.cpp; path = Classes/CollisionTestScreen.cpp; sourceTree = "<group>"; };
+		FEA02A8812E39D8900935314 /* CollisionTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollisionTestScreen.h; path = Classes/CollisionTestScreen.h; sourceTree = "<group>"; };
+		FEA30C291231362D00E691CC /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		FEA30C2E1231362D00E691CC /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
+		FEC3CA6A1283557F00541220 /* AnimationTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimationTestScreen.cpp; path = Classes/AnimationTestScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA6B1283557F00541220 /* AnimationTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnimationTestScreen.h; path = Classes/AnimationTestScreen.h; sourceTree = "<group>"; };
+		FEC3CA6C1283557F00541220 /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppScreens.h; path = Classes/AppScreens.h; sourceTree = "<group>"; };
+		FEC3CA6D1283557F00541220 /* ClipTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClipTestScreen.cpp; path = Classes/ClipTestScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA6E1283557F00541220 /* ClipTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClipTestScreen.h; path = Classes/ClipTestScreen.h; sourceTree = "<group>"; };
+		FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FrameworkMain.cpp; path = Classes/FrameworkMain.cpp; sourceTree = "<group>"; };
+		FEC3CA701283557F00541220 /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FrameworkMain.h; path = Classes/FrameworkMain.h; sourceTree = "<group>"; };
+		FEC3CA711283557F00541220 /* GameCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameCore.cpp; path = Classes/GameCore.cpp; sourceTree = "<group>"; };
+		FEC3CA721283557F00541220 /* GameCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCore.h; path = Classes/GameCore.h; sourceTree = "<group>"; };
+		FEC3CA751283557F00541220 /* MainMenuScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainMenuScreen.cpp; path = Classes/MainMenuScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA761283557F00541220 /* MainMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMenuScreen.h; path = Classes/MainMenuScreen.h; sourceTree = "<group>"; };
+		FEC3CA771283557F00541220 /* RenderTargetTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RenderTargetTestScreen.cpp; path = Classes/RenderTargetTestScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA781283557F00541220 /* RenderTargetTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderTargetTestScreen.h; path = Classes/RenderTargetTestScreen.h; sourceTree = "<group>"; };
+		FEC3CA791283557F00541220 /* SpriteBasicsScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteBasicsScreen.cpp; path = Classes/SpriteBasicsScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA7A1283557F00541220 /* SpriteBasicsScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteBasicsScreen.h; path = Classes/SpriteBasicsScreen.h; sourceTree = "<group>"; };
+		FEC3CA7B1283557F00541220 /* TestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestScreen.cpp; path = Classes/TestScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA7C1283557F00541220 /* TestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestScreen.h; path = Classes/TestScreen.h; sourceTree = "<group>"; };
+		FEC3CA7D1283557F00541220 /* TouchEffectsControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TouchEffectsControl.cpp; path = Classes/TouchEffectsControl.cpp; sourceTree = "<group>"; };
+		FEC3CA7E1283557F00541220 /* TouchEffectsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchEffectsControl.h; path = Classes/TouchEffectsControl.h; sourceTree = "<group>"; };
+		FEC3CA911283628600541220 /* ParticleTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticleTestScreen.cpp; path = Classes/ParticleTestScreen.cpp; sourceTree = "<group>"; };
+		FEC3CA921283628600541220 /* ParticleTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticleTestScreen.h; path = Classes/ParticleTestScreen.h; sourceTree = "<group>"; };
+		FED0812712C250FF00A36675 /* FontUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FontUsageScreen.cpp; path = Classes/FontUsageScreen.cpp; sourceTree = "<group>"; };
+		FED0812812C250FF00A36675 /* FontUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FontUsageScreen.h; path = Classes/FontUsageScreen.h; sourceTree = "<group>"; };
+		FEF4E25D12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Box2DGameObjectTestScreen.cpp; path = Classes/Box2DGameObjectTestScreen.cpp; sourceTree = "<group>"; };
+		FEF4E25E12CD3CC0004B850E /* Box2DGameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Box2DGameObjectTestScreen.h; path = Classes/Box2DGameObjectTestScreen.h; sourceTree = "<group>"; };
+		FEFCD2F512A99FB80060A1A1 /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyLineEditControl.cpp; path = Classes/PropertyLineEditControl.cpp; sourceTree = "<group>"; };
+		FEFCD2F612A99FB80060A1A1 /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyLineEditControl.h; path = Classes/PropertyLineEditControl.h; sourceTree = "<group>"; };
+		FEFCD5E712AE50860060A1A1 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEA024E312DCEEC600935314 /* libFramework.a in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */,
+				FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* TemplateProjectMacOS */ = {
+			isa = PBXGroup;
+			children = (
+				FEFCD5E712AE50860060A1A1 /* Data */,
+				FE98930B11638F3C00500198 /* Framework.xcodeproj */,
+				FE445A961153C27800F5EFD6 /* User classes */,
+				FEA30C211231362D00E691CC /* MacOSSpecific */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = TemplateProjectMacOS;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FE98931D11638FBB00500198 /* Info.plist */,
+				FE9892E111638EF700500198 /* InfoPlist.strings */,
+				FE9892E311638EF700500198 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE445A961153C27800F5EFD6 /* User classes */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */,
+				FEC3CA701283557F00541220 /* FrameworkMain.h */,
+				FEC3CA711283557F00541220 /* GameCore.cpp */,
+				FEC3CA721283557F00541220 /* GameCore.h */,
+				FEA02A8712E39D8900935314 /* CollisionTestScreen.cpp */,
+				FEA02A8812E39D8900935314 /* CollisionTestScreen.h */,
+				47A1423812CBD3EC003E267E /* StaticTextScreen.cpp */,
+				47A1423912CBD3EC003E267E /* StaticTextScreen.h */,
+				FEFCD2F512A99FB80060A1A1 /* PropertyLineEditControl.cpp */,
+				FEFCD2F612A99FB80060A1A1 /* PropertyLineEditControl.h */,
+				FEC3CA911283628600541220 /* ParticleTestScreen.cpp */,
+				FEC3CA921283628600541220 /* ParticleTestScreen.h */,
+				FEC3CA6A1283557F00541220 /* AnimationTestScreen.cpp */,
+				FEC3CA6B1283557F00541220 /* AnimationTestScreen.h */,
+				FEC3CA6C1283557F00541220 /* AppScreens.h */,
+				FEC3CA6D1283557F00541220 /* ClipTestScreen.cpp */,
+				FEC3CA6E1283557F00541220 /* ClipTestScreen.h */,
+				FEC3CA751283557F00541220 /* MainMenuScreen.cpp */,
+				FEC3CA761283557F00541220 /* MainMenuScreen.h */,
+				FEC3CA771283557F00541220 /* RenderTargetTestScreen.cpp */,
+				FEC3CA781283557F00541220 /* RenderTargetTestScreen.h */,
+				FEC3CA791283557F00541220 /* SpriteBasicsScreen.cpp */,
+				FEC3CA7A1283557F00541220 /* SpriteBasicsScreen.h */,
+				FEC3CA7B1283557F00541220 /* TestScreen.cpp */,
+				FEC3CA7C1283557F00541220 /* TestScreen.h */,
+				FEC3CA7D1283557F00541220 /* TouchEffectsControl.cpp */,
+				FEC3CA7E1283557F00541220 /* TouchEffectsControl.h */,
+				FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */,
+				FE0D6C51128AE27A00ECAE3B /* GameObjectTestScreen.h */,
+				FE0D6C56128AE36300ECAE3B /* SpritePerfScreen.cpp */,
+				FE0D6C57128AE36300ECAE3B /* SpritePerfScreen.h */,
+				FED0812712C250FF00A36675 /* FontUsageScreen.cpp */,
+				FED0812812C250FF00A36675 /* FontUsageScreen.h */,
+				FEF4E25D12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp */,
+				FEF4E25E12CD3CC0004B850E /* Box2DGameObjectTestScreen.h */,
+			);
+			name = "User classes";
+			sourceTree = "<group>";
+		};
+		FE98930C11638F3C00500198 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE98931811638F3C00500198 /* libFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEA30C211231362D00E691CC /* MacOSSpecific */ = {
+			isa = PBXGroup;
+			children = (
+				FEA30C291231362D00E691CC /* main.mm */,
+				FEA30C2E1231362D00E691CC /* version.plist */,
+			);
+			path = MacOSSpecific;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* TemplateProjectMacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TemplateProjectMacOS" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				FE0D6CE9128AE7DE00ECAE3B /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FE93072B12C28C1100A33E69 /* PBXTargetDependency */,
+			);
+			name = TemplateProjectMacOS;
+			productInstallPath = "$(HOME)/Applications";
+			productName = TemplateProjectMacOS;
+			productReference = 8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TemplateProjectMacOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* TemplateProjectMacOS */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE98930C11638F3C00500198 /* Products */;
+					ProjectRef = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* TemplateProjectMacOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE98931811638F3C00500198 /* libFramework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFramework.a;
+			remoteRef = FE98931711638F3C00500198 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE9892E511638EF700500198 /* InfoPlist.strings in Resources */,
+				FE9892E611638EF700500198 /* MainMenu.xib in Resources */,
+				FEA30C361231362D00E691CC /* version.plist in Resources */,
+				FEFCD5EE12AE50860060A1A1 /* Data in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE0D6CE9128AE7DE00ECAE3B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "touch -cm ${SRCROOT}/Data/\ntouch -cm ${SRCROOT}/Data/XGfx/\ntouch -cm ${SRCROOT}/Data/Configs/\ntouch -cm ${SRCROOT}/Data/Audio/";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEA30C331231362D00E691CC /* main.mm in Sources */,
+				FEC3CA7F1283557F00541220 /* AnimationTestScreen.cpp in Sources */,
+				FEC3CA801283557F00541220 /* ClipTestScreen.cpp in Sources */,
+				FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */,
+				FEC3CA821283557F00541220 /* GameCore.cpp in Sources */,
+				FEC3CA841283557F00541220 /* MainMenuScreen.cpp in Sources */,
+				FEC3CA851283557F00541220 /* RenderTargetTestScreen.cpp in Sources */,
+				FEC3CA861283557F00541220 /* SpriteBasicsScreen.cpp in Sources */,
+				FEC3CA871283557F00541220 /* TestScreen.cpp in Sources */,
+				FEC3CA881283557F00541220 /* TouchEffectsControl.cpp in Sources */,
+				FEC3CA931283628600541220 /* ParticleTestScreen.cpp in Sources */,
+				FE0D6C52128AE27A00ECAE3B /* GameObjectTestScreen.cpp in Sources */,
+				FE0D6C58128AE36300ECAE3B /* SpritePerfScreen.cpp in Sources */,
+				FEFCD2F712A99FB80060A1A1 /* PropertyLineEditControl.cpp in Sources */,
+				FED0812912C250FF00A36675 /* FontUsageScreen.cpp in Sources */,
+				47A1423A12CBD3EC003E267E /* StaticTextScreen.cpp in Sources */,
+				FEF4E25F12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp in Sources */,
+				FEA02A8912E39D8900935314 /* CollisionTestScreen.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE93072B12C28C1100A33E69 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Framework;
+			targetProxy = FE93072A12C28C1100A33E69 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FE9892E111638EF700500198 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE9892E211638EF700500198 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FE9892E311638EF700500198 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE9892E411638EF700500198 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TemplateProjectMacOS_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = TemplateProjectMacOS;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TemplateProjectMacOS_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = TemplateProjectMacOS;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DAVA_DEBUG;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../Sources/Internal,
+					./../../Sources/External,
+					/opt/local/include/,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../Sources/Internal,
+					./../../Sources/External,
+					/opt/local/include/,
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TemplateProjectMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TemplateProjectMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

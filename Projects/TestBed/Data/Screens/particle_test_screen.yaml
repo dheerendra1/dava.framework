@@ -1,0 +1,45 @@
+####
+#### FONTS 
+####
+fontNewland:
+    type: FTFont                
+    name: "~res:/Fonts/MyriadPro-Regular.otf"
+    size: 12.0                   
+    color: FFFFFFFF            
+    shadowColor: DDF0B9FF     
+
+####
+#### CONTROLS 
+####
+#version: 
+#    type: UIStaticText
+#    rect: [0, 0, 480, 20]
+#    align: [right, vcenter]
+#    font: fontNewland
+#    text: VERSION
+
+# firstly we create control background
+controlBg:    
+    # 
+    type: UIControl             # type of item
+    frame: 0                    # this is default value, so we can not use it if it unavailable
+    rect: [0, 0, 300, 25]      # if size is -1 we should get value from sprite width, so here we put size of rect as size of sprite
+    color: 000000FF
+
+    particleCountTextField: 
+        type: UIStaticText
+        rect: [10, 0, 250, 25]
+        align: [LEFT, VCENTER]
+        font: fontNewland
+        text: "Particle Count: %d" 
+               
+    fpsTextField: 
+        type: UIStaticText
+        rect: [10, 25, 250, 25]
+        align: [LEFT, VCENTER]
+        font: fontNewland
+        text: "FPS: %d"
+
+    propertyLineControl:
+        type: PropertyLineEditControl
+        rect: [300, 20, 200, 100]

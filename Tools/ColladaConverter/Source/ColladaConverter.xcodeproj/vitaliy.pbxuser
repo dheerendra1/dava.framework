@@ -1,0 +1,1278 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeArchitecturePreference = x86_64;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = FE44437A114E6CC200F5EFD6 /* ColladaConverter */;
+		activeSDKPreference = macosx10.5;
+		activeTarget = 8DD76F620486A84900D96B5E /* ColladaConverter */;
+		addToTargets = (
+			8DD76F620486A84900D96B5E /* ColladaConverter */,
+		);
+		breakpoints = (
+			FE3CD37111943C0D007D51E2 /* ColladaConverter.cpp:255 */,
+			FE7F26751197DBCF00DD8997 /* ColladaConverter.cpp:252 */,
+			FE42240311998A6500DD055B /* ColladaSceneNode.cpp:198 */,
+			FECA0F5F119D4490004C721B /* SceneFile.cpp:487 */,
+			FECA0F66119D44EF004C721B /* SceneFile.cpp:507 */,
+			FECA0F95119D4805004C721B /* ColladaDocument.cpp:460 */,
+			FE6F795C11AEB0FD00CFB93C /* ColladaConverter.cpp:255 */,
+			FE6F7A0711AEC40300CFB93C /* SceneNodeAnimationList.cpp:185 */,
+			FE5BBEE411B587EC001D6E52 /* SceneFile.cpp:187 */,
+		);
+		codeSenseManager = FE444389114E6CE100F5EFD6 /* Code sense */;
+		executables = (
+			FE44437A114E6CC200F5EFD6 /* ColladaConverter */,
+			FE5BBD3E11B57893001D6E52 /* ColladaConverterStadiums */,
+		);
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					198,
+					20,
+					99,
+					99,
+					29,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					300,
+					631,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXErrorsWarningsDataSource_TypeID,
+					PBXErrorsWarningsDataSource_MessageID,
+					PBXErrorsWarningsDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					628.58349609375,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					742,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					702,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 329327037;
+			PBXWorkspaceStateSaveDate = 329327037;
+		};
+		perUserProjectItems = {
+			FE341D4F1191620400122028 /* PBXTextBookmark */ = FE341D4F1191620400122028 /* PBXTextBookmark */;
+			FE3CD3B411944B28007D51E2 /* PBXTextBookmark */ = FE3CD3B411944B28007D51E2 /* PBXTextBookmark */;
+			FE4443B3114E716F00F5EFD6 /* PBXTextBookmark */ = FE4443B3114E716F00F5EFD6 /* PBXTextBookmark */;
+			FE4443B4114E716F00F5EFD6 /* PBXTextBookmark */ = FE4443B4114E716F00F5EFD6 /* PBXTextBookmark */;
+			FE44FA3611AA7EE6006FE9E4 /* PBXTextBookmark */ = FE44FA3611AA7EE6006FE9E4 /* PBXTextBookmark */;
+			FE54EBEF13A121EA00912810 /* PBXTextBookmark */ = FE54EBEF13A121EA00912810 /* PBXTextBookmark */;
+			FE54EBF013A121EA00912810 /* XCBuildMessageTextBookmark */ = FE54EBF013A121EA00912810 /* XCBuildMessageTextBookmark */;
+			FE54EC1B13A2223F00912810 /* PBXTextBookmark */ = FE54EC1B13A2223F00912810 /* PBXTextBookmark */;
+			FE55EB7D11BA6246004426FF /* PBXTextBookmark */ = FE55EB7D11BA6246004426FF /* PBXTextBookmark */;
+			FE55EBEC11BA74EB004426FF /* PBXTextBookmark */ = FE55EBEC11BA74EB004426FF /* PBXTextBookmark */;
+			FE55EBED11BA74EB004426FF /* PBXTextBookmark */ = FE55EBED11BA74EB004426FF /* PBXTextBookmark */;
+			FE5BBB4E11B43D55001D6E52 /* PBXTextBookmark */ = FE5BBB4E11B43D55001D6E52 /* PBXTextBookmark */;
+			FE5BBB5111B43D55001D6E52 /* PBXTextBookmark */ = FE5BBB5111B43D55001D6E52 /* PBXTextBookmark */;
+			FE5BBCED11B5662F001D6E52 /* PBXTextBookmark */ = FE5BBCED11B5662F001D6E52 /* PBXTextBookmark */;
+			FE5BBCEE11B5662F001D6E52 /* PBXTextBookmark */ = FE5BBCEE11B5662F001D6E52 /* PBXTextBookmark */;
+			FE5BBCEF11B5662F001D6E52 /* PBXTextBookmark */ = FE5BBCEF11B5662F001D6E52 /* PBXTextBookmark */;
+			FE6F785711AC409200CFB93C /* PBXTextBookmark */ = FE6F785711AC409200CFB93C /* PBXTextBookmark */;
+			FE6F7B9411B284CE00CFB93C /* PBXTextBookmark */ = FE6F7B9411B284CE00CFB93C /* PBXTextBookmark */;
+			FE6F7B9611B284CE00CFB93C /* PBXTextBookmark */ = FE6F7B9611B284CE00CFB93C /* PBXTextBookmark */;
+			FE6F7B9811B284CE00CFB93C /* PBXTextBookmark */ = FE6F7B9811B284CE00CFB93C /* PBXTextBookmark */;
+			FE6F7D5611B3A0F400CFB93C /* PBXTextBookmark */ = FE6F7D5611B3A0F400CFB93C /* PBXTextBookmark */;
+			FE6F7D5711B3A0F400CFB93C /* PBXTextBookmark */ = FE6F7D5711B3A0F400CFB93C /* PBXTextBookmark */;
+			FE6F7D5911B3A0F400CFB93C /* PBXTextBookmark */ = FE6F7D5911B3A0F400CFB93C /* PBXTextBookmark */;
+			FE948DEF11B9357200F73DAD /* PBXTextBookmark */ = FE948DEF11B9357200F73DAD /* PBXTextBookmark */;
+			FE9E52BC1199F78E000957B8 /* PBXTextBookmark */ = FE9E52BC1199F78E000957B8 /* PBXTextBookmark */;
+			FE9E5309119AC889000957B8 /* PBXTextBookmark */ = FE9E5309119AC889000957B8 /* PBXTextBookmark */;
+			FEA20A1B138E873100163981 /* PBXTextBookmark */ = FEA20A1B138E873100163981 /* PBXTextBookmark */;
+			FEA20A1C138E873100163981 /* PBXTextBookmark */ = FEA20A1C138E873100163981 /* PBXTextBookmark */;
+			FEA20A1D138E873100163981 /* PBXTextBookmark */ = FEA20A1D138E873100163981 /* PBXTextBookmark */;
+			FEA20A1E138E873100163981 /* PBXTextBookmark */ = FEA20A1E138E873100163981 /* PBXTextBookmark */;
+			FECA0A05119B11A9004C721B /* PBXTextBookmark */ = FECA0A05119B11A9004C721B /* PBXTextBookmark */;
+			FECA11CA119D6FED004C721B /* PBXTextBookmark */ = FECA11CA119D6FED004C721B /* PBXTextBookmark */;
+			FECCC8A1119ACF7C009E0E8D /* PBXTextBookmark */ = FECCC8A1119ACF7C009E0E8D /* PBXTextBookmark */;
+			FECCC8DD119ADE91009E0E8D /* PBXTextBookmark */ = FECCC8DD119ADE91009E0E8D /* PBXTextBookmark */;
+			FEDEF5561373EEA3000B5FDC /* PBXTextBookmark */ = FEDEF5561373EEA3000B5FDC /* PBXTextBookmark */;
+			FEDEF5701374322D000B5FDC /* PBXTextBookmark */ = FEDEF5701374322D000B5FDC /* PBXTextBookmark */;
+			FEDEF5711374322D000B5FDC /* PBXTextBookmark */ = FEDEF5711374322D000B5FDC /* PBXTextBookmark */;
+			FEDEF5AE13794511000B5FDC /* PBXTextBookmark */ = FEDEF5AE13794511000B5FDC /* PBXTextBookmark */;
+			FEF129A6139FD51600BCD73C /* PBXTextBookmark */ = FEF129A6139FD51600BCD73C /* PBXTextBookmark */;
+			FEF129A7139FD51600BCD73C /* PBXTextBookmark */ = FEF129A7139FD51600BCD73C /* PBXTextBookmark */;
+			FEF129A8139FD51600BCD73C /* PBXTextBookmark */ = FEF129A8139FD51600BCD73C /* PBXTextBookmark */;
+		};
+		sourceControlManager = FE444388114E6CE100F5EFD6 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	656113420F6E8B6B007C4A55 /* ColladaAnimatedMesh.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 944}}";
+			sepNavSelRange = "{354, 0}";
+			sepNavVisRange = "{199, 838}";
+		};
+	};
+	656113430F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1405, 3484}}";
+			sepNavSelRange = "{1799, 0}";
+			sepNavVisRange = "{2666, 1735}";
+			sepNavWindowFrame = "{{14, 100}, {1212, 674}}";
+		};
+	};
+	656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1048, 4192}}";
+			sepNavSelRange = "{303, 0}";
+			sepNavVisRange = "{0, 566}";
+			sepNavWindowFrame = "{{38, 78}, {1212, 674}}";
+		};
+	};
+	656113450F6E8B6B007C4A55 /* ColladaCamera.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1068, 432}}";
+			sepNavSelRange = "{142, 0}";
+			sepNavVisRange = "{0, 308}";
+		};
+	};
+	656113460F6E8B6B007C4A55 /* ColladaCamera.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 604}}";
+			sepNavSelRange = "{72, 0}";
+			sepNavVisRange = "{0, 227}";
+			sepNavWindowFrame = "{{15, 99}, {1212, 674}}";
+		};
+	};
+	656113470F6E8B6B007C4A55 /* ColladaAnimation.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 604}}";
+			sepNavSelRange = "{273, 8}";
+			sepNavVisRange = "{0, 412}";
+		};
+	};
+	656113480F6E8B6B007C4A55 /* ColladaAnimation.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 432}}";
+			sepNavSelRange = "{402, 0}";
+			sepNavVisRange = "{0, 409}";
+		};
+	};
+	6561134D0F6E8B7D007C4A55 /* ColladaMesh.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{81, 80}";
+			sepNavVisRange = "{0, 598}";
+		};
+	};
+	6561134E0F6E8B7D007C4A55 /* ColladaMesh.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{325, 0}";
+			sepNavVisRange = "{0, 692}";
+		};
+	};
+	6561134F0F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 9376}}";
+			sepNavSelRange = "{6042, 0}";
+			sepNavVisRange = "{5419, 963}";
+		};
+	};
+	656113500F6E8B7D007C4A55 /* ColladaDocument.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 880}}";
+			sepNavSelRange = "{1119, 11}";
+			sepNavVisRange = "{213, 1332}";
+		};
+	};
+	656113510F6E8B7D007C4A55 /* ColladaScene.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 1248}}";
+			sepNavSelRange = "{1427, 0}";
+			sepNavVisRange = "{686, 1328}";
+		};
+	};
+	656113520F6E8B7D007C4A55 /* ColladaScene.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {971, 7088}}";
+			sepNavSelRange = "{11627, 0}";
+			sepNavVisRange = "{3715, 944}";
+		};
+	};
+	656113540F6E8B7D007C4A55 /* ColladaTexture.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 604}}";
+			sepNavSelRange = "{115, 0}";
+			sepNavVisRange = "{0, 456}";
+		};
+	};
+	656113550F6E8B7D007C4A55 /* ColladaTexture.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 3408}}";
+			sepNavSelRange = "{1349, 5}";
+			sepNavVisRange = "{1317, 498}";
+		};
+	};
+	656113560F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{469, 8}";
+			sepNavVisRange = "{0, 551}";
+		};
+	};
+	656113570F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 602}}";
+			sepNavSelRange = "{260, 0}";
+			sepNavVisRange = "{0, 352}";
+		};
+	};
+	656113580F6E8B7D007C4A55 /* ColladaMeshInstance.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{532, 0}";
+			sepNavVisRange = "{0, 658}";
+		};
+	};
+	656113590F6E8B7D007C4A55 /* ColladaMeshInstance.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{176, 0}";
+			sepNavVisRange = "{0, 460}";
+		};
+	};
+	6561135A0F6E8B7D007C4A55 /* ColladaMaterial.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 992}}";
+			sepNavSelRange = "{798, 18}";
+			sepNavVisRange = "{357, 785}";
+		};
+	};
+	6561135B0F6E8B7D007C4A55 /* ColladaMaterial.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 2960}}";
+			sepNavSelRange = "{2691, 0}";
+			sepNavVisRange = "{2297, 644}";
+			sepNavWindowFrame = "{{15, 99}, {1212, 674}}";
+		};
+	};
+	6561135D0F6E8B7D007C4A55 /* ColladaLight.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 3072}}";
+			sepNavSelRange = "{1252, 0}";
+			sepNavVisRange = "{903, 1250}";
+		};
+	};
+	6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1076, 6704}}";
+			sepNavSelRange = "{10309, 0}";
+			sepNavVisRange = "{9966, 705}";
+		};
+	};
+	6561135F0F6E8B7D007C4A55 /* ColladaIncludes.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 1104}}";
+			sepNavSelRange = "{1450, 0}";
+			sepNavVisRange = "{1039, 562}";
+		};
+	};
+	656113600F6E8B7D007C4A55 /* ColladaSceneNode.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1068, 1056}}";
+			sepNavSelRange = "{224, 0}";
+			sepNavVisRange = "{0, 747}";
+			sepNavWindowFrame = "{{15, 99}, {1212, 674}}";
+		};
+	};
+	656113610F6E8B7D007C4A55 /* ColladaPolygonGroup.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1068, 1472}}";
+			sepNavSelRange = "{1685, 0}";
+			sepNavVisRange = "{1374, 363}";
+			sepNavWindowFrame = "{{38, 78}, {1212, 674}}";
+		};
+	};
+	656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1560, 12816}}";
+			sepNavSelRange = "{23986, 0}";
+			sepNavVisRange = "{23347, 1197}";
+			sepNavWindowFrame = "{{15, 99}, {1212, 674}}";
+		};
+	};
+	6561182B0F73B370007C4A55 /* CommandLineParser.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 640}}";
+			sepNavSelRange = "{233, 56}";
+			sepNavVisRange = "{0, 634}";
+		};
+	};
+	6561182C0F73B370007C4A55 /* CommandLineParser.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 3040}}";
+			sepNavSelRange = "{205, 0}";
+			sepNavVisRange = "{128, 686}";
+		};
+	};
+	65F010E50F76567F00B2A5AA /* BaseTypes.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = BaseTypes.h;
+		path = /Sources/DAVAEngine/Engine/Include/BaseTypes.h;
+		sourceTree = "<absolute>";
+	};
+	65F010E60F76567F00B2A5AA /* DAVAEngine.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = DAVAEngine.h;
+		path = /Sources/DAVAEngine/Engine/Include/DAVAEngine.h;
+		sourceTree = "<absolute>";
+	};
+	8DD76F620486A84900D96B5E /* ColladaConverter */ = {
+		activeExec = 0;
+		executables = (
+			FE44437A114E6CC200F5EFD6 /* ColladaConverter */,
+		);
+	};
+	FE08F5CE1191AFF100E59B9D /* AutoreleasePool.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 413}}";
+			sepNavSelRange = "{50, 0}";
+			sepNavVisRange = "{0, 385}";
+		};
+	};
+	FE08F5CF1191AFF100E59B9D /* AutoreleasePool.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 603}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 222}";
+		};
+	};
+	FE341D4F1191620400122028 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113540F6E8B7D007C4A55 /* ColladaTexture.h */;
+		name = "ColladaTexture.h: 4";
+		rLen = 0;
+		rLoc = 115;
+		rType = 0;
+		vrLen = 456;
+		vrLoc = 0;
+	};
+	FE3CD37111943C0D007D51E2 /* ColladaConverter.cpp:255 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */;
+		functionName = "main(int argc, char * argv[])";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 255;
+		location = ColladaConverter;
+		modificationTime = 329327805.310923;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE3CD3B411944B28007D51E2 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561135A0F6E8B7D007C4A55 /* ColladaMaterial.h */;
+		name = "ColladaMaterial.h: 40";
+		rLen = 18;
+		rLoc = 798;
+		rType = 0;
+		vrLen = 785;
+		vrLoc = 357;
+	};
+	FE42240311998A6500DD055B /* ColladaSceneNode.cpp:198 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */;
+		functionName = "ColladaSceneNode::UpdateTransforms( float time )";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 198;
+		location = ColladaConverter;
+		modificationTime = 329327805.310983;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE44437A114E6CC200F5EFD6 /* ColladaConverter */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			NO,
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			Scenes/ronaldo/ocol.dae,
+			Scenes/geotest/geotest6.dae,
+			Scenes/ronaldo/ronaldo_punched.dae,
+			Scenes/ronaldo/ronaldo_punch.dae,
+			Scenes/ronaldo/ronaldo_slapped.dae,
+			Scenes/ronaldo2/mocap.dae,
+			Scenes/ronaldo3/bindpose.dae,
+			Scenes/ronaldo3/n1.dae,
+			Scenes/ronaldo3/n2.dae,
+			Scenes/ronaldo3/n3.dae,
+			Scenes/ronaldo3/positive_reaction.dae,
+			Scenes/ronaldo3/soccerade_catch.dae,
+			Scenes/ronaldo3/idle2.dae,
+			Scenes/ronaldo3/idle.dae,
+			Scenes/ronaldo3/entrance1.dae,
+			Scenes/ronaldo3/left_leg.dae,
+			Scenes/ronaldo3/right_leg.dae,
+			Scenes/ronaldo3/uptoair.dae,
+			Scenes/ronaldo3/left_knee.dae,
+			Scenes/ronaldo3/right_knee.dae,
+			Scenes/ronaldo3/uptoairknee.dae,
+			Scenes/ronaldo3/menu_anim.dae,
+			Scenes/ronaldo3/stand.dae,
+			Scenes/ronaldo3/ball_drop.dae,
+			Scenes/ronaldo3/a1.dae,
+			Scenes/ronaldo3/a2.dae,
+			Scenes/ronaldo3/a3.dae,
+			Scenes/ronaldo3/a4.dae,
+			Scenes/ronaldo3/a5.dae,
+			Scenes/ronaldo3/a6.dae,
+			Scenes/ronaldo3/a7.dae,
+			Scenes/ronaldo3/b1.dae,
+			Scenes/ronaldo3/b2.dae,
+			Scenes/ronaldo3/b3.dae,
+			Scenes/ronaldo3/b4.dae,
+			Scenes/ronaldo3/s1.dae,
+			Scenes/ronaldo3/s2.dae,
+			M3/M3.dae,
+			"--preview",
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = ColladaConverter;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = /Sources/wg.sniper/Art/Tanks;
+		variableFormatDictionary = {
+		};
+	};
+	FE444388114E6CE100F5EFD6 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	FE444389114E6CE100F5EFD6 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	FE4443B3114E716F00F5EFD6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 65F010E50F76567F00B2A5AA /* BaseTypes.h */;
+		name = "BaseTypes.h: 25";
+		rLen = 0;
+		rLoc = 508;
+		rType = 0;
+		vrLen = 201;
+		vrLoc = 1695;
+	};
+	FE4443B4114E716F00F5EFD6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 65F010E60F76567F00B2A5AA /* DAVAEngine.h */;
+		name = "DAVAEngine.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 523;
+		vrLoc = 382;
+	};
+	FE44FA3611AA7EE6006FE9E4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113420F6E8B6B007C4A55 /* ColladaAnimatedMesh.h */;
+		name = "ColladaAnimatedMesh.h: 18";
+		rLen = 0;
+		rLoc = 354;
+		rType = 0;
+		vrLen = 838;
+		vrLoc = 199;
+	};
+	FE54EBEF13A121EA00912810 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */;
+		name = "ColladaDocument.cpp: 748";
+		rLen = 0;
+		rLoc = 23986;
+		rType = 0;
+		vrLen = 1197;
+		vrLoc = 23347;
+	};
+	FE54EBF013A121EA00912810 /* XCBuildMessageTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Unused variable 'cp'";
+		fRef = FEDEF5961379445B000B5FDC /* b2ContactSolver.cpp */;
+		fallbackIsa = XCBuildMessageTextBookmark;
+		rLen = 1;
+		rLoc = 129;
+		rType = 1;
+	};
+	FE54EC1B13A2223F00912810 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE54EC1C13A2223F00912810 /* b2ContactSolver.cpp */;
+		name = "b2ContactSolver.cpp: 149";
+		rLen = 0;
+		rLoc = 4806;
+		rType = 0;
+		vrLen = 1230;
+		vrLoc = 3594;
+	};
+	FE54EC1C13A2223F00912810 /* b2ContactSolver.cpp */ = {
+		isa = PBXFileReference;
+		name = b2ContactSolver.cpp;
+		path = /Sources/dava.framework/Libs/Box2D/Projects/Box2D_MacOS/../../../../SDK/External/Box2D/Dynamics/Contacts/b2ContactSolver.cpp;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 11792}}";
+			sepNavSelRange = "{4806, 0}";
+			sepNavVisRange = "{3594, 1166}";
+		};
+	};
+	FE55EB7D11BA6246004426FF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE08F5CF1191AFF100E59B9D /* AutoreleasePool.h */;
+		name = "AutoreleasePool.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 222;
+		vrLoc = 0;
+	};
+	FE55EBEC11BA74EB004426FF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE08F5CE1191AFF100E59B9D /* AutoreleasePool.mm */;
+		name = "AutoreleasePool.mm: 4";
+		rLen = 0;
+		rLoc = 50;
+		rType = 0;
+		vrLen = 385;
+		vrLoc = 0;
+	};
+	FE55EBED11BA74EB004426FF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113480F6E8B6B007C4A55 /* ColladaAnimation.cpp */;
+		name = "ColladaAnimation.cpp: 23";
+		rLen = 0;
+		rLoc = 402;
+		rType = 0;
+		vrLen = 409;
+		vrLoc = 0;
+	};
+	FE5BBB4E11B43D55001D6E52 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561134D0F6E8B7D007C4A55 /* ColladaMesh.h */;
+		name = "ColladaMesh.h: 4";
+		rLen = 80;
+		rLoc = 81;
+		rType = 0;
+		vrLen = 598;
+		vrLoc = 0;
+	};
+	FE5BBB5111B43D55001D6E52 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113590F6E8B7D007C4A55 /* ColladaMeshInstance.cpp */;
+		name = "ColladaMeshInstance.cpp: 10";
+		rLen = 0;
+		rLoc = 176;
+		rType = 0;
+		vrLen = 460;
+		vrLoc = 0;
+	};
+	FE5BBCED11B5662F001D6E52 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113580F6E8B7D007C4A55 /* ColladaMeshInstance.h */;
+		name = "ColladaMeshInstance.h: 22";
+		rLen = 0;
+		rLoc = 532;
+		rType = 0;
+		vrLen = 658;
+		vrLoc = 0;
+	};
+	FE5BBCEE11B5662F001D6E52 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561134E0F6E8B7D007C4A55 /* ColladaMesh.cpp */;
+		name = "ColladaMesh.cpp: 14";
+		rLen = 0;
+		rLoc = 325;
+		rType = 0;
+		vrLen = 692;
+		vrLoc = 0;
+	};
+	FE5BBCEF11B5662F001D6E52 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113610F6E8B7D007C4A55 /* ColladaPolygonGroup.h */;
+		name = "ColladaPolygonGroup.h: 29";
+		rLen = 9;
+		rLoc = 447;
+		rType = 0;
+		vrLen = 914;
+		vrLoc = 777;
+	};
+	FE5BBD3E11B57893001D6E52 /* ColladaConverterStadiums */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			Scenes/stadiums/santiago.DAE,
+			"--preview",
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		launchableReference = FE5BBD3F11B57893001D6E52 /* ColladaConverter */;
+		libgmallocEnabled = 0;
+		name = ColladaConverterStadiums;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = /Sources/x11apps.ronaldo/trunk/game/Data;
+		variableFormatDictionary = {
+		};
+	};
+	FE5BBD3F11B57893001D6E52 /* ColladaConverter */ = {
+		isa = PBXFileReference;
+		explicitFileType = "compiled.mach-o.executable";
+		includeInIndex = 0;
+		path = ColladaConverter;
+		sourceTree = BUILT_PRODUCTS_DIR;
+	};
+	FE5BBEE211B587EC001D6E52 /* SceneFile.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = SceneFile.cpp;
+		path = /Sources/dava.framework/Engine/Source/SceneFile.cpp;
+		sourceTree = "<group>";
+	};
+	FE5BBEE411B587EC001D6E52 /* SceneFile.cpp:187 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FE5BBEE211B587EC001D6E52 /* SceneFile.cpp */;
+		functionName = "SceneFile::ReadTexture()";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 187;
+		location = TemplateProjectiPhone;
+		modificationTime = 329327805.311086;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE6F785711AC409200CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561135D0F6E8B7D007C4A55 /* ColladaLight.cpp */;
+		name = "ColladaLight.cpp: 51";
+		rLen = 0;
+		rLoc = 1252;
+		rType = 0;
+		vrLen = 1250;
+		vrLoc = 903;
+	};
+	FE6F795C11AEB0FD00CFB93C /* ColladaConverter.cpp:255 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */;
+		functionName = "main(int argc, char * argv[])";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 255;
+		location = ColladaConverter;
+		modificationTime = 329327805.311053;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE6F7A0511AEC40300CFB93C /* SceneNodeAnimationList.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = SceneNodeAnimationList.cpp;
+		path = /Sources/dava.framework/Engine/Source/SceneNodeAnimationList.cpp;
+		sourceTree = "<group>";
+	};
+	FE6F7A0711AEC40300CFB93C /* SceneNodeAnimationList.cpp:185 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FE6F7A0511AEC40300CFB93C /* SceneNodeAnimationList.cpp */;
+		functionName = "SceneNodeAnimationList::GetNode(const String & name)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 185;
+		location = TemplateProjectiPhone;
+		modificationTime = 329327805.311066;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE6F7B9411B284CE00CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE8D86F411984DD1008F8551 /* ColladaSceneNodeAnimation.h */;
+		name = "ColladaSceneNodeAnimation.h: 18";
+		rLen = 0;
+		rLoc = 393;
+		rType = 0;
+		vrLen = 591;
+		vrLoc = 0;
+	};
+	FE6F7B9611B284CE00CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561134F0F6E8B7D007C4A55 /* ColladaPolygonGroup.cpp */;
+		name = "ColladaPolygonGroup.cpp: 218";
+		rLen = 0;
+		rLoc = 6042;
+		rType = 0;
+		vrLen = 963;
+		vrLoc = 5419;
+	};
+	FE6F7B9811B284CE00CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113600F6E8B7D007C4A55 /* ColladaSceneNode.h */;
+		name = "ColladaSceneNode.h: 35";
+		rLen = 52;
+		rLoc = 1103;
+		rType = 0;
+		vrLen = 1258;
+		vrLoc = 281;
+	};
+	FE6F7D5611B3A0F400CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113460F6E8B6B007C4A55 /* ColladaCamera.cpp */;
+		name = "ColladaCamera.cpp: 7";
+		rLen = 0;
+		rLoc = 72;
+		rType = 0;
+		vrLen = 227;
+		vrLoc = 0;
+	};
+	FE6F7D5711B3A0F400CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113450F6E8B6B007C4A55 /* ColladaCamera.h */;
+		name = "ColladaCamera.h: 11";
+		rLen = 0;
+		rLoc = 163;
+		rType = 0;
+		vrLen = 351;
+		vrLoc = 0;
+	};
+	FE6F7D5911B3A0F400CFB93C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113470F6E8B6B007C4A55 /* ColladaAnimation.h */;
+		name = "ColladaAnimation.h: 17";
+		rLen = 8;
+		rLoc = 273;
+		rType = 0;
+		vrLen = 412;
+		vrLoc = 0;
+	};
+	FE7F26751197DBCF00DD8997 /* ColladaConverter.cpp:252 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */;
+		functionName = "main(int argc, char * argv[])";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 252;
+		location = ColladaConverter;
+		modificationTime = 329327805.310959;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FE8D86F411984DD1008F8551 /* ColladaSceneNodeAnimation.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 604}}";
+			sepNavSelRange = "{393, 0}";
+			sepNavVisRange = "{0, 591}";
+		};
+	};
+	FE8D86F511984DD1008F8551 /* ColladaSceneNodeAnimation.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {919, 413}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 215}";
+		};
+	};
+	FE948DEF11B9357200F73DAD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113430F6E8B6B007C4A55 /* ColladaAnimatedMesh.cpp */;
+		name = "ColladaAnimatedMesh.cpp: 52";
+		rLen = 0;
+		rLoc = 1799;
+		rType = 0;
+		vrLen = 1663;
+		vrLoc = 2666;
+	};
+	FE9E52BC1199F78E000957B8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE9E52BD1199F78E000957B8 /* FCDAnimated.h */;
+		name = "FCDAnimated.h: 253";
+		rLen = 29;
+		rLoc = 12980;
+		rType = 0;
+		vrLen = 1637;
+		vrLoc = 12278;
+	};
+	FE9E52BD1199F78E000957B8 /* FCDAnimated.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FCDAnimated.h;
+		path = /Sources/dava.framework/Tools/ColladaConverter/Collada15/FCollada/FCDocument/FCDAnimated.h;
+		sourceTree = "<absolute>";
+	};
+	FE9E5309119AC889000957B8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113570F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.cpp */;
+		name = "ColladaPolygonGroupInstance.cpp: 10";
+		rLen = 0;
+		rLoc = 260;
+		rType = 0;
+		vrLen = 352;
+		vrLoc = 0;
+	};
+	FEA20A1B138E873100163981 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561135B0F6E8B7D007C4A55 /* ColladaMaterial.cpp */;
+		name = "ColladaMaterial.cpp: 96";
+		rLen = 0;
+		rLoc = 2691;
+		rType = 0;
+		vrLen = 644;
+		vrLoc = 2297;
+	};
+	FEA20A1C138E873100163981 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561182B0F73B370007C4A55 /* CommandLineParser.h */;
+		name = "CommandLineParser.h: 14";
+		rLen = 56;
+		rLoc = 233;
+		rType = 0;
+		vrLen = 634;
+		vrLoc = 0;
+	};
+	FEA20A1D138E873100163981 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561182C0F73B370007C4A55 /* CommandLineParser.cpp */;
+		name = "CommandLineParser.cpp: 13";
+		rLen = 0;
+		rLoc = 205;
+		rType = 0;
+		vrLen = 686;
+		vrLoc = 128;
+	};
+	FEA20A1E138E873100163981 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113440F6E8B6B007C4A55 /* ColladaConverter.cpp */;
+		name = "ColladaConverter.cpp: 19";
+		rLen = 0;
+		rLoc = 303;
+		rType = 0;
+		vrLen = 566;
+		vrLoc = 0;
+	};
+	FECA0A05119B11A9004C721B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FECA0A06119B11A9004C721B /* FCDocument.h */;
+		name = "FCDocument.h: 235";
+		rLen = 10;
+		rLoc = 12247;
+		rType = 0;
+		vrLen = 2336;
+		vrLoc = 10847;
+	};
+	FECA0A06119B11A9004C721B /* FCDocument.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FCDocument.h;
+		path = /Sources/dava.framework/Tools/ColladaConverter/Collada15/FCollada/FCDocument/FCDocument.h;
+		sourceTree = "<absolute>";
+	};
+	FECA0B5F119BFBE4004C721B /* SceneFile.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = SceneFile.cpp;
+		path = /Sources/dava.framework/Engine/Source/SceneFile.cpp;
+		sourceTree = "<group>";
+	};
+	FECA0F5F119D4490004C721B /* SceneFile.cpp:487 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FECA0B5F119BFBE4004C721B /* SceneFile.cpp */;
+		functionName = "SceneFile::ReadAnimation()";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 487;
+		location = TemplateProjectiPhone;
+		modificationTime = 329327805.311006;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FECA0F66119D44EF004C721B /* SceneFile.cpp:507 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = FECA0B5F119BFBE4004C721B /* SceneFile.cpp */;
+		functionName = "SceneFile::ReadAnimation()";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 507;
+		location = TemplateProjectiPhone;
+		modificationTime = 329327805.311028;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FECA0F95119D4805004C721B /* ColladaDocument.cpp:460 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 656114CD0F729EE6007C4A55 /* ColladaDocument.cpp */;
+		functionName = "ColladaDocument::WriteAnimatedMesh(ColladaAnimatedMesh * animMesh, int meshIndex)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 460;
+		location = ColladaConverter;
+		modificationTime = 329327805.311043;
+		originalNumberOfMultipleMatches = 0;
+		state = 2;
+	};
+	FECA11CA119D6FED004C721B /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FE8D86F511984DD1008F8551 /* ColladaSceneNodeAnimation.cpp */;
+		name = "ColladaSceneNodeAnimation.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 215;
+		vrLoc = 0;
+	};
+	FECCC8A1119ACF7C009E0E8D /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FECCC8A2119ACF7C009E0E8D /* FCDSceneNode.h */;
+		name = "FCDSceneNode.h: 216";
+		rLen = 9;
+		rLoc = 10121;
+		rType = 0;
+		vrLen = 2231;
+		vrLoc = 9172;
+	};
+	FECCC8A2119ACF7C009E0E8D /* FCDSceneNode.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FCDSceneNode.h;
+		path = /Sources/dava.framework/Tools/ColladaConverter/Collada15/FCollada/FCDocument/FCDSceneNode.h;
+		sourceTree = "<absolute>";
+	};
+	FECCC8DD119ADE91009E0E8D /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FECCC8DE119ADE91009E0E8D /* FCollada.h */;
+		name = "FCollada.h: 114";
+		rLen = 48;
+		rLoc = 4098;
+		rType = 0;
+		vrLen = 1701;
+		vrLoc = 2028;
+	};
+	FECCC8DE119ADE91009E0E8D /* FCollada.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = FCollada.h;
+		path = /Sources/dava.framework/Tools/ColladaConverter/Collada15/FCollada/FCollada.h;
+		sourceTree = "<absolute>";
+	};
+	FEDEF5561373EEA3000B5FDC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561135E0F6E8B7D007C4A55 /* ColladaSceneNode.cpp */;
+		name = "ColladaSceneNode.cpp: 398";
+		rLen = 0;
+		rLoc = 10309;
+		rType = 0;
+		vrLen = 705;
+		vrLoc = 9966;
+	};
+	FEDEF5701374322D000B5FDC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6561135F0F6E8B7D007C4A55 /* ColladaIncludes.h */;
+		name = "ColladaIncludes.h: 60";
+		rLen = 0;
+		rLoc = 1450;
+		rType = 0;
+		vrLen = 562;
+		vrLoc = 1039;
+	};
+	FEDEF5711374322D000B5FDC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113560F6E8B7D007C4A55 /* ColladaPolygonGroupInstance.h */;
+		name = "ColladaPolygonGroupInstance.h: 20";
+		rLen = 8;
+		rLoc = 469;
+		rType = 0;
+		vrLen = 551;
+		vrLoc = 0;
+	};
+	FEDEF5961379445B000B5FDC /* b2ContactSolver.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = b2ContactSolver.cpp;
+		path = /Sources/dava.framework/Libs/Box2D/Projects/Box2D_MacOS/../../../../SDK/External/Box2D/Dynamics/Contacts/b2ContactSolver.cpp;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 11792}}";
+			sepNavSelRange = "{4806, 0}";
+			sepNavVisRange = "{3594, 1230}";
+		};
+	};
+	FEDEF5AE13794511000B5FDC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113550F6E8B7D007C4A55 /* ColladaTexture.cpp */;
+		name = "ColladaTexture.cpp: 192";
+		rLen = 0;
+		rLoc = 4430;
+		rType = 0;
+		vrLen = 477;
+		vrLoc = 4216;
+	};
+	FEF129A6139FD51600BCD73C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113520F6E8B7D007C4A55 /* ColladaScene.cpp */;
+		name = "ColladaScene.cpp: 438";
+		rLen = 0;
+		rLoc = 11627;
+		rType = 0;
+		vrLen = 944;
+		vrLoc = 3715;
+	};
+	FEF129A7139FD51600BCD73C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113510F6E8B7D007C4A55 /* ColladaScene.h */;
+		name = "ColladaScene.h: 48";
+		rLen = 0;
+		rLoc = 1427;
+		rType = 0;
+		vrLen = 1328;
+		vrLoc = 686;
+	};
+	FEF129A8139FD51600BCD73C /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 656113500F6E8B7D007C4A55 /* ColladaDocument.h */;
+		name = "ColladaDocument.h: 38";
+		rLen = 11;
+		rLoc = 1119;
+		rType = 0;
+		vrLen = 1332;
+		vrLoc = 213;
+	};
+}

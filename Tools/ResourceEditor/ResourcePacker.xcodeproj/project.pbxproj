@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DD76F6A0486A84900D96B5E /* ResourceEditorConsole.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* ResourceEditorConsole.1 */; };
+		FEC3E2C2133A946000442ADD /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2A7133A946000442ADD /* FrameworkMain.cpp */; };
+		FEC3E2C3133A946000442ADD /* GameCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2A9133A946000442ADD /* GameCore.cpp */; };
+		FEC3E2C4133A946000442ADD /* iPhoneProjectDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2AC133A946000442ADD /* iPhoneProjectDelegate.mm */; };
+		FEC3E2C5133A946000442ADD /* ResourcePackerScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2AD133A946000442ADD /* ResourcePackerScreen.cpp */; };
+		FEC3E2C6133A946000442ADD /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2B0133A946000442ADD /* CommandLineParser.cpp */; };
+		FEC3E2C7133A946000442ADD /* DefinitionFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2B2133A946000442ADD /* DefinitionFile.cpp */; };
+		FEC3E2C8133A946000442ADD /* ImagePacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2B4133A946000442ADD /* ImagePacker.cpp */; };
+		FEC3E2C9133A946000442ADD /* PngImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2B6133A946000442ADD /* PngImage.cpp */; };
+		FEC3E2CA133A946000442ADD /* TexturePacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2B8133A946000442ADD /* TexturePacker.cpp */; };
+		FEC3E2CB133A946000442ADD /* UIFileTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2BA133A946000442ADD /* UIFileTree.cpp */; };
+		FEC3E2CC133A946000442ADD /* UIFileTreeCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2BC133A946000442ADD /* UIFileTreeCell.cpp */; };
+		FEC3E2CD133A946000442ADD /* UIScrollView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2BE133A946000442ADD /* UIScrollView.cpp */; };
+		FEC3E2CE133A946000442ADD /* UISpriteEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E2C0133A946000442ADD /* UISpriteEditor.cpp */; };
+		FEC3E2F2133A9A7200442ADD /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E2EF133A9A5A00442ADD /* libFramework.a */; };
+		FEC3E467133A9AA500442ADD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E461133A9AA500442ADD /* Cocoa.framework */; };
+		FEC3E468133A9AA500442ADD /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E462133A9AA500442ADD /* OpenGL.framework */; };
+		FEC3E469133A9AA500442ADD /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E463133A9AA500442ADD /* AppKit.framework */; };
+		FEC3E46A133A9AA500442ADD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E464133A9AA500442ADD /* CoreData.framework */; };
+		FEC3E46B133A9AA500442ADD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E465133A9AA500442ADD /* Foundation.framework */; };
+		FEC3E46C133A9AA500442ADD /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3E466133A9AA500442ADD /* OpenAL.framework */; };
+		FEC3E4EB133CBC1100442ADD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3E4EA133CBC1100442ADD /* main.cpp */; };
+		FEC3E54A133CD83C00442ADD /* ResourcePacker in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD76F6C0486A84900D96B5E /* ResourcePacker */; };
+		FEC3EC7113432F4400442ADD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC7013432F4400442ADD /* libz.dylib */; };
+		FEC3EC7313432F5500442ADD /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC7213432F5500442ADD /* libbz2.dylib */; };
+		FEC3EC8D1343346D00442ADD /* libpng-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC8C1343346D00442ADD /* libpng-static.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FEC3E2EE133A9A5A00442ADD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEC3E2EA133A9A5A00442ADD /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Framework;
+		};
+		FEC3E7221341171D00442ADD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEC3E2EA133A9A5A00442ADD /* Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* ResourceEditorConsole.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		FEC3E54B133CD84500442ADD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Sources/dava.framework/Tools/Bin/;
+			dstSubfolderSpec = 0;
+			files = (
+				FEC3E54A133CD83C00442ADD /* ResourcePacker in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8DD76F6C0486A84900D96B5E /* ResourcePacker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ResourcePacker; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6859E8B029090EE04C91782 /* ResourceEditorConsole.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ResourceEditorConsole.1; sourceTree = "<group>"; };
+		FEC3E2A6133A946000442ADD /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppScreens.h; path = Classes/AppScreens.h; sourceTree = "<group>"; };
+		FEC3E2A7133A946000442ADD /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FrameworkMain.cpp; path = Classes/FrameworkMain.cpp; sourceTree = "<group>"; };
+		FEC3E2A8133A946000442ADD /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FrameworkMain.h; path = Classes/FrameworkMain.h; sourceTree = "<group>"; };
+		FEC3E2A9133A946000442ADD /* GameCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameCore.cpp; path = Classes/GameCore.cpp; sourceTree = "<group>"; };
+		FEC3E2AA133A946000442ADD /* GameCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCore.h; path = Classes/GameCore.h; sourceTree = "<group>"; };
+		FEC3E2AB133A946000442ADD /* iPhoneProjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iPhoneProjectDelegate.h; path = Classes/iPhoneProjectDelegate.h; sourceTree = "<group>"; };
+		FEC3E2AC133A946000442ADD /* iPhoneProjectDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = iPhoneProjectDelegate.mm; path = Classes/iPhoneProjectDelegate.mm; sourceTree = "<group>"; };
+		FEC3E2AD133A946000442ADD /* ResourcePackerScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResourcePackerScreen.cpp; path = Classes/ResourcePackerScreen.cpp; sourceTree = "<group>"; };
+		FEC3E2AE133A946000442ADD /* ResourcePackerScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourcePackerScreen.h; path = Classes/ResourcePackerScreen.h; sourceTree = "<group>"; };
+		FEC3E2B0133A946000442ADD /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
+		FEC3E2B1133A946000442ADD /* CommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineParser.h; sourceTree = "<group>"; };
+		FEC3E2B2133A946000442ADD /* DefinitionFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefinitionFile.cpp; sourceTree = "<group>"; };
+		FEC3E2B3133A946000442ADD /* DefinitionFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefinitionFile.h; sourceTree = "<group>"; };
+		FEC3E2B4133A946000442ADD /* ImagePacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagePacker.cpp; sourceTree = "<group>"; };
+		FEC3E2B5133A946000442ADD /* ImagePacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePacker.h; sourceTree = "<group>"; };
+		FEC3E2B6133A946000442ADD /* PngImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PngImage.cpp; sourceTree = "<group>"; };
+		FEC3E2B7133A946000442ADD /* PngImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PngImage.h; sourceTree = "<group>"; };
+		FEC3E2B8133A946000442ADD /* TexturePacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TexturePacker.cpp; sourceTree = "<group>"; };
+		FEC3E2B9133A946000442ADD /* TexturePacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexturePacker.h; sourceTree = "<group>"; };
+		FEC3E2BA133A946000442ADD /* UIFileTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIFileTree.cpp; path = Classes/UIFileTree.cpp; sourceTree = "<group>"; };
+		FEC3E2BB133A946000442ADD /* UIFileTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIFileTree.h; path = Classes/UIFileTree.h; sourceTree = "<group>"; };
+		FEC3E2BC133A946000442ADD /* UIFileTreeCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIFileTreeCell.cpp; path = Classes/UIFileTreeCell.cpp; sourceTree = "<group>"; };
+		FEC3E2BD133A946000442ADD /* UIFileTreeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIFileTreeCell.h; path = Classes/UIFileTreeCell.h; sourceTree = "<group>"; };
+		FEC3E2BE133A946000442ADD /* UIScrollView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIScrollView.cpp; path = Classes/UIScrollView.cpp; sourceTree = "<group>"; };
+		FEC3E2BF133A946000442ADD /* UIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIScrollView.h; path = Classes/UIScrollView.h; sourceTree = "<group>"; };
+		FEC3E2C0133A946000442ADD /* UISpriteEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UISpriteEditor.cpp; path = Classes/UISpriteEditor.cpp; sourceTree = "<group>"; };
+		FEC3E2C1133A946000442ADD /* UISpriteEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UISpriteEditor.h; path = Classes/UISpriteEditor.h; sourceTree = "<group>"; };
+		FEC3E2EA133A9A5A00442ADD /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../Projects/MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FEC3E461133A9AA500442ADD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		FEC3E462133A9AA500442ADD /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		FEC3E463133A9AA500442ADD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		FEC3E464133A9AA500442ADD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		FEC3E465133A9AA500442ADD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		FEC3E466133A9AA500442ADD /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		FEC3E4EA133CBC1100442ADD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = MacOSSpecific/main.cpp; sourceTree = "<group>"; };
+		FEC3EC7013432F4400442ADD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		FEC3EC7213432F5500442ADD /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
+		FEC3EC8C1343346D00442ADD /* libpng-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-static.a"; path = "../../Libs/ImageMagick-6.6.9-0/delegates/lib/libpng-static.a"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC3E2F2133A9A7200442ADD /* libFramework.a in Frameworks */,
+				FEC3E467133A9AA500442ADD /* Cocoa.framework in Frameworks */,
+				FEC3E468133A9AA500442ADD /* OpenGL.framework in Frameworks */,
+				FEC3E469133A9AA500442ADD /* AppKit.framework in Frameworks */,
+				FEC3E46A133A9AA500442ADD /* CoreData.framework in Frameworks */,
+				FEC3E46B133A9AA500442ADD /* Foundation.framework in Frameworks */,
+				FEC3E46C133A9AA500442ADD /* OpenAL.framework in Frameworks */,
+				FEC3EC7113432F4400442ADD /* libz.dylib in Frameworks */,
+				FEC3EC7313432F5500442ADD /* libbz2.dylib in Frameworks */,
+				FEC3EC8D1343346D00442ADD /* libpng-static.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* ResourceEditorConsole */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3EC8C1343346D00442ADD /* libpng-static.a */,
+				FEC3E2EA133A9A5A00442ADD /* Framework.xcodeproj */,
+				FEC3E46E133A9AAB00442ADD /* Frameworks */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = ResourceEditorConsole;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3E2A6133A946000442ADD /* AppScreens.h */,
+				FEC3E2A7133A946000442ADD /* FrameworkMain.cpp */,
+				FEC3E2A8133A946000442ADD /* FrameworkMain.h */,
+				FEC3E2A9133A946000442ADD /* GameCore.cpp */,
+				FEC3E2AA133A946000442ADD /* GameCore.h */,
+				FEC3E2AB133A946000442ADD /* iPhoneProjectDelegate.h */,
+				FEC3E2AC133A946000442ADD /* iPhoneProjectDelegate.mm */,
+				FEC3E2AD133A946000442ADD /* ResourcePackerScreen.cpp */,
+				FEC3E2AE133A946000442ADD /* ResourcePackerScreen.h */,
+				FEC3E2AF133A946000442ADD /* TexturePacker */,
+				FEC3E2BA133A946000442ADD /* UIFileTree.cpp */,
+				FEC3E2BB133A946000442ADD /* UIFileTree.h */,
+				FEC3E2BC133A946000442ADD /* UIFileTreeCell.cpp */,
+				FEC3E2BD133A946000442ADD /* UIFileTreeCell.h */,
+				FEC3E2BE133A946000442ADD /* UIScrollView.cpp */,
+				FEC3E2BF133A946000442ADD /* UIScrollView.h */,
+				FEC3E2C0133A946000442ADD /* UISpriteEditor.cpp */,
+				FEC3E2C1133A946000442ADD /* UISpriteEditor.h */,
+				FEC3E4EA133CBC1100442ADD /* main.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* ResourcePacker */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* ResourceEditorConsole.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		FEC3E2AF133A946000442ADD /* TexturePacker */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3E2B0133A946000442ADD /* CommandLineParser.cpp */,
+				FEC3E2B1133A946000442ADD /* CommandLineParser.h */,
+				FEC3E2B2133A946000442ADD /* DefinitionFile.cpp */,
+				FEC3E2B3133A946000442ADD /* DefinitionFile.h */,
+				FEC3E2B4133A946000442ADD /* ImagePacker.cpp */,
+				FEC3E2B5133A946000442ADD /* ImagePacker.h */,
+				FEC3E2B6133A946000442ADD /* PngImage.cpp */,
+				FEC3E2B7133A946000442ADD /* PngImage.h */,
+				FEC3E2B8133A946000442ADD /* TexturePacker.cpp */,
+				FEC3E2B9133A946000442ADD /* TexturePacker.h */,
+			);
+			name = TexturePacker;
+			path = Classes/TexturePacker;
+			sourceTree = "<group>";
+		};
+		FEC3E2EB133A9A5A00442ADD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3E2EF133A9A5A00442ADD /* libFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEC3E46E133A9AAB00442ADD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FEC3EC7013432F4400442ADD /* libz.dylib */,
+				FEC3EC7213432F5500442ADD /* libbz2.dylib */,
+				FEC3E461133A9AA500442ADD /* Cocoa.framework */,
+				FEC3E462133A9AA500442ADD /* OpenGL.framework */,
+				FEC3E463133A9AA500442ADD /* AppKit.framework */,
+				FEC3E464133A9AA500442ADD /* CoreData.framework */,
+				FEC3E465133A9AA500442ADD /* Foundation.framework */,
+				FEC3E466133A9AA500442ADD /* OpenAL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* ResourcePacker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "ResourcePacker" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+				FEC3E54B133CD84500442ADD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FEC3E7231341171D00442ADD /* PBXTargetDependency */,
+			);
+			name = ResourcePacker;
+			productInstallPath = "$(HOME)/bin";
+			productName = ResourceEditorConsole;
+			productReference = 8DD76F6C0486A84900D96B5E /* ResourcePacker */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "ResourcePacker" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* ResourceEditorConsole */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FEC3E2EB133A9A5A00442ADD /* Products */;
+					ProjectRef = FEC3E2EA133A9A5A00442ADD /* Framework.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* ResourcePacker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FEC3E2EF133A9A5A00442ADD /* libFramework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFramework.a;
+			remoteRef = FEC3E2EE133A9A5A00442ADD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC3E2C2133A946000442ADD /* FrameworkMain.cpp in Sources */,
+				FEC3E2C3133A946000442ADD /* GameCore.cpp in Sources */,
+				FEC3E2C4133A946000442ADD /* iPhoneProjectDelegate.mm in Sources */,
+				FEC3E2C5133A946000442ADD /* ResourcePackerScreen.cpp in Sources */,
+				FEC3E2C6133A946000442ADD /* CommandLineParser.cpp in Sources */,
+				FEC3E2C7133A946000442ADD /* DefinitionFile.cpp in Sources */,
+				FEC3E2C8133A946000442ADD /* ImagePacker.cpp in Sources */,
+				FEC3E2C9133A946000442ADD /* PngImage.cpp in Sources */,
+				FEC3E2CA133A946000442ADD /* TexturePacker.cpp in Sources */,
+				FEC3E2CB133A946000442ADD /* UIFileTree.cpp in Sources */,
+				FEC3E2CC133A946000442ADD /* UIFileTreeCell.cpp in Sources */,
+				FEC3E2CD133A946000442ADD /* UIScrollView.cpp in Sources */,
+				FEC3E2CE133A946000442ADD /* UISpriteEditor.cpp in Sources */,
+				FEC3E4EB133CBC1100442ADD /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FEC3E7231341171D00442ADD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Framework;
+			targetProxy = FEC3E7221341171D00442ADD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/StaticMagick/lib\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/magick/.libs\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/Magick++/lib/.libs\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/wand/.libs\"",
+					"\"$(SRCROOT)/../../Libs/ImageMagick-6.6.9-0/delegates/lib\"",
+				);
+				PRODUCT_NAME = ResourcePacker;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/StaticMagick/lib\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/magick/.libs\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/Magick++/lib/.libs\"",
+					"\"/Users/vadim/Public/ImageMagick-6.6.8-9/wand/.libs\"",
+					"\"$(SRCROOT)/../../Libs/ImageMagick-6.6.9-0/delegates/lib\"",
+				);
+				PRODUCT_NAME = ResourcePacker;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DDARWIN_NO_CARBON,
+					FT2_BUILD_LIBRARY,
+					DAVA_DEBUG,
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../SDK/Sources,
+					./../../SDK/External,
+					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./../../Libs/ImageMagick-6.6.9/lib/",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/lib",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lMagickCore",
+					"-lMagick++",
+					"-lMagickWand",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DDARWIN_NO_CARBON,
+					FT2_BUILD_LIBRARY,
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../SDK/Sources,
+					./../../SDK/External,
+					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./../../Libs/ImageMagick-6.6.9/lib/",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/lib",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lMagickCore",
+					"-lMagick++",
+					"-lMagickWand",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "ResourcePacker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "ResourcePacker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

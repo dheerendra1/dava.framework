@@ -1,0 +1,10 @@
+prefix=/Sources/dava.framework/Libs/ImageMagick-6.6.9
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/ImageMagick
+
+Name: ImageMagick
+Description: ImageMagick - Convert, Edit, and Compose Images
+Version: 6.6.9
+Libs: -L${libdir} -lMagickCore
+Cflags: -I${includedir} 

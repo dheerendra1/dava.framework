@@ -1,0 +1,539 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */; };
+		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
+		FE54EBBB13A1190000912810 /* libpng-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE54EBBA13A1190000912810 /* libpng-static.a */; };
+		FE54EBC013A1193400912810 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FE54EBBF13A1193400912810 /* libbz2.dylib */; };
+		FE54EBC213A1193400912810 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FE54EBC113A1193400912810 /* libz.dylib */; };
+		FE94203A1332599A00515418 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE9420391332597D00515418 /* libFramework.a */; };
+		FE94203F13325A0B00515418 /* ResourcePackerScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */; };
+		FE96BD8C13B2347B009EB81D /* SceneEditorScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE96BD8A13B2347B009EB81D /* SceneEditorScreen.cpp */; };
+		FE9892E511638EF700500198 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E111638EF700500198 /* InfoPlist.strings */; };
+		FE9892E611638EF700500198 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E311638EF700500198 /* MainMenu.xib */; };
+		FEA30C331231362D00E691CC /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEA30C291231362D00E691CC /* main.mm */; };
+		FEA30C361231362D00E691CC /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEA30C2E1231362D00E691CC /* version.plist */; };
+		FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */; };
+		FEC3CA821283557F00541220 /* GameCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA711283557F00541220 /* GameCore.cpp */; };
+		FEF303B71335CFC50078054F /* UIFileTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF303B31335CFC50078054F /* UIFileTree.cpp */; };
+		FEF303B81335CFC50078054F /* UIFileTreeCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF303B51335CFC50078054F /* UIFileTreeCell.cpp */; };
+		FEF304E21336953A0078054F /* UISpriteEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF304E01336953A0078054F /* UISpriteEditor.cpp */; };
+		FEF304E5133695BB0078054F /* UIScrollView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF304E3133695BB0078054F /* UIScrollView.cpp */; };
+		FEF3FB4D1333580F0078054F /* DefinitionFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF3FB451333580F0078054F /* DefinitionFile.cpp */; };
+		FEF3FB4E1333580F0078054F /* ImagePacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF3FB471333580F0078054F /* ImagePacker.cpp */; };
+		FEF3FB4F1333580F0078054F /* PngImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF3FB491333580F0078054F /* PngImage.cpp */; };
+		FEF3FB501333580F0078054F /* TexturePacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF3FB4B1333580F0078054F /* TexturePacker.cpp */; };
+		FEF3FB6713335B000078054F /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF3FB6513335B000078054F /* CommandLineParser.cpp */; };
+		FEFCD5EE12AE50860060A1A1 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = FEFCD5E712AE50860060A1A1 /* Data */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE9420381332597D00515418 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE9420291332597D00515418 /* Framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Framework;
+		};
+		FEF3FA6C1332B17E0078054F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE9420291332597D00515418 /* Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectMacOS_Prefix.pch; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		FE54EBBA13A1190000912810 /* libpng-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-static.a"; path = "../../Libs/ImageMagick-6.6.9-0/delegates/lib/libpng-static.a"; sourceTree = SOURCE_ROOT; };
+		FE54EBBF13A1193400912810 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
+		FE54EBC113A1193400912810 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		FE9420291332597D00515418 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../../Projects/MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ResourcePackerScreen.cpp; path = Classes/ResourcePackerScreen.cpp; sourceTree = "<group>"; };
+		FE94203E13325A0B00515418 /* ResourcePackerScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourcePackerScreen.h; path = Classes/ResourcePackerScreen.h; sourceTree = "<group>"; };
+		FE94204013325A1400515418 /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppScreens.h; path = Classes/AppScreens.h; sourceTree = "<group>"; };
+		FE96BD8A13B2347B009EB81D /* SceneEditorScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneEditorScreen.cpp; sourceTree = "<group>"; };
+		FE96BD8B13B2347B009EB81D /* SceneEditorScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneEditorScreen.h; sourceTree = "<group>"; };
+		FE9892E211638EF700500198 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = MacOSSpecific/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FE9892E411638EF700500198 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MacOSSpecific/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FE98931D11638FBB00500198 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEA30C291231362D00E691CC /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		FEA30C2E1231362D00E691CC /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
+		FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FrameworkMain.cpp; path = Classes/FrameworkMain.cpp; sourceTree = "<group>"; };
+		FEC3CA701283557F00541220 /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FrameworkMain.h; path = Classes/FrameworkMain.h; sourceTree = "<group>"; };
+		FEC3CA711283557F00541220 /* GameCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameCore.cpp; path = Classes/GameCore.cpp; sourceTree = "<group>"; };
+		FEC3CA721283557F00541220 /* GameCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCore.h; path = Classes/GameCore.h; sourceTree = "<group>"; };
+		FEF303B31335CFC50078054F /* UIFileTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIFileTree.cpp; path = Classes/UIFileTree.cpp; sourceTree = "<group>"; };
+		FEF303B41335CFC50078054F /* UIFileTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIFileTree.h; path = Classes/UIFileTree.h; sourceTree = "<group>"; };
+		FEF303B51335CFC50078054F /* UIFileTreeCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIFileTreeCell.cpp; path = Classes/UIFileTreeCell.cpp; sourceTree = "<group>"; };
+		FEF303B61335CFC50078054F /* UIFileTreeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIFileTreeCell.h; path = Classes/UIFileTreeCell.h; sourceTree = "<group>"; };
+		FEF304E01336953A0078054F /* UISpriteEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UISpriteEditor.cpp; path = Classes/UISpriteEditor.cpp; sourceTree = "<group>"; };
+		FEF304E11336953A0078054F /* UISpriteEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UISpriteEditor.h; path = Classes/UISpriteEditor.h; sourceTree = "<group>"; };
+		FEF304E3133695BB0078054F /* UIScrollView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UIScrollView.cpp; path = Classes/UIScrollView.cpp; sourceTree = "<group>"; };
+		FEF304E4133695BB0078054F /* UIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIScrollView.h; path = Classes/UIScrollView.h; sourceTree = "<group>"; };
+		FEF3FB451333580F0078054F /* DefinitionFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefinitionFile.cpp; sourceTree = "<group>"; };
+		FEF3FB461333580F0078054F /* DefinitionFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefinitionFile.h; sourceTree = "<group>"; };
+		FEF3FB471333580F0078054F /* ImagePacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagePacker.cpp; sourceTree = "<group>"; };
+		FEF3FB481333580F0078054F /* ImagePacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePacker.h; sourceTree = "<group>"; };
+		FEF3FB491333580F0078054F /* PngImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PngImage.cpp; sourceTree = "<group>"; };
+		FEF3FB4A1333580F0078054F /* PngImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PngImage.h; sourceTree = "<group>"; };
+		FEF3FB4B1333580F0078054F /* TexturePacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TexturePacker.cpp; sourceTree = "<group>"; };
+		FEF3FB4C1333580F0078054F /* TexturePacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexturePacker.h; sourceTree = "<group>"; };
+		FEF3FB6513335B000078054F /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
+		FEF3FB6613335B000078054F /* CommandLineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandLineParser.h; sourceTree = "<group>"; };
+		FEFCD5E712AE50860060A1A1 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE94203A1332599A00515418 /* libFramework.a in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */,
+				FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */,
+				FE54EBBB13A1190000912810 /* libpng-static.a in Frameworks */,
+				FE54EBC013A1193400912810 /* libbz2.dylib in Frameworks */,
+				FE54EBC213A1193400912810 /* libz.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */,
+				FE54EBBF13A1193400912810 /* libbz2.dylib */,
+				FE54EBC113A1193400912810 /* libz.dylib */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* TemplateProjectMacOS */ = {
+			isa = PBXGroup;
+			children = (
+				FE54EBBA13A1190000912810 /* libpng-static.a */,
+				FE9420291332597D00515418 /* Framework.xcodeproj */,
+				FEFCD5E712AE50860060A1A1 /* Data */,
+				FE445A961153C27800F5EFD6 /* User classes */,
+				FEA30C211231362D00E691CC /* MacOSSpecific */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = TemplateProjectMacOS;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FE98931D11638FBB00500198 /* Info.plist */,
+				FE9892E111638EF700500198 /* InfoPlist.strings */,
+				FE9892E311638EF700500198 /* MainMenu.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE445A961153C27800F5EFD6 /* User classes */ = {
+			isa = PBXGroup;
+			children = (
+				FE94204013325A1400515418 /* AppScreens.h */,
+				FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */,
+				FEC3CA701283557F00541220 /* FrameworkMain.h */,
+				FEC3CA711283557F00541220 /* GameCore.cpp */,
+				FEC3CA721283557F00541220 /* GameCore.h */,
+				FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */,
+				FE94203E13325A0B00515418 /* ResourcePackerScreen.h */,
+				FEF303B31335CFC50078054F /* UIFileTree.cpp */,
+				FEF303B41335CFC50078054F /* UIFileTree.h */,
+				FEF303B51335CFC50078054F /* UIFileTreeCell.cpp */,
+				FEF303B61335CFC50078054F /* UIFileTreeCell.h */,
+				FEF304E01336953A0078054F /* UISpriteEditor.cpp */,
+				FEF304E11336953A0078054F /* UISpriteEditor.h */,
+				FEF304E3133695BB0078054F /* UIScrollView.cpp */,
+				FEF304E4133695BB0078054F /* UIScrollView.h */,
+				FE96BD8913B2347B009EB81D /* SceneEditor */,
+				FEF3FB441333580F0078054F /* TexturePacker */,
+			);
+			name = "User classes";
+			sourceTree = "<group>";
+		};
+		FE94202A1332597D00515418 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE9420391332597D00515418 /* libFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE96BD8913B2347B009EB81D /* SceneEditor */ = {
+			isa = PBXGroup;
+			children = (
+				FE96BD8A13B2347B009EB81D /* SceneEditorScreen.cpp */,
+				FE96BD8B13B2347B009EB81D /* SceneEditorScreen.h */,
+			);
+			name = SceneEditor;
+			path = Classes/SceneEditor;
+			sourceTree = "<group>";
+		};
+		FEA30C211231362D00E691CC /* MacOSSpecific */ = {
+			isa = PBXGroup;
+			children = (
+				FEA30C291231362D00E691CC /* main.mm */,
+				FEA30C2E1231362D00E691CC /* version.plist */,
+			);
+			path = MacOSSpecific;
+			sourceTree = "<group>";
+		};
+		FEF3FB441333580F0078054F /* TexturePacker */ = {
+			isa = PBXGroup;
+			children = (
+				FEF3FB6513335B000078054F /* CommandLineParser.cpp */,
+				FEF3FB6613335B000078054F /* CommandLineParser.h */,
+				FEF3FB451333580F0078054F /* DefinitionFile.cpp */,
+				FEF3FB461333580F0078054F /* DefinitionFile.h */,
+				FEF3FB471333580F0078054F /* ImagePacker.cpp */,
+				FEF3FB481333580F0078054F /* ImagePacker.h */,
+				FEF3FB491333580F0078054F /* PngImage.cpp */,
+				FEF3FB4A1333580F0078054F /* PngImage.h */,
+				FEF3FB4B1333580F0078054F /* TexturePacker.cpp */,
+				FEF3FB4C1333580F0078054F /* TexturePacker.h */,
+			);
+			name = TexturePacker;
+			path = Classes/TexturePacker;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* TemplateProjectMacOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TemplateProjectMacOS" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				FE0D6CE9128AE7DE00ECAE3B /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FEF3FA6D1332B17E0078054F /* PBXTargetDependency */,
+			);
+			name = TemplateProjectMacOS;
+			productInstallPath = "$(HOME)/Applications";
+			productName = TemplateProjectMacOS;
+			productReference = 8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TemplateProjectMacOS" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* TemplateProjectMacOS */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE94202A1332597D00515418 /* Products */;
+					ProjectRef = FE9420291332597D00515418 /* Framework.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* TemplateProjectMacOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE9420391332597D00515418 /* libFramework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFramework.a;
+			remoteRef = FE9420381332597D00515418 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE9892E511638EF700500198 /* InfoPlist.strings in Resources */,
+				FE9892E611638EF700500198 /* MainMenu.xib in Resources */,
+				FEA30C361231362D00E691CC /* version.plist in Resources */,
+				FEFCD5EE12AE50860060A1A1 /* Data in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE0D6CE9128AE7DE00ECAE3B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "touch -cm ${SRCROOT}/Data/\ntouch -cm ${SRCROOT}/Data/XGfx/\ntouch -cm ${SRCROOT}/Data/Configs/\ntouch -cm ${SRCROOT}/Data/Audio/";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEA30C331231362D00E691CC /* main.mm in Sources */,
+				FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */,
+				FEC3CA821283557F00541220 /* GameCore.cpp in Sources */,
+				FE94203F13325A0B00515418 /* ResourcePackerScreen.cpp in Sources */,
+				FEF3FB4D1333580F0078054F /* DefinitionFile.cpp in Sources */,
+				FEF3FB4E1333580F0078054F /* ImagePacker.cpp in Sources */,
+				FEF3FB4F1333580F0078054F /* PngImage.cpp in Sources */,
+				FEF3FB501333580F0078054F /* TexturePacker.cpp in Sources */,
+				FEF3FB6713335B000078054F /* CommandLineParser.cpp in Sources */,
+				FEF303B71335CFC50078054F /* UIFileTree.cpp in Sources */,
+				FEF303B81335CFC50078054F /* UIFileTreeCell.cpp in Sources */,
+				FEF304E21336953A0078054F /* UISpriteEditor.cpp in Sources */,
+				FEF304E5133695BB0078054F /* UIScrollView.cpp in Sources */,
+				FE96BD8C13B2347B009EB81D /* SceneEditorScreen.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FEF3FA6D1332B17E0078054F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Framework;
+			targetProxy = FEF3FA6C1332B17E0078054F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FE9892E111638EF700500198 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE9892E211638EF700500198 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FE9892E311638EF700500198 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FE9892E411638EF700500198 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TemplateProjectMacOS_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Libs/ImageMagick-6.6.9-0/delegates/lib\"",
+				);
+				PRODUCT_NAME = TemplateProjectMacOS;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TemplateProjectMacOS_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Libs/ImageMagick-6.6.9-0/delegates/lib\"",
+				);
+				PRODUCT_NAME = TemplateProjectMacOS;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DAVA_DEBUG;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../SDK/Sources,
+					./../../SDK/External,
+					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
+					"./../../Libs/ImageMagick-6.6.9-0/",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./../../Libs/ImageMagick-6.6.9/lib/",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/lib",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lMagickCore",
+					"-lMagick++",
+					"-lMagickWand",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					./../../SDK/Sources,
+					./../../SDK/External,
+					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
+					"./../../Libs/ImageMagick-6.6.9-0/",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"./../../Libs/ImageMagick-6.6.9/lib/",
+					"./../../Libs/ImageMagick-6.6.9-0/delegates/lib",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-fvisibility=hidden",
+				);
+				OTHER_LDFLAGS = (
+					"-lMagickCore",
+					"-lMagick++",
+					"-lMagickWand",
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "TemplateProjectMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TemplateProjectMacOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

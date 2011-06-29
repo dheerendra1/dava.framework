@@ -1,0 +1,678 @@
+Magick++/tests/attributes.o Magick++/tests/attributes.o:  \
+ Magick++/tests/attributes.cpp Magick++/lib/Magick++.h \
+  Magick++/lib/Magick++/Include.h magick/magick-config.h \
+  /usr/include/stdio.h /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/sys/cdefs.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h \
+  /usr/include/stdlib.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/sys/wait.h \
+  /usr/include/sys/signal.h /usr/include/sys/appleapiopts.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/sys/_structs.h \
+  /usr/include/machine/_structs.h /usr/include/mach/i386/_structs.h \
+  /usr/include/sys/resource.h /usr/include/machine/endian.h \
+  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
+  /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h /usr/include/time.h /usr/include/_structs.h \
+  /usr/include/sys/types.h magick/MagickCore.h magick/magick-config.h \
+  magick/magick-type.h magick/accelerate.h magick/morphology.h \
+  magick/geometry.h magick/animate.h magick/annotate.h magick/draw.h \
+  magick/image.h magick/color.h magick/pixel.h magick/colorspace.h \
+  magick/constitute.h magick/exception.h magick/semaphore.h magick/blob.h \
+  magick/stream.h magick/cache-view.h magick/composite.h \
+  magick/compress.h magick/effect.h magick/layer.h magick/monitor.h \
+  magick/profile.h magick/string_.h magick/quantum.h magick/resample.h \
+  magick/cache-view.h magick/resize.h magick/timer.h magick/type.h \
+  magick/artifact.h magick/attribute.h magick/image.h magick/cache.h \
+  magick/cipher.h magick/client.h magick/coder.h magick/colormap.h \
+  magick/compare.h magick/configure.h magick/hashmap.h magick/decorate.h \
+  magick/delegate.h magick/deprecate.h magick/quantize.h \
+  magick/registry.h magick/display.h magick/distort.h magick/enhance.h \
+  magick/feature.h magick/fourier.h magick/fx.h magick/gem.h magick/fx.h \
+  magick/random_.h magick/histogram.h magick/identify.h \
+  magick/image-view.h magick/list.h magick/locale_.h magick/log.h \
+  magick/magic.h magick/magick.h magick/matrix.h magick/memory_.h \
+  magick/module.h magick/version.h magick/mime.h magick/montage.h \
+  magick/option.h magick/paint.h magick/policy.h magick/prepress.h \
+  magick/property.h magick/resource_.h magick/segment.h magick/shear.h \
+  magick/signature.h magick/splay-tree.h magick/statistic.h \
+  magick/token.h magick/transform.h magick/threshold.h magick/utility.h \
+  magick/xml-tree.h magick/splay-tree.h magick/xwindow.h \
+  wand/MagickWand.h magick/magick-config.h wand/animate.h wand/compare.h \
+  wand/composite.h wand/conjure.h wand/convert.h wand/deprecate.h \
+  wand/drawing-wand.h wand/pixel-wand.h wand/magick-wand.h \
+  wand/pixel-iterator.h wand/display.h wand/identify.h wand/import.h \
+  wand/magick-property.h wand/magick-image.h wand/mogrify.h \
+  wand/montage.h wand/stream.h wand/wand-view.h \
+  Magick++/lib/Magick++/Image.h /usr/include/c++/4.2.1/string \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++config.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/os_defines.h \
+  /usr/include/unistd.h /usr/include/sys/unistd.h \
+  /usr/include/sys/select.h /usr/include/sys/_select.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/cpu_defines.h \
+  /usr/include/c++/4.2.1/bits/stringfwd.h \
+  /usr/include/c++/4.2.1/bits/char_traits.h \
+  /usr/include/c++/4.2.1/cstring /usr/include/c++/4.2.1/cstddef \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  /usr/include/string.h /usr/include/c++/4.2.1/bits/stl_algobase.h \
+  /usr/include/c++/4.2.1/climits \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/limits.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/syslimits.h \
+  /usr/include/limits.h /usr/include/machine/limits.h \
+  /usr/include/i386/limits.h /usr/include/i386/_limits.h \
+  /usr/include/sys/syslimits.h /usr/include/c++/4.2.1/cstdlib \
+  /usr/include/c++/4.2.1/iosfwd \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++locale.h \
+  /usr/include/c++/4.2.1/clocale /usr/include/locale.h \
+  /usr/include/_locale.h /usr/include/c++/4.2.1/cstdio \
+  /usr/include/c++/4.2.1/cstdarg \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++io.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/gthr.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/gthr-default.h \
+  /usr/include/pthread.h /usr/include/pthread_impl.h /usr/include/sched.h \
+  /usr/include/c++/4.2.1/cctype /usr/include/ctype.h \
+  /usr/include/runetype.h /usr/include/c++/4.2.1/bits/postypes.h \
+  /usr/include/c++/4.2.1/cwchar /usr/include/c++/4.2.1/ctime \
+  /usr/include/wchar.h /usr/include/_wctype.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  /usr/include/c++/4.2.1/bits/functexcept.h \
+  /usr/include/c++/4.2.1/exception_defines.h \
+  /usr/include/c++/4.2.1/bits/stl_pair.h \
+  /usr/include/c++/4.2.1/bits/cpp_type_traits.h \
+  /usr/include/c++/4.2.1/ext/type_traits.h /usr/include/c++/4.2.1/utility \
+  /usr/include/c++/4.2.1/bits/stl_relops.h \
+  /usr/include/c++/4.2.1/bits/stl_iterator_base_types.h \
+  /usr/include/c++/4.2.1/bits/stl_iterator_base_funcs.h \
+  /usr/include/c++/4.2.1/bits/concept_check.h \
+  /usr/include/c++/4.2.1/bits/stl_iterator.h \
+  /usr/include/c++/4.2.1/debug/debug.h /usr/include/c++/4.2.1/memory \
+  /usr/include/c++/4.2.1/bits/allocator.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++allocator.h \
+  /usr/include/c++/4.2.1/ext/new_allocator.h /usr/include/c++/4.2.1/new \
+  /usr/include/c++/4.2.1/exception \
+  /usr/include/c++/4.2.1/bits/stl_construct.h \
+  /usr/include/c++/4.2.1/bits/stl_uninitialized.h \
+  /usr/include/c++/4.2.1/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/4.2.1/limits \
+  /usr/include/c++/4.2.1/bits/ostream_insert.h \
+  /usr/include/c++/4.2.1/bits/stl_function.h \
+  /usr/include/c++/4.2.1/bits/basic_string.h \
+  /usr/include/c++/4.2.1/ext/atomicity.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/atomic_word.h \
+  /usr/include/c++/4.2.1/algorithm /usr/include/c++/4.2.1/bits/stl_algo.h \
+  /usr/include/c++/4.2.1/bits/stl_heap.h \
+  /usr/include/c++/4.2.1/bits/stl_tempbuf.h \
+  /usr/include/c++/4.2.1/bits/basic_string.tcc \
+  /usr/include/c++/4.2.1/list /usr/include/c++/4.2.1/bits/stl_list.h \
+  /usr/include/c++/4.2.1/bits/list.tcc Magick++/lib/Magick++/Blob.h \
+  Magick++/lib/Magick++/Color.h Magick++/lib/Magick++/Drawable.h \
+  /usr/include/c++/4.2.1/functional Magick++/lib/Magick++/Geometry.h \
+  Magick++/lib/Magick++/Exception.h Magick++/lib/Magick++/TypeMetric.h \
+  Magick++/lib/Magick++/Pixels.h Magick++/lib/Magick++/STL.h \
+  /usr/include/c++/4.2.1/iterator /usr/include/c++/4.2.1/ostream \
+  /usr/include/c++/4.2.1/ios /usr/include/c++/4.2.1/bits/localefwd.h \
+  /usr/include/c++/4.2.1/bits/ios_base.h \
+  /usr/include/c++/4.2.1/bits/locale_classes.h \
+  /usr/include/c++/4.2.1/streambuf \
+  /usr/include/c++/4.2.1/bits/streambuf.tcc \
+  /usr/include/c++/4.2.1/bits/basic_ios.h \
+  /usr/include/c++/4.2.1/bits/streambuf_iterator.h \
+  /usr/include/c++/4.2.1/bits/locale_facets.h \
+  /usr/include/c++/4.2.1/cwctype /usr/include/wctype.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/ctype_base.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/ctype_inline.h \
+  /usr/include/c++/4.2.1/bits/codecvt.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/time_members.h \
+  /usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/messages_members.h \
+  /usr/include/c++/4.2.1/bits/basic_ios.tcc \
+  /usr/include/c++/4.2.1/bits/ostream.tcc /usr/include/c++/4.2.1/locale \
+  /usr/include/c++/4.2.1/bits/locale_facets.tcc \
+  /usr/include/c++/4.2.1/typeinfo /usr/include/c++/4.2.1/istream \
+  /usr/include/c++/4.2.1/bits/istream.tcc \
+  /usr/include/c++/4.2.1/bits/stream_iterator.h \
+  /usr/include/c++/4.2.1/map /usr/include/c++/4.2.1/bits/stl_tree.h \
+  /usr/include/c++/4.2.1/bits/stl_map.h \
+  /usr/include/c++/4.2.1/bits/stl_multimap.h \
+  Magick++/lib/Magick++/CoderInfo.h Magick++/lib/Magick++/Montage.h \
+  /usr/include/c++/4.2.1/iostream
+
+Magick++/lib/Magick++.h:
+
+Magick++/lib/Magick++/Include.h:
+
+magick/magick-config.h:
+
+/usr/include/stdio.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/time.h:
+
+/usr/include/_structs.h:
+
+/usr/include/sys/types.h:
+
+magick/MagickCore.h:
+
+magick/magick-config.h:
+
+magick/magick-type.h:
+
+magick/accelerate.h:
+
+magick/morphology.h:
+
+magick/geometry.h:
+
+magick/animate.h:
+
+magick/annotate.h:
+
+magick/draw.h:
+
+magick/image.h:
+
+magick/color.h:
+
+magick/pixel.h:
+
+magick/colorspace.h:
+
+magick/constitute.h:
+
+magick/exception.h:
+
+magick/semaphore.h:
+
+magick/blob.h:
+
+magick/stream.h:
+
+magick/cache-view.h:
+
+magick/composite.h:
+
+magick/compress.h:
+
+magick/effect.h:
+
+magick/layer.h:
+
+magick/monitor.h:
+
+magick/profile.h:
+
+magick/string_.h:
+
+magick/quantum.h:
+
+magick/resample.h:
+
+magick/cache-view.h:
+
+magick/resize.h:
+
+magick/timer.h:
+
+magick/type.h:
+
+magick/artifact.h:
+
+magick/attribute.h:
+
+magick/image.h:
+
+magick/cache.h:
+
+magick/cipher.h:
+
+magick/client.h:
+
+magick/coder.h:
+
+magick/colormap.h:
+
+magick/compare.h:
+
+magick/configure.h:
+
+magick/hashmap.h:
+
+magick/decorate.h:
+
+magick/delegate.h:
+
+magick/deprecate.h:
+
+magick/quantize.h:
+
+magick/registry.h:
+
+magick/display.h:
+
+magick/distort.h:
+
+magick/enhance.h:
+
+magick/feature.h:
+
+magick/fourier.h:
+
+magick/fx.h:
+
+magick/gem.h:
+
+magick/fx.h:
+
+magick/random_.h:
+
+magick/histogram.h:
+
+magick/identify.h:
+
+magick/image-view.h:
+
+magick/list.h:
+
+magick/locale_.h:
+
+magick/log.h:
+
+magick/magic.h:
+
+magick/magick.h:
+
+magick/matrix.h:
+
+magick/memory_.h:
+
+magick/module.h:
+
+magick/version.h:
+
+magick/mime.h:
+
+magick/montage.h:
+
+magick/option.h:
+
+magick/paint.h:
+
+magick/policy.h:
+
+magick/prepress.h:
+
+magick/property.h:
+
+magick/resource_.h:
+
+magick/segment.h:
+
+magick/shear.h:
+
+magick/signature.h:
+
+magick/splay-tree.h:
+
+magick/statistic.h:
+
+magick/token.h:
+
+magick/transform.h:
+
+magick/threshold.h:
+
+magick/utility.h:
+
+magick/xml-tree.h:
+
+magick/splay-tree.h:
+
+magick/xwindow.h:
+
+wand/MagickWand.h:
+
+magick/magick-config.h:
+
+wand/animate.h:
+
+wand/compare.h:
+
+wand/composite.h:
+
+wand/conjure.h:
+
+wand/convert.h:
+
+wand/deprecate.h:
+
+wand/drawing-wand.h:
+
+wand/pixel-wand.h:
+
+wand/magick-wand.h:
+
+wand/pixel-iterator.h:
+
+wand/display.h:
+
+wand/identify.h:
+
+wand/import.h:
+
+wand/magick-property.h:
+
+wand/magick-image.h:
+
+wand/mogrify.h:
+
+wand/montage.h:
+
+wand/stream.h:
+
+wand/wand-view.h:
+
+Magick++/lib/Magick++/Image.h:
+
+/usr/include/c++/4.2.1/string:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++config.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/os_defines.h:
+
+/usr/include/unistd.h:
+
+/usr/include/sys/unistd.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/sys/_select.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/cpu_defines.h:
+
+/usr/include/c++/4.2.1/bits/stringfwd.h:
+
+/usr/include/c++/4.2.1/bits/char_traits.h:
+
+/usr/include/c++/4.2.1/cstring:
+
+/usr/include/c++/4.2.1/cstddef:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+/usr/include/string.h:
+
+/usr/include/c++/4.2.1/bits/stl_algobase.h:
+
+/usr/include/c++/4.2.1/climits:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/limits.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/machine/limits.h:
+
+/usr/include/i386/limits.h:
+
+/usr/include/i386/_limits.h:
+
+/usr/include/sys/syslimits.h:
+
+/usr/include/c++/4.2.1/cstdlib:
+
+/usr/include/c++/4.2.1/iosfwd:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++locale.h:
+
+/usr/include/c++/4.2.1/clocale:
+
+/usr/include/locale.h:
+
+/usr/include/_locale.h:
+
+/usr/include/c++/4.2.1/cstdio:
+
+/usr/include/c++/4.2.1/cstdarg:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++io.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/gthr.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/gthr-default.h:
+
+/usr/include/pthread.h:
+
+/usr/include/pthread_impl.h:
+
+/usr/include/sched.h:
+
+/usr/include/c++/4.2.1/cctype:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+/usr/include/c++/4.2.1/bits/postypes.h:
+
+/usr/include/c++/4.2.1/cwchar:
+
+/usr/include/c++/4.2.1/ctime:
+
+/usr/include/wchar.h:
+
+/usr/include/_wctype.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+/usr/include/c++/4.2.1/bits/functexcept.h:
+
+/usr/include/c++/4.2.1/exception_defines.h:
+
+/usr/include/c++/4.2.1/bits/stl_pair.h:
+
+/usr/include/c++/4.2.1/bits/cpp_type_traits.h:
+
+/usr/include/c++/4.2.1/ext/type_traits.h:
+
+/usr/include/c++/4.2.1/utility:
+
+/usr/include/c++/4.2.1/bits/stl_relops.h:
+
+/usr/include/c++/4.2.1/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/4.2.1/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/4.2.1/bits/concept_check.h:
+
+/usr/include/c++/4.2.1/bits/stl_iterator.h:
+
+/usr/include/c++/4.2.1/debug/debug.h:
+
+/usr/include/c++/4.2.1/memory:
+
+/usr/include/c++/4.2.1/bits/allocator.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/c++allocator.h:
+
+/usr/include/c++/4.2.1/ext/new_allocator.h:
+
+/usr/include/c++/4.2.1/new:
+
+/usr/include/c++/4.2.1/exception:
+
+/usr/include/c++/4.2.1/bits/stl_construct.h:
+
+/usr/include/c++/4.2.1/bits/stl_uninitialized.h:
+
+/usr/include/c++/4.2.1/bits/stl_raw_storage_iter.h:
+
+/usr/include/c++/4.2.1/limits:
+
+/usr/include/c++/4.2.1/bits/ostream_insert.h:
+
+/usr/include/c++/4.2.1/bits/stl_function.h:
+
+/usr/include/c++/4.2.1/bits/basic_string.h:
+
+/usr/include/c++/4.2.1/ext/atomicity.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/atomic_word.h:
+
+/usr/include/c++/4.2.1/algorithm:
+
+/usr/include/c++/4.2.1/bits/stl_algo.h:
+
+/usr/include/c++/4.2.1/bits/stl_heap.h:
+
+/usr/include/c++/4.2.1/bits/stl_tempbuf.h:
+
+/usr/include/c++/4.2.1/bits/basic_string.tcc:
+
+/usr/include/c++/4.2.1/list:
+
+/usr/include/c++/4.2.1/bits/stl_list.h:
+
+/usr/include/c++/4.2.1/bits/list.tcc:
+
+Magick++/lib/Magick++/Blob.h:
+
+Magick++/lib/Magick++/Color.h:
+
+Magick++/lib/Magick++/Drawable.h:
+
+/usr/include/c++/4.2.1/functional:
+
+Magick++/lib/Magick++/Geometry.h:
+
+Magick++/lib/Magick++/Exception.h:
+
+Magick++/lib/Magick++/TypeMetric.h:
+
+Magick++/lib/Magick++/Pixels.h:
+
+Magick++/lib/Magick++/STL.h:
+
+/usr/include/c++/4.2.1/iterator:
+
+/usr/include/c++/4.2.1/ostream:
+
+/usr/include/c++/4.2.1/ios:
+
+/usr/include/c++/4.2.1/bits/localefwd.h:
+
+/usr/include/c++/4.2.1/bits/ios_base.h:
+
+/usr/include/c++/4.2.1/bits/locale_classes.h:
+
+/usr/include/c++/4.2.1/streambuf:
+
+/usr/include/c++/4.2.1/bits/streambuf.tcc:
+
+/usr/include/c++/4.2.1/bits/basic_ios.h:
+
+/usr/include/c++/4.2.1/bits/streambuf_iterator.h:
+
+/usr/include/c++/4.2.1/bits/locale_facets.h:
+
+/usr/include/c++/4.2.1/cwctype:
+
+/usr/include/wctype.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/ctype_base.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/ctype_inline.h:
+
+/usr/include/c++/4.2.1/bits/codecvt.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/time_members.h:
+
+/usr/include/c++/4.2.1/i686-apple-darwin10/x86_64/bits/messages_members.h:
+
+/usr/include/c++/4.2.1/bits/basic_ios.tcc:
+
+/usr/include/c++/4.2.1/bits/ostream.tcc:
+
+/usr/include/c++/4.2.1/locale:
+
+/usr/include/c++/4.2.1/bits/locale_facets.tcc:
+
+/usr/include/c++/4.2.1/typeinfo:
+
+/usr/include/c++/4.2.1/istream:
+
+/usr/include/c++/4.2.1/bits/istream.tcc:
+
+/usr/include/c++/4.2.1/bits/stream_iterator.h:
+
+/usr/include/c++/4.2.1/map:
+
+/usr/include/c++/4.2.1/bits/stl_tree.h:
+
+/usr/include/c++/4.2.1/bits/stl_map.h:
+
+/usr/include/c++/4.2.1/bits/stl_multimap.h:
+
+Magick++/lib/Magick++/CoderInfo.h:
+
+Magick++/lib/Magick++/Montage.h:
+
+/usr/include/c++/4.2.1/iostream:

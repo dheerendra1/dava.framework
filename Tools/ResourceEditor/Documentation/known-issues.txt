@@ -1,0 +1,8 @@
+
+Known issues
+==================================================
+1) If your pack paths is different for example /DataSource/Gfx and /datasource/gfx packer will perform repack, so be carefull and use case-sentensive paths in all cases.
+
+Feature requests
+==================================================
+1) Be first to write your request here.

@@ -1,0 +1,27 @@
+####
+#### FONTS 
+####
+fontNewland:
+    type: FTFont                
+    name: "~res:/Fonts/MyriadPro-Regular.otf"
+    size: 12.0                   
+    color: 000000FF            
+    shadowColor: DDF0B9FF     
+
+####
+#### CONTROLS 
+####
+#version: 
+# firstly we create control background
+resourceTree:    
+    type: UIFileTree             # type of item
+    rect: [0, 0, 200, 600]
+    orientation: ORIENTATION_VERTICAL
+    drawType: DRAW_FILL
+    color: F0F0F0FF
+    
+spriteEditor:    
+    type: UISpriteEditor            # type of item
+    rect: [220, 0, 690, 600]
+    drawType: DRAW_FILL
+    color: 222222FF

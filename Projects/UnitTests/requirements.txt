@@ -1,0 +1,6 @@
+We need to create unit test application to test whole SDK functionality on all available platforms. 
+
+Required features (type of possible tests): 
+- Logic tests - ability to make simple unit test that tests logic of the module
+- Image tests - test that output image, that can be compared automatically with reference image. Or compared by human. We should use approach of unit tests for OpenGL ES ref. implementation
+- Animation tests - same as Image tests but compares sequence

@@ -1,0 +1,40 @@
+####
+#### FONTS 
+####
+fontDefault:
+    type: FTFont                
+    name: "~res:/Fonts/MyriadPro-Regular.otf"
+    size: 12.0                   
+    color: FFFFFFFF            
+    shadowColor: DDF0B9FF     
+
+####
+#### CONTROLS 
+####
+
+spriteScrollView:
+    type: UIScrollView
+    rect: [0, 20, 690, 500]
+    contentSize: [690, 500]
+    spritePreview:
+        type: UIControl
+        rect: [0, 0, 690, 500]
+    
+frameCount:
+    type: UIStaticText
+    font: fontDefault
+    text: "frame count: "
+    rect: [0, 0, 100, 20]
+    
+currentFrame:
+    type: UIStaticText
+    font: fontDefault
+    text: "current frame:"
+    rect: [100, 0, 100, 20]
+    
+frameSlider:
+    type: UISlider
+    rect: [200, 0, 100, 20]
+    drawType: DRAW_FILL
+    color: 555555FF
+    thumbSprite: ["~res:/Gfx/DefaultSkin/SliderThumb", 0]

@@ -1,0 +1,305 @@
+magick/magick_libMagickCore_la-blob.lo \
+  magick/magick_libMagickCore_la-blob.o: magick/blob.c magick/studio.h \
+  magick/magick-config.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h \
+  /usr/include/stdio.h /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/sys/cdefs.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/secure/_stdio.h \
+  /usr/include/secure/_common.h /usr/include/sys/stat.h \
+  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
+  /usr/include/sys/_structs.h /usr/include/stdlib.h \
+  /usr/include/sys/wait.h /usr/include/sys/signal.h \
+  /usr/include/sys/appleapiopts.h /usr/include/machine/signal.h \
+  /usr/include/i386/signal.h /usr/include/i386/_structs.h \
+  /usr/include/machine/_structs.h /usr/include/mach/i386/_structs.h \
+  /usr/include/sys/resource.h /usr/include/machine/endian.h \
+  /usr/include/i386/endian.h /usr/include/sys/_endian.h \
+  /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/i386/_types.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h \
+  /usr/include/memory.h /usr/include/string.h \
+  /usr/include/secure/_string.h /usr/include/strings.h \
+  /usr/include/inttypes.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h \
+  /usr/include/unistd.h /usr/include/sys/unistd.h \
+  /usr/include/sys/select.h /usr/include/sys/_select.h \
+  /usr/include/ctype.h /usr/include/runetype.h /usr/include/locale.h \
+  /usr/include/_locale.h /usr/include/errno.h /usr/include/sys/errno.h \
+  /usr/include/fcntl.h /usr/include/sys/fcntl.h /usr/include/math.h \
+  /usr/include/architecture/i386/math.h /usr/include/AvailabilityMacros.h \
+  /usr/include/time.h /usr/include/_structs.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/limits.h \
+  /usr/lib/gcc/i686-apple-darwin10/4.2.1/include/syslimits.h \
+  /usr/include/limits.h /usr/include/machine/limits.h \
+  /usr/include/i386/limits.h /usr/include/i386/_limits.h \
+  /usr/include/sys/syslimits.h /usr/include/signal.h \
+  /usr/include/assert.h /usr/include/pthread.h \
+  /usr/include/pthread_impl.h /usr/include/sched.h \
+  /usr/include/sys/types.h /usr/include/sys/timeb.h /usr/include/dirent.h \
+  /usr/include/sys/dirent.h /usr/include/pwd.h magick/magick-type.h \
+  /usr/include/sys/time.h /usr/include/sys/times.h magick/blob.h \
+  magick/image.h magick/color.h magick/pixel.h magick/colorspace.h \
+  magick/constitute.h magick/exception.h magick/semaphore.h magick/blob.h \
+  magick/cache-view.h magick/composite.h magick/compress.h \
+  magick/effect.h magick/morphology.h magick/geometry.h magick/layer.h \
+  magick/monitor.h magick/profile.h magick/string_.h magick/quantum.h \
+  magick/resample.h magick/cache-view.h magick/resize.h magick/stream.h \
+  magick/timer.h magick/blob-private.h magick/cache.h magick/client.h \
+  magick/delegate.h magick/exception-private.h magick/log.h \
+  magick/image-private.h magick/list.h magick/log.h magick/magick.h \
+  magick/memory_.h magick/policy.h magick/resource_.h magick/semaphore.h \
+  magick/string_.h magick/string-private.h magick/token.h \
+  magick/utility.h /usr/include/sys/mman.h /usr/include/zlib.h \
+  /usr/include/zconf.h /usr/include/bzlib.h
+
+magick/studio.h:
+
+magick/magick-config.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdarg.h:
+
+/usr/include/stdio.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/secure/_stdio.h:
+
+/usr/include/secure/_common.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stddef.h:
+
+/usr/include/memory.h:
+
+/usr/include/string.h:
+
+/usr/include/secure/_string.h:
+
+/usr/include/strings.h:
+
+/usr/include/inttypes.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h:
+
+/usr/include/unistd.h:
+
+/usr/include/sys/unistd.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/sys/_select.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+/usr/include/locale.h:
+
+/usr/include/_locale.h:
+
+/usr/include/errno.h:
+
+/usr/include/sys/errno.h:
+
+/usr/include/fcntl.h:
+
+/usr/include/sys/fcntl.h:
+
+/usr/include/math.h:
+
+/usr/include/architecture/i386/math.h:
+
+/usr/include/AvailabilityMacros.h:
+
+/usr/include/time.h:
+
+/usr/include/_structs.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/limits.h:
+
+/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/machine/limits.h:
+
+/usr/include/i386/limits.h:
+
+/usr/include/i386/_limits.h:
+
+/usr/include/sys/syslimits.h:
+
+/usr/include/signal.h:
+
+/usr/include/assert.h:
+
+/usr/include/pthread.h:
+
+/usr/include/pthread_impl.h:
+
+/usr/include/sched.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/timeb.h:
+
+/usr/include/dirent.h:
+
+/usr/include/sys/dirent.h:
+
+/usr/include/pwd.h:
+
+magick/magick-type.h:
+
+/usr/include/sys/time.h:
+
+/usr/include/sys/times.h:
+
+magick/blob.h:
+
+magick/image.h:
+
+magick/color.h:
+
+magick/pixel.h:
+
+magick/colorspace.h:
+
+magick/constitute.h:
+
+magick/exception.h:
+
+magick/semaphore.h:
+
+magick/blob.h:
+
+magick/cache-view.h:
+
+magick/composite.h:
+
+magick/compress.h:
+
+magick/effect.h:
+
+magick/morphology.h:
+
+magick/geometry.h:
+
+magick/layer.h:
+
+magick/monitor.h:
+
+magick/profile.h:
+
+magick/string_.h:
+
+magick/quantum.h:
+
+magick/resample.h:
+
+magick/cache-view.h:
+
+magick/resize.h:
+
+magick/stream.h:
+
+magick/timer.h:
+
+magick/blob-private.h:
+
+magick/cache.h:
+
+magick/client.h:
+
+magick/delegate.h:
+
+magick/exception-private.h:
+
+magick/log.h:
+
+magick/image-private.h:
+
+magick/list.h:
+
+magick/log.h:
+
+magick/magick.h:
+
+magick/memory_.h:
+
+magick/policy.h:
+
+magick/resource_.h:
+
+magick/semaphore.h:
+
+magick/string_.h:
+
+magick/string-private.h:
+
+magick/token.h:
+
+magick/utility.h:
+
+/usr/include/sys/mman.h:
+
+/usr/include/zlib.h:
+
+/usr/include/zconf.h:
+
+/usr/include/bzlib.h:

@@ -1,0 +1,90 @@
+// !$*UTF8*$!
+{
+	656112930F66C20C007C4A55 /* FColladaTest */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = FColladaTest;
+		sourceDirectories = (
+		);
+	};
+	656112990F66C230007C4A55 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	6561129A0F66C230007C4A55 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	C315DF5F09783EFB005D77BE /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 656112930F66C20C007C4A55 /* FColladaTest */;
+		activeTarget = C315DFDA097840EB005D77BE /* FColladaS */;
+		codeSenseManager = 6561129A0F66C230007C4A55 /* Code sense */;
+		executables = (
+			656112930F66C20C007C4A55 /* FColladaTest */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					833,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 259171333;
+			PBXWorkspaceStateSaveDate = 259171333;
+		};
+		sourceControlManager = 656112990F66C230007C4A55 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	C315DFDA097840EB005D77BE /* FColladaS */ = {
+		activeExec = 0;
+	};
+	C361200A0B246522001CBF11 /* FColladaTest */ = {
+		activeExec = 0;
+		executables = (
+			656112930F66C20C007C4A55 /* FColladaTest */,
+		);
+	};
+	C3D608B30ADFD5FC00019D9C /* FColladaSU */ = {
+		activeExec = 0;
+	};
+	D09F2DB20BD9527300447337 /* FColladaU */ = {
+		activeExec = 0;
+	};
+}
