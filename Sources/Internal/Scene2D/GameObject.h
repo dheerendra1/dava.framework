@@ -244,6 +244,10 @@ protected:
 	int32		priority;
 	
 	GameObjectManager * manager;
+    /*
+        This is required for cases when you want to delete object from one manager and add to another manager on the same frame
+     */
+    GameObjectManager * nextManager;    
 	virtual void SetManager(GameObjectManager * _manager);
 
 	List<GameObject*> children;

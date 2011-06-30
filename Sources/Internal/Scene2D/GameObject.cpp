@@ -82,6 +82,7 @@ GameObject::GameObject()
 #if defined(__DAVAENGINE_DEBUG__)
 	isDebugDraw = false;
 #endif
+    nextManager = 0;
 }
 	
 GameObject::~GameObject()

@@ -132,8 +132,16 @@ void GameObjectManager::AddObject(GameObject * _object)
 void GameObjectManager::RealAddObject(GameObject * _object)
 {
 	if (!_object)return;
-	DVASSERT(_object->GetManager() == 0);
-			 
+    
+    if (_object->dead)  // if object is dead we mark that it should be added on deletion from prev. manager
+    {
+        _object->nextManager = this;
+        return;
+    }else
+    {
+        DVASSERT(_object->GetManager() == 0);
+    }
+    
 	_object->Retain();
 	
 	//int objectsCount = objects.size();
@@ -243,6 +251,13 @@ void GameObjectManager::ProcessChangesStack()
 			}
 			object->dead = false;
 			object->SetManager(0);
+            
+            if (object->nextManager)
+            {
+                GameObjectManager * nextManager = object->nextManager;
+                object->nextManager = 0;
+                object->SetManager(nextManager);
+            }
 
 			SafeRelease(object);			
 		}
