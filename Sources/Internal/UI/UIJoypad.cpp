@@ -64,7 +64,7 @@ const Vector2 &UIJoypad::GetAnalogPosition()
 {
 	if(needRecalcAnalog)
 	{
-		RecalcDigitalPosition();
+		RecalcAnalogPosition();
 	}
 	return analogVector;
 }
@@ -134,11 +134,15 @@ void UIJoypad::RecalcDigitalPosition()
 	{
 		digitalVector.y = 0;
 	}
-	Logger::Info("x = %f, y = %f", digitalVector.x, digitalVector.y);
+//	Logger::Info("x = %f, y = %f", digitalVector.x, digitalVector.y);
 }
+    
 void UIJoypad::RecalcAnalogPosition()
 {
 	needRecalcAnalog = false;
+    analogVector.x = currentPos.x/(size.x/2);
+    analogVector.y = currentPos.y/(size.y/2);
+//    Logger::Info("x = %f, y = %f", analogVector.x, analogVector.y);
 }
 
 void UIJoypad::SetStickSprite(Sprite *stickSprite, int32 frame)
@@ -183,6 +187,10 @@ void UIJoypad::Input(UIEvent *currentInput)
 			currentPos.x = 0;
 			currentPos.y = 0;
 		}
+        currentPos.x = Max(currentPos.x, -size.x/2);
+        currentPos.x = Min(currentPos.x, size.x/2);
+        currentPos.y = Max(currentPos.y, -size.y/2);
+        currentPos.y = Min(currentPos.y, size.y/2);
 	}
     stick->relativePosition.x = size.x/2 + currentPos.x;
     stick->relativePosition.y = size.y/2 + currentPos.y;
