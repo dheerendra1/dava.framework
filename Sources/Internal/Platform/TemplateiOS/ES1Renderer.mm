@@ -55,11 +55,7 @@
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer);
 		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, colorRenderbuffer);
 		
-	
-		
-		
-		DAVA::RenderManager::Instance()->InitFBO(colorRenderbuffer, defaultFramebuffer);
-		[self setCurrentContext];
+        [self setCurrentContext];
 	}
 
 	return self;
@@ -139,6 +135,16 @@
 	context = nil;
 	
 	[super dealloc];
+}
+
+- (GLuint) getColorRenderbuffer
+{
+    return colorRenderbuffer;
+}
+
+- (GLuint) getDefaultFramebuffer
+{
+    return defaultFramebuffer;
 }
 
 @end

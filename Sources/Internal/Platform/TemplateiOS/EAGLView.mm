@@ -89,27 +89,35 @@
                                         [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
             
         DAVA::KeyedArchive * options = DAVA::Core::Instance()->GetOptions();
-        DAVA::float32 versionRequested = options->GetFloat("opengles.version", 1.0f);
-        DAVA::float32 versionCreated = 0.0f;
+        DAVA::Core::eRenderer rendererRequested = (DAVA::Core::eRenderer)options->GetInt("renderer", DAVA::Core::RENDERER_OPENGL_ES_1_0);
         
-        if (versionRequested == 2.0f)
+        DAVA::Core::eRenderer rendererCreated = DAVA::Core::RENDERER_OPENGL_ES_1_0;
+        
+        if (rendererRequested == DAVA::Core::RENDERER_OPENGL_ES_2_0)
         {
             //RenderManager::Instance()->SetRenderer(Core::RENDERER_OPENGL_ES_2_0);
             renderer = [[ES2Renderer alloc] init];
-            versionCreated = 2.0f;
+            rendererCreated = DAVA::Core::RENDERER_OPENGL_ES_2_0;
+            DAVA::RenderManager::Create(DAVA::Core::RENDERER_OPENGL_ES_2_0);
+            DAVA::RenderManager::Instance()->InitFBO([renderer getColorRenderbuffer], [renderer getDefaultFramebuffer]);
         }
         
 		if (!renderer)
 		{
             //RenderManager::Instance()->SetRenderer(Core::RENDERER_OPENGL_ES_1_0);
-			renderer = [[ES1Renderer alloc] init];
-			versionCreated = 1.0f;
+            renderer = [[ES1Renderer alloc] init];
+			rendererCreated = DAVA::Core::RENDERER_OPENGL_ES_1_0;
+			DAVA::RenderManager::Create(DAVA::Core::RENDERER_OPENGL_ES_1_0);
+            DAVA::RenderManager::Instance()->InitFBO([renderer getColorRenderbuffer], [renderer getDefaultFramebuffer]);
+
 			if (!renderer)
 			{
 				[self release];
 				return nil;
 			}
 		}
+        
+        DAVA::RenderManager::Instance()->Init(DAVA::Core::Instance()->GetPhysicalScreenWidth(), DAVA::Core::Instance()->GetPhysicalScreenHeight());
         
 		self.multipleTouchEnabled = YES;
 		animating = FALSE;
@@ -126,7 +134,7 @@
         if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
             displayLinkSupported = TRUE;
         
-        DAVA::Logger::Debug("OpenGL ES View Created successfully. Version: %0.1f (requested %0.1f) displayLink: %d", versionCreated, versionRequested, (int)displayLinkSupported);
+        DAVA::Logger::Debug("OpenGL ES View Created successfully. displayLink: %d", (int)displayLinkSupported);
     }
 	
     return self;

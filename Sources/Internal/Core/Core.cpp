@@ -96,7 +96,6 @@ void Core::CreateSingletons()
 	}
 	Logger::Debug("[Core::Create] successfull");
 
-	new RenderManager();
 	new LocalizationSystem();
 
 	new SystemTimer();
@@ -116,8 +115,16 @@ void Core::CreateSingletons()
 	Thread::InitMainThread();
 #endif
     
-    
     CheckDataTypeSizes();
+}
+
+// We do not create RenderManager until we know which version of render manager we want to create
+void Core::CreateRenderManager()
+{
+    KeyedArchive * options = GetOptions();
+    eRenderer renderer = (eRenderer)options->GetInt("renderer");
+    
+    RenderManager::Create(renderer);
 }
         
 void Core::ReleaseSingletons()
@@ -490,7 +497,9 @@ void Core::SystemAppStarted()
 	if (Core::Instance()->NeedToRecalculateMultipliers()) 
 	{
 		Core::Instance()->CalculateScaleMultipliers();
-		RenderManager::Instance()->SetRenderOrientation(Core::Instance()->GetScreenOrientation());
+		/*  Question to Hottych: Does it really necessary here? 
+            RenderManager::Instance()->SetRenderOrientation(Core::Instance()->GetScreenOrientation());
+         */
 	}
 
 	if (core)core->OnAppStarted();

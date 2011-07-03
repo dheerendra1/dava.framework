@@ -42,10 +42,47 @@ Shader::Shader()
     vertexShader = 0;
     fragmentShader = 0;
     program = 0;
+    
+    activeAttributes = 0;
+    activeUniforms = 0;
+
+    uniformIDs = 0;
+    uniformNames = 0;
+    uniformLocations = 0;
 }
+    
+String VertexTypeStringFromEnum(GLenum type)
+{
+    if (type == GL_FLOAT)return "GL_FLOAT";
+    else if (type == GL_FLOAT_VEC2)return "GL_FLOAT_VEC2";
+    else if (type == GL_FLOAT_VEC3)return "GL_FLOAT_VEC3";
+    else if (type == GL_FLOAT_VEC4)return "GL_FLOAT_VEC4";
+    else if (type == GL_FLOAT_MAT2)return "GL_FLOAT_MAT2";
+    else if (type == GL_FLOAT_MAT3)return "GL_FLOAT_MAT3";
+    else if (type == GL_FLOAT_MAT4)return "GL_FLOAT_MAT4";
+    return "";
+}
+    
+const char * UniformStrings[Shader::UNIFORM_COUNT] = 
+    {
+        "none",
+        "modelViewProjectionMatrix",
+    };
+    
+Shader::eUniform Shader::GetUniformByName(const char * name)
+{
+    for (int k = 0; k < UNIFORM_COUNT; ++k)
+        if (strcmp(name, UniformStrings[k]) == 0)return (Shader::eUniform)k; 
+    return Shader::UNIFORM_NONE;
+};
+
     
 bool Shader::LoadFromYaml(const String & pathname)
 {
+    String pathOnly, shaderFilename;
+    FileSystem::SplitPath(pathname, pathOnly, shaderFilename);
+    
+    
     YamlParser * parser = YamlParser::Create(pathname);
     if (!parser)
         return false;
@@ -63,6 +100,13 @@ bool Shader::LoadFromYaml(const String & pathname)
         SafeRelease(parser);
         return false;
     }
+
+    YamlNode * glslVertexNode = vertexShaderNode->Get("glsl");
+    if (!glslVertexNode)
+    {
+        SafeRelease(parser);
+        return false;
+    }
     
     YamlNode * fragmentShaderNode = rootNode->Get("fragmentShader");
     if (!fragmentShaderNode)
@@ -71,20 +115,32 @@ bool Shader::LoadFromYaml(const String & pathname)
         return false;
     }
     
-    String vertexShaderPath = vertexShaderNode->AsString();
+    YamlNode * glslFragmentNode = fragmentShaderNode->Get("glsl");
+    if (!glslFragmentNode)
+    {
+        SafeRelease(parser);
+        return false;
+    }
+    
+    
+    String vertexShaderPath = glslVertexNode->AsString();
     uint32 fileSize;
-    uint8 * bytes = FileSystem::Instance()->ReadFileContents(vertexShaderPath, fileSize);
-    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, 1, (GLchar*)bytes))
+    uint8 * bytes = FileSystem::Instance()->ReadFileContents(pathOnly + vertexShaderPath, fileSize);
+    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, fileSize, (GLchar*)bytes))
     {
         Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
+        SafeRelease(parser);
+        return false;
     }
     SafeDeleteArray(bytes);
     
-    String fragmentShaderPath = fragmentShaderNode->AsString();
-    uint8 * fbytes = FileSystem::Instance()->ReadFileContents(fragmentShaderPath, fileSize);
-    if (!CompileShader(&fragmentShader, GL_VERTEX_SHADER, 1, (GLchar*)fbytes))
+    String fragmentShaderPath = glslFragmentNode->AsString();
+    uint8 * fbytes = FileSystem::Instance()->ReadFileContents(pathOnly + fragmentShaderPath, fileSize);
+    if (!CompileShader(&fragmentShader, GL_FRAGMENT_SHADER, fileSize, (GLchar*)fbytes))
     {
         Logger::Error("Failed to compile fragment shader: %s", fragmentShaderPath.c_str());
+        SafeRelease(parser);
+        return false;
     }
     SafeDeleteArray(fbytes);
     
@@ -102,6 +158,38 @@ bool Shader::LoadFromYaml(const String & pathname)
         DeleteShaders();
         return false;
     }
+
+    
+    RENDER_VERIFY(glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes));
+                  
+    Logger::Debug("shader loaded: %s attributeCount: %d", pathname.c_str(), activeAttributes);
+
+    char attributeName[512];
+    for (int32 k = 0; k < activeAttributes; ++k)
+    {
+        GLint size;
+        GLenum type;
+        RENDER_VERIFY(glGetActiveAttrib(program, k, 512, 0, &size, &type, attributeName));
+        Logger::Debug("shader attr: %s size: %d type: %s", attributeName, size, VertexTypeStringFromEnum(type).c_str());
+    }
+ 
+    RENDER_VERIFY(glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms));
+    
+    uniformLocations = new GLint[activeUniforms];
+    uniformIDs = new eUniform[activeUniforms];
+    uniformNames = new String[activeUniforms];
+    for (int32 k = 0; k < activeUniforms; ++k)
+    {
+        GLint size;
+        GLenum type;
+        RENDER_VERIFY(glGetActiveUniform(program, k, 512, 0, &size, &type, attributeName));
+        eUniform uniform = GetUniformByName(attributeName);
+        //Logger::Debug("shader uniform: %s size: %d type: %s", attributeName, size, VertexTypeStringFromEnum(type).c_str());
+        uniformNames[k] = attributeName;
+        uniformLocations[k] = glGetUniformLocation(program, uniformNames[k].c_str());
+        uniformIDs[k] = uniform;
+        Logger::Debug("shader known uniform: %s size: %d type: %s", uniformNames[k].c_str(), size, VertexTypeStringFromEnum(type).c_str());
+    }
     
     return true;
 }
@@ -109,15 +197,20 @@ bool Shader::LoadFromYaml(const String & pathname)
     
 Shader::~Shader()
 {
+    SafeDeleteArray(uniformNames);
+    SafeDeleteArray(uniformIDs);
+    SafeDeleteArray(uniformLocations);
     DeleteShaders();
 }
 
 
 void Shader::DeleteShaders()
 {
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteProgram(program);
+    RENDER_VERIFY(glDetachShader(program, vertexShader));
+    RENDER_VERIFY(glDetachShader(program, fragmentShader));
+    RENDER_VERIFY(glDeleteShader(vertexShader));
+    RENDER_VERIFY(glDeleteShader(fragmentShader));
+    RENDER_VERIFY(glDeleteProgram(program));
 }
 
 /* Link a program with all currently attached shaders */
@@ -145,13 +238,13 @@ GLint Shader::LinkProgram(GLuint prog)
 }
     
 /* Create and compile a shader from the provided source(s) */
-GLint Shader::CompileShader(GLuint *shader, GLenum type, GLsizei count, const GLchar * sources)
+GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources)
 {
     GLint status;
     //const GLchar *sources;
         
     *shader = glCreateShader(type);				// create shader
-    glShaderSource(*shader, 1, &sources, NULL);	// set source code in the shader
+    glShaderSource(*shader, 1, &sources, &count);	// set source code in the shader
     glCompileShader(*shader);					// compile shader
     
 //#if defined(DEBUG)
@@ -174,6 +267,37 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLsizei count, const GL
     
     return status;
 }
+    
+void Shader::Set()
+{
+    glUseProgram(program);
+    
+    for (int32 k = 0; k < activeUniforms; ++k)
+    {
+        switch (uniformIDs[k])
+        {
+        case UNIFORM_MODEL_VIEW_PROJECTION_MATRIX:
+            
+            const Matrix4 & modelViewProj = RenderManager::Instance()->GetUniformMatrix(RenderManager::UNIFORM_MATRIX_MODELVIEWPROJECTION);
+            glUniformMatrix4fv(uniformLocations[k], 1, GL_FALSE, modelViewProj.data);
+        }
+    }
+    
+}
+    
+int32 Shader::FindUniformLocationByName(const String & name)
+{
+    for (int32 k = 0; k < activeUniforms; ++k)
+    {
+        if (uniformNames[k] == name)
+        {
+            return uniformLocations[k];
+        }
+    }
+    return -1;
+}
+    
+
 #endif 
 
 

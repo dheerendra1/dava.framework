@@ -38,6 +38,8 @@
 	EAGLView * glView; 
 }
 
+- (void) createGLView;
+
 @end
 #endif // #if defined(__DAVAENGINE_IPHONE__)
 

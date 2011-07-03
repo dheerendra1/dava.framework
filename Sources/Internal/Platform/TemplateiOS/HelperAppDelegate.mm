@@ -84,9 +84,7 @@ int DAVA::Core::Run(int argc, char * argv[], AppHandle handle)
 		}
 		
 	}
-	
-	DAVA::RenderManager::Instance()->Init(DAVA::Core::Instance()->GetPhysicalScreenWidth(), DAVA::Core::Instance()->GetPhysicalScreenHeight());
-	
+		
 	int retVal = UIApplicationMain(argc, argv, nil, nil);
 	
 	[pool release];

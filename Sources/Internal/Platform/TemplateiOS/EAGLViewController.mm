@@ -44,23 +44,42 @@
     return self;
 }
 */
+- (id) init
+{
+    if (self = [super init])
+    {
+        glView = nil;
+        [self createGLView];
+    }
+    return self;
+}
+
+- (void) createGLView
+{
+    if (!glView)
+    {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        {
+            glView = [[EAGLView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+        }
+        else
+        {
+            // The device is an iPhone or iPod touch.
+            glView = [[EAGLView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+        } 
+    }    
+}
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView 
 {
 	// To Hottych: Here should be proper initialization code ??? I mean, size of this view for iPhone / iPhone 4 / iPad
 	// Check please what should be here
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	{
-		glView = [[EAGLView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
-	}
-	else
-	{
-		// The device is an iPhone or iPod touch.
-		glView = [[EAGLView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-	}
-	self.view = glView;
-	[glView release];
+	[self createGLView];
+    
+    self.view = glView;
+//	[glView release];
+//   glView = nil;
 }
 
 /*
@@ -94,6 +113,8 @@
 
 - (void)dealloc 
 {
+    [glView release];
+    glView = nil;
     [super dealloc];
 }
 
