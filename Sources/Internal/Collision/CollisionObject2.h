@@ -56,6 +56,8 @@ public:
 		So you should give him polygon that will be alive till the end of live of collision object
 	 */
 	void SetType(eType type);
+	
+	/// NOTE! Polygon2 pointer must be valid as long as CollisionObject2 lives!
 	void SetPolygon(Polygon2 * p);
 		
 	void Update(const Sprite::DrawState & state);
