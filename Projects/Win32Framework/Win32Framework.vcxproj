@@ -466,6 +466,7 @@
     <ClCompile Include="..\..\Sources\Internal\Render\RenderHelper.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderManager.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderManagerDX.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\RenderManagerFactory.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderManagerGL.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderResource.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderStateBlock.cpp" />

@@ -1011,13 +1011,13 @@ void Sprite::Draw()
             //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
             //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
             
-            RenderManager::Instance()->
-            
-            glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
-            glEnableVertexAttribArray(1);
-
+//             RenderManager::Instance()->
+//             
+//             glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
+//             glEnableVertexAttribArray(0);
+//             glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
+//             glEnableVertexAttribArray(1);
+// 
             //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
             //glEnableVertexAttribArray(ATTRIB_COLOR);
 
