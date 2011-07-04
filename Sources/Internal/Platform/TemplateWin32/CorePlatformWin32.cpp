@@ -182,6 +182,7 @@ namespace DAVA
 		// fix ugly ATI driver bugs. Thanks to ariaci (Taken from Irrlight).
 		MoveWindow(hWindow, windowLeft, windowTop, realWidth, realHeight, TRUE);
 	
+		RenderManager::Create(Core::RENDERER_DIRECTX9);
 		RenderManager::Instance()->Create(hInstance, hWindow);
 
 		FrameworkDidLaunched();

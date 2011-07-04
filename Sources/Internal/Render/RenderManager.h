@@ -133,10 +133,12 @@ public:
      GLuint should be equal size as uint32
      */
 	void InitFBO(uint32 viewRenderbuffer, uint32 viewFramebuffer);
+#if defined (__DAVAENGINE_OPENGL__)
     void InitGL20();
     void ReleaseGL20();
     Shader * colorOnly;
     Shader * colorWithTexture;
+#endif 
     
 private:
 	RenderManager::Caps caps;

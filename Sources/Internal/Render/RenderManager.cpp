@@ -100,18 +100,22 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 #endif
 	cursor = 0;
     
+#if defined(__DAVAENGINE_OPENGL__)
     if (renderer == Core::RENDERER_OPENGL_ES_2_0)
     {
         InitGL20();
     }
+#endif
 }
 	
 RenderManager::~RenderManager()
 {
+#if defined(__DAVAENGINE_OPENGL__)
     if (renderer == Core::RENDERER_OPENGL_ES_2_0)
     {
         ReleaseGL20();
     }
+#endif
 
 	SafeRelease(cursor);
 	Logger::Debug("[RenderManager] released");
