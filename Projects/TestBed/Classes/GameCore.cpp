@@ -56,7 +56,7 @@ GameCore::~GameCore()
 
 void GameCore::OnAppStarted()
 {
-	RenderManager::Instance()->SetFPS(60);
+//	RenderManager::Instance()->SetFPS(60);
 
 
 	Logger::Debug("long %d", sizeof(long));
@@ -66,7 +66,7 @@ void GameCore::OnAppStarted()
 
 // 	testScreen = new TestScreen();
  	anim3dScreen = new AnimationTestScreen();
-// 	spriteBasicsScreen = new SpriteBasicsScreen();
+ 	spriteBasicsScreen = new SpriteBasicsScreen();
 // 	clipTestScreen = new ClipTestScreen();
  	renderTargetTestScreen = new RenderTargetTestScreen();
 	particleTestScreen = new ParticleTestScreen();
@@ -76,10 +76,10 @@ void GameCore::OnAppStarted()
 // 	box2dGameObjectTestScreen = new Box2DGameObjectTestScreen();
  	stScreen = new StaticTextScreen();
 // 	collisionTestScreen = new CollisionTestScreen();
-	
+    
 //	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
-// 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE_BASICS, spriteBasicsScreen);
+ 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE_BASICS, spriteBasicsScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_CLIP_TEST, clipTestScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_RENDERTARGET_TEST, renderTargetTestScreen);
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_PARTICLE_TEST, particleTestScreen);
@@ -89,20 +89,9 @@ void GameCore::OnAppStarted()
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_BOX2D_GAME_OBJECTS_TEST, box2dGameObjectTestScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
-
-//	UIScreenManager::Instance()->SetFirst(SCREEN_CLIP_TEST);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE_BASICS);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_TEST);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_RENDERTARGET_TEST);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_GAME_OBJECTS_TEST);
-	
-//	UIScreenManager::Instance()->SetFirst(SCREEN_PARTICLE_TEST);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_FONT_USAGE);
-//	UIScreenManager::Instance()->SetFirst(SCREEN_COLLISION_TEST);	
-	UIScreenManager::Instance()->SetFirst(SCREEN_PARTICLE_TEST);
-//  UIScreenManager::Instance()->SetFirst(SCREEN_STATIC_TEXT);
+    
+	UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE_BASICS);
 	cursor = 0;
-	
 }
 
 void GameCore::OnAppFinished()
@@ -115,7 +104,7 @@ void GameCore::OnAppFinished()
 // 	SafeRelease(fontUsageScreen);
 // 	SafeRelease(testScreen);
  	SafeRelease(anim3dScreen);
-// 	SafeRelease(spriteBasicsScreen);
+ 	SafeRelease(spriteBasicsScreen);
 // 	SafeRelease(clipTestScreen);
  	SafeRelease(renderTargetTestScreen);
 	SafeRelease(particleTestScreen);

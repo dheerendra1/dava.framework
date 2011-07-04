@@ -159,6 +159,8 @@ namespace DAVA
 	// launch framework and setup all preferences
 	FrameworkDidLaunched();
 	
+	Core::Instance()->CreateRenderManager();
+	
 		// do all ground work & setup window itself according to value specified by user
 	KeyedArchive * options = DAVA::Core::GetOptions();
 	int32 width = options->GetInt("width", 800);

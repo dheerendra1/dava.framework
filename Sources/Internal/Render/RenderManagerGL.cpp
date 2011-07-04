@@ -34,6 +34,7 @@
 #include "Utils/Utils.h"
 #include "Core/Core.h"
 #include "Render/OGLHelpers.h"
+#include "Render/Shader.h"
 
 #ifdef __DAVAENGINE_OPENGL__
 
@@ -126,6 +127,7 @@ bool RenderManager::IsDeviceLost()
 
 void RenderManager::BeginFrame()
 {
+    
 	RENDER_VERIFY(glViewport(0, 0, frameBufferWidth, frameBufferHeight));
 	
 	SetRenderOrientation(Core::Instance()->GetScreenOrientation());
@@ -136,6 +138,7 @@ void RenderManager::BeginFrame()
 	DVASSERT(renderEffectStack.empty());
 	Reset();
 	isInsideDraw = true;
+    ClearUniformMatrices();
 }
 	
 //void RenderManager::SetDrawOffset(const Vector2 &offset)
@@ -689,6 +692,30 @@ void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
     glLoadMatrixf(matrix.data);
     matrices[type] = matrix;
 }
+    
+    
+void RenderManager::InitGL20()
+{
+    colorOnly = 0;
+    colorWithTexture = 0;
+    
+    
+    colorOnly = new Shader();
+    colorOnly->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
+    colorWithTexture = new Shader();
+    colorWithTexture->LoadFromYaml("~res:/Shaders/Default/fixed_func_texture.shader");
+        
+    
+}
+
+void RenderManager::ReleaseGL20()
+{
+    SafeRelease(colorOnly);
+    SafeRelease(colorWithTexture);
+}
+
+
+
 
 
 };

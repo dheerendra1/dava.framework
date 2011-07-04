@@ -48,7 +48,7 @@ namespace DAVA
 
 	
 class Texture;
-
+class Shader;
 #if defined(__DAVAENGINE_DIRECTX9__)
 //#include "D3DInitialize.h"
 #endif // __DAVAENGINE_DIRECTX9__
@@ -68,10 +68,14 @@ public:
         Core::eRenderer renderer;
 		bool            isHardwareCursorSupported;
 	};
+    
+    static void Create(Core::eRenderer renderer);
 
-
-	RenderManager();
+	RenderManager(Core::eRenderer renderer);
 	virtual ~RenderManager();
+    
+    
+    Core::eRenderer GetRenderer() { return renderer; };
 
 	/** 
 	 \brief Inits
@@ -119,9 +123,27 @@ public:
 	void DetectRenderingCapabilities();
 	const RenderManager::Caps & GetCaps();
     
+    
+	/** 
+	 \brief Init FBO system function
+	 \param[in] viewRenderbuffer
+	 \param[in] viewFramebuffer
+	 */
+	/*
+     GLuint should be equal size as uint32
+     */
+	void InitFBO(uint32 viewRenderbuffer, uint32 viewFramebuffer);
+#if defined (__DAVAENGINE_OPENGL__)
+    void InitGL20();
+    void ReleaseGL20();
+    Shader * colorOnly;
+    Shader * colorWithTexture;
+#endif 
+    
 private:
 	RenderManager::Caps caps;
-
+    Core::eRenderer renderer;
+    
 public:
 	/** 
 	 \brief 
@@ -352,17 +374,6 @@ public:
      */
     void ClearDepthBuffer(float32 depth = 1.0f);
 	
-		
-	/** 
-	 \brief Init FBO system function
-	 \param[in] viewRenderbuffer
-	 \param[in] viewFramebuffer
-	 */
-	/*
-		GLuint should be equal size as uint32
-	*/
-	void InitFBO(uint32 viewRenderbuffer, uint32 viewFramebuffer);
-
 	/** 
 	 \brief Sets the sprite to use as a render target. Sprite should be created with CreateAsRenderTarget method.
 			Call RestoreRenderTarget when you finish drawing to your sprite 
@@ -451,10 +462,17 @@ public:
         MATRIX_COUNT,
     };
     
+    enum eUniformMatrixType
+    {
+        UNIFORM_MATRIX_MODELVIEWPROJECTION = 0,
+        UNIFORM_MATRIX_COUNT,
+    };
+    
     void SetMatrix(eMatrixType type, const Matrix4 & matrix);
     const Matrix4 & GetMatrix(eMatrixType type);
-    
-    
+    const Matrix4 & GetUniformMatrix(eUniformMatrixType type);
+    void  ClearUniformMatrices();
+
 
 	/**
 		\brief This function sets hardware cursor to render manager
@@ -477,6 +495,8 @@ private:
     // 
     
     Matrix4 matrices[MATRIX_COUNT];
+    int32   uniformMatrixFlags[UNIFORM_MATRIX_COUNT];
+    Matrix4 uniformMatrices[UNIFORM_MATRIX_COUNT];
     
 
 

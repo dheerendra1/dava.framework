@@ -1472,5 +1472,8 @@
     <ClCompile Include="..\..\Sources\Internal\Utils\Utils.cpp">
       <Filter>Internal\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\RenderManagerFactory.cpp">
+      <Filter>Internal\Render</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

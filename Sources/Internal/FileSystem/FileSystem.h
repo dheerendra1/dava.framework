@@ -132,7 +132,7 @@ public:
 	/**
 		\brief Split path to file into path and filename
 		\param[in] filepath inputpath to some file 
-		\param[out] path path to the input file
+		\param[out] path path to the input file (always with trailing backslash character ('/').)
 		\param[out] filename filename of the input file
 	 */
 	static void	SplitPath(const String & filepath, String & path, String & filename);

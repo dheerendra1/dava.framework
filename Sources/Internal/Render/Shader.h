@@ -50,13 +50,23 @@ public:
 class Shader : public RenderResource
 {
 public:
+    enum eUniform
+    {
+        UNIFORM_NONE = 0, 
+        UNIFORM_MODEL_VIEW_PROJECTION_MATRIX,  // gl_ModelViewProjectionMatrix
+        UNIFORM_COLOR,
+        UNIFORM_COUNT,
+    };
+    
+    
     Shader();
     virtual ~Shader();
     
     // virtual void SetActiveShader(const String & string);
     virtual bool LoadFromYaml(const String & pathname);
     virtual void Set();
-    virtual uint32 GetInParams(); 
+    virtual int32 FindUniformLocationByName(const String & name);
+//  virtual uint32 GetInParams(); 
 
 private:
 #if defined(__DAVAENGINE_DIRECTX9__)
@@ -67,9 +77,16 @@ private:
     GLuint fragmentShader;
     GLuint program;
     
-    GLint CompileShader(GLuint *shader, GLenum type, GLsizei count, const GLchar * sources);    
+    GLint activeAttributes;
+    GLint activeUniforms;
+    eUniform *uniformIDs;
+    String * uniformNames;
+    GLint * uniformLocations;
+    
+    GLint CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources);    
     GLint LinkProgram(GLuint prog);
     void DeleteShaders();
+    eUniform GetUniformByName(const char * name);
 #endif
 };
 };
