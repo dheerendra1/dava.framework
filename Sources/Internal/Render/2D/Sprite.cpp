@@ -1008,6 +1008,7 @@ void Sprite::Draw()
             
             RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
         }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
+<<<<<<< HEAD
         {
             //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
             //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
@@ -1022,6 +1023,9 @@ void Sprite::Draw()
             //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
             //glEnableVertexAttribArray(ATTRIB_COLOR);
             RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+=======
+        {          
+>>>>>>> master
         }
 	}
 
