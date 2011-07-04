@@ -244,6 +244,8 @@ public:
 	 \returns 
 	 */
 	float GetColorA();
+    
+    const Color & GetColor() const;
 	
 	/** 
 	 \brief 
@@ -550,8 +552,8 @@ private:
 	uint32 fboViewFramebuffer;
 
 	// state information
-	float oldR, oldG, oldB, oldA;
-	float newR, newG, newB, newA;
+	Color oldColor;
+	Color newColor;
 	eBlendMode oldSFactor, oldDFactor;
 	eBlendMode newSFactor, newDFactor;
 	Texture *currentTexture;

@@ -423,21 +423,18 @@ void RenderManager::FlushState()
 		oldSFactor = newSFactor;
 		oldDFactor = newDFactor;
 	}
-	if(oldR != newR || oldG != newG || oldB != newB || oldA != newA)
+	if(oldColor != newColor)
 	{
 		if(!currentRenderEffect)
 		{
-			RENDER_VERIFY(glColor4f(newR * newA, newG * newA, newB * newA, newA));
+			RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
 		}
 		else
 		{
-			currentRenderEffect->SetColor(newR, newG, newB, newA);
+			currentRenderEffect->SetColor(newColor.r, newColor.g, newColor.b, newColor.a);
 		}
-		oldR = newR;
-		oldG = newG;
-		oldB = newB;
-		oldA = newA;
-	}
+		oldColor = newColor;
+	}   
 	if(newTextureEnabled != oldTextureEnabled)
 	{
 		if(newTextureEnabled)

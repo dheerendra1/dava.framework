@@ -67,6 +67,7 @@ const char * UniformStrings[Shader::UNIFORM_COUNT] =
     {
         "none",
         "modelViewProjectionMatrix",
+        "flatColor",
     };
     
 Shader::eUniform Shader::GetUniformByName(const char * name)
@@ -277,9 +278,20 @@ void Shader::Set()
         switch (uniformIDs[k])
         {
         case UNIFORM_MODEL_VIEW_PROJECTION_MATRIX:
+            {    
+                const Matrix4 & modelViewProj = RenderManager::Instance()->GetUniformMatrix(RenderManager::UNIFORM_MATRIX_MODELVIEWPROJECTION);
+                glUniformMatrix4fv(uniformLocations[k], 1, GL_FALSE, modelViewProj.data);
+                break;
+            }
+        case UNIFORM_COLOR:
+            {
+                const Color & c = RenderManager::Instance()->GetColor();
+                glUniform4fv(uniformLocations[k], 1, &c.r);
+                break;
+            }       
+        default:
             
-            const Matrix4 & modelViewProj = RenderManager::Instance()->GetUniformMatrix(RenderManager::UNIFORM_MATRIX_MODELVIEWPROJECTION);
-            glUniformMatrix4fv(uniformLocations[k], 1, GL_FALSE, modelViewProj.data);
+            break;
         }
     }
     

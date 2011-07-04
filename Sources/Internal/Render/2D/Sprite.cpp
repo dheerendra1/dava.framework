@@ -35,6 +35,7 @@
 #include "Platform/SystemTimer.h"
 #include "FileSystem/File.h"
 #include "Core/Core.h"
+#include "Render/Shader.h"
 
 namespace DAVA 
 {
@@ -1010,8 +1011,8 @@ void Sprite::Draw()
         {
             //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
             //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
-            
-            RenderManager::Instance()->
+            // Master
+            RenderManager::Instance()->colorWithTexture->Set();
             
             glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
             glEnableVertexAttribArray(0);
@@ -1020,8 +1021,7 @@ void Sprite::Draw()
 
             //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
             //glEnableVertexAttribArray(ATTRIB_COLOR);
-
-            
+            RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
         }
 	}
 

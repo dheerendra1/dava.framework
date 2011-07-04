@@ -32,6 +32,7 @@
 #include "Render/2D/Sprite.h"
 #include "Utils/Utils.h"
 #include "Core/Core.h"
+#include "Render/Shader.h"
 
 namespace DAVA
 {
@@ -42,14 +43,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	Logger::Debug("[RenderManager] created");
     renderer = _renderer;
     
-	oldR = 0;
-	oldG = 0;
-	oldB = 0;
-	oldA = 0;
-	newR = 0;
-	newG = 0;
-	newB = 0;
-	newA = 0;
+	oldColor = Color::Clear();
+    newColor = Color::Clear();
+
 	oldSFactor = BLEND_NONE;
 	oldDFactor = BLEND_NONE;
 	newSFactor = BLEND_NONE;
@@ -136,7 +132,7 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 
 void RenderManager::Reset()
 {
-	oldR = oldG = oldB = oldA = -1;
+	oldColor.r = oldColor.g = oldColor.b = oldColor.a = -1.0f;
 	ResetColor();
 //#if defined(__DAVAENGINE_OPENGL__)
 	oldSFactor = oldDFactor = BLEND_NONE;
@@ -185,43 +181,45 @@ int32 RenderManager::GetScreenHeight()
 
 void RenderManager::SetColor(float r, float g, float b, float a)
 {
-	newR = r;
-	newG = g;
-	newB = b;
-	newA = a;
+	newColor.r = r;
+	newColor.g = g;
+	newColor.b = b;
+	newColor.a = a;
 }
 	
 void RenderManager::SetColor(const Color & _color)
 {
-	newR = _color.r;
-	newG = _color.g;
-	newB = _color.b;
-	newA = _color.a;
+	newColor = _color;
 }
 	
 float RenderManager::GetColorR()
 {
-	return newR;
+	return newColor.r;
 }
 	
 float RenderManager::GetColorG()
 {
-	return newG;
+	return newColor.g;
 }
 	
 float RenderManager::GetColorB()
 {
-	return newB;
+	return newColor.b;
 }
 	
 float RenderManager::GetColorA()
 {
-	return newA;
+	return newColor.a;
+}
+    
+const Color & RenderManager::GetColor() const
+{
+    return newColor;
 }
 
 void RenderManager::ResetColor()
 {
-	newA = newR = newG = newB = 1.0f;
+	newColor.r = newColor.g = newColor.b = newColor.a = 1.0f;
 }
 	
 	
