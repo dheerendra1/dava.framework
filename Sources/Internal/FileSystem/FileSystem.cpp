@@ -467,7 +467,7 @@ void  FileSystem::SplitPath(const String & filePath, String & path, String & fil
 	}
 	else
 	{
-		path = fullPath.substr(0,lastSlashPos);
+		path = fullPath.substr(0, lastSlashPos) + '/';
 		filename = fullPath.substr(lastSlashPos + 1, fullPath.size() - lastSlashPos - 1);
 	}
 }

@@ -970,41 +970,59 @@ void Sprite::Draw()
 	}
 	else
 	{
-		RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-		RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
+        if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_1_0)
+        {
+            RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
+            RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
+            RenderManager::Instance()->FlushState();
 
-		RenderManager::Instance()->FlushState();
+            if(flags & EST_ROTATE)
+            {
+                //SLOW CODE
+            
+    //			glPushMatrix();
+    //			glTranslatef(drawCoord.x, drawCoord.y, 0);
+    //			glRotatef(RadToDeg(rotateAngle), 0.0f, 0.0f, 1.0f);
+    //			glTranslatef(-drawCoord.x, -drawCoord.y, 0);
+    //			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+    //			glPopMatrix();
+                
 
-		if(flags & EST_ROTATE)
-		{
-			//SLOW CODE
-		
-//			glPushMatrix();
-//			glTranslatef(drawCoord.x, drawCoord.y, 0);
-//			glRotatef(RadToDeg(rotateAngle), 0.0f, 0.0f, 1.0f);
-//			glTranslatef(-drawCoord.x, -drawCoord.y, 0);
-//			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-//			glPopMatrix();
-			
+                // Optimized code
+                float32 sinA = sinf(rotateAngle);
+                float32 cosA = cosf(rotateAngle);
+                for(int32 k = 0; k < 4; ++k)
+                {
+                    float32 x = tempVertices[(k << 1)] - drawCoord.x;
+                    float32 y = tempVertices[(k << 1) + 1] - drawCoord.y;
+                
+                    float32 nx = (x) * cosA  - (y) * sinA + drawCoord.x;
+                    float32 ny = (x) * sinA  + (y) * cosA + drawCoord.y;
 
-			// Optimized code
-			float32 sinA = sinf(rotateAngle);
-			float32 cosA = cosf(rotateAngle);
-			for(int32 k = 0; k < 4; ++k)
-			{
-				float32 x = tempVertices[(k << 1)] - drawCoord.x;
-				float32 y = tempVertices[(k << 1) + 1] - drawCoord.y;
-			
-				float32 nx = (x) * cosA  - (y) * sinA + drawCoord.x;
-				float32 ny = (x) * sinA  + (y) * cosA + drawCoord.y;
+                    tempVertices[(k << 1)] = nx;
+                    tempVertices[(k << 1) + 1] = ny;
+                }
+                
+            }
+            
+            RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+        }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
+        {
+            //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
+            //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
+            
+            RenderManager::Instance()->
+            
+            glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
+            glEnableVertexAttribArray(1);
 
-				tempVertices[(k << 1)] = nx;
-				tempVertices[(k << 1) + 1] = ny;
-			}
-			
-		}
-		
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+            //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
+            //glEnableVertexAttribArray(ATTRIB_COLOR);
+
+            
+        }
 	}
 
 	Reset();

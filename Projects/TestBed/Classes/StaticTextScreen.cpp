@@ -32,8 +32,6 @@
 
 void StaticTextScreen::LoadResources()
 {
-
-	
 	Font *fnt;
 //	fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
 	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");

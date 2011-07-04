@@ -37,9 +37,10 @@ namespace DAVA
 {
 
 
-RenderManager::RenderManager()
+RenderManager::RenderManager(Core::eRenderer _renderer)
 {
 	Logger::Debug("[RenderManager] created");
+    renderer = _renderer;
     
 	oldR = 0;
 	oldG = 0;
@@ -98,10 +99,20 @@ RenderManager::RenderManager()
 	backBufferSurface = 0;
 #endif
 	cursor = 0;
+    
+    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
+    {
+        InitGL20();
+    }
 }
 	
 RenderManager::~RenderManager()
 {
+    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
+    {
+        ReleaseGL20();
+    }
+
 	SafeRelease(cursor);
 	Logger::Debug("[RenderManager] released");
 }
@@ -635,6 +646,24 @@ const Matrix4 & RenderManager::GetMatrix(eMatrixType type)
 {
     return matrices[type];
 }
-	
+
+const Matrix4 & RenderManager::GetUniformMatrix(eUniformMatrixType type)
+{
+    if (uniformMatrixFlags[type] == 0)
+    {
+        if (type == UNIFORM_MATRIX_MODELVIEWPROJECTION)
+        {
+            uniformMatrices[type] = matrices[MATRIX_MODELVIEW] * matrices[MATRIX_PROJECTION];
+        }
+        uniformMatrixFlags[type] = 1; // matrix is ready
+    }
+    return uniformMatrices[type];
+}
+    
+void RenderManager::ClearUniformMatrices()
+{
+    for (int32 k = 0; k < UNIFORM_MATRIX_COUNT; ++k)
+        uniformMatrixFlags[k] = 0;
+}
 	
 };

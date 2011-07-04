@@ -34,13 +34,16 @@
 
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/EAGLDrawable.h>
+#import <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES2/gl.h>
 
 @protocol ESRenderer <NSObject>
 
 - (void) startRendering;
 - (void) endRendering;
 - (BOOL) resizeFromLayer:(CAEAGLLayer *)layer;
-
+- (GLuint) getColorRenderbuffer;
+- (GLuint) getDefaultFramebuffer;
 - (void) setCurrentContext;
 @end
 

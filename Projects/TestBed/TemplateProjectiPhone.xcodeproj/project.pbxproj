@@ -12,6 +12,7 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		4751F96A12CB9FE800AB961C /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */; };
 		47A1101D12CBCAF8003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */; };
+		FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */; };
 		FE76D9EE1163F2F0009E83B6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */; };
 		FE76D9EF1163F2F0009E83B6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9ED1163F2F0009E83B6 /* OpenGLES.framework */; };
 		FE76D9F71163F304009E83B6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9F51163F304009E83B6 /* AVFoundation.framework */; };
@@ -67,6 +68,8 @@
 		47A1101B12CBCAF8003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticTextScreen.h; sourceTree = "<group>"; };
 		47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTextScreen.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TemplateProjectiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyLineEditControl.cpp; sourceTree = "<group>"; };
+		FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyLineEditControl.h; sourceTree = "<group>"; };
 		FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE76D9ED1163F2F0009E83B6 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		FE76D9F51163F304009E83B6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -139,10 +142,10 @@
 				FEA0293412E392F800935314 /* CollisionTestScreen.cpp */,
 				47A1101B12CBCAF8003E267E /* StaticTextScreen.h */,
 				47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */,
-				4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */,
 				4751F96912CB9FE800AB961C /* FontUsageScreen.h */,
-				FEC3CBC01284374A00541220 /* AnimationTestScreen.cpp */,
+				4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */,
 				FEC3CBC11284374A00541220 /* AnimationTestScreen.h */,
+				FEC3CBC01284374A00541220 /* AnimationTestScreen.cpp */,
 				FEC3CBC21284374A00541220 /* AppScreens.h */,
 				FEC3CBC31284374A00541220 /* ClipTestScreen.cpp */,
 				FEC3CBC41284374A00541220 /* ClipTestScreen.h */,
@@ -168,6 +171,8 @@
 				FED26094128981F1004E9733 /* GameObjectTestScreen.h */,
 				FEF4E03312CD07DD004B850E /* Box2DGameObjectTestScreen.cpp */,
 				FEF4E03412CD07DD004B850E /* Box2DGameObjectTestScreen.h */,
+				FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */,
+				FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				FEF4E03512CD07DD004B850E /* Box2DGameObjectTestScreen.cpp in Sources */,
 				FEA0293612E392F800935314 /* CollisionTestScreen.cpp in Sources */,
 				FECFB8A912E597B100C71562 /* main.mm in Sources */,
+				FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -71,8 +71,12 @@ namespace DAVA
 							SCREEN_ORIENTATION_PORTRAIT,
 							SCREEN_ORIENTATION_PORTRAIT_UPSIDE_DOWN<br/>
  
-            opengles.version: 1, 2. <br/>
-            If you using 1 app will be initialized with OpenGL ES 1.1, if you are using 2 app will be initiazed with OpenGL 2.0
+            renderer:         
+                RENDERER_OPENGL_ES_1_0, 
+                RENDERER_OPENGL_ES_2_0, 
+                RENDERER_OPENGL,        
+                RENDERER_DIRECTX9       <br/>
+           
 			
 			\section all All platforms
 			zbuffer: 1	<br/>
@@ -116,7 +120,6 @@ public:
         RENDERER_OPENGL_ES_1_0, // 1.0 compatible OpenGL ES. Old generation iOS / Android devices. 
         RENDERER_OPENGL_ES_2_0, // 2.0 compatible OpenGL ES. New generation iOS / Android devices. 
         RENDERER_OPENGL,        // here we assuming that it's 2.0 compatible. Renderer for MacOS X. 
-        
         RENDERER_DIRECTX9,      // only renderer that works on win platforms right now. 
 //        RENDERER_DIRECTX10,   // written for self-motivation
 //        RENDERER_DIRECTX11,   // written for self-motivation
@@ -136,8 +139,11 @@ public:
 	static int Run(int argc, char *argv[], AppHandle handle = 0);
 	static int RunCmdTool(int argc, char *argv[], AppHandle handle = 0);
 
-	
+	// Should be called in platform initialization before FrameworkDidLaunched
 	void CreateSingletons();
+    // Should be called after framework did launched to initialize proper render manager
+    void CreateRenderManager();
+    // Should be called after full release
 	void ReleaseSingletons();
 
 	Vector<String> & GetCommandLine(); 

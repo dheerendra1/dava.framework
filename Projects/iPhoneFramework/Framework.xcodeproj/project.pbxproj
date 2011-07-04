@@ -17,6 +17,7 @@
 		FE0A4FF8134B15AB001EAA90 /* Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0A4FF5134B15AB001EAA90 /* Cursor.h */; };
 		FE0A4FF9134B15AB001EAA90 /* CursorMacOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE0A4FF6134B15AB001EAA90 /* CursorMacOS.mm */; };
 		FE0A4FFA134B15AB001EAA90 /* CursorWin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0A4FF7134B15AB001EAA90 /* CursorWin32.cpp */; };
+		FE203F3F13BCCD3400350E9A /* RenderManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE203F3E13BCCD3400350E9A /* RenderManagerFactory.cpp */; };
 		FE4E01E513AAA9D00013464E /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4E01E313AAA9D00013464E /* Camera.cpp */; };
 		FE4E01E613AAA9D00013464E /* Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4E01E413AAA9D00013464E /* Camera.h */; };
 		FE4E01E913AAA9EF0013464E /* UI3DView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4E01E713AAA9EF0013464E /* UI3DView.cpp */; };
@@ -622,6 +623,7 @@
 		FE0A4FF5134B15AB001EAA90 /* Cursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursor.h; sourceTree = "<group>"; };
 		FE0A4FF6134B15AB001EAA90 /* CursorMacOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CursorMacOS.mm; sourceTree = "<group>"; };
 		FE0A4FF7134B15AB001EAA90 /* CursorWin32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorWin32.cpp; sourceTree = "<group>"; };
+		FE203F3E13BCCD3400350E9A /* RenderManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManagerFactory.cpp; sourceTree = "<group>"; };
 		FE4E01E313AAA9D00013464E /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		FE4E01E413AAA9D00013464E /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		FE4E01E713AAA9EF0013464E /* UI3DView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UI3DView.cpp; sourceTree = "<group>"; };
@@ -2036,6 +2038,7 @@
 				FECFB3F912E5904400C71562 /* RenderGrayscaleEffect.h */,
 				FECFB3FA12E5904400C71562 /* RenderHelper.cpp */,
 				FECFB3FB12E5904400C71562 /* RenderHelper.h */,
+				FE203F3E13BCCD3400350E9A /* RenderManagerFactory.cpp */,
 				FECFB3FC12E5904400C71562 /* RenderManager.cpp */,
 				FECFB3FD12E5904400C71562 /* RenderManager.h */,
 				FECFB3FE12E5904400C71562 /* RenderManagerDX.cpp */,
@@ -2936,6 +2939,7 @@
 				FE5DB8A313B8D62400C00F98 /* Shader.cpp in Sources */,
 				FE5DB8A513B8D62400C00F98 /* ShaderDX.cpp in Sources */,
 				FE5DB8A613B8D62400C00F98 /* ShaderGL.cpp in Sources */,
+				FE203F3F13BCCD3400350E9A /* RenderManagerFactory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
