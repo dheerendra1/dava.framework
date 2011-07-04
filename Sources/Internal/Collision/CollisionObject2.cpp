@@ -40,6 +40,7 @@ CollisionObject2::CollisionObject2(eType _type)
 {
 	type = _type;
 	updateFrameIndex = 0;
+	basePolygon = NULL;
 }
 
 CollisionObject2::~CollisionObject2()
