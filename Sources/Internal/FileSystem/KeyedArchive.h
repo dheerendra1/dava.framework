@@ -182,6 +182,17 @@ public:
 	 \param[in] file to save
 	 */
 	bool Save(File *file);
+
+	/**
+		\brief Deletes named key.
+		\param[in] key name of the key to delete
+	 */
+	void DeleteKey(const String & key);
+
+	/**
+		\brief Deletes all keys, making archive empty.
+	 */
+	void DeleteAllKeys();
 	
 
 //	yaml
