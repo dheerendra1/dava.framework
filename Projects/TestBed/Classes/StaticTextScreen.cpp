@@ -33,8 +33,8 @@
 void StaticTextScreen::LoadResources()
 {
 	Font *fnt;
-//	fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
-	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
+	fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+//	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
 	fnt->SetSize(12);
 //	fnt->SetSize(12);
 //	fnt->SetVerticalSpacing(-1);

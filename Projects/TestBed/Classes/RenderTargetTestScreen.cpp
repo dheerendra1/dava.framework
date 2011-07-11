@@ -37,7 +37,7 @@ void RenderTargetTestScreen::LoadResources()
 	blueSprite = Sprite::Create("~res:/Gfx/SpriteBasics/bluesprite");
 	tranclucentSprite = Sprite::Create("~res:/Gfx/SpriteBasics/transclucentsprite");
 	zebraSprite = Sprite::Create("~res:/Gfx/SpriteBasics/zebrasprite");
-	
+    
 	renderTargetRGBA8888 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGBA8888);
 	renderTargetRGB565 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGB565);
 	renderTargetRGBA4444 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGBA4444);
@@ -85,17 +85,17 @@ void RenderTargetTestScreen::Draw(const UIGeometricData &geometricData)
 	
 	renderTargetRGBA8888->Draw();
 
-	renderTargetRGB565->SetPosition(100, 100);
-	renderTargetRGB565->Draw();
-
-	RenderManager::Instance()->SetRenderTarget(renderTargetRGBA4444);
-	RenderManager::Instance()->ClearWithColor(0.0f, 0.5f, 0.0f, 1.0f);
-	redSprite->Draw();
-	tranclucentSprite->SetPosition(15, 15);
-	tranclucentSprite->Draw();
-	RenderManager::Instance()->RestoreRenderTarget();
-
-	renderTargetRGBA4444->SetPosition(200, 200);
-	renderTargetRGBA4444->Draw();
+//	renderTargetRGB565->SetPosition(100, 100);
+//	renderTargetRGB565->Draw();
+//
+//	RenderManager::Instance()->SetRenderTarget(renderTargetRGBA4444);
+//	RenderManager::Instance()->ClearWithColor(0.0f, 0.5f, 0.0f, 1.0f);
+//	redSprite->Draw();
+//	tranclucentSprite->SetPosition(15, 15);
+//	tranclucentSprite->Draw();
+//	RenderManager::Instance()->RestoreRenderTarget();
+//
+//	renderTargetRGBA4444->SetPosition(200, 200);
+//	renderTargetRGBA4444->Draw();
 
 }

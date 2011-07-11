@@ -27,72 +27,72 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#ifndef __DAVAENGINE_MATH2D_H__
-#define __DAVAENGINE_MATH2D_H__
+#include "Render/RenderDataObject.h"
 
-//!	
-//! All 2D & 3D math represent vectors & points (2D eq to vector) as vector array
-//! for example 
-//!	Math::Point2 < float32 > p; // [x y] (or [x y 1] for 3x3 matrix equations)
-//! 
-#include "Base/BaseTypes.h"
-#include "Math/Math2DTemplateClasses.h"
-
-
-// definition of basic 2D types
-namespace DAVA
+namespace DAVA 
 {
+    
+RenderDataStream::RenderDataStream()
+{
+    
+}
 
-	#define FLOAT_EQUAL(f1, f2) ((f1 > f2 - EPSILON) && (f1 < f2 + EPSILON))
+RenderDataStream::~RenderDataStream()
+{
+    
+}
 
-	inline float32 FloatClamp(float32 min, float32 max, float32 val);
-	
-	
-	/*
-		Helper classes designed mostly for internal framework usage
-		in all general cases use Vector2, Rect and other classes instead
-	 */
-	 //! int Point2 
-	typedef Point2Base<int32>		Point2i;
-	//! float Point2 
-	typedef Point2Base<float32>		Point2f;
-	//! int Size2
-	typedef Size2Base<int32>		Size2i;
-	//! float Size2
-	typedef Size2Base<float32>		Size2f;
-	//! int Rect2
-	typedef Rect2Base<int32>		Rect2i;
-	//! float Rect2
-	typedef Rect2Base<float32>		Rect2f;
-	
+void RenderDataStream::Set(eVertexDataType _type, int32 _size, int32 _stride, void * _pointer)
+{
+    type = _type;
+    size = _size;
+    stride = _stride;
+    pointer = _pointer;
+}
+    
+RenderDataObject::RenderDataObject()
+{
+    resultVertexFormat = 0;
+}
 
-// Implementations
-	inline float32 FloatClamp(float32 min, float32 max, float32 val)
-	{
-		if (val > max)val = max;
-			if (val < min)val = min;
-				return val;
-	};
-	
-	//float32 FastSin(float32 angle);
-	//float32 FastCos(float32 angle);
-	
-	/*template <class T> T Min(T a, T b)
-	{
-		return (a < b) ? (a) : (b);
-	}
-	
-	template <class T> T Max(T a, T b)
-	{
-		return (a > b) ? (a) : (b);
-	}*/
-    /**
-        \brief Fast function to compute index of bit that is set in a value. Only one bit should be set to make it work correctly.
-     */
-    uint32 CountLeadingZeros(uint32 value);
+RenderDataObject::~RenderDataObject()
+{
+}
 
+RenderDataStream * RenderDataObject::SetStream(eVertexFormat formatMark, eVertexDataType vertexType, int32 size, int32 stride, void * pointer)
+{
+    Map<eVertexFormat, RenderDataStream *>::iterator iter = streamMap.find(formatMark);
+    RenderDataStream * stream = 0;
+    if (iter == streamMap.end())
+    {
+        // New item - add it
+        resultVertexFormat |= formatMark;
+        stream = new RenderDataStream(); // todo optimize dynamic object cache
+        stream->formatMark = formatMark;
+        stream->type = vertexType;
+        stream->size = size;
+        stream->stride = stride;
+        stream->pointer = pointer;
+        
+        streamMap[formatMark] = stream;
+        streamArray.push_back(stream);
+    }else
+    {
+        stream = iter->second;
+    }
+    
+    stream->formatMark = formatMark;
+    stream->type = vertexType;
+    stream->size = size;
+    stream->stride = stride;
+    stream->pointer = pointer;
+    return stream;
+}
 
-};
+uint32 RenderDataObject::GetResultFormat()
+{
+    return resultVertexFormat;
+}
+ 
 
-#endif	//__DAVAENGINE_MATH2D_H__
-
+}

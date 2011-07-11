@@ -77,10 +77,10 @@ void PolygonGroup::AllocateData(int32 _meshFormat, int32 _vertexCount, int32 _in
 	
 	
 	int32 baseShift = 0;
-	if (vertexFormat & EVF_COORD)
+	if (vertexFormat & EVF_VERTEX)
 	{
 		vertexArray = reinterpret_cast<Vector3*>(meshData + baseShift);
-		baseShift += GetVertexSize(EVF_COORD);
+		baseShift += GetVertexSize(EVF_VERTEX);
 	}
 	if (vertexFormat & EVF_NORMAL)
 	{

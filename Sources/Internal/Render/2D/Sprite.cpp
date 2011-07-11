@@ -36,13 +36,18 @@
 #include "FileSystem/File.h"
 #include "Core/Core.h"
 #include "Render/Shader.h"
+#include "Render/RenderManagerGL20.h"
+#include "Render/RenderHelper.h"
 
 namespace DAVA 
 {
 	
 Map<String, Sprite*> spriteMap;
 static int32 fboCounter = 0;
-	
+Vector<Vector2> Sprite::clippedTexCoords;
+Vector<Vector2> Sprite::clippedVertices;
+RenderDataObject * Sprite::spriteRenderObject = 0;
+
 Sprite::Sprite()
 {
 	textures = 0;
@@ -70,11 +75,15 @@ Sprite::Sprite()
 	clipPolygon = 0;
 	
 	resourceToPhysicalFactor = 1.0f;
+    
+    if (!spriteRenderObject)
+    {
+        spriteRenderObject = new RenderDataObject(); // create single render data object to save memory. it will not be released. 
+    }
+    vertexStream = spriteRenderObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
+    texCoordStream  = spriteRenderObject->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, 0);    
 }
 
-	
-	
-	
 Sprite* Sprite::PureCreate(const String & spriteName, Sprite* forPointer)
 {
 //	Logger::Debug("pure create: %s", spriteName.c_str());
@@ -747,63 +756,44 @@ void Sprite::ResetScale()
 	flags = flags & ~EST_SCALE;
 }
 
-
-	
-void Sprite::Draw()
+    
+inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
 {
-//	if (Core::GetContentScaleFactor() != 1.0)
-//	{
-//		if (useContentScale) 
-//		{
-//			if (RenderManager::IsRenderTarget()) 
-//			{
-//				drawCoord.x *= Core::GetContentScaleFactor();
-//				drawCoord.y *= Core::GetContentScaleFactor();
-//			}
-//			else 
-//			{
-//				scale.x *= Core::GetInverseContentScaleFactor();
-//				scale.y *= Core::GetInverseContentScaleFactor();
-//				flags = flags | EST_SCALE;
-//			}
-//			
-//		}
-//		else 
-//		{
-//			if (RenderManager::IsRenderTarget()) 
-//			{
-//				drawCoord.x *= Core::GetContentScaleFactor();
-//				drawCoord.y *= Core::GetContentScaleFactor();
-//				scale.x *= Core::GetContentScaleFactor();
-//				scale.y *= Core::GetContentScaleFactor();
-//				flags = flags | EST_SCALE;
-//			}
-//		}
-//	}
-
-
-	float32 x = drawCoord.x;
-	float32 y = drawCoord.y;
-	if(flags & EST_SCALE)
-	{
-		x -= pivotPoint.x * scale.x;
-		y -= pivotPoint.y * scale.y;
-	}
-	else 
-	{
-		x -= pivotPoint.x;
-		y -= pivotPoint.y;
-	}
-	
-	if (!textures)
-	{
-		RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 1.0f);
-		RenderManager::Instance()->FillRect(Rect(drawCoord.x - 12, drawCoord.y - 12, 24.0f, 24.0f));		
-		RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-		return;
-	}
-	
-	if(flags & EST_MODIFICATION)
+    float32 x, y;
+    
+    if (state)
+    {
+        flags = 0;
+        if (state->flags != 0)
+        {
+            flags |= EST_MODIFICATION;
+        }
+        if(state->scale.x != 1.0f || state->scale.y != 1.0f)
+        {
+            flags |=  EST_SCALE;
+            scale.x = state->scale.x;
+            scale.y = state->scale.y;
+        }
+        if (state->angle != 0.0f)flags |= EST_ROTATE; 
+            
+            
+        frame = Max(0, Min(state->frame, frameCount - 1));	
+        
+        x = state->position.x;
+        y = state->position.y;
+        
+        x -= (state->pivotPoint.x) * state->scale.x;
+        y -= (state->pivotPoint.y) * state->scale.y;
+    }else
+    {
+       	x = drawCoord.x;
+        y = drawCoord.y;
+        x -= pivotPoint.x * scale.x;
+        y -= pivotPoint.y * scale.y;
+    }
+    
+    
+    if(flags & EST_MODIFICATION)
 	{
 		if((modification & (ESM_HFLIP | ESM_VFLIP)) == (ESM_HFLIP | ESM_VFLIP))
 		{
@@ -891,7 +881,7 @@ void Sprite::Draw()
 				}
 			}
 		}
-
+        
 	}
 	else 
 	{
@@ -909,406 +899,151 @@ void Sprite::Draw()
 		else 
 		{
 			//135
-//			tempVertices[0] = frameVertices[frame][0] + x;//x1
-//			tempVertices[1] = frameVertices[frame][1] + y;//y1
-//			tempVertices[2] = frameVertices[frame][2] + x;//x2
-//			tempVertices[3] = frameVertices[frame][3] + y;//y1
-//			tempVertices[4] = frameVertices[frame][4] + x;//x1
-//			tempVertices[5] = frameVertices[frame][5] + y;//y2
-//			tempVertices[6] = frameVertices[frame][6] + x;//x2
-//			tempVertices[7] = frameVertices[frame][7] + y;//y2
-
+            //			tempVertices[0] = frameVertices[frame][0] + x;//x1
+            //			tempVertices[1] = frameVertices[frame][1] + y;//y1
+            //			tempVertices[2] = frameVertices[frame][2] + x;//x2
+            //			tempVertices[3] = frameVertices[frame][3] + y;//y1
+            //			tempVertices[4] = frameVertices[frame][4] + x;//x1
+            //			tempVertices[5] = frameVertices[frame][5] + y;//y2
+            //			tempVertices[6] = frameVertices[frame][6] + x;//x2
+            //			tempVertices[7] = frameVertices[frame][7] + y;//y2
+            
 			//134
 			tempVertices[0] = tempVertices[4] = frameVertices[frame][0] + x;//x1
 			tempVertices[5] = tempVertices[7] = frameVertices[frame][5] + y;//y2
 			tempVertices[1] = tempVertices[3] = frameVertices[frame][1] + y;//y1
 			tempVertices[2] = tempVertices[6] = frameVertices[frame][2] + x;//x2
-
-			//136
-//			float x1 = frameVertices[frame][0] + x;//x1
-//			float y2 = frameVertices[frame][5] + y;//y2
-//			float y1 = frameVertices[frame][1] + y;//y2
-//			float x2 = frameVertices[frame][2] + x;//x2
-//			tempVertices[0] = x1;
-//			tempVertices[7] = y2;
-//			tempVertices[1] = y1;
-//			tempVertices[2] = x2;
-//			tempVertices[3] = y1;
-//			tempVertices[4] = x1;
-//			tempVertices[5] = y2;
-//			tempVertices[6] = x2;
-		}
-
-	}
-
-	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-
-	if(clipPolygon)
-	{
-		//TODO: do something with scale and rotate of clip polygon. Scale and rotate it with sprite or not?
-		Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f/t->width;
-		float32 adjHeight = 1.f/t->height;
-		Vector<Vector2> tex;
-		Vector<Vector3> ver;
-		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
-		{
-			Vector2 point = clipPolygon->points[i];
-			Vector3 pos = Vector3(point.x, point.y, 0);
-			ver.push_back(pos);
-
-			tex.push_back(Vector2(texCoords[frame][0] + (pos.x-x)*adjWidth,
-				texCoords[frame][1] + (pos.y-y)*adjHeight));
-		}
-
-		RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, &ver.front());
-		RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, &tex.front());
-
-		RenderManager::Instance()->FlushState();
-
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLEFAN, 0, (int32)ver.size());
-
-	}
-	else
-	{
-        if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_1_0)
-        {
-            RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-            RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
-            RenderManager::Instance()->FlushState();
-
-            if(flags & EST_ROTATE)
-            {
-                //SLOW CODE
             
-    //			glPushMatrix();
-    //			glTranslatef(drawCoord.x, drawCoord.y, 0);
-    //			glRotatef(RadToDeg(rotateAngle), 0.0f, 0.0f, 1.0f);
-    //			glTranslatef(-drawCoord.x, -drawCoord.y, 0);
-    //			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-    //			glPopMatrix();
-                
-
-                // Optimized code
-                float32 sinA = sinf(rotateAngle);
-                float32 cosA = cosf(rotateAngle);
-                for(int32 k = 0; k < 4; ++k)
-                {
-                    float32 x = tempVertices[(k << 1)] - drawCoord.x;
-                    float32 y = tempVertices[(k << 1) + 1] - drawCoord.y;
-                
-                    float32 nx = (x) * cosA  - (y) * sinA + drawCoord.x;
-                    float32 ny = (x) * sinA  + (y) * cosA + drawCoord.y;
-
-                    tempVertices[(k << 1)] = nx;
-                    tempVertices[(k << 1) + 1] = ny;
-                }
-                
+			//136
+            //			float x1 = frameVertices[frame][0] + x;//x1
+            //			float y2 = frameVertices[frame][5] + y;//y2
+            //			float y1 = frameVertices[frame][1] + y;//y2
+            //			float x2 = frameVertices[frame][2] + x;//x2
+            //			tempVertices[0] = x1;
+            //			tempVertices[7] = y2;
+            //			tempVertices[1] = y1;
+            //			tempVertices[2] = x2;
+            //			tempVertices[3] = y1;
+            //			tempVertices[4] = x1;
+            //			tempVertices[5] = y2;
+            //			tempVertices[6] = x2;
+		}
+        
+	}
+    
+    if(!clipPolygon)
+	{
+        if(flags & EST_ROTATE)
+        {
+            //SLOW CODE
+            //			glPushMatrix();
+            //			glTranslatef(drawCoord.x, drawCoord.y, 0);
+            //			glRotatef(RadToDeg(rotateAngle), 0.0f, 0.0f, 1.0f);
+            //			glTranslatef(-drawCoord.x, -drawCoord.y, 0);
+            //			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+            //			glPopMatrix();
+            
+            if (state)
+            {
+                rotateAngle = state->angle;
+                drawCoord.x = state->position.x;
+                drawCoord.y = state->position.y;
             }
             
-            RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-        }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
-<<<<<<< HEAD
-        {
-            //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-            //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
-            // Master
-            RenderManager::Instance()->colorWithTexture->Set();
-            
-            glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
-            glEnableVertexAttribArray(1);
-
-            //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
-            //glEnableVertexAttribArray(ATTRIB_COLOR);
-            RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-=======
-        {          
->>>>>>> master
+            // Optimized code
+            float32 sinA = sinf(rotateAngle);
+            float32 cosA = cosf(rotateAngle);
+            for(int32 k = 0; k < 4; ++k)
+            {
+                float32 x = tempVertices[(k << 1)] - drawCoord.x;
+                float32 y = tempVertices[(k << 1) + 1] - drawCoord.y;
+                
+                float32 nx = (x) * cosA  - (y) * sinA + drawCoord.x;
+                float32 ny = (x) * sinA  + (y) * cosA + drawCoord.y;
+                
+                tempVertices[(k << 1)] = nx;
+                tempVertices[(k << 1) + 1] = ny;
+            }
         }
+        
+        vertexStream->Set(TYPE_FLOAT, 2, 0, tempVertices);
+        texCoordStream->Set(TYPE_FLOAT, 2, 0, texCoords[frame]);
+        primitiveToDraw = PRIMITIVETYPE_TRIANGLESTRIP;
+        vertexCount = 4;
+	}else 
+    {	Texture * t = GetTexture(frame);
+		float32 adjWidth = 1.f/t->width;
+		float32 adjHeight = 1.f/t->height;
+        
+		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
+		{
+            const Vector2 & pos = clipPolygon->points[i];
+			clippedVertices.push_back(pos);
+			clippedTexCoords.push_back(Vector2(texCoords[frame][0] + (pos.x-x)*adjWidth,
+                                               texCoords[frame][1] + (pos.y-y)*adjHeight));
+		}
+        
+        vertexStream->Set(TYPE_FLOAT, 2, 0, &clippedVertices.front());
+        texCoordStream->Set(TYPE_FLOAT, 2, 0, &clippedTexCoords.front());      
+        primitiveToDraw = PRIMITIVETYPE_TRIANGLEFAN;
+        vertexCount = clipPolygon->pointCount;
 	}
+
+}
+
+void Sprite::Draw()
+{
+    PrepareSpriteRenderData(0);
+    
+	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
+    RenderManager::Instance()->SetRenderData(spriteRenderObject);
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+        
+    RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
+    RenderManager::Instance()->RestoreRenderEffect();
+
+    /* if (RenderManager::Instance()->GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+    {
+        //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
+        //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
+        //RenderManager::Instance()->FlushState();
+    }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
+    {
+        RenderManagerGL20 * rMan = (RenderManagerGL20 *)RenderManager::Instance();
+        
+        RenderManager::Instance()->colorWithTexture->Set();
+        
+        glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
+        glEnableVertexAttribArray(1);
+        
+        RenderManager::Instance()->FlushState();
+        //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
+        //glEnableVertexAttribArray(ATTRIB_COLOR);
+        RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+    } */
 
 	Reset();
 }
 	
 void Sprite::Draw(DrawState * state)
 {
-	flags = 0;
-	if (state->flags != 0)
-	{
-		flags |= EST_MODIFICATION;
-	}
-	if(state->scale.x != 1.0f || state->scale.y != 1.0f)
-	{
-		flags |=  EST_SCALE;
-	}
-	if (state->angle != 0.0f)
-		flags |= EST_ROTATE; 
-
-	
-	frame = Max(0, Min(state->frame, frameCount - 1));	
-
-	float32 x = state->position.x;
-	float32 y = state->position.y;
-
-	x -= (state->pivotPoint.x) * state->scale.x;
-	y -= (state->pivotPoint.y) * state->scale.y;
-	
-	if (!textures)
-	{
-		RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 1.0f);
-		RenderManager::Instance()->FillRect(Rect(state->position.x - 12, state->position.y - 12, 24.0f, 24.0f));		
-		RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-		return;
-	}
-	
-	if (state->usePerPixelAccuracy)
-	{//per pixel draw
-		RenderManager::Instance()->PushMappingMatrix();
-	}		
-
-	if(flags & EST_MODIFICATION)
-	{
-		if((state->flags & (ESM_HFLIP | ESM_VFLIP)) == (ESM_HFLIP | ESM_VFLIP))
-		{
-			if(flags & EST_SCALE)
-			{
-				x += (size.dx - rectsAndOffsets[frame][2] - rectsAndOffsets[frame][4] * 2) * scale.x;
-				y += (size.dy - rectsAndOffsets[frame][3] - rectsAndOffsets[frame][5] * 2) * scale.y;
-				tempVertices[0] = frameVertices[frame][6] * scale.x + x;
-				tempVertices[1] = frameVertices[frame][7] * scale.y + y;
-				tempVertices[2] = frameVertices[frame][4] * scale.x + x;
-				tempVertices[3] = frameVertices[frame][5] * scale.y + y;
-				tempVertices[4] = frameVertices[frame][2] * scale.x + x;
-				tempVertices[5] = frameVertices[frame][3] * scale.y + y;
-				tempVertices[6] = frameVertices[frame][0] * scale.x + x;
-				tempVertices[7] = frameVertices[frame][1] * scale.y + y;
-			}
-			else 
-			{
-				x += (size.dx - rectsAndOffsets[frame][2] - rectsAndOffsets[frame][4] * 2);
-				y += (size.dy - rectsAndOffsets[frame][3] - rectsAndOffsets[frame][5] * 2);
-				tempVertices[0] = frameVertices[frame][6] + x;
-				tempVertices[1] = frameVertices[frame][7] + y;
-				tempVertices[2] = frameVertices[frame][4] + x;
-				tempVertices[3] = frameVertices[frame][5] + y;
-				tempVertices[4] = frameVertices[frame][2] + x;
-				tempVertices[5] = frameVertices[frame][3] + y;
-				tempVertices[6] = frameVertices[frame][0] + x;
-				tempVertices[7] = frameVertices[frame][1] + y;
-			}
-		}
-		else 
-		{
-			if(state->flags & ESM_HFLIP)
-			{
-				if(flags & EST_SCALE)
-				{
-					x += (size.dx - rectsAndOffsets[frame][2] - rectsAndOffsets[frame][4] * 2) * scale.x;
-					tempVertices[0] = frameVertices[frame][2] * scale.x + x;
-					tempVertices[1] = frameVertices[frame][3] * scale.y + y;
-					tempVertices[2] = frameVertices[frame][0] * scale.x + x;
-					tempVertices[3] = frameVertices[frame][1] * scale.y + y;
-					tempVertices[4] = frameVertices[frame][6] * scale.x + x;
-					tempVertices[5] = frameVertices[frame][7] * scale.y + y;
-					tempVertices[6] = frameVertices[frame][4] * scale.x + x;
-					tempVertices[7] = frameVertices[frame][5] * scale.y + y;
-				}
-				else 
-				{
-					x += (size.dx - rectsAndOffsets[frame][2] - rectsAndOffsets[frame][4] * 2);
-					tempVertices[0] = frameVertices[frame][2] + x;
-					tempVertices[1] = frameVertices[frame][3] + y;
-					tempVertices[2] = frameVertices[frame][0] + x;
-					tempVertices[3] = frameVertices[frame][1] + y;
-					tempVertices[4] = frameVertices[frame][6] + x;
-					tempVertices[5] = frameVertices[frame][7] + y;
-					tempVertices[6] = frameVertices[frame][4] + x;
-					tempVertices[7] = frameVertices[frame][5] + y;
-				}
-			}
-			else
-			{
-				if(flags & EST_SCALE)
-				{
-					y += (size.dy - rectsAndOffsets[frame][3] - rectsAndOffsets[frame][5] * 2) * scale.y;
-					tempVertices[0] = frameVertices[frame][4] * scale.x + x;
-					tempVertices[1] = frameVertices[frame][5] * scale.y + y;
-					tempVertices[2] = frameVertices[frame][6] * scale.x + x;
-					tempVertices[3] = frameVertices[frame][7] * scale.y + y;
-					tempVertices[4] = frameVertices[frame][0] * scale.x + x;
-					tempVertices[5] = frameVertices[frame][1] * scale.y + y;
-					tempVertices[6] = frameVertices[frame][2] * scale.x + x;
-					tempVertices[7] = frameVertices[frame][3] * scale.y + y;
-				}
-				else 
-				{
-					y += (size.dy - rectsAndOffsets[frame][3] - rectsAndOffsets[frame][5] * 2);
-					tempVertices[0] = frameVertices[frame][4] + x;
-					tempVertices[1] = frameVertices[frame][5] + y;
-					tempVertices[2] = frameVertices[frame][6] + x;
-					tempVertices[3] = frameVertices[frame][7] + y;
-					tempVertices[4] = frameVertices[frame][0] + x;
-					tempVertices[5] = frameVertices[frame][1] + y;
-					tempVertices[6] = frameVertices[frame][2] + x;
-					tempVertices[7] = frameVertices[frame][3] + y;
-				}
-			}
-		}	
-	}
-	else 
-	{
-		if(flags & EST_SCALE)
-		{
-			tempVertices[0] = frameVertices[frame][0] * state->scale.x + x;
-			tempVertices[1] = frameVertices[frame][1] * state->scale.y + y;
-			tempVertices[2] = frameVertices[frame][2] * state->scale.x + x;
-			tempVertices[3] = frameVertices[frame][3] * state->scale.y + y;
-			tempVertices[4] = frameVertices[frame][4] * state->scale.x + x;
-			tempVertices[5] = frameVertices[frame][5] * state->scale.y + y;
-			tempVertices[6] = frameVertices[frame][6] * state->scale.x + x;
-			tempVertices[7] = frameVertices[frame][7] * state->scale.y + y;
-		}
-		else 
-		{//per pixel draw works  only with the unmodyfied sprite for now
-			//TODO: Add per pixel accuracy to the modificated sprites. Per pixel accuracy don't needed for the scaled and rotated sprites
-			if (state->usePerPixelAccuracy && !(flags & EST_ROTATE))
-			{//per pixel draw
-				tempVertices[0] = tempVertices[4] = floorf((frameVertices[frame][0] + x) * Core::GetVirtualToPhysicalFactor() + 0.5f);//x1
-				tempVertices[1] = tempVertices[3] = floorf((frameVertices[frame][1] + y) * Core::GetVirtualToPhysicalFactor() + 0.5f);//y1
-				tempVertices[2] = tempVertices[6] = (frameVertices[frame][2] - frameVertices[frame][0]) * Core::GetVirtualToPhysicalFactor() + tempVertices[0];//x2
-				tempVertices[5] = tempVertices[7] = (frameVertices[frame][5] - frameVertices[frame][1]) * Core::GetVirtualToPhysicalFactor() + tempVertices[1];//y2
-//				Logger::Info("frameVertices[frame][0] =  %.4f", frameVertices[frame][0]);
-//				Logger::Info("frameVertices[frame][2] =  %.4f", frameVertices[frame][2]);
-//				Logger::Info("frameVertices[frame][2] - frameVertices[frame][0] =  %.4f", frameVertices[frame][2] - frameVertices[frame][0]);
-//				Logger::Info("Draw by points X1: %.4f   Y1: %.4f    X2: %.4f   Y2: %.4f    v2p: %.4f", tempVertices[0], tempVertices[1], tempVertices[2], tempVertices[5], Core::GetVirtualToPhysicalFactor());
-
-				RenderManager::Instance()->SetPhysicalViewScale();
-
-				//		this->frameVertices[i][0] = (float32)xOff;
-				//		this->frameVertices[i][1] = (float32)yOff;
-				//		this->frameVertices[i][2] = (float32)xOff + width;
-				//		this->frameVertices[i][3] = (float32)yOff;
-				//		this->frameVertices[i][4] = (float32)xOff;
-				//		this->frameVertices[i][5] = (float32)(yOff + height);
-				//		this->frameVertices[i][6] = (float32)(xOff + width);
-				//		this->frameVertices[i][7] = (float32)(yOff + height);
-			}
-			else 
-			{//normal draw
-				tempVertices[0] = tempVertices[4] = frameVertices[frame][0] + x;//x1
-				tempVertices[1] = tempVertices[3] = frameVertices[frame][1] + y;//y1
-				tempVertices[2] = tempVertices[6] = frameVertices[frame][2] + x;//x2
-				tempVertices[5] = tempVertices[7] = frameVertices[frame][5] + y;//y2
-			}
-			//135
-			//			tempVertices[0] = frameVertices[frame][0] + x;//x1
-			//			tempVertices[1] = frameVertices[frame][1] + y;//y1
-			//			tempVertices[2] = frameVertices[frame][2] + x;//x2
-			//			tempVertices[3] = frameVertices[frame][3] + y;//y1
-			//			tempVertices[4] = frameVertices[frame][4] + x;//x1
-			//			tempVertices[5] = frameVertices[frame][5] + y;//y2
-			//			tempVertices[6] = frameVertices[frame][6] + x;//x2
-			//			tempVertices[7] = frameVertices[frame][7] + y;//y2
-			
-			//134
-//			tempVertices[0] = tempVertices[4] = frameVertices[frame][0] + x;//x1
-//			tempVertices[5] = tempVertices[7] = frameVertices[frame][5] + y;//y2
-//			tempVertices[1] = tempVertices[3] = frameVertices[frame][1] + y;//y1
-//			tempVertices[2] = tempVertices[6] = frameVertices[frame][2] + x;//x2
-			
-			//136
-			//			float x1 = frameVertices[frame][0] + x;//x1
-			//			float y2 = frameVertices[frame][5] + y;//y2
-			//			float y1 = frameVertices[frame][1] + y;//y2
-			//			float x2 = frameVertices[frame][2] + x;//x2
-			//			tempVertices[0] = x1;
-			//			tempVertices[7] = y2;
-			//			tempVertices[1] = y1;
-			//			tempVertices[2] = x2;
-			//			tempVertices[3] = y1;
-			//			tempVertices[4] = x1;
-			//			tempVertices[5] = y2;
-			//			tempVertices[6] = x2;
-		}
-		
-	}
-	
+    PrepareSpriteRenderData(state);
 	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-	
-	if(!clipPolygon)
-	{
-		//TODO: Let's try to add per pixel accuracy to the clip poligon draw
+    RenderManager::Instance()->SetRenderData(spriteRenderObject);
 
-		RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-		RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
-		
-		RenderManager::Instance()->FlushState();
-		
-		if(flags & EST_ROTATE)
-		{
-			//SLOW CODE
-			
-			//			glPushMatrix();
-			//			glTranslatef(drawCoord.x, drawCoord.y, 0);
-			//			glRotatef(RadToDeg(rotateAngle), 0.0f, 0.0f, 1.0f);
-			//			glTranslatef(-drawCoord.x, -drawCoord.y, 0);
-			//			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-			//			glPopMatrix();
-			
-			
-			// Optimized code
-			float32 sinA = sinf(state->angle);
-			float32 cosA = cosf(state->angle);
-			float32 xr = state->position.x;
-			float32 yr = state->position.y;
-			for(int32 k = 0; k < 4; ++k)
-			{
-				float32 x = tempVertices[(k << 1)] - xr;
-				float32 y = tempVertices[(k << 1) + 1] - yr;
-				
-				float32 nx = (x) * cosA  - (y) * sinA + xr;
-				float32 ny = (x) * sinA  + (y) * cosA + yr;
-				
-				tempVertices[(k << 1)] = nx;
-				tempVertices[(k << 1) + 1] = ny;
-			}
-			
-		}
+	if (state->usePerPixelAccuracy) 
+		RenderManager::Instance()->PushMappingMatrix();
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+    RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
+    RenderManager::Instance()->RestoreRenderEffect();
 
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-	}
-	else
-	{
-		//TODO: do something with scale and rotate of clip polygon. Scale and rotate it with sprite or not?
-		Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f/t->width;
-		float32 adjHeight = 1.f/t->height;
-		Vector<Vector2> tex;
-		Vector<Vector3> ver;
-		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
-		{
-			Vector2 point = clipPolygon->points[i];
-			Vector3 pos = Vector3(point.x, point.y, 0);
-			ver.push_back(pos);
-			
-			tex.push_back(Vector2(texCoords[frame][0] + (pos.x-x)*adjWidth,
-								  texCoords[frame][1] + (pos.y-y)*adjHeight));
-		}
-		
-		RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, &ver.front());
-		RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, &tex.front());
-		
-		RenderManager::Instance()->FlushState();
-		
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLEFAN, 0, (int32)ver.size());
-	}
 	
 	if (state->usePerPixelAccuracy) 
-	{
 		RenderManager::Instance()->PopMappingMatrix();
-	}
 	
 }
 
@@ -1351,7 +1086,7 @@ void Sprite::DrawPoints(Vector2 *verticies)
 	if (!textures)
 	{
 		RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 1.0f);
-		RenderManager::Instance()->FillRect(Rect(drawCoord.x - 12, drawCoord.y - 12, 24.0f, 24.0f));		
+		RenderHelper::Instance()->FillRect(Rect(drawCoord.x - 12, drawCoord.y - 12, 24.0f, 24.0f));		
 		RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 		return;
 	}

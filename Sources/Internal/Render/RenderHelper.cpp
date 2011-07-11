@@ -30,10 +30,76 @@
 #include "Render/RenderHelper.h"
 #include "Render/RenderManager.h"
 #include "Render/Texture.h"
+#include "Render/RenderDataObject.h"
 
 namespace DAVA
 {
-	
+RenderHelper::RenderHelper()
+{
+    renderDataObject = new RenderDataObject();
+    vertexStream = renderDataObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
+}
+RenderHelper::~RenderHelper()
+{
+    SafeRelease(renderDataObject);
+}
+    
+void RenderHelper::FillRect(const Rect & rect)
+{
+    vertices[0] = rect.x;						
+    vertices[1] = rect.y;
+    vertices[2] = rect.x + rect.dx;
+    vertices[3] = rect.y;
+    vertices[4] = rect.x;						
+    vertices[5] = rect.y + rect.dy;
+    vertices[6] = rect.x + rect.dx;			
+    vertices[7] = rect.y + rect.dy;
+
+    vertexStream->Set(TYPE_FLOAT, 2, 0, vertices);
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+    RenderManager::Instance()->RestoreRenderEffect();
+}
+
+void RenderHelper::DrawRect(const Rect & rect)
+{
+    vertices[0] = rect.x;						
+    vertices[1] = rect.y;
+    vertices[2] = rect.x + rect.dx;
+    vertices[3] = rect.y;
+    vertices[4] = rect.x + rect.dx;						
+    vertices[5] = rect.y + rect.dy;
+    vertices[6] = rect.x;			
+    vertices[7] = rect.y + rect.dy;
+    vertices[8] = rect.x;						
+    vertices[9] = rect.y;
+
+    vertexStream->Set(TYPE_FLOAT, 2, 0, vertices);
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 5);
+    RenderManager::Instance()->RestoreRenderEffect();
+}
+
+void RenderHelper::DrawLine(const Vector2 &start, const Vector2 &end)
+{
+    vertices[0] = start.x;						
+    vertices[1] = start.y;
+    vertices[2] = end.x;
+    vertices[3] = end.y;
+    
+    vertexStream->Set(TYPE_FLOAT, 2, 0, vertices);
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
+    RenderManager::Instance()->RestoreRenderEffect();
+}
+
+
 void RenderHelper::DrawPoint(const Vector2 & pt, float32 ptSize)
 {
 	RenderManager::Instance()->EnableTexturing(false);
@@ -251,21 +317,6 @@ void RenderHelper::DrawPolygonTransformed(Polygon2 & polygon, bool closed, const
 	RenderHelper::DrawPolygon(copyPoly, closed);
 }
 
-void RenderHelper::DrawLine(const Vector2 & pt1, const Vector2 & pt2)
-{
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	
-	Vector2 line[2] = {pt1, pt2};
-	
-	glVertexPointer(2, GL_FLOAT, 0, line);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINES, 0, 2);
-	
-	RenderManager::Instance()->EnableTexturing(true);
-}
-
 void RenderHelper::DrawLine(const Vector3 & pt1, const Vector3 & pt2)
 {
 	RenderManager::Instance()->EnableTexturing(false);
@@ -423,29 +474,29 @@ void RenderHelper::DrawInterpolationFunc(Interpolation::Func func, const Rect & 
 	
 void RenderHelper::DrawBox(const AABBox2 & box)
 {
-	DrawLine(Vector3(box.min.x, box.min.y, 0), Vector3(box.max.x, box.min.y, 0));
-	DrawLine(Vector3(box.max.x, box.min.y, 0), Vector3(box.max.x, box.max.y, 0));
-	DrawLine(Vector3(box.max.x, box.max.y, 0), Vector3(box.min.x, box.max.y, 0));
-	DrawLine(Vector3(box.min.x, box.max.y, 0), Vector3(box.min.x, box.min.y, 0));
+//	DrawLine(Vector3(box.min.x, box.min.y, 0), Vector3(box.max.x, box.min.y, 0));
+//	DrawLine(Vector3(box.max.x, box.min.y, 0), Vector3(box.max.x, box.max.y, 0));
+//	DrawLine(Vector3(box.max.x, box.max.y, 0), Vector3(box.min.x, box.max.y, 0));
+//	DrawLine(Vector3(box.min.x, box.max.y, 0), Vector3(box.min.x, box.min.y, 0));
 }
 	
 void RenderHelper::DrawBox(const AABBox3 & box)
 {
-	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.min.y, box.max.z));
-	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.max.y, box.min.z));
-	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.min.y, box.max.z));
-	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.max.y, box.min.z));
-	
-	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.max.z));
-	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
-	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
-	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.min.z));
-	
-	
-	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.min.z));
-	DrawLine(Vector3(box.min.x, box.max.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
-	DrawLine(Vector3(box.min.x, box.min.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
-	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.max.z));
+//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.min.y, box.max.z));
+//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.max.y, box.min.z));
+//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.min.y, box.max.z));
+//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.max.y, box.min.z));
+//	
+//	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.max.z));
+//	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
+//	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
+//	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.min.z));
+//	
+//	
+//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.min.z));
+//	DrawLine(Vector3(box.min.x, box.max.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
+//	DrawLine(Vector3(box.min.x, box.min.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
+//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.max.z));
 }
 
 	

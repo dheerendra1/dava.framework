@@ -35,6 +35,7 @@
 #include "Render/RenderManager.h"
 #include "Base/ObjectFactory.h"
 #include "UI/UIYamlLoader.h"
+#include "Render/RenderHelper.h"
 
 namespace DAVA 
 {
@@ -1033,7 +1034,7 @@ namespace DAVA
 		if (debugDrawEnabled)
 		{//TODO: Add debug draw for rotated controls
 			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-			RenderManager::Instance()->DrawRect(drawData.GetUnrotatedRect());
+			RenderHelper::Instance()->DrawRect(drawData.GetUnrotatedRect());
 			RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 		

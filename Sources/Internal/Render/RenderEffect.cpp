@@ -32,34 +32,19 @@
 
 namespace DAVA 
 {
-#if defined(__DAVAENGINE_OPENGL__)
-	void RenderEffect::SetColor(float r, float g, float b, float a)
-	{
-		glColor4f(r * a, g * a, b * a, a);
-	}
+RenderEffect::RenderEffect()
+{
+    
+}
 
-	void RenderEffect::SetTexture(Texture *texture)
-	{
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-	}
-	
-	void RenderEffect::SetTexCoordPointer(int size, int type, int stride, const void *pointer)
-	{
-		glTexCoordPointer(size, type, stride, pointer);
-	}
-	void RenderEffect::SetVertexPointer(int size, int type, int stride, const void *pointer)
-	{
-		glVertexPointer(size, type, stride, pointer);
-	}
-	void RenderEffect::DrawArrays(int32 mode, int32 first, int32 count)
-	{
-		glDrawArrays(mode, first, count);
-	}
-#elif defined(__DAVAENGINE_DIRECTX9__)
-
-
-
-#endif 
-
+RenderEffect::~RenderEffect()
+{
+    
+}
+    
+void RenderEffect::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
+{
+    
+}
 
 };

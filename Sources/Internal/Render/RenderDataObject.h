@@ -27,80 +27,60 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#ifndef __DAVAENGINE_SHADER_H__
-#define __DAVAENGINE_SHADER_H__
+#ifndef __DAVAENGINE_RENDERDATAOBJECT_H__
+#define __DAVAENGINE_RENDERDATAOBJECT_H__
 
+#include "Base/BaseTypes.h"
+#include "Base/BaseObject.h"
 #include "Render/RenderBase.h"
-#include "Render/RenderResource.h"
-#include "Render/VertexBuffer.h"
 
 namespace DAVA
 {
     
-class ShaderParam
+class RenderDataObject;
+class RenderManager;
+class RenderManagerGL20;
+    
+class RenderDataStream : public BaseObject
 {
 public:
+    RenderDataStream();
+    ~RenderDataStream();
     
-    ShaderParam * next;
+    void Set(eVertexDataType type, int32 size, int32 stride, void * pointer);
+    
+    eVertexFormat formatMark;
+    eVertexDataType type;
+    int32 size;
+    int32 stride;
+    void * pointer;
 };
 
-/*	
-    \brief Class to use low-level shaders
- 
-*/	
-class Shader : public RenderResource
+class RenderDataObject : public BaseObject
 {
 public:
-    enum eUniform
-    {
-        UNIFORM_NONE = 0, 
-        UNIFORM_MODEL_VIEW_PROJECTION_MATRIX,  // gl_ModelViewProjectionMatrix
-        UNIFORM_COLOR,
-        UNIFORM_COUNT,
-    };
-
-    Shader();
-    virtual ~Shader();
+    RenderDataObject();
+    virtual ~RenderDataObject();
     
-    // virtual void SetActiveShader(const String & string);
-    virtual bool LoadFromYaml(const String & pathname);
-    virtual void Set();
-    virtual int32 FindUniformLocationByName(const String & name);
-    int32 GetAttributeIndex(eVertexFormat vertexFormat);
+    RenderDataStream * SetStream(eVertexFormat formatMark, eVertexDataType vertexType, int32 size, int32 stride, void * pointer);
+    uint32 GetResultFormat();
 
-    /**
-        This function return vertex format required by shader
-     */
-    //virtual uint32 GetVertexFormat();
-    //virtual uint32 GetAttributeIndex(eVertexFormat fmt);
+    uint32 GetStreamCount() { return streamArray.size(); };
+    RenderDataStream * GetStream(uint32 index) { return streamArray[index]; }
     
+    /*
+        We think that render data object can pack data automatically 
+    */
 private:
-#if defined(__DAVAENGINE_DIRECTX9__)
+    Map<eVertexFormat, RenderDataStream *> streamMap;
+    Vector<RenderDataStream *> streamArray;
+    uint32 resultVertexFormat;
     
     
-#elif defined(__DAVAENGINE_OPENGL__)
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint program;
-    
-    String * attributeNames;
-    GLint activeAttributes;
-    GLint activeUniforms;
-    
-    
-    eUniform *uniformIDs;
-    String * uniformNames;
-    GLint * uniformLocations;
-    
-    int32 vertexFormatAttribIndeces[VERTEX_FORMAT_STREAM_MAX_COUNT];
-    
-    GLint CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources);    
-    GLint LinkProgram(GLuint prog);
-    void DeleteShaders();
-    eUniform GetUniformByName(const char * name);
-    int32 GetAttributeIndexByName(const char * name);
-#endif
+    friend class RenderManager;
+    friend class RenderManagerGL20;
 };
+    
 };
 
 #endif // __DAVAENGINE_RENDERSTATEBLOCK_H__

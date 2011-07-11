@@ -129,7 +129,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(0.0f, 30.0f);
 	zebraSprite->Draw();
-	
+    
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(50.0f, 30.0f);
 	zebraSprite->SetScale(0.5f, 0.5f);
@@ -196,10 +196,10 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	Size2i size = graphicsFont->GetStringSize(s);
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-	RenderManager::Instance()->DrawRect(Rect(10, 200, size.dx, size.dy));
+	RenderHelper::Instance()->DrawRect(Rect(10, 200, size.dx, size.dy));
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-	RenderManager::Instance()->DrawLine(Vector2(10, 200), 
+	RenderHelper::Instance()->DrawLine(Vector2(10, 200), 
 										Vector2(10 + size.dx, 200));
 	graphicsFont->DrawString(10, 200, L"Super mega font number #1");
 	graphicsFont->DrawString(10, 200 + graphicsFont->GetFontHeight(), L"String number 2");
@@ -208,9 +208,9 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	size = graphicsFont2->GetStringSize(s);
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-	RenderManager::Instance()->DrawRect(Rect(10, 300, size.dx, size.dy));
+	RenderHelper::Instance()->DrawRect(Rect(10, 300, size.dx, size.dy));
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-	RenderManager::Instance()->DrawLine(Vector2(10, 300), 
+	RenderHelper::Instance()->DrawLine(Vector2(10, 300), 
 										Vector2(10 + size.dx, 300));
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);

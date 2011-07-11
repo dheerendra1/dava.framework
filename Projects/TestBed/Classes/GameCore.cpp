@@ -57,13 +57,15 @@ GameCore::~GameCore()
 void GameCore::OnAppStarted()
 {
 //	RenderManager::Instance()->SetFPS(60);
-
+    
+//    for (int32 i = 0; i < 32; ++i)
+//    {
+//        Logger::Debug("%d", CountLeadingZeros(1 << i));
+//    }
 
 	Logger::Debug("long %d", sizeof(long));
-	Logger::Debug("long long %d", sizeof(long long));
-
-
-
+	Logger::Debug("long long %d", sizeof(long long));   
+    
 // 	testScreen = new TestScreen();
  	anim3dScreen = new AnimationTestScreen();
  	spriteBasicsScreen = new SpriteBasicsScreen();
@@ -90,7 +92,7 @@ void GameCore::OnAppStarted()
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE_BASICS);
+	UIScreenManager::Instance()->SetFirst(SCREEN_STATIC_TEXT);
 	cursor = 0;
 }
 

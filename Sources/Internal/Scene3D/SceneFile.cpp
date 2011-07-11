@@ -307,7 +307,7 @@ bool SceneFile::ReadStaticMesh()
 		if (debugLogEnabled)Logger::Debug("--- index count: %d\n", indexCount);
 		
 		PolygonGroup * polygonGroup = mesh->GetPolygonGroup(polyGroupIndex);
-		polygonGroup->AllocateData(EVF_COORD | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0, vertexCount, indexCount, 1);
+		polygonGroup->AllocateData(EVF_VERTEX | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0, vertexCount, indexCount, 1);
 		
 		for (uint32 v = 0; v < vertexCount; ++v)
 		{
@@ -352,7 +352,7 @@ bool SceneFile::ReadAnimatedMesh()
 		if (debugLogEnabled)Logger::Debug("--- index count: %d\n", indexCount);
 		
 		PolygonGroup * polygonGroup = mesh->GetPolygonGroup(polyGroupIndex);
-		polygonGroup->AllocateData(EVF_COORD | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0 | EVF_JOINTWEIGHT, vertexCount, indexCount, 1);
+		polygonGroup->AllocateData(EVF_VERTEX | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0 | EVF_JOINTWEIGHT, vertexCount, indexCount, 1);
 		
 		for (int v = 0; v < vertexCount; ++v)
 		{

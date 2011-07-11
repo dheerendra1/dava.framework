@@ -358,7 +358,7 @@ void RenderManager::SetupDefaultDeviceState()
 
 	if (!vertexBuffer)
 	{
-		vertexBuffer = new DynamicVertexBuffer(EVF_COORD | EVF_COLOR | EVF_TEXCOORD0, 4096);
+		vertexBuffer = new DynamicVertexBuffer(EVF_VERTEX | EVF_COLOR | EVF_TEXCOORD0, 4096);
 		if (!vertexBuffer)return;
 	}
 	

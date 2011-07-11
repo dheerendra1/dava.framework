@@ -37,6 +37,7 @@
 #include "Base/BaseMath.h"
 #include "Render/RenderBase.h"
 #include "Render/Texture.h"
+#include "Render/RenderDataObject.h"
 
 namespace DAVA
 {
@@ -268,6 +269,8 @@ protected:
 	void Clear();
 	
 private:
+    inline void PrepareSpriteRenderData(Sprite::DrawState * drawState);
+    
 	enum eSpriteTransform 
 	{
 		EST_ROTATE			= 1,
@@ -326,6 +329,16 @@ private:
 	
 //public:
 	float32 **rectsAndOffsets;
+    
+    RenderDataStream * vertexStream;
+    RenderDataStream * texCoordStream;
+    ePrimitiveType primitiveToDraw;
+    int32 vertexCount;
+    
+    // For rendering of clipped objects
+    static Vector<Vector2> clippedTexCoords;
+    static Vector<Vector2> clippedVertices;
+    static RenderDataObject * spriteRenderObject;
 };
 	
 	

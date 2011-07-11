@@ -70,28 +70,17 @@ class Texture;
 //    
 //};
     
+#define CONDITIONAL_CREATE(rendererType, classToCreate)\
+if (renderer == rendererType)\
+    return new classToCreate()
+    
 class RenderEffect : public BaseObject 
 {
 public:
-    /**
-     
-     
-     */
-    virtual void LoadFromYaml();
+    RenderEffect();
+    virtual ~RenderEffect();
     
-public:
-    //Shader * shader;
-    
-    virtual void StartEffect(){};
-    virtual void StopEffect(){};
-
-    virtual void SetColor(float r, float g, float b, float a);
-
-    virtual void SetTexture(Texture *texture);
-
-    virtual void SetTexCoordPointer(int size, int type, int stride, const void *pointer);
-    virtual void SetVertexPointer(int size, int type, int stride, const void *pointer);
-    virtual void DrawArrays(int32 mode, int32 first, int32 count);		
+    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);	
 };
 };
 

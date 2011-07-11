@@ -114,14 +114,24 @@ enum eVertexDataType
 
 	TYPE_COUNT
 };
+    
+#if defined(__DAVAENGINE_OPENGL__)
+    static GLint VERTEX_DATA_TYPE_TO_GL[TYPE_COUNT] = {GL_FLOAT};
+#endif
 
 enum eIndexFormat
 {
 	EIF_16 = 0x0,
 	EIF_32 = 0x1,
 };
-
-
+    
+enum eCull
+{
+    CULL_FRONT = 0,
+    CULL_BACK,
+    CULL_FRONT_AND_BACK,
+};
+    
 enum ePrimitiveType
 {
 	PRIMITIVETYPE_POINTLIST = 0,
@@ -133,6 +143,47 @@ enum ePrimitiveType
 
 	PRIMITIVETYPE_COUNT
 };
+    
+// TODO: we have same structs & functions in PolygonGroup -- we should find a right place for them
+enum eVertexFormat
+{
+    EVF_VERTEX			= 1,
+    EVF_NORMAL			= 2,
+    EVF_COLOR			= 4,
+    EVF_TEXCOORD0		= 8,
+    EVF_TEXCOORD1		= 16,
+    EVF_TEXCOORD2		= 32,
+    EVF_TEXCOORD3		= 64,
+    EVF_TANGENT			= 128,
+    EVF_BINORMAL		= 256,
+    EVF_JOINTWEIGHT		= 512,
+    EVF_LOWER_BIT		= EVF_VERTEX,
+    EVF_HIGHER_BIT		= EVF_JOINTWEIGHT, 
+    EVF_NEXT_AFTER_HIGHER_BIT
+    = (EVF_HIGHER_BIT << 1),
+    EVF_FORCE_DWORD     = 0x7fffffff,
+};
+enum
+{
+    VERTEX_FORMAT_STREAM_MAX_COUNT = 10
+};
+    
+inline int32 GetVertexSize(int32 flags)
+{
+    int32 size = 0;
+    if (flags & EVF_VERTEX) size += 3 * sizeof(float32);
+    if (flags & EVF_NORMAL) size += 3 * sizeof(float32);
+    if (flags & EVF_COLOR) size += 4;
+    if (flags & EVF_TEXCOORD0) size += 2 * sizeof(float32);
+    if (flags & EVF_TEXCOORD1) size += 2 * sizeof(float32);
+    if (flags & EVF_TEXCOORD2) size += 2 * sizeof(float32);
+    if (flags & EVF_TEXCOORD3) size += 2 * sizeof(float32);
+    if (flags & EVF_TANGENT) size += 3 * sizeof(float32);
+    if (flags & EVF_BINORMAL) size += 3 * sizeof(float32);
+    
+    if (flags & EVF_JOINTWEIGHT) size += 2 * sizeof(float32); // 4 * 3 + 4 * 3= 12 + 12 
+    return size;
+}
 
 
 class RenderGuard

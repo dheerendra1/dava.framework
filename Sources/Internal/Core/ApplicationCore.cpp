@@ -64,10 +64,6 @@ void ApplicationCore::BeginFrame()
 
 	RenderManager::Instance()->EnableBlending(true);
 	RenderManager::Instance()->SetBlendMode(BLEND_ONE, BLEND_ONE_MINUS_SRC_ALPHA);
-	
-	RenderManager::Instance()->EnableTextureCoordArray(true);
-	RenderManager::Instance()->EnableTexturing(true);
-	RenderManager::Instance()->EnableVertexArray(true);	
 }
 
 void ApplicationCore::EndFrame()

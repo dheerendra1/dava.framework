@@ -27,80 +27,58 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#ifndef __DAVAENGINE_SHADER_H__
-#define __DAVAENGINE_SHADER_H__
+#ifndef __DAVAENGINE_RENDERMANAGER_GL20_H__
+#define __DAVAENGINE_RENDERMANAGER_GL20_H__
 
 #include "Render/RenderBase.h"
-#include "Render/RenderResource.h"
-#include "Render/VertexBuffer.h"
+#include "Base/BaseTypes.h"
+#include "Base/BaseMath.h"
+#include "Render/RenderManager.h"
+
+#include <stack>
 
 namespace DAVA
 {
+
     
-class ShaderParam
+enum
 {
-public:
+    ATTRIBUTE_0 = 1,
+    ATTRIBUTE_1 = 2,    
     
-    ShaderParam * next;
 };
 
-/*	
-    \brief Class to use low-level shaders
- 
-*/	
-class Shader : public RenderResource
+    
+class Texture;
+class Shader;
+
+class RenderVertexAttributesState
 {
 public:
-    enum eUniform
-    {
-        UNIFORM_NONE = 0, 
-        UNIFORM_MODEL_VIEW_PROJECTION_MATRIX,  // gl_ModelViewProjectionMatrix
-        UNIFORM_COLOR,
-        UNIFORM_COUNT,
-    };
-
-    Shader();
-    virtual ~Shader();
+    RenderVertexAttributesState();
     
-    // virtual void SetActiveShader(const String & string);
-    virtual bool LoadFromYaml(const String & pathname);
-    virtual void Set();
-    virtual int32 FindUniformLocationByName(const String & name);
-    int32 GetAttributeIndex(eVertexFormat vertexFormat);
+    void EnableVertexAttributes(uint32 attributesToEnable);
 
-    /**
-        This function return vertex format required by shader
-     */
-    //virtual uint32 GetVertexFormat();
-    //virtual uint32 GetAttributeIndex(eVertexFormat fmt);
-    
 private:
-#if defined(__DAVAENGINE_DIRECTX9__)
-    
-    
-#elif defined(__DAVAENGINE_OPENGL__)
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint program;
-    
-    String * attributeNames;
-    GLint activeAttributes;
-    GLint activeUniforms;
-    
-    
-    eUniform *uniformIDs;
-    String * uniformNames;
-    GLint * uniformLocations;
-    
-    int32 vertexFormatAttribIndeces[VERTEX_FORMAT_STREAM_MAX_COUNT];
-    
-    GLint CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources);    
-    GLint LinkProgram(GLuint prog);
-    void DeleteShaders();
-    eUniform GetUniformByName(const char * name);
-    int32 GetAttributeIndexByName(const char * name);
-#endif
+    uint32 activeVertexAttributes;
 };
+    
+/** 
+	\ingroup render
+	\brief Subclass that implements GL 2.0 rendering layer, using shaders 
+*/
+class RenderManagerGL20 : public RenderManager
+{
+public:
+    RenderManagerGL20(Core::eRenderer renderer);
+        
+    void AttachRenderData(Shader * shader);
+
+    RenderVertexAttributesState attributesState;
+    
+    int32 enabledAttribCount;
 };
 
-#endif // __DAVAENGINE_RENDERSTATEBLOCK_H__
+
+};
+#endif // __DAVAENGINE_RENDERMANAGER_GL20_H__

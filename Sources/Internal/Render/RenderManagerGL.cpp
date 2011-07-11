@@ -425,14 +425,7 @@ void RenderManager::FlushState()
 	}
 	if(oldColor != newColor)
 	{
-		if(!currentRenderEffect)
-		{
-			RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
-		}
-		else
-		{
-			currentRenderEffect->SetColor(newColor.r, newColor.g, newColor.b, newColor.a);
-		}
+        RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
 		oldColor = newColor;
 	}   
 	if(newTextureEnabled != oldTextureEnabled)
@@ -451,63 +444,37 @@ void RenderManager::FlushState()
 	PrepareRealMatrix();
 }
 
-GLint types[TYPE_COUNT] = {GL_FLOAT};
-
 void RenderManager::SetTexCoordPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glTexCoordPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		currentRenderEffect->SetTexCoordPointer(size, type, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glTexCoordPointer(size, type, stride, pointer));
 }
 
 void RenderManager::SetVertexPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glVertexPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		currentRenderEffect->SetVertexPointer(size, type, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glVertexPointer(size, type, stride, pointer));
 }
 
 void RenderManager::SetNormalPointer(eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glNormalPointer(type, stride, pointer));
-	}
-	else
-	{
-		// TODO
-		//currentRenderEffect->SetVertexPointer(size, _typeIndex, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glNormalPointer(type, stride, pointer));
 }
 
 void RenderManager::SetColorPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glColorPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		// TODO
-		//currentRenderEffect->SetVertexPointer(size, _typeIndex, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glColorPointer(size, type, stride, pointer));
+}
+    
+void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+{
+    if (currentRenderEffect)
+        currentRenderEffect->DrawArrays(type, first, count);
 }
 
-void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 {
 	const int32 types[PRIMITIVETYPE_COUNT] = 
 	{
@@ -526,14 +493,7 @@ void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
 		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
 	}
 
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glDrawArrays(mode, first, count));
-	}
-	else
-	{
-		currentRenderEffect->DrawArrays(mode, first, count);
-	}
+    RENDER_VERIFY(glDrawArrays(mode, first, count));
 }
 
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
@@ -685,32 +645,35 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
 {
     GLint matrixMode[2] = {GL_MODELVIEW, GL_PROJECTION};
-    glMatrixMode(matrixMode[type]);
-    glLoadMatrixf(matrix.data);
     matrices[type] = matrix;
-}
     
-    
-void RenderManager::InitGL20()
-{
-    colorOnly = 0;
-    colorWithTexture = 0;
-    
-    
-    colorOnly = new Shader();
-    colorOnly->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
-    colorWithTexture = new Shader();
-    colorWithTexture->LoadFromYaml("~res:/Shaders/Default/fixed_func_texture.shader");
-        
-    
+    if (renderer == Core::RENDERER_OPENGL_ES_1_0)
+    {
+        RENDER_VERIFY(glMatrixMode(matrixMode[type]));
+        RENDER_VERIFY(glLoadMatrixf(matrix.data));
+    }
 }
 
-void RenderManager::ReleaseGL20()
-{
-    SafeRelease(colorOnly);
-    SafeRelease(colorWithTexture);
-}
-
+//void RenderManager::InitGL20()
+//{
+//    colorOnly = 0;
+//    colorWithTexture = 0;
+//    
+//    
+//    colorOnly = new Shader();
+//    colorOnly->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
+//    colorWithTexture = new Shader();
+//    colorWithTexture->LoadFromYaml("~res:/Shaders/Default/fixed_func_texture.shader");
+//        
+//    
+//}
+//
+//void RenderManager::ReleaseGL20()
+//{
+//    SafeRelease(colorOnly);
+//    SafeRelease(colorWithTexture);
+//}
+//
 
 
 
