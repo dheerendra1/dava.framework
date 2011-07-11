@@ -47,6 +47,7 @@ public:
 	static void RegisterBaseObject(BaseObject * obj);
 	static void UnregisterBaseObject(BaseObject * obj);
 	static bool IsAvailable(BaseObject * obj);
+    static void Dump();
 };
 	
 }; 
