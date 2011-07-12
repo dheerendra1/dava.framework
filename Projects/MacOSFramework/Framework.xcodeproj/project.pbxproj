@@ -65,6 +65,7 @@
 		FE9420941332605600515418 /* FileList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9420921332605600515418 /* FileList.h */; };
 		FEA4D8C41328D03E00E261D0 /* RenderBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */; };
 		FEA4D9421328FD6A00E261D0 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA4D9411328FD6A00E261D0 /* Random.h */; };
+		FEB3CF4F13CCE4FD00268C55 /* RenderManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB3CF4E13CCE4FD00268C55 /* RenderManagerFactory.cpp */; };
 		FEC3E537133CCCDF00442ADD /* DoxygenDocumenation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */; };
 		FECFAEBC12E58B7A00C71562 /* basepic.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAC1812E58B7800C71562 /* basepic.c */; };
 		FECFAEBD12E58B7A00C71562 /* basepic.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAC1912E58B7800C71562 /* basepic.h */; };
@@ -696,6 +697,7 @@
 		FE9420921332605600515418 /* FileList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileList.h; sourceTree = "<group>"; };
 		FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderBase.cpp; sourceTree = "<group>"; };
 		FEA4D9411328FD6A00E261D0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
+		FEB3CF4E13CCE4FD00268C55 /* RenderManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManagerFactory.cpp; sourceTree = "<group>"; };
 		FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoxygenDocumenation.h; sourceTree = "<group>"; };
 		FECFAC1812E58B7800C71562 /* basepic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = basepic.c; sourceTree = "<group>"; };
 		FECFAC1912E58B7800C71562 /* basepic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basepic.h; sourceTree = "<group>"; };
@@ -2114,6 +2116,7 @@
 				FED0475C13B743A500A9A859 /* RenderResource.h */,
 				FECFC18412E87E3000C71562 /* RenderHelper.cpp */,
 				FECFC18512E87E3000C71562 /* RenderHelper.h */,
+				FEB3CF4E13CCE4FD00268C55 /* RenderManagerFactory.cpp */,
 				FECFC18612E87E3000C71562 /* RenderManager.cpp */,
 				FECFC18712E87E3000C71562 /* RenderManager.h */,
 				FECFC18812E87E3000C71562 /* RenderManagerDX.cpp */,
@@ -3043,6 +3046,7 @@
 				FED0476913B7455700A9A859 /* ShaderDX.cpp in Sources */,
 				FED0476A13B7455700A9A859 /* ShaderGL.cpp in Sources */,
 				FED0479A13B7B89500A9A859 /* Matrix4.cpp in Sources */,
+				FEB3CF4F13CCE4FD00268C55 /* RenderManagerFactory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
