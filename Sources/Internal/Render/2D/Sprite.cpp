@@ -970,7 +970,7 @@ void Sprite::Draw()
 	}
 	else
 	{
-        if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_1_0)
+        //if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_1_0)
         {
             RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
             RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
@@ -1006,9 +1006,10 @@ void Sprite::Draw()
             }
             
             RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-        }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
-        {          
         }
+// 		else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
+//         {          
+//         }
 	}
 
 	Reset();
