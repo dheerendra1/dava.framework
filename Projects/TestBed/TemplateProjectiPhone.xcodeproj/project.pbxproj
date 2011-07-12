@@ -376,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vitaliy Borodovsky (MS45DK374J)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -384,6 +385,7 @@
 				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
 				PRODUCT_NAME = TemplateProjectiPhone;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B40FEC58-A683-48FB-9EC1-CEC9F14F7781";
 			};
 			name = Debug;
 		};

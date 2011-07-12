@@ -78,10 +78,10 @@ void RenderTargetTestScreen::Draw(const UIGeometricData &geometricData)
 	blueSprite->Draw();
 	RenderManager::Instance()->RestoreRenderTarget();
 
-	RenderManager::Instance()->SetRenderTarget(renderTargetRGB565);
-	RenderManager::Instance()->ClearWithColor(1.0f, 0.0f, 0.0f, 1.0f);
-	greenSprite->Draw();
-	RenderManager::Instance()->RestoreRenderTarget();
+//	RenderManager::Instance()->SetRenderTarget(renderTargetRGB565);
+//	RenderManager::Instance()->ClearWithColor(1.0f, 0.0f, 0.0f, 1.0f);
+//	greenSprite->Draw();
+//	RenderManager::Instance()->RestoreRenderTarget();
 	
 	renderTargetRGBA8888->Draw();
 

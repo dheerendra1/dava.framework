@@ -181,8 +181,9 @@ void RenderManager::PrepareRealMatrix()
         glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
         glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
         
+        glTranslate = glTranslate * glScale;
         // todo replace with offset calculations
-        SetMatrix(MATRIX_MODELVIEW, glScale * glTranslate);
+        SetMatrix(MATRIX_MODELVIEW, glTranslate);
     }
 }
 	
@@ -425,7 +426,8 @@ void RenderManager::FlushState()
 	}
 	if(oldColor != newColor)
 	{
-        RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
+        if (renderer != Core::RENDERER_OPENGL_ES_2_0)
+            RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
 		oldColor = newColor;
 	}   
 	if(newTextureEnabled != oldTextureEnabled)
