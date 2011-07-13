@@ -32,7 +32,7 @@
 #include "Debug/DVAssert.h"
 #include "Utils/Utils.h"
 #include "Utils/StringFormat.h"
-
+#include "FileSystem/ResourceArchive.h"
 
 
 #if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__)
@@ -153,6 +153,13 @@ FileSystem::FileSystem()
 
 FileSystem::~FileSystem()
 {	
+	for (List<ResourceArchiveItem>::iterator ai = resourceArchiveList.begin();
+		ai != resourceArchiveList.end(); ++ai)
+	{
+		ResourceArchiveItem & item = *ai;
+		SafeRelease(item.archive);
+	}
+	resourceArchiveList.clear();
 }
 
 FileSystem::eCreateDirectoryResult FileSystem::CreateDirectory(const String & filePath, bool isRecursive)
@@ -493,6 +500,22 @@ uint8 * FileSystem::ReadFileContents(const String & pathname, uint32 & fileSize)
 	SafeRelease(fp);
     return bytes;
 };
+
+void FileSystem::AttachArchive(const String & archiveName, const String & attachPath)
+{
+	ResourceArchive * resourceArchive = new ResourceArchive();
+
+	if (!resourceArchive->Open(archiveName)) 
+	{
+		delete resourceArchive;
+		resourceArchive = 0;
+		return;
+	}
+	ResourceArchiveItem item;
+	item.attachPath = attachPath;
+	item.archive = resourceArchive;
+	resourceArchiveList.push_back(item);
+}
 
 }
 
