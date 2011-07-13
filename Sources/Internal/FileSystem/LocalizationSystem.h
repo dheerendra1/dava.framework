@@ -47,9 +47,14 @@ public:
 	const String &GetCurrentLocale();
 	void SetCurrentLocale(const String &newLangId);
 	
-	
-	
 	const WideString & GetLocalizedString(const WideString & key);
+
+	struct YamlDataHolder
+	{
+		uint32 fileSize;
+		uint32 dataOffset;
+		uint8 * data;
+	};
 	
 private:
 
@@ -58,7 +63,6 @@ private:
 
 	String langId;
 	
-	const WideString emptyString;
 	struct StringFile
 	{
 		String pathName;
@@ -67,6 +71,8 @@ private:
 	List<StringFile*> stringsList;
 
 	StringFile* LoadFromYamlFile(const String & fileName);
+
+	YamlDataHolder dataHolder;
 };
 
 inline const WideString &  LocalizedString(const WideString & key)
