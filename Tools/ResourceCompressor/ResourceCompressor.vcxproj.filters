@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ResourceCompressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\AnsiFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\AnsiFileList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\AnsiFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\Bitstream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\IFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\MemoryFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\ResourceArchive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filesystem\StringFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="filesystem\AnsiFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\StringFormat.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\AnsiFileList.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\AnsiFileSystem.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\BaseTypes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\Bitstream.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\IBase.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\IFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\IFileList.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\IFileSystem.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\MemoryFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\ResourceArchive.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesystem\Singleton.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
