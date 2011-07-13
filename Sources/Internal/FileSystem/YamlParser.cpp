@@ -232,17 +232,17 @@ YamlNode * YamlNode::Get(const String & name)
 	
 	
 /* Set a generic reader. */
-//int read_handler(void *ext, unsigned char *buffer, size_t size, size_t *length)
-//{
-//	YamlParser::YamlDataHolder * holder = (YamlParser::YamlDataHolder*)ext;
-//	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
-//	memcpy(buffer, holder->data, sizeToWrite);
-//	*length = sizeToWrite;
-//
-//	holder->dataOffset += sizeToWrite;
-//
-//	return 1;
-//}
+int read_handler(void *ext, unsigned char *buffer, size_t size, size_t *length)
+{
+	YamlParser::YamlDataHolder * holder = (YamlParser::YamlDataHolder*)ext;
+	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
+	memcpy(buffer, holder->data, sizeToWrite);
+	*length = sizeToWrite;
+
+	holder->dataOffset += sizeToWrite;
+
+	return 1;
+}
 	
 YamlParser * YamlParser::Create(const String & fileName)
 {
@@ -275,19 +275,19 @@ bool YamlParser::Parse(const String & pathName)
 	//yaml_parser_set_input_string(&parser, (const unsigned char*)pathName.c_str(), pathName.length());
 	
 
-	//File * yamlFile = File::Create(pathName, File::OPEN | File::READ);
-	//dataHolder.fileSize = yamlFile->GetSize();
-	//dataHolder.data = new uint8[dataHolder.fileSize];
-	//dataHolder.dataOffset = 0;
-	//yamlFile->Read(dataHolder.data, dataHolder.fileSize);
-	//yamlFile->Release();
+	File * yamlFile = File::Create(pathName, File::OPEN | File::READ);
+	dataHolder.fileSize = yamlFile->GetSize();
+	dataHolder.data = new uint8[dataHolder.fileSize];
+	dataHolder.dataOffset = 0;
+	yamlFile->Read(dataHolder.data, dataHolder.fileSize);
+	yamlFile->Release();
 	/* Set a file input. */
-	FILE *input = fopen(FileSystem::Instance()->SystemPathForFrameworkPath(pathName).c_str(), "rb");
-	if (!input)
-		return false;
-	yaml_parser_set_input_file(&parser, input);
+	//FILE *input = fopen(FileSystem::Instance()->SystemPathForFrameworkPath(pathName).c_str(), "rb");
+	//if (!input)
+	//	return false;
+	//yaml_parser_set_input_file(&parser, input);
 	
-//	yaml_parser_set_input(&parser, read_handler, &dataHolder);
+	yaml_parser_set_input(&parser, read_handler, &dataHolder);
 	YamlNode * mapKey = 0;
 //	YamlNode * mapValue = 0;
 
@@ -488,6 +488,7 @@ bool YamlParser::Parse(const String & pathName)
 	/* Destroy the Parser object. */
 	yaml_parser_delete(&parser);
 //	fclose(input);
+	SafeDeleteArray(dataHolder.data);
 	
 	return true;
 }
@@ -503,7 +504,7 @@ YamlParser::YamlParser()
 YamlParser::~YamlParser()
 {
 	SafeRelease(rootObject);
-	SafeDeleteArray(dataHolder.data);
+	//SafeDeleteArray(dataHolder.data);
 }
 
 std::vector<String> split(const String& s, const String& delim, const bool keep_empty = true) 
