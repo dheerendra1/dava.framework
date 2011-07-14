@@ -76,7 +76,18 @@ void LocalizationSystem::SetCurrentLocale(const String &newLangId)
 	langId = newLangId;
 }
 	
-	
+int read_handler_localization_system(void *ext, unsigned char *buffer, size_t size, size_t *length)
+{
+	LocalizationSystem::YamlDataHolder * holder = (LocalizationSystem::YamlDataHolder*)ext;
+	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
+	memcpy(buffer, holder->data, sizeToWrite);
+	*length = sizeToWrite;
+
+	holder->dataOffset += sizeToWrite;
+
+	return 1;
+}
+
 LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const String & pathName)
 {
 	yaml_parser_t parser;
@@ -89,11 +100,14 @@ LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const Stri
 	
 	yaml_parser_set_encoding(&parser, YAML_UTF8_ENCODING);
 	
-	FILE *input = fopen(FileSystem::Instance()->SystemPathForFrameworkPath(pathName).c_str(), "rb");
-	if (!input)
-		return false;
+	File * yamlFile = File::Create(pathName, File::OPEN | File::READ);
+	dataHolder.fileSize = yamlFile->GetSize();
+	dataHolder.data = new uint8[dataHolder.fileSize];
+	dataHolder.dataOffset = 0;
+	yamlFile->Read(dataHolder.data, dataHolder.fileSize);
+	yamlFile->Release();
 	
-	yaml_parser_set_input_file(&parser, input);
+	yaml_parser_set_input(&parser, read_handler_localization_system, &dataHolder);
 
 	
 	WideString key;
@@ -173,11 +187,12 @@ LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const Stri
 	}
 	
 	yaml_parser_delete(&parser);	
-	fclose(input);
 	if (strFile)
 	{
 		strFile->pathName = pathName;
-	}	
+	}
+
+	SafeDeleteArray(dataHolder.data);
 	return strFile;
 }
 	
@@ -208,7 +223,7 @@ const WideString & LocalizationSystem::GetLocalizedString(const WideString & key
 			return res->second;
 		}
 	}
-	return emptyString;
+	return key;
 }
 
 
