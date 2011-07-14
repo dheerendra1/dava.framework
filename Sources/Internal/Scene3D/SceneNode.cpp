@@ -42,6 +42,7 @@ SceneNode::SceneNode(Scene * _scene)
 	localTransform.Identity();
 	worldTransform.Identity();
 	//animation = 0;
+    visible = true;
 }
 
 SceneNode::~SceneNode()

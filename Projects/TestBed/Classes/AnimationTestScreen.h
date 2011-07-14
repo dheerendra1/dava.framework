@@ -75,6 +75,11 @@ public:
 
 	UIJoypad * positionJoypad;
     UI3DView * scene3dView;
+    
+    Matrix4 aimUser;
+    Vector2 oldTouchPoint;
+    float32 viewXAngle, viewYAngle;
+    Camera * cam;
 };
 
 #endif // __ANIMATION_TEST_SCREEN_H__

@@ -41,19 +41,16 @@ void AnimationTestScreen::LoadResources()
 	SceneFile * file = new SceneFile();
 	file->SetDebugLog(true);
 	//file->LoadScene("~res:/Scenes/1.sce", scene);
-	//file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
-	file->LoadScene("~res:/Scenes/M3/M3.sce", scene);
+	file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
+	//file->LoadScene("~res:/Scenes/M3.sce", scene);
 	SafeRelease(file);
-    
-    //MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
-//    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
-	//turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
-    //turretN->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
-    
+        
 	currentTankAngle = 0.0f;
 	inTouch = false;
 	startRotationInSec = 0.0f;
 	rotationSpeed = 8.0f;   
+    
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/garage/hungar.sce"));
     
 	//originalCameraPosition = scene->GetCamera(0)->GetPosition();
     
@@ -67,8 +64,9 @@ void AnimationTestScreen::LoadResources()
     
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
+    scene3dView->SetInputEnabled(false);
     scene3dView->SetScene(scene);
-    Camera * cam = scene->GetCamera(0);
+    cam = scene->GetCamera(0);
     scene->SetCamera(cam);
     AddControl(scene3dView);
     
@@ -76,6 +74,9 @@ void AnimationTestScreen::LoadResources()
     hierarchy->SetCellHeight(25);
     hierarchy->SetDelegate(this);
     AddControl(hierarchy);
+    
+    viewXAngle = 0;
+    viewYAngle = 0;
 }
 
 void AnimationTestScreen::UnloadResources()
@@ -96,52 +97,79 @@ void AnimationTestScreen::WillDisappear()
 
 void AnimationTestScreen::Input(UIEvent * touch)
 {
-	if (touch->phase == UIEvent::PHASE_BEGAN)
-	{
-		inTouch = true;	
-		touchStart = touch->point;
-		touchTankAngle = currentTankAngle;
-	}
-	
-	if (touch->phase == UIEvent::PHASE_DRAG)
-	{
-		touchCurrent = touch->point;
-		
-		float32 dist = (touchCurrent.x - touchStart.x);
-		//Logger::Debug("%f, %f", currentTankAngle, dist);
-		currentTankAngle = touchTankAngle + dist;
-	}
-	
-	if (touch->phase == UIEvent::PHASE_ENDED)
-	{
-		touchCurrent = touch->point;
-		rotationSpeed = (touchCurrent.x - touchStart.x);
-		inTouch = false;
-		startRotationInSec = 0.0f;
-	}
+//	if (touch->phase == UIEvent::PHASE_BEGAN)
+//	{
+//		inTouch = true;	
+//		touchStart = touch->point;
+//		touchTankAngle = currentTankAngle;
+//	}
+//	
+//	if (touch->phase == UIEvent::PHASE_DRAG)
+//	{
+//		touchCurrent = touch->point;
+//		
+//		float32 dist = (touchCurrent.x - touchStart.x);
+//		//Logger::Debug("%f, %f", currentTankAngle, dist);
+//		currentTankAngle = touchTankAngle + dist;
+//	}
+//	
+//	if (touch->phase == UIEvent::PHASE_ENDED)
+//	{
+//		touchCurrent = touch->point;
+//		rotationSpeed = (touchCurrent.x - touchStart.x);
+//		inTouch = false;
+//		startRotationInSec = 0.0f;
+//	}
+    
+    if (touch->phase == UIEvent::PHASE_BEGAN) 
+    {
+        oldTouchPoint = touch->point;
+    }
+    else if(touch->phase == UIEvent::PHASE_DRAG || touch->phase == UIEvent::PHASE_ENDED)
+    {
+        Vector2 dp = oldTouchPoint - touch->point;
+        viewXAngle += dp.x * 0.5f;
+        viewYAngle += dp.y * 0.5f;
+        oldTouchPoint = touch->point;
+        //ClampAngles();
+        //LOG_AS_FLOAT(viewXAngle);
+        //LOG_AS_FLOAT(viewYAngle);
+    }
 }
 
 void AnimationTestScreen::Update(float32 timeElapsed)
 {
+    aimUser.Identity();
+    Matrix4 mt, mt2;
+    mt.CreateTranslation(Vector3(0,10,0));
+    aimUser *= mt;
+    mt.CreateRotation(Vector3(0,0,1), DegToRad(viewXAngle));
+    mt2.CreateRotation(Vector3(1,0,0), DegToRad(viewYAngle));
+    mt2 *= mt;
+    aimUser *= mt2;
     
-    Camera * cam = scene->GetCamera(0);
-
-    Vector3 pos = cam->GetPosition();
-    cam->SetPosition(pos - cam->GetDirection());
+    Vector3 dir = Vector3() * aimUser;
+    cam->SetDirection(dir);
     
-	startRotationInSec -= timeElapsed;
-	if (startRotationInSec < 0.0f)
-		startRotationInSec = 0.0f;
     
-	if (startRotationInSec == 0.0f)
-	{
-		if (Abs(rotationSpeed) > 8.0)
-		{
-			rotationSpeed = rotationSpeed * 0.8f;
-		}
-		
-		currentTankAngle += timeElapsed * rotationSpeed;
-	}
+//    Camera * cam = scene->GetCamera(0);
+//
+//    Vector3 pos = cam->GetPosition();
+//    cam->SetPosition(pos - cam->GetDirection());
+//    
+//	startRotationInSec -= timeElapsed;
+//	if (startRotationInSec < 0.0f)
+//		startRotationInSec = 0.0f;
+//    
+//	if (startRotationInSec == 0.0f)
+//	{
+//		if (Abs(rotationSpeed) > 8.0)
+//		{
+//			rotationSpeed = rotationSpeed * 0.8f;
+//		}
+//		
+//		currentTankAngle += timeElapsed * rotationSpeed;
+//	}
 }
 
 void AnimationTestScreen::Draw(const UIGeometricData &geometricData)
