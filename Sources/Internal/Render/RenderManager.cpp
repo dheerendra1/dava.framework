@@ -132,7 +132,8 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
     
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
-	Logger::Debug("[RenderManager::Init] orientation: %d x %d", frameBufferWidth, frameBufferHeight);
+    const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
+	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
 }
 
 void RenderManager::Reset()

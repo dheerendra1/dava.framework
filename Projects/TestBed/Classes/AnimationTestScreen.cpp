@@ -41,14 +41,14 @@ void AnimationTestScreen::LoadResources()
 	SceneFile * file = new SceneFile();
 	file->SetDebugLog(true);
 	//file->LoadScene("~res:/Scenes/1.sce", scene);
-	file->LoadScene("~res:/Scenes/M3.sce", scene);
-	//file->LoadScene("~res:/Scenes/M3.sce", scene);
+	//file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
+	file->LoadScene("~res:/Scenes/M3/M3.sce", scene);
 	SafeRelease(file);
     
-    MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
+    //MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
 //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
-	turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
-    turretN->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
+	//turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
+    //turretN->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
     
 	currentTankAngle = 0.0f;
 	inTouch = false;
