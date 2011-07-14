@@ -255,6 +255,11 @@ public:
 	 \brief Returns multiplyer to convert sprite to the physical coordinates.
 	 */
 	inline float32 GetResourceToPhysicalFactor();
+    
+	/** 
+	 \brief Returns texture coordinates for the requested frame.
+	 */
+    float32 *GetTextureVerts(int32 frame);
 
 	
 protected:

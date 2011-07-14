@@ -572,6 +572,12 @@ Texture* Sprite::GetTexture(int32 frameNumber)
 	DVASSERT(frameNumber > -1 && frameNumber < frameCount);
 	return textures[frameTextureIndex[frame]];
 }
+    
+float32 *Sprite::GetTextureVerts(int32 frame)
+{
+    return texCoords[frame];
+}
+
 	
 int32 Sprite::GetFrameCount()
 {
@@ -929,13 +935,13 @@ void Sprite::Draw()
 //			float y1 = frameVertices[frame][1] + y;//y2
 //			float x2 = frameVertices[frame][2] + x;//x2
 //			tempVertices[0] = x1;
-//			tempVertices[7] = y2;
 //			tempVertices[1] = y1;
 //			tempVertices[2] = x2;
 //			tempVertices[3] = y1;
 //			tempVertices[4] = x1;
 //			tempVertices[5] = y2;
 //			tempVertices[6] = x2;
+//			tempVertices[7] = y2;
 		}
 
 	}

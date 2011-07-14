@@ -613,6 +613,18 @@ void RenderManager::EnableBlending(bool isEnabled)
 	}
 }
 
+void RenderManager::EnableDepthTest(bool isEnabled)
+{
+        //TODO: need to be realised for the DX
+    DVASSERT(false);
+}
+    
+void RenderManager::EnableDepthWrite(bool isEnabled)
+{
+        //TODO: need to be realised for the DX
+    DVASSERT(false);
+}
+    
 
 static GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
 {

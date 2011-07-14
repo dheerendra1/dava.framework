@@ -246,7 +246,7 @@ SceneNode *Scene::GetRootNode(const String &rootNodePath)
 
 void Scene::SetupTestLighting()
 {
-//#ifdef __DAVAENGINE_IPHONE__
+#ifdef __DAVAENGINE_IPHONE__
 //	glShadeModel(GL_SMOOTH);
 //	// enable lighting
 //	glEnable(GL_LIGHTING);
@@ -292,7 +292,7 @@ void Scene::SetupTestLighting()
 //	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 0.0f);
 //	GLfloat spotdirection[] = { 0.0f, 0.0f, -1.0f, 0.0f }; // irrelevant for this light (I guess)
 //	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spotdirection); 
-//#endif
+#endif
 }
 
 void Scene::Update(float timeElapsed)
