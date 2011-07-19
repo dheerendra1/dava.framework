@@ -35,7 +35,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface XMLParserObject : NSObject
+@interface XMLParserObject : NSObject <NSXMLParserDelegate>
 {
 @public
 	DAVA::XMLParserDelegate *delegate;
