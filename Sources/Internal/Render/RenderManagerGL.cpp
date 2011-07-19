@@ -414,7 +414,40 @@ void RenderManager::EnableColorArray(bool isEnabled)
 		oldColorArrayEnabled = isEnabled;
 	}
 }
-	
+    
+void RenderManager::EnableDepthTest(bool isEnabled)
+{
+	if(isEnabled != depthTestEnabled)
+	{
+		if(isEnabled)
+		{
+            RENDER_VERIFY(glEnable(GL_DEPTH_TEST));
+		}
+		else
+		{
+            RENDER_VERIFY(glDisable(GL_DEPTH_TEST));
+		}
+		depthTestEnabled = isEnabled;
+	}
+}
+
+void RenderManager::EnableDepthWrite(bool isEnabled)
+{
+	if(isEnabled != depthWriteEnabled)
+	{
+		if(isEnabled)
+		{
+            RENDER_VERIFY(glDepthMask(GL_TRUE));
+		}
+		else
+		{
+            RENDER_VERIFY(glDepthMask(GL_TRUE));
+		}
+		depthWriteEnabled = isEnabled;
+	}
+}
+
+
 void RenderManager::FlushState()
 {
 	if(newSFactor != oldSFactor || newDFactor != oldDFactor)

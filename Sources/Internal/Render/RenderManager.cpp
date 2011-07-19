@@ -62,6 +62,8 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	oldTextureCoordArrayEnabled = 0;
 	oldColorArrayEnabled = 0;
 	oldBlendingEnabled = 0;
+    depthWriteEnabled = 0;
+    depthTestEnabled = 0;
 	renderOrientation = 0;
 	currentRenderTarget = NULL;
 	
@@ -149,6 +151,8 @@ void RenderManager::Reset()
 	newTextureEnabled = oldTextureEnabled = -1;
 	oldVertexArrayEnabled = -1;
 	oldTextureCoordArrayEnabled = -1;
+    depthWriteEnabled = -1;
+    depthTestEnabled = -1;
 #if defined(__DAVAENGINE_OPENGL__)
 	oldBlendingEnabled = -1;
 #endif 	
@@ -414,6 +418,16 @@ void RenderManager::RestoreRenderTarget()
 bool RenderManager::IsRenderTarget()
 {
 	return currentRenderTarget != NULL;
+}
+
+bool RenderManager::IsDepthTestEnabled()
+{
+    return depthTestEnabled > 0;
+}
+
+bool RenderManager::IsDepthWriteEnabled()
+{
+    return depthWriteEnabled > 0;
 }
 
 

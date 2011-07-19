@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47106C1213CF6DA200EDEBA4 /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47106C1113CF6DA200EDEBA4 /* SpriteNode.cpp */; };
 		4730931113A7E08200C28765 /* UIHierarchyNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4730930F13A7E08200C28765 /* UIHierarchyNode.h */; };
 		4730931213A7E08200C28765 /* UIHierarchyNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4730931013A7E08200C28765 /* UIHierarchyNode.cpp */; };
 		473DB5B0139E87C3007F2498 /* UIScrollBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 473DB5AE139E87C3007F2498 /* UIScrollBar.h */; };
@@ -638,6 +639,7 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* Framework_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framework_Prefix.pch; sourceTree = "<group>"; };
+		47106C1113CF6DA200EDEBA4 /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
 		4730930F13A7E08200C28765 /* UIHierarchyNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHierarchyNode.h; sourceTree = "<group>"; };
 		4730931013A7E08200C28765 /* UIHierarchyNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHierarchyNode.cpp; sourceTree = "<group>"; };
 		473DB5AE139E87C3007F2498 /* UIScrollBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollBar.h; sourceTree = "<group>"; };
@@ -2231,6 +2233,7 @@
 				FECFC1BC12E87E3000C71562 /* SkeletonNode.cpp */,
 				FECFC1BD12E87E3000C71562 /* SkeletonNode.h */,
 				FECFC1BE12E87E3000C71562 /* SpriteNode.h */,
+				47106C1113CF6DA200EDEBA4 /* SpriteNode.cpp */,
 				FECFC1BF12E87E3000C71562 /* StateNode.h */,
 			);
 			path = Scene3D;
@@ -3047,6 +3050,7 @@
 				FED0476A13B7455700A9A859 /* ShaderGL.cpp in Sources */,
 				FED0479A13B7B89500A9A859 /* Matrix4.cpp in Sources */,
 				FEB3CF4F13CCE4FD00268C55 /* RenderManagerFactory.cpp in Sources */,
+				47106C1213CF6DA200EDEBA4 /* SpriteNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

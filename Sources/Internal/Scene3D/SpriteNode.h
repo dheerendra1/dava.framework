@@ -25,30 +25,46 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Alexey 'Hottych' Prosin
 =====================================================================================*/
-#ifndef __DAVAENGINE_SPRITE_2D_NODE_H__
-#define __DAVAENGINE_SPRITE_2D_NODE_H__
 
-#include "Base/BaseTypes.h"
-#include "Render/RenderBase.h"
-#include "Scene3D/SceneNode2d.h"
+#ifndef __SPRITE_NODE_H__
+#define __SPRITE_NODE_H__
+
+#include "Scene3D/SceneNode3d.h"
 
 namespace DAVA 
 {
-	
-class SpriteNode : public SceneNode2d
+class Sprite;
+class SpriteNode : public SceneNode
 {
 public:
-	SpriteNode();
-	virtual ~SpriteNode();
+    
+    SpriteNode(Scene * _scene, const String &pathToSprite, int32 frame = 0
+               , const Vector2 &reqScale = Vector2(1.0, 1.0)
+               , const Vector2 &pivotPoint = Vector2(0, 0));
+    SpriteNode(Scene * _scene, Sprite *spr, int32 frame = 0
+               , const Vector2 &reqScale = Vector2(1.0, 1.0)
+               , const Vector2 &pivotPoint = Vector2(0, 0));
+    ~SpriteNode();
+    
+    virtual void	Draw();
+    
+    void SetFrame(int32 newFrame);
+    int32 GetFrame();
 
-	Sprite * sprite;
-	
-	virtual void Update(float32 elapsedTime);
-	virtual void Draw();
+    
+protected:
+    
+    void CreateMeshFromSprite();
+    Vector<float32> verts;
+    Vector<float32> colors;
+    
+    Sprite *sprite;
+    Vector2 sprScale;
+    Vector2 sprPivot;
+    int32 frame;
 };
 };
 
-
-#endif // __DAVAENGINE_SPRITE_2D_NODE_H__
+#endif

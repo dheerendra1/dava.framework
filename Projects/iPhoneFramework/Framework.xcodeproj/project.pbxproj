@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47106BE413CF694500EDEBA4 /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47106BE213CF694500EDEBA4 /* SpriteNode.cpp */; };
+		47106BE513CF694500EDEBA4 /* SpriteNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 47106BE313CF694500EDEBA4 /* SpriteNode.h */; };
 		475D59561300236500A18EC7 /* Box2DGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475D59501300236500A18EC7 /* Box2DGameObject.cpp */; };
 		475D59571300236500A18EC7 /* Box2DGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 475D59511300236500A18EC7 /* Box2DGameObject.h */; };
 		475D59581300236500A18EC7 /* Box2DHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475D59521300236500A18EC7 /* Box2DHelper.cpp */; };
@@ -506,7 +508,6 @@
 		FECFB6A412E5904500C71562 /* SceneNodeAnimationList.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB43312E5904500C71562 /* SceneNodeAnimationList.h */; };
 		FECFB6A512E5904500C71562 /* SkeletonNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB43412E5904500C71562 /* SkeletonNode.cpp */; };
 		FECFB6A612E5904500C71562 /* SkeletonNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB43512E5904500C71562 /* SkeletonNode.h */; };
-		FECFB6A712E5904500C71562 /* SpriteNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB43612E5904500C71562 /* SpriteNode.h */; };
 		FECFB6A812E5904500C71562 /* StateNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB43712E5904500C71562 /* StateNode.h */; };
 		FECFB6B712E5904500C71562 /* ScrollHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB44912E5904500C71562 /* ScrollHelper.cpp */; };
 		FECFB6B812E5904500C71562 /* ScrollHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB44A12E5904500C71562 /* ScrollHelper.h */; };
@@ -612,6 +613,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		47106BE213CF694500EDEBA4 /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
+		47106BE313CF694500EDEBA4 /* SpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteNode.h; sourceTree = "<group>"; };
 		475D59501300236500A18EC7 /* Box2DGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DGameObject.cpp; sourceTree = "<group>"; };
 		475D59511300236500A18EC7 /* Box2DGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DGameObject.h; sourceTree = "<group>"; };
 		475D59521300236500A18EC7 /* Box2DHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DHelper.cpp; sourceTree = "<group>"; };
@@ -1112,7 +1115,6 @@
 		FECFB43312E5904500C71562 /* SceneNodeAnimationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNodeAnimationList.h; sourceTree = "<group>"; };
 		FECFB43412E5904500C71562 /* SkeletonNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonNode.cpp; sourceTree = "<group>"; };
 		FECFB43512E5904500C71562 /* SkeletonNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonNode.h; sourceTree = "<group>"; };
-		FECFB43612E5904500C71562 /* SpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteNode.h; sourceTree = "<group>"; };
 		FECFB43712E5904500C71562 /* StateNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateNode.h; sourceTree = "<group>"; };
 		FECFB44912E5904500C71562 /* ScrollHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScrollHelper.cpp; sourceTree = "<group>"; };
 		FECFB44A12E5904500C71562 /* ScrollHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollHelper.h; sourceTree = "<group>"; };
@@ -2121,6 +2123,8 @@
 		FECFB41812E5904400C71562 /* Scene3D */ = {
 			isa = PBXGroup;
 			children = (
+				47106BE213CF694500EDEBA4 /* SpriteNode.cpp */,
+				47106BE313CF694500EDEBA4 /* SpriteNode.h */,
 				FECFB41912E5904400C71562 /* BoneNode.cpp */,
 				FECFB41A12E5904400C71562 /* BoneNode.h */,
 				FE4E01E313AAA9D00013464E /* Camera.cpp */,
@@ -2150,7 +2154,6 @@
 				FECFB43312E5904500C71562 /* SceneNodeAnimationList.h */,
 				FECFB43412E5904500C71562 /* SkeletonNode.cpp */,
 				FECFB43512E5904500C71562 /* SkeletonNode.h */,
-				FECFB43612E5904500C71562 /* SpriteNode.h */,
 				FECFB43712E5904500C71562 /* StateNode.h */,
 			);
 			path = Scene3D;
@@ -2570,7 +2573,6 @@
 				FECFB6A212E5904500C71562 /* SceneNodeAnimationKey.h in Headers */,
 				FECFB6A412E5904500C71562 /* SceneNodeAnimationList.h in Headers */,
 				FECFB6A612E5904500C71562 /* SkeletonNode.h in Headers */,
-				FECFB6A712E5904500C71562 /* SpriteNode.h in Headers */,
 				FECFB6A812E5904500C71562 /* StateNode.h in Headers */,
 				FECFB6B812E5904500C71562 /* ScrollHelper.h in Headers */,
 				FECFB6BA12E5904500C71562 /* UIButton.h in Headers */,
@@ -2635,6 +2637,7 @@
 				FE4E01F613AAAB170013464E /* UIHierarchyNode.h in Headers */,
 				FED0474413B73D0A00A9A859 /* RenderStateBlock.h in Headers */,
 				FE5DB8A413B8D62400C00F98 /* Shader.h in Headers */,
+				47106BE513CF694500EDEBA4 /* SpriteNode.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2940,6 +2943,7 @@
 				FE5DB8A513B8D62400C00F98 /* ShaderDX.cpp in Sources */,
 				FE5DB8A613B8D62400C00F98 /* ShaderGL.cpp in Sources */,
 				FE203F3F13BCCD3400350E9A /* RenderManagerFactory.cpp in Sources */,
+				47106BE413CF694500EDEBA4 /* SpriteNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
