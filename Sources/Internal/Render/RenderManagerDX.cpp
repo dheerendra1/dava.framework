@@ -622,7 +622,7 @@ void RenderManager::EnableDepthTest(bool isEnabled)
 void RenderManager::EnableDepthWrite(bool isEnabled)
 {
         //TODO: need to be realised for the DX
-    DVASSERT(false);
+    //DVASSERT(false);
 }
     
 
