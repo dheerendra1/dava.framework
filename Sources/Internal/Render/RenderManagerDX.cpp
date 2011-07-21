@@ -615,14 +615,12 @@ void RenderManager::EnableBlending(bool isEnabled)
 
 void RenderManager::EnableDepthTest(bool isEnabled)
 {
-        //TODO: need to be realised for the DX
-    DVASSERT(false);
+	RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_ZENABLE, isEnabled));
 }
     
 void RenderManager::EnableDepthWrite(bool isEnabled)
 {
-        //TODO: need to be realised for the DX
-    //DVASSERT(false);
+	RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_ZWRITEENABLE , isEnabled));
 }
     
 
