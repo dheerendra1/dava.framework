@@ -65,6 +65,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	oldTextureCoordArrayEnabled = 0;
 	oldColorArrayEnabled = 0;
 	oldBlendingEnabled = 0;
+    depthWriteEnabled = 0;
+    depthTestEnabled = 0;
+    
 	renderOrientation = 0;
 	currentRenderTarget = NULL;
 	
@@ -407,6 +410,16 @@ void RenderManager::RestoreRenderTarget()
 bool RenderManager::IsRenderTarget()
 {
 	return currentRenderTarget != NULL;
+}
+    
+bool RenderManager::IsDepthTestEnabled()
+{
+    return depthTestEnabled > 0;
+}
+
+bool RenderManager::IsDepthWriteEnabled()
+{
+    return depthWriteEnabled > 0;
 }
 
 

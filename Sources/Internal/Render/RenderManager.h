@@ -259,7 +259,11 @@ public:
 	void EnableTextureCoordArray(bool isEnabled);
 	void EnableColorArray(bool isEnabled);
 
-    
+    bool IsDepthTestEnabled();
+    bool IsDepthWriteEnabled();
+
+    void EnableDepthTest(bool isEnabled);
+    void EnableDepthWrite(bool isEnabled);
     
     void SetRenderData(RenderDataObject * object);
     virtual void AttachRenderData(Shader * shader);
@@ -510,7 +514,9 @@ protected:
 	int oldTextureCoordArrayEnabled;                // state
 	int oldColorArrayEnabled;                       // state
 	int oldBlendingEnabled;                         // state
-
+    int depthWriteEnabled;                          // state
+    int depthTestEnabled;                           // state
+    
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;
     
