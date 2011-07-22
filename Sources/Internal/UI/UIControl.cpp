@@ -720,7 +720,7 @@ namespace DAVA
 	
 	void UIControl::SendChildBelow(UIControl * _control, UIControl * _belowThisChild)
 	{
-		//TODO: Fix situation when controls not from this hierarhy
+		//TODO: Fix situation when controls not from this hierarchy
 		
 		// firstly find control in list and erase it
 		List<UIControl*>::iterator it = childs.begin();
@@ -744,6 +744,7 @@ namespace DAVA
 				return;
 			}
 		}
+		DVASSERT_MSG(0, "Control _belowThisChild not found");
 	}
 	
 	void UIControl::SendChildAbove(UIControl * _control, UIControl * _aboveThisChild)
@@ -772,10 +773,9 @@ namespace DAVA
 				return;
 			}
 		}
-	}
-	
-	
 
+		DVASSERT_MSG(0, "Control _aboveThisChild not found");
+	}
 	
 	UIControl *UIControl::Clone()
 	{

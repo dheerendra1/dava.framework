@@ -201,6 +201,17 @@ const VariantType & KeyedArchive::GetVariant(const String & key)
 {
 	return objectMap[key];
 }
+
+void KeyedArchive::DeleteKey(const String & key)
+{
+	objectMap.erase(key);
+}
+
+void KeyedArchive::DeleteAllKeys()
+{
+	objectMap.clear();
+}
+
 	
 void KeyedArchive::Dump()
 {
@@ -247,6 +258,10 @@ void KeyedArchive::Dump()
 	}
 	Logger::Info("============================================================");
 }
+
+
+
+
 
 	
 	

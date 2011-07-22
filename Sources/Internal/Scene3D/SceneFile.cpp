@@ -227,6 +227,7 @@ bool SceneFile::ReadTexture()
 		}
 
 		texture->SetWrapMode(Texture::WRAP_REPEAT, Texture::WRAP_REPEAT);
+//		texture->SetWrapMode(Texture::WRAP_CLAMP, Texture::WRAP_CLAMP);
 		scene->AddTexture(texture);
 	}else
 	{

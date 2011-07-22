@@ -33,6 +33,7 @@
 #include "Base/ObjectFactory.h"
 #include "UI/UIYamlLoader.h"
 #include "Utils/StringFormat.h"
+#include "FileSystem/LocalizationSystem.h"
 
 namespace DAVA 
 {
@@ -164,7 +165,7 @@ void UIStaticText::LoadFromYamlNode(YamlNode * node, UIYamlLoader * loader)
 	
 	if (textNode)
 	{
-		SetText(textNode->AsWString());
+		SetText(LocalizedString(textNode->AsWString()));
 	}
 	
 }

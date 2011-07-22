@@ -38,6 +38,7 @@ namespace DAVA
 SceneNode::SceneNode(Scene * _scene)
 	: scene(_scene)
 	, parent(0)
+    , visible(true)
 {
 	localTransform.Identity();
 	worldTransform.Identity();

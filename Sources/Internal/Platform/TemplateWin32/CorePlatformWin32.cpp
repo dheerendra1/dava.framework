@@ -121,7 +121,7 @@ namespace DAVA
 		isFullscreen = false;
 
 		// create the window, only if we do not use the null device
-		LPCWSTR className = L"LogEngineWindowsDevice";
+		LPCWSTR className = L"DavaFrameworkWindowsDevice";
 
 		// Register Class
 
@@ -182,6 +182,7 @@ namespace DAVA
 		// fix ugly ATI driver bugs. Thanks to ariaci (Taken from Irrlight).
 		MoveWindow(hWindow, windowLeft, windowTop, realWidth, realHeight, TRUE);
 	
+		RenderManager::Create(Core::RENDERER_DIRECTX9);
 		RenderManager::Instance()->Create(hInstance, hWindow);
 
 		FrameworkDidLaunched();
@@ -811,7 +812,6 @@ namespace DAVA
 		case WM_CHAR:
 			{
 				//Logger::Debug("wm_char");
-
 				Vector<DAVA::UIEvent> touches;
 				Vector<DAVA::UIEvent> emptyTouches;
 
@@ -828,10 +828,10 @@ namespace DAVA
 
 				touches.push_back(ev);
 
-				if ((ev.keyChar == 'f') /*&& (GetKeyState(VK_LSHIFT) & 0x8000)*/)
-				{
-					Core::Instance()->ToggleFullscreen();
-				}
+				//if ((ev.keyChar == 'f') /*&& (GetKeyState(VK_LSHIFT) & 0x8000)*/)
+				//{
+				//	Core::Instance()->ToggleFullscreen();
+				//}
 
 				UIControlSystem::Instance()->OnInput(0, emptyTouches, touches);
 				touches.pop_back();
@@ -1012,18 +1012,20 @@ namespace DAVA
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
-		case WM_ACTIVATEAPP:
+		case WM_ACTIVATE:
 			{
-				if (wParam)
+				WORD loWord = LOWORD(wParam);
+				WORD hiWord = HIWORD(wParam);
+				if(!loWord || hiWord)
 				{
-					Core::Instance()->Resume();
-					Logger::Debug("[PlatformWin32] activate application");
+					Logger::Debug("[PlatformWin32] deactivate application");
+					RenderResource::SaveAllResourcesToSystemMem();
+					Core::Instance()->Suspend();
 				}
 				else
 				{
-					RenderResource::SaveAllResourcesToSystemMem();
-					Core::Instance()->Suspend();
-					Logger::Debug("[PlatformWin32] deactivate application");
+					Logger::Debug("[PlatformWin32] activate application");
+					Core::Instance()->Resume();
 				}
 			};
 			break;
