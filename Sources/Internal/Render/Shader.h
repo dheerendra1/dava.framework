@@ -99,6 +99,8 @@ private:
     void DeleteShaders();
     eUniform GetUniformByName(const char * name);
     int32 GetAttributeIndexByName(const char * name);
+    
+    static GLuint activeProgram;
 #endif
 };
 };

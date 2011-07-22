@@ -972,15 +972,15 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         vertexCount = 4;
 	}else 
     {	Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f/t->width;
-		float32 adjHeight = 1.f/t->height;
+		float32 adjWidth = 1.f / t->width;
+		float32 adjHeight = 1.f / t->height;
         
 		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
 		{
             const Vector2 & pos = clipPolygon->points[i];
 			clippedVertices.push_back(pos);
-			clippedTexCoords.push_back(Vector2(texCoords[frame][0] + (pos.x-x)*adjWidth,
-                                               texCoords[frame][1] + (pos.y-y)*adjHeight));
+			clippedTexCoords.push_back(Vector2(texCoords[frame][0] + (pos.x - x) * adjWidth,
+                                               texCoords[frame][1] + (pos.y - y) * adjHeight));
 		}
         
         vertexStream->Set(TYPE_FLOAT, 2, 0, &clippedVertices.front());

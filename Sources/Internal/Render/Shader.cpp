@@ -37,6 +37,8 @@
 namespace DAVA 
 {
 #if defined(__DAVAENGINE_OPENGL__)
+GLuint Shader::activeProgram = 0;
+
 Shader::Shader()
 {
     vertexShader = 0;
@@ -306,7 +308,11 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     
 void Shader::Set()
 {
-    glUseProgram(program);
+    if (activeProgram != program)
+    {
+        glUseProgram(program);
+        activeProgram = program;
+    }
     
     for (int32 k = 0; k < activeUniforms; ++k)
     {
