@@ -27,14 +27,20 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
+#include "Render/RenderBase.h"
 #include "Render/RenderDataObject.h"
+#include "Render/RenderManager.h"
 
 namespace DAVA 
 {
     
 RenderDataStream::RenderDataStream()
 {
-    
+    formatMark = EVF_VERTEX;
+    type = TYPE_FLOAT;
+    size = 0;
+    stride = 0;
+    pointer = 0;
 }
 
 RenderDataStream::~RenderDataStream()
@@ -53,10 +59,21 @@ void RenderDataStream::Set(eVertexDataType _type, int32 _size, int32 _stride, vo
 RenderDataObject::RenderDataObject()
 {
     resultVertexFormat = 0;
+    vboBuffer = 0;
 }
 
 RenderDataObject::~RenderDataObject()
 {
+    uint32 size = streamArray.size();
+    for (uint32 k = 0; k < size; ++k)
+    {
+        SafeRelease(streamArray[k]);
+    }
+    //streamArray.clear();
+    //streamMap.clear();
+    
+    if (vboBuffer)
+        RENDER_VERIFY(glDeleteBuffers(1, &vboBuffer));
 }
 
 RenderDataStream * RenderDataObject::SetStream(eVertexFormat formatMark, eVertexDataType vertexType, int32 size, int32 stride, void * pointer)
@@ -93,6 +110,56 @@ uint32 RenderDataObject::GetResultFormat()
 {
     return resultVertexFormat;
 }
- 
+    
+void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
+{
+#if !defined(__DAVAENGINE_MACOS__)
+    
+#if defined (__DAVAENGINE_OPENGL__)
+    uint32 size = streamArray.size();
+    if (size == 0)return;
+    
+    //;
+    
+    for (uint32 k = 1; k < size; ++k)
+    {
+        DVASSERT(streamArray[k]->stride == streamArray[k - 1]->stride);
+        //DVASSERT((uint8*)streamArray[k]->pointer == (uint8*)streamArray[k - 1]->pointer + GetVertexSize(streamArray[k - 1]->formatMark));
+    }
+    
+    uint32 format = 0;
+    for (uint32 k = 0; k < size; ++k)
+    {
+        format |= streamArray[k]->formatMark;
+    }
+    
+    int32 stride = streamArray[0]->stride;
+    
+#if defined(__DAVAENGINE_MACOS__)
+    RENDER_VERIFY(glGenBuffersARB(1, &vboBuffer));
+    RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, vboBuffer));
+    RENDER_VERIFY(glBufferDataARB(GL_ARRAY_BUFFER_ARB, vertexCount * stride, streamArray[0]->pointer, GL_STATIC_DRAW_ARB));
+#else
+    RENDER_VERIFY(glGenBuffers(1, &vboBuffer));
+    RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, vboBuffer));
+    RENDER_VERIFY(glBufferData(GL_ARRAY_BUFFER, vertexCount * stride, streamArray[0]->pointer, GL_STATIC_DRAW));
+#endif
+    streamArray[0]->pointer = 0;
+    for (uint32 k = 1; k < size; ++k)
+    {
+        streamArray[k]->pointer = (uint8*)streamArray[k - 1]->pointer + GetVertexSize(streamArray[k - 1]->formatMark);
+        //Logger::Debug("vbo offset: %d", (uint32)streamArray[k]->pointer);
+    }
+    
+#if defined(__DAVAENGINE_MACOS__)
+    RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0));
+#else
+    RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, 0));
+#endif
+
+#endif
+    
+#endif // #if !defined(__DAVAENGINE_MACOS__)
+} 
 
 }

@@ -31,6 +31,7 @@
 #include "Render/3D/StaticMesh.h"
 #include "Scene3D/Scene.h"
 #include "Render/RenderManager.h"
+#include "FileSystem/Logger.h"
 
 namespace DAVA 
 {
@@ -85,6 +86,7 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 #else
+/*
 	RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, group->vertexStride, group->vertexArray);
 //	RenderManager::Instance()->SetNormalPointer(GL_FLOAT, group->vertexStride, group->normalArray);
 //	RenderManager::Instance()->SetColorPointer(4, GL_UNSIGNED_BYTE, group->vertexStride, group->colorArray);
@@ -92,7 +94,7 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	
 	RenderManager::Instance()->EnableVertexArray(true);
 	RenderManager::Instance()->EnableTextureCoordArray(true);
-
+*/
 	// TODO replace with calls to RenderManager
 	//glEnableClientState(GL_NORMAL_ARRAY);
 	//glEnableClientState(GL_COLOR_ARRAY);
@@ -101,13 +103,30 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	//Material * mat = scene->GetMaterial(index);
 
 
+//    Matrix4 proj = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION);
+//    Matrix4 glMatrixProj;
+//    glGetFloatv(GL_PROJECTION_MATRIX, glMatrixProj.data);
+//    
+//    LOG_AS_MATRIX4(proj);
+//    LOG_AS_MATRIX4(glMatrixProj);
+//    
+//    Matrix4 modelView = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
+//    Matrix4 glModelView;
+//    glGetFloatv(GL_MODELVIEW_MATRIX, glModelView.data);
+//    
+//    LOG_AS_MATRIX4(modelView);
+//    LOG_AS_MATRIX4(glModelView);
+    
+    
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	if (material)
 	{
 
 		if (material->diffuseTexture)
 		{
-			RenderManager::Instance()->EnableTexturing(true);
 			RenderManager::Instance()->SetTexture(material->diffuseTexture);
+            RenderManager::Instance()->SetRenderData(group->renderDataObject);
 		}
 		
 		//glEnable(GL_COLOR_MATERIAL);
@@ -144,23 +163,10 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 
 	// render
 	//RenderManager::Instance()->DrawArrays(GL_TRIANGLES, );
-	RenderManager::Instance()->FlushState();
-	glDrawElements(GL_TRIANGLES, group->indexCount, GL_UNSIGNED_SHORT, group->indexArray);
-
-	// clean
-
-	if (material)
-	{
-		RenderManager::Instance()->EnableTexturing(false);
-	}
-
-//	RenderManager::Instance()->EnableTextureCoordArray(false);
-//	RenderManager::Instance()->EnableVertexArray(false);
-//
-//	// TODO replace with calls to RenderManager
-//	glDisableClientState(GL_NORMAL_ARRAY);
-//	glDisableClientState(GL_COLOR_ARRAY);
-
+	//RenderManager::Instance()->FlushState();
+	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
+    RenderManager::Instance()->RestoreRenderEffect();
+    
 #endif
 }
 

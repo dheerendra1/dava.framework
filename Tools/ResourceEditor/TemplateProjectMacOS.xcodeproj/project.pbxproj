@@ -200,8 +200,8 @@
 				FEC3CA721283557F00541220 /* GameCore.h */,
 				FE94203D13325A0B00515418 /* ResourcePackerScreen.cpp */,
 				FE94203E13325A0B00515418 /* ResourcePackerScreen.h */,
-				FEF303B31335CFC50078054F /* UIFileTree.cpp */,
 				FEF303B41335CFC50078054F /* UIFileTree.h */,
+				FEF303B31335CFC50078054F /* UIFileTree.cpp */,
 				FEF303B51335CFC50078054F /* UIFileTreeCell.cpp */,
 				FEF303B61335CFC50078054F /* UIFileTreeCell.h */,
 				FEF304E01336953A0078054F /* UISpriteEditor.cpp */,
@@ -454,8 +454,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../SDK/Sources,
-					./../../SDK/External,
+					./../../Sources/Internal,
+					./../../Sources/External,
 					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
 					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
 					"./../../Libs/ImageMagick-6.6.9-0/",
@@ -488,8 +488,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../SDK/Sources,
-					./../../SDK/External,
+					./../../Sources/Internal,
+					./../../Sources/External,
 					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
 					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
 					"./../../Libs/ImageMagick-6.6.9-0/",

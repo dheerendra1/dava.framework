@@ -34,6 +34,7 @@
 #include "Base/BaseMath.h"
 #include "Base/BaseObject.h"
 #include "Scene3D/SceneNode3d.h"
+#include "Scene3D/Frustum.h"
 
 namespace DAVA
 {
@@ -71,7 +72,8 @@ public:
     virtual SceneNode* Clone(SceneNode *dstNode = NULL);
 //    virtual SceneNode* Clone();
     
-	
+    Frustum * GetFrustum() const;
+
 protected:
     enum
     {
@@ -84,8 +86,6 @@ protected:
 	float32 xmin, xmax, ymin, ymax, znear, zfar, aspect, fovy;
 	bool ortho;
 		
-	void ExtractValuesFromMatrix();
-	void ConstructMatrixFromValues();
 	
 	Vector3 position;		//
 	Vector3 target;		//	
@@ -97,7 +97,10 @@ protected:
 	Quaternion rotation;	// 
 	Matrix4 cameraTransform;
     uint32 flags;
-		
+    Frustum * currentFrustum;
+	
+	void ExtractValuesFromMatrix();
+	void ConstructMatrixFromValues();
 	void Recalc();
 	
 	/** calls glFrustum for projection matrix */
@@ -105,7 +108,8 @@ protected:
 	
 	/** operates on model-view matrix */
 	void ApplyTransform();
-	
+    
+    
 };
 
 } // ns

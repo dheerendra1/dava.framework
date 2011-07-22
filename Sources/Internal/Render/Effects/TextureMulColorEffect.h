@@ -41,6 +41,7 @@ class Shader;
 class TextureMulColorEffect : public RenderEffect
 {
 public:
+    DECLARE_EFFECT(FixedFunc_TextureMulColorEffect);
     static RenderEffect * Create(Core::eRenderer renderer);
 };
 
@@ -49,6 +50,7 @@ class TextureMulColorEffectGL : public TextureMulColorEffect
 {
 public:
     virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
 
 class TextureMulColorEffectGL20 : public TextureMulColorEffect
@@ -57,6 +59,7 @@ public:
     TextureMulColorEffectGL20();
     ~TextureMulColorEffectGL20();
     virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 protected:
     Shader * shader;
 };
@@ -66,6 +69,7 @@ class TextureMulColorEffectDX9 : public TextureMulColorEffect
 {
 public:
     virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
 
 #endif 

@@ -40,6 +40,7 @@
 
 namespace DAVA
 {
+    
 RenderEffect * RenderManager::FLAT_COLOR = 0;
 RenderEffect * RenderManager::TEXTURE_MUL_FLAT_COLOR = 0;
 
@@ -104,6 +105,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     currentRenderData = 0;
     pointerArraysCurrentState = 0;
     pointerArraysRendererState = 0;
+    
+    statsFrameCountToShowDebug = 0;
+    frameToShowDebugStats = -1;
 }
 	
 RenderManager::~RenderManager()
@@ -264,6 +268,12 @@ void RenderManager::AttachRenderData(Shader * shader)
 {
     if (!shader)
     {
+        // TODO: should be moved to RenderManagerGL
+#if defined(__DAVAENGINE_MACOS__)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+#else
+        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+#endif
         pointerArraysCurrentState = 0;
         int32 size = (int32)currentRenderData->streamArray.size();
         for (int32 k = 0; k < size; ++k)
@@ -584,6 +594,11 @@ const RenderManager::Caps & RenderManager::GetCaps()
 	return caps;
 }
     
+const RenderManager::Stats & RenderManager::GetStats()
+{
+    return stats;
+}
+    
 void RenderManager::RectFromRenderOrientationToViewport(Rect & rect)
 {
     switch(renderOrientation)
@@ -629,7 +644,7 @@ const Matrix4 & RenderManager::GetUniformMatrix(eUniformMatrixType type)
     {
         if (type == UNIFORM_MATRIX_MODELVIEWPROJECTION)
         {
-            uniformMatrices[type] = matrices[MATRIX_MODELVIEW] * matrices[MATRIX_PROJECTION];
+            uniformMatrices[type] =  matrices[MATRIX_MODELVIEW] * matrices[MATRIX_PROJECTION];
         }
         uniformMatrixFlags[type] = 1; // matrix is ready
     }
@@ -641,5 +656,33 @@ void RenderManager::ClearUniformMatrices()
     for (int32 k = 0; k < UNIFORM_MATRIX_COUNT; ++k)
         uniformMatrixFlags[k] = 0;
 }
+    
+void RenderManager::Stats::Clear()
+{
+    drawArraysCalls = 0;
+    drawElementsCalls = 0;
+    for (int32 k = 0; k < PRIMITIVETYPE_COUNT; ++k)
+        primitiveCount[k] = 0;
+}
+
+void RenderManager::EnableOutputDebugStatsEveryNFrame(int32 _frameToShowDebugStats)
+{
+    frameToShowDebugStats = _frameToShowDebugStats;
+}
+
+void RenderManager::ProcessStats()
+{
+    if (frameToShowDebugStats == -1)return;
+    
+    statsFrameCountToShowDebug++;
+    if (statsFrameCountToShowDebug >= frameToShowDebugStats)
+    {
+        statsFrameCountToShowDebug = 0;
+        Logger::Debug("== Frame stats: DrawArraysCount: %d DrawElementCount: %d ==", stats.drawArraysCalls, stats.drawElementsCalls);
+        for (int32 k = 0; k < PRIMITIVETYPE_COUNT; ++k)
+            Logger::Debug("== Primitive Stats: %d ==", stats.primitiveCount[k]);
+    }
+}
+
 	
 };

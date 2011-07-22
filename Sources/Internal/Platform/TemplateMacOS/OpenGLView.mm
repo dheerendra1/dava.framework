@@ -79,6 +79,8 @@ extern void FrameworkMain(int argc, char *argv[]);
     [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
 	
 	activeCursor = 0;
+    
+    //RenderManager::Create(Core::RENDERER_OPENGL);
 	
 	return self;	
 }

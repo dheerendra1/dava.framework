@@ -34,15 +34,21 @@
 
 void AnimationTestScreen::LoadResources()
 {
+    //RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
+    RenderManager::Instance()->SetFPS(30.0);
 	scene = new Scene();
 	//RotatingCubeNode * cubeNode = new RotatingCubeNode(scene);
 	//scene->AddNode(cubeNode);
     
 	SceneFile * file = new SceneFile();
 	file->SetDebugLog(true);
-	//file->LoadScene("~res:/Scenes/1.sce", scene);
-	file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
-	//file->LoadScene("~res:/Scenes/M3.sce", scene);
+//	file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
+//    scene->AddNode(scene->GetRootNode("~res:/Scenes/garage/hungar.sce"));
+//	file->LoadScene("~res:/Scenes/garage_lit/hungar.sce", scene);
+//  scene->AddNode(scene->GetRootNode("~res:/Scenes/garage_lit/hungar.sce"));
+    file->LoadScene("~res:/Scenes/level_test/level_test_3.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level_test/level_test_3.sce"));
+    
 	SafeRelease(file);
         
 	currentTankAngle = 0.0f;
@@ -50,12 +56,15 @@ void AnimationTestScreen::LoadResources()
 	startRotationInSec = 0.0f;
 	rotationSpeed = 8.0f;   
     
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/garage/hungar.sce"));
+    
+    SceneNode * turretNode = scene->FindByName("node-lod0_turret_01");
+    if (turretNode)
+    {
+        MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(turretNode->FindByName("instance_0"));
+        targetPosition = mesh->GetBoundingBox().GetCenter();
+    }
     
 	//originalCameraPosition = scene->GetCamera(0)->GetPosition();
-    
-    
-    
 //	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
 //	positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
 //	positionJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
@@ -67,13 +76,16 @@ void AnimationTestScreen::LoadResources()
     scene3dView->SetInputEnabled(false);
     scene3dView->SetScene(scene);
     cam = scene->GetCamera(0);
+    cam->SetFOV(75.0f);
+    //cam->Setup(60.0f, float32 aspect, float32 znear, float32 zfar, bool ortho)
+
     scene->SetCamera(cam);
     AddControl(scene3dView);
     
-    hierarchy = new UIHierarchy(Rect(0, 0, size.x / 3, size.y));
-    hierarchy->SetCellHeight(25);
-    hierarchy->SetDelegate(this);
-    AddControl(hierarchy);
+//    hierarchy = new UIHierarchy(Rect(0, 0, size.x / 3, size.y));
+//    hierarchy->SetCellHeight(25);
+//    hierarchy->SetDelegate(this);
+//    AddControl(hierarchy);
     
     viewXAngle = 0;
     viewYAngle = 0;
@@ -150,6 +162,11 @@ void AnimationTestScreen::Update(float32 timeElapsed)
     
     Vector3 dir = Vector3() * aimUser;
     cam->SetDirection(dir);
+    
+//    cam->SetTarget(targetPosition);
+//
+//    Vector3 position = targetPosition - Vector3(sinf(DegToRad(viewXAngle)) * 50, 50, cosf(DegToRad(viewXAngle)) * 50);
+//    cam->SetPosition(position);
     
     
 //    Camera * cam = scene->GetCamera(0);

@@ -80,6 +80,8 @@ public:
     Vector2 oldTouchPoint;
     float32 viewXAngle, viewYAngle;
     Camera * cam;
+    
+    Vector3 targetPosition;
 };
 
 #endif // __ANIMATION_TEST_SCREEN_H__

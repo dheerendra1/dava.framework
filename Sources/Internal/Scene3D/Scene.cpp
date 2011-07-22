@@ -42,7 +42,6 @@ Scene::Scene()
 	:   SceneNode(0)
     ,   currentCamera(0)
 {
-	
 }
 
 Scene::~Scene()
@@ -320,6 +319,7 @@ void Scene::Draw()
     {
         currentCamera->Set();
     }
+    //currentCamera->GetFrustum()->DebugDraw();
     
 	glCullFace(GL_FRONT);
 	SetupTestLighting();

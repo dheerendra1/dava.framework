@@ -41,7 +41,7 @@ void StaticTextScreen::LoadResources()
 //	fnt->SetColor(1.0, 1.0, 1.0, 1.0);
 	float32 sizeX = 150;
 	float32 sizeY = 50;
-	
+    
 	UIControl *tc = new UIControl(Rect(0, 0, sizeX, sizeY));
 	tc->SetSpriteDrawType(UIControlBackground::DRAW_FILL);
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);

@@ -58,6 +58,8 @@
 		FE9C216812E9A254005C397A /* Circle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C216612E9A254005C397A /* Circle.h */; };
 		FE9C216912E9A254005C397A /* Sphere.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9C216712E9A254005C397A /* Sphere.h */; };
 		FEB6037712E8ED7200C749A1 /* Math2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB6037612E8ED7200C749A1 /* Math2D.cpp */; };
+		FECA0D4213D5E9DD00059D5D /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D4013D5E9DD00059D5D /* Frustum.cpp */; };
+		FECA0D4313D5E9DD00059D5D /* Frustum.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D4113D5E9DD00059D5D /* Frustum.h */; };
 		FECFB4DB12E5904500C71562 /* basepic.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFB23B12E5904400C71562 /* basepic.c */; };
 		FECFB4DC12E5904500C71562 /* basepic.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB23C12E5904400C71562 /* basepic.h */; };
 		FECFB4DD12E5904500C71562 /* ftadvanc.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB23D12E5904400C71562 /* ftadvanc.h */; };
@@ -674,6 +676,8 @@
 		FE9C216612E9A254005C397A /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
 		FE9C216712E9A254005C397A /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		FEB6037612E8ED7200C749A1 /* Math2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math2D.cpp; sourceTree = "<group>"; };
+		FECA0D4013D5E9DD00059D5D /* Frustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Frustum.cpp; sourceTree = "<group>"; };
+		FECA0D4113D5E9DD00059D5D /* Frustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frustum.h; sourceTree = "<group>"; };
 		FECFB23B12E5904400C71562 /* basepic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = basepic.c; sourceTree = "<group>"; };
 		FECFB23C12E5904400C71562 /* basepic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basepic.h; sourceTree = "<group>"; };
 		FECFB23D12E5904400C71562 /* ftadvanc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftadvanc.h; sourceTree = "<group>"; };
@@ -2150,6 +2154,8 @@
 				FECFB41A12E5904400C71562 /* BoneNode.h */,
 				FE4E01E313AAA9D00013464E /* Camera.cpp */,
 				FE4E01E413AAA9D00013464E /* Camera.h */,
+				FECA0D4013D5E9DD00059D5D /* Frustum.cpp */,
+				FECA0D4113D5E9DD00059D5D /* Frustum.h */,
 				FECFB41D12E5904400C71562 /* MeshInstanceNode.cpp */,
 				FECFB41E12E5904400C71562 /* MeshInstanceNode.h */,
 				FECFB41F12E5904400C71562 /* PathManip.cpp */,
@@ -2678,6 +2684,7 @@
 				FEE41FE913C5A043002F31D4 /* ColorOnlyEffect.h in Headers */,
 				FEE41FEB13C5A043002F31D4 /* TextureMulColorEffect.h in Headers */,
 				FE3F424213CADF8E009DB893 /* MultiTextureEffect.h in Headers */,
+				FECA0D4313D5E9DD00059D5D /* Frustum.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2988,6 +2995,7 @@
 				FEE41FE813C5A043002F31D4 /* ColorOnlyEffect.cpp in Sources */,
 				FEE41FEA13C5A043002F31D4 /* TextureMulColorEffect.cpp in Sources */,
 				FE3F424113CADF8E009DB893 /* MultiTextureEffect.cpp in Sources */,
+				FECA0D4213D5E9DD00059D5D /* Frustum.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

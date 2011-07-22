@@ -98,6 +98,26 @@ void RenderHelper::DrawLine(const Vector2 &start, const Vector2 &end)
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
     RenderManager::Instance()->RestoreRenderEffect();
 }
+    
+    
+void RenderHelper::DrawLine(const Vector3 & start, const Vector3 & end)
+{
+    vertices[0] = start.x;						
+    vertices[1] = start.y;
+    vertices[2] = start.z;
+    
+    vertices[3] = end.x;
+    vertices[4] = end.y;
+    vertices[5] = end.z;
+
+    
+    vertexStream->Set(TYPE_FLOAT, 3, 0, vertices);
+    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
+    RenderManager::Instance()->RestoreRenderEffect();
+}
 
 
 void RenderHelper::DrawPoint(const Vector2 & pt, float32 ptSize)
@@ -317,20 +337,6 @@ void RenderHelper::DrawPolygonTransformed(Polygon2 & polygon, bool closed, const
 	RenderHelper::DrawPolygon(copyPoly, closed);
 }
 
-void RenderHelper::DrawLine(const Vector3 & pt1, const Vector3 & pt2)
-{
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	
-	Vector3 line[2] = {pt1, pt2};
-	
-	glVertexPointer(3, GL_FLOAT, 0, line);
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINES, 0, 2);
-	
-	RenderManager::Instance()->EnableTexturing(true);
-}
 
 void RenderHelper::DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2)
 {
@@ -474,29 +480,29 @@ void RenderHelper::DrawInterpolationFunc(Interpolation::Func func, const Rect & 
 	
 void RenderHelper::DrawBox(const AABBox2 & box)
 {
-//	DrawLine(Vector3(box.min.x, box.min.y, 0), Vector3(box.max.x, box.min.y, 0));
-//	DrawLine(Vector3(box.max.x, box.min.y, 0), Vector3(box.max.x, box.max.y, 0));
-//	DrawLine(Vector3(box.max.x, box.max.y, 0), Vector3(box.min.x, box.max.y, 0));
-//	DrawLine(Vector3(box.min.x, box.max.y, 0), Vector3(box.min.x, box.min.y, 0));
+    RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.min.y, 0), Vector3(box.max.x, box.min.y, 0));
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.min.y, 0), Vector3(box.max.x, box.max.y, 0));
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.max.y, 0), Vector3(box.min.x, box.max.y, 0));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.max.y, 0), Vector3(box.min.x, box.min.y, 0));
 }
 	
 void RenderHelper::DrawBox(const AABBox3 & box)
 {
-//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.min.y, box.max.z));
-//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.max.y, box.min.z));
-//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.min.y, box.max.z));
-//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.max.y, box.min.z));
-//	
-//	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.max.z));
-//	DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
-//	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
-//	DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.min.z));
-//	
-//	
-//	DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.min.z));
-//	DrawLine(Vector3(box.min.x, box.max.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
-//	DrawLine(Vector3(box.min.x, box.min.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
-//	DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.min.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.min.x, box.max.y, box.min.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.min.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.min.x, box.max.y, box.min.z));
+	
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.min.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.max.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.min.z));
+	
+	
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.min.y, box.min.z), Vector3(box.max.x, box.min.y, box.min.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.max.y, box.min.z), Vector3(box.max.x, box.max.y, box.min.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.min.y, box.max.z), Vector3(box.max.x, box.min.y, box.max.z));
+	RenderHelper::Instance()->DrawLine(Vector3(box.min.x, box.max.y, box.max.z), Vector3(box.max.x, box.max.y, box.max.z));
 }
 
 	

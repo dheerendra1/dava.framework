@@ -114,34 +114,34 @@ private:
 
 // Inline implementation
 	
-    int32 Scene::GetAnimationCount()
-    {
-        return (int32)animations.size();
-    }
-    int32 Scene::GetTextureCount()
-    {
-        return (int32)textures.size();
-    }
-    
-    int32 Scene::GetMaterialCount()
-    {
-        return (int32)materials.size();
-    }
-    
-    int32 Scene::GetStaticMeshCount()
-    {
-        return (int32)staticMeshes.size();
-    }
-    
-    int32 Scene::GetAnimatedMeshCount()
-    {
-        return (int32)animatedMeshes.size();
-    }
-    
-    int32 Scene::GetCameraCount()
-    {
-        return (int32)cameras.size();
-    }
+int32 Scene::GetAnimationCount()
+{
+    return (int32)animations.size();
+}
+int32 Scene::GetTextureCount()
+{
+    return (int32)textures.size();
+}
+
+int32 Scene::GetMaterialCount()
+{
+    return (int32)materials.size();
+}
+
+int32 Scene::GetStaticMeshCount()
+{
+    return (int32)staticMeshes.size();
+}
+
+int32 Scene::GetAnimatedMeshCount()
+{
+    return (int32)animatedMeshes.size();
+}
+
+int32 Scene::GetCameraCount()
+{
+    return (int32)cameras.size();
+}
 };
 
 

@@ -30,18 +30,16 @@
 void SceneEditorScreen::LoadResources()
 {
 	scene = new Scene();
-	//RotatingCubeNode * cubeNode = new RotatingCubeNode(scene);
-	//scene->AddNode(cubeNode);
-
 	SceneFile * file = new SceneFile();
-	file->SetDebugLog(true);
-	//file->LoadScene("~res:/Scenes/1.sce", scene);
-	file->LoadScene("~res:/Scenes/M3.sce", scene);
-	//file->LoadScene("~res:/Scenes/M3.sce", scene);
+	//file->SetDebugLog(true);
+
+	file->LoadScene("~res:/Scenes/M3/M3.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/M3/M3.sce"));
+
 	SafeRelease(file);
     
     GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
-    GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
+    GetBackground()->SetColor(Color(0.7f, 0.7f, 0.7f, 1.0f));
     
     
     
@@ -49,12 +47,12 @@ void SceneEditorScreen::LoadResources()
 //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //	turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //    turretN->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
-    
+
 	currentTankAngle = 0.0f;
 	inTouch = false;
 	startRotationInSec = 0.0f;
 	rotationSpeed = 8.0f;
-
+    
 	//  originalCameraPosition = scene->GetCamera(0)->GetPosition();
     //	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
     //	positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
@@ -70,6 +68,8 @@ void SceneEditorScreen::LoadResources()
     scene->SetCamera(cam);
     AddControl(scene3dView);
     
+    
+    
     hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y));
     hierarchy->SetCellHeight(20);
     hierarchy->SetDelegate(this);
@@ -78,7 +78,7 @@ void SceneEditorScreen::LoadResources()
     
     hierarchy->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     hierarchy->GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
-  
+    
     selectedNode = 0;
 }
 
@@ -149,8 +149,11 @@ void SceneEditorScreen::Update(float32 timeElapsed)
 
 void SceneEditorScreen::Draw(const UIGeometricData &geometricData)
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    UIScreen::Draw(geometricData);
+    
+    RenderManager::Instance()->ClearDepthBuffer();
+    //glClearColor(0.0, 0.0, 0.0, 1.0f);
+    //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 
@@ -192,6 +195,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
     { //if cell of requested type isn't find in the store create new cell
         c = new UIHierarchyCell(Rect(0, 0, 200, 15), "Node cell");
     }
+    
         //fill cell whith data
     Font *fnt;
     fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
@@ -234,7 +238,6 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         {
             mesh->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
         }
-        
         
 //        MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));

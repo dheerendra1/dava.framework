@@ -118,6 +118,15 @@ enum eVertexDataType
 #if defined(__DAVAENGINE_OPENGL__)
     static const GLint VERTEX_DATA_TYPE_TO_GL[TYPE_COUNT] = {GL_FLOAT};
 #endif
+    
+enum eIndexDataType
+{
+    TYPE_UNSIGNED_SHORT = 0,
+};
+
+#if defined(__DAVAENGINE_OPENGL__)
+    static const GLint INDEX_DATA_TYPE_TO_GL[TYPE_COUNT] = {GL_UNSIGNED_SHORT};
+#endif
 
 enum eIndexFormat
 {

@@ -173,7 +173,7 @@ bool RenderManager::ChangeDisplayMode(DisplayMode mode, bool isFullscreen)
 		presentParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 		presentParams.PresentationInterval = isVSyncEnabled ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
 
-		// request 32bit mode if user specified 32 bit, added by Thomas Stüfe
+		// request 32bit mode if user specified 32 bit, added by Thomas StÂ¸fe
 		//if ( bitsPerPixel == 32 ) 
 		//	presentParams.BackBufferFormat = D3DFMT_X8R8G8B8;
 		
@@ -448,6 +448,8 @@ bool RenderManager::IsDeviceLost()
 
 void RenderManager::BeginFrame()
 {
+    stats.Clear();
+
 	//RENDER_VERIFY(renderQuery->Issue(D3DISSUE_BEGIN));
 	RENDER_VERIFY(direct3DDevice->BeginScene());
 
@@ -531,6 +533,8 @@ void RenderManager::EndFrame()
 
 void RenderManager::SetViewport(const Rect & rect)
 {
+    PrepareRealMatrix();
+    
 	int32 x = (int32)(rect.x * currentDrawScale.x + currentDrawOffset.x);
 	int32 y = (int32)(rect.y * currentDrawScale.y + currentDrawOffset.y);
 	int32 width = (int32)(rect.dx * currentDrawScale.x);

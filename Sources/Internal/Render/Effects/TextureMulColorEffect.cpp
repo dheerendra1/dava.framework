@@ -60,6 +60,15 @@ void TextureMulColorEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
+
+void TextureMulColorEffectGL::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+    RenderManager::Instance()->EnableTexturing(true);
+    RenderManager::Instance()->AttachRenderData(0);
+    RenderManager::Instance()->FlushState();
+    RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
+}
+
     
 TextureMulColorEffectGL20::TextureMulColorEffectGL20()
 {
@@ -79,6 +88,13 @@ void TextureMulColorEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int
     RenderManager::Instance()->AttachRenderData(shader);
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 
+}
+void TextureMulColorEffectGL20::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+    RenderManager::Instance()->FlushState();
+    shader->Set();
+    RenderManager::Instance()->AttachRenderData(shader);
+    RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }
 #endif 
     

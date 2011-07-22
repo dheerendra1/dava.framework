@@ -66,6 +66,19 @@
 		FEA4D8C41328D03E00E261D0 /* RenderBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */; };
 		FEA4D9421328FD6A00E261D0 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA4D9411328FD6A00E261D0 /* Random.h */; };
 		FEC3E537133CCCDF00442ADD /* DoxygenDocumenation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */; };
+		FECA0D5B13D5F58700059D5D /* RenderDataObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D5913D5F58700059D5D /* RenderDataObject.cpp */; };
+		FECA0D5C13D5F58700059D5D /* RenderDataObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D5A13D5F58700059D5D /* RenderDataObject.h */; };
+		FECA0D5E13D5F59500059D5D /* RenderManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D5D13D5F59500059D5D /* RenderManagerFactory.cpp */; };
+		FECA0D6113D5F59E00059D5D /* RenderManagerGL20.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D5F13D5F59E00059D5D /* RenderManagerGL20.cpp */; };
+		FECA0D6213D5F59E00059D5D /* RenderManagerGL20.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D6013D5F59E00059D5D /* RenderManagerGL20.h */; };
+		FECA0D6A13D5F64B00059D5D /* ColorOnlyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D6413D5F64B00059D5D /* ColorOnlyEffect.cpp */; };
+		FECA0D6B13D5F64B00059D5D /* ColorOnlyEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D6513D5F64B00059D5D /* ColorOnlyEffect.h */; };
+		FECA0D6C13D5F64B00059D5D /* MultiTextureEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D6613D5F64B00059D5D /* MultiTextureEffect.cpp */; };
+		FECA0D6D13D5F64B00059D5D /* MultiTextureEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D6713D5F64B00059D5D /* MultiTextureEffect.h */; };
+		FECA0D6E13D5F64B00059D5D /* TextureMulColorEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D6813D5F64B00059D5D /* TextureMulColorEffect.cpp */; };
+		FECA0D6F13D5F64B00059D5D /* TextureMulColorEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D6913D5F64B00059D5D /* TextureMulColorEffect.h */; };
+		FECA0D7213D5F67000059D5D /* Frustum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECA0D7013D5F67000059D5D /* Frustum.cpp */; };
+		FECA0D7313D5F67000059D5D /* Frustum.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA0D7113D5F67000059D5D /* Frustum.h */; };
 		FECFAEBC12E58B7A00C71562 /* basepic.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAC1812E58B7800C71562 /* basepic.c */; };
 		FECFAEBD12E58B7A00C71562 /* basepic.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAC1912E58B7800C71562 /* basepic.h */; };
 		FECFAEBE12E58B7A00C71562 /* ftadvanc.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAC1A12E58B7800C71562 /* ftadvanc.h */; };
@@ -697,6 +710,19 @@
 		FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderBase.cpp; sourceTree = "<group>"; };
 		FEA4D9411328FD6A00E261D0 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoxygenDocumenation.h; sourceTree = "<group>"; };
+		FECA0D5913D5F58700059D5D /* RenderDataObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderDataObject.cpp; sourceTree = "<group>"; };
+		FECA0D5A13D5F58700059D5D /* RenderDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderDataObject.h; sourceTree = "<group>"; };
+		FECA0D5D13D5F59500059D5D /* RenderManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManagerFactory.cpp; sourceTree = "<group>"; };
+		FECA0D5F13D5F59E00059D5D /* RenderManagerGL20.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManagerGL20.cpp; sourceTree = "<group>"; };
+		FECA0D6013D5F59E00059D5D /* RenderManagerGL20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderManagerGL20.h; sourceTree = "<group>"; };
+		FECA0D6413D5F64B00059D5D /* ColorOnlyEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorOnlyEffect.cpp; sourceTree = "<group>"; };
+		FECA0D6513D5F64B00059D5D /* ColorOnlyEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorOnlyEffect.h; sourceTree = "<group>"; };
+		FECA0D6613D5F64B00059D5D /* MultiTextureEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiTextureEffect.cpp; sourceTree = "<group>"; };
+		FECA0D6713D5F64B00059D5D /* MultiTextureEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTextureEffect.h; sourceTree = "<group>"; };
+		FECA0D6813D5F64B00059D5D /* TextureMulColorEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureMulColorEffect.cpp; sourceTree = "<group>"; };
+		FECA0D6913D5F64B00059D5D /* TextureMulColorEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMulColorEffect.h; sourceTree = "<group>"; };
+		FECA0D7013D5F67000059D5D /* Frustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Frustum.cpp; sourceTree = "<group>"; };
+		FECA0D7113D5F67000059D5D /* Frustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frustum.h; sourceTree = "<group>"; };
 		FECFAC1812E58B7800C71562 /* basepic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = basepic.c; sourceTree = "<group>"; };
 		FECFAC1912E58B7800C71562 /* basepic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basepic.h; sourceTree = "<group>"; };
 		FECFAC1A12E58B7800C71562 /* ftadvanc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftadvanc.h; sourceTree = "<group>"; };
@@ -1356,6 +1382,19 @@
 				FE941D311331543700515418 /* OpenGLView.mm */,
 			);
 			path = TemplateMacOS;
+			sourceTree = "<group>";
+		};
+		FECA0D6313D5F64B00059D5D /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				FECA0D6413D5F64B00059D5D /* ColorOnlyEffect.cpp */,
+				FECA0D6513D5F64B00059D5D /* ColorOnlyEffect.h */,
+				FECA0D6613D5F64B00059D5D /* MultiTextureEffect.cpp */,
+				FECA0D6713D5F64B00059D5D /* MultiTextureEffect.h */,
+				FECA0D6813D5F64B00059D5D /* TextureMulColorEffect.cpp */,
+				FECA0D6913D5F64B00059D5D /* TextureMulColorEffect.h */,
+			);
+			path = Effects;
 			sourceTree = "<group>";
 		};
 		FECFABB612E58B7800C71562 /* External */ = {
@@ -2089,6 +2128,7 @@
 			children = (
 				FECFC15C12E87E3000C71562 /* 2D */,
 				FECFC16A12E87E3000C71562 /* 3D */,
+				FECA0D6313D5F64B00059D5D /* Effects */,
 				FE0A502C134B2E43001EAA90 /* Cursor.h */,
 				FE0A502D134B2E43001EAA90 /* CursorMacOS.mm */,
 				FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */,
@@ -2098,6 +2138,8 @@
 				FECFC17412E87E3000C71562 /* DynamicIndexBuffer.h */,
 				FECFC17512E87E3000C71562 /* DynamicVertexBuffer.cpp */,
 				FECFC17612E87E3000C71562 /* DynamicVertexBuffer.h */,
+				FECA0D5913D5F58700059D5D /* RenderDataObject.cpp */,
+				FECA0D5A13D5F58700059D5D /* RenderDataObject.h */,
 				FECFC17712E87E3000C71562 /* Image.cpp */,
 				FECFC17812E87E3000C71562 /* Image.h */,
 				FECFC17912E87E3000C71562 /* IndexBuffer.h */,
@@ -2114,10 +2156,13 @@
 				FED0475C13B743A500A9A859 /* RenderResource.h */,
 				FECFC18412E87E3000C71562 /* RenderHelper.cpp */,
 				FECFC18512E87E3000C71562 /* RenderHelper.h */,
+				FECA0D5D13D5F59500059D5D /* RenderManagerFactory.cpp */,
 				FECFC18612E87E3000C71562 /* RenderManager.cpp */,
 				FECFC18712E87E3000C71562 /* RenderManager.h */,
 				FECFC18812E87E3000C71562 /* RenderManagerDX.cpp */,
 				FECFC18912E87E3000C71562 /* RenderManagerGL.cpp */,
+				FECA0D5F13D5F59E00059D5D /* RenderManagerGL20.cpp */,
+				FECA0D6013D5F59E00059D5D /* RenderManagerGL20.h */,
 				FECFC18C12E87E3000C71562 /* RGBColor.h */,
 				FECFC18D12E87E3000C71562 /* StaticIndexBuffer.cpp */,
 				FECFC18E12E87E3000C71562 /* StaticIndexBuffer.h */,
@@ -2202,6 +2247,8 @@
 				FECFC1A212E87E3000C71562 /* BoneNode.h */,
 				FE4E01B713AA733A0013464E /* Camera.cpp */,
 				FE4E01B813AA733A0013464E /* Camera.h */,
+				FECA0D7013D5F67000059D5D /* Frustum.cpp */,
+				FECA0D7113D5F67000059D5D /* Frustum.h */,
 				FECFC1A512E87E3000C71562 /* MeshInstanceNode.cpp */,
 				FECFC1A612E87E3000C71562 /* MeshInstanceNode.h */,
 				FECFC1A712E87E3000C71562 /* PathManip.cpp */,
@@ -2728,6 +2775,12 @@
 				FED0475E13B743A500A9A859 /* RenderResource.h in Headers */,
 				FED0476213B7450400A9A859 /* RenderStateBlock.h in Headers */,
 				FED0476613B7450C00A9A859 /* Shader.h in Headers */,
+				FECA0D5C13D5F58700059D5D /* RenderDataObject.h in Headers */,
+				FECA0D6213D5F59E00059D5D /* RenderManagerGL20.h in Headers */,
+				FECA0D6B13D5F64B00059D5D /* ColorOnlyEffect.h in Headers */,
+				FECA0D6D13D5F64B00059D5D /* MultiTextureEffect.h in Headers */,
+				FECA0D6F13D5F64B00059D5D /* TextureMulColorEffect.h in Headers */,
+				FECA0D7313D5F67000059D5D /* Frustum.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3043,6 +3096,13 @@
 				FED0476913B7455700A9A859 /* ShaderDX.cpp in Sources */,
 				FED0476A13B7455700A9A859 /* ShaderGL.cpp in Sources */,
 				FED0479A13B7B89500A9A859 /* Matrix4.cpp in Sources */,
+				FECA0D5B13D5F58700059D5D /* RenderDataObject.cpp in Sources */,
+				FECA0D5E13D5F59500059D5D /* RenderManagerFactory.cpp in Sources */,
+				FECA0D6113D5F59E00059D5D /* RenderManagerGL20.cpp in Sources */,
+				FECA0D6A13D5F64B00059D5D /* ColorOnlyEffect.cpp in Sources */,
+				FECA0D6C13D5F64B00059D5D /* MultiTextureEffect.cpp in Sources */,
+				FECA0D6E13D5F64B00059D5D /* TextureMulColorEffect.cpp in Sources */,
+				FECA0D7213D5F67000059D5D /* Frustum.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

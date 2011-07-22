@@ -127,7 +127,7 @@ bool RenderManager::IsDeviceLost()
 
 void RenderManager::BeginFrame()
 {
-    
+    stats.Clear();
 	RENDER_VERIFY(glViewport(0, 0, frameBufferWidth, frameBufferHeight));
 	
 	SetRenderOrientation(Core::Instance()->GetScreenOrientation());
@@ -202,6 +202,8 @@ void RenderManager::EndFrame()
     
 void RenderManager::SetViewport(const Rect & rect)
 {
+    PrepareRealMatrix();
+    
 	int32 x = (int32)(rect.x * currentDrawScale.x + currentDrawOffset.x);
 	int32 y = (int32)(rect.y * currentDrawScale.y + currentDrawOffset.y);
 	int32 width, height;
@@ -496,9 +498,34 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 	}
 
     RENDER_VERIFY(glDrawArrays(mode, first, count));
+    stats.drawArraysCalls++;
+    switch(type)
+    {
+        case PRIMITIVETYPE_POINTLIST: 
+            stats.primitiveCount[type] += count;
+            break;
+        case PRIMITIVETYPE_LINELIST:
+            stats.primitiveCount[type] += count / 2;
+            break;
+        case PRIMITIVETYPE_LINESTRIP:
+            stats.primitiveCount[type] += count - 1;
+            break;
+        case PRIMITIVETYPE_TRIANGLELIST:
+            stats.primitiveCount[type] += count / 3;
+            break;
+        case PRIMITIVETYPE_TRIANGLEFAN:
+        case PRIMITIVETYPE_TRIANGLESTRIP:
+            stats.primitiveCount[type] += count - 2;
+            break;
+    };
 }
-
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+   if (currentRenderEffect)
+       currentRenderEffect->DrawElements(type, count, indexFormat, indices);
+}
+    
+void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
 	const int32 types[PRIMITIVETYPE_COUNT] = 
 	{
@@ -527,6 +554,26 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 	};
 	
 	RENDER_VERIFY(glDrawElements(mode, count, indexTypes[indexFormat], indices));
+    stats.drawElementsCalls++;
+    switch(type)
+    {
+        case PRIMITIVETYPE_POINTLIST: 
+            stats.primitiveCount[type] += count;
+            break;
+        case PRIMITIVETYPE_LINELIST:
+            stats.primitiveCount[type] += count / 2;
+            break;
+        case PRIMITIVETYPE_LINESTRIP:
+            stats.primitiveCount[type] += count - 1;
+            break;
+        case PRIMITIVETYPE_TRIANGLELIST:
+            stats.primitiveCount[type] += count / 3;
+            break;
+        case PRIMITIVETYPE_TRIANGLEFAN:
+        case PRIMITIVETYPE_TRIANGLESTRIP:
+            stats.primitiveCount[type] += count - 2;
+            break;
+    };
 }
 
 void RenderManager::ClearWithColor(float32 r, float32 g, float32 b, float32 a)
@@ -648,8 +695,9 @@ void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
 {
     GLint matrixMode[2] = {GL_MODELVIEW, GL_PROJECTION};
     matrices[type] = matrix;
+    uniformMatrixFlags[UNIFORM_MATRIX_MODELVIEWPROJECTION] = 0; // require update
     
-    if (renderer == Core::RENDERER_OPENGL_ES_1_0)
+    if (renderer != Core::RENDERER_OPENGL_ES_2_0)
     {
         RENDER_VERIFY(glMatrixMode(matrixMode[type]));
         RENDER_VERIFY(glLoadMatrixf(matrix.data));

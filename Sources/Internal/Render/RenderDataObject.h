@@ -69,13 +69,18 @@ public:
     RenderDataStream * GetStream(uint32 index) { return streamArray[index]; }
     
     /*
-        We think that render data object can pack data automatically 
+        We think that render data object can pack data automatically. 
+        Interleaved data is the fastest way to submit data to any modern hw, so renderdataobject support buffers only 
+        for interleaved data. This means we can have only 1 buffer for 1 RenderDataObject
     */
+    void BuildVertexBuffer(int32 vertexCount); // pack data to VBOs and allow to use VBOs instead of SetStreams
+    
 private:
     Map<eVertexFormat, RenderDataStream *> streamMap;
     Vector<RenderDataStream *> streamArray;
     uint32 resultVertexFormat;
-    
+
+    uint32 vboBuffer; // TODO: add DX support.
     
     friend class RenderManager;
     friend class RenderManagerGL20;

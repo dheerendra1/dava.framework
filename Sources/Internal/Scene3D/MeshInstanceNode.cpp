@@ -61,10 +61,10 @@ void MeshInstanceNode::AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupInde
 void MeshInstanceNode::Draw()
 {
 	if (!visible)return;
-		
-
-
     
+    //if (scene->GetCamera()->GetFrustum()->IsInside(bbox))return;
+    
+		
 	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
 	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
     

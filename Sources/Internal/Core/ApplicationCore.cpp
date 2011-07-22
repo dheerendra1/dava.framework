@@ -69,6 +69,7 @@ void ApplicationCore::BeginFrame()
 void ApplicationCore::EndFrame()
 {
 	RenderManager::Instance()->EndFrame();
+    RenderManager::Instance()->ProcessStats();
 }
 
 

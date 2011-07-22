@@ -73,6 +73,15 @@ public:
 		bool            isHardwareCursorSupported;
 	};
     
+    struct Stats
+    {
+        void Clear();
+        
+        uint32 drawArraysCalls;
+        uint32 drawElementsCalls;
+        uint32 primitiveCount[PRIMITIVETYPE_COUNT];
+    };
+    
     static void Create(Core::eRenderer renderer);
 
 	RenderManager(Core::eRenderer renderer);
@@ -124,6 +133,9 @@ public:
 	void DetectRenderingCapabilities();
 	const RenderManager::Caps & GetCaps();
     
+    const RenderManager::Stats & GetStats();
+    void EnableOutputDebugStatsEveryNFrame(int32 frameToShowDebugStats);
+    void ProcessStats();
     
 	/** 
 	 \brief Init FBO system function
@@ -143,6 +155,9 @@ public:
     
 protected:
 	RenderManager::Caps caps;
+    RenderManager::Stats stats;
+    int32 statsFrameCountToShowDebug;
+    int32 frameToShowDebugStats;
     Core::eRenderer renderer;
     
 public:
@@ -265,6 +280,7 @@ public:
 	void HWDrawArrays(ePrimitiveType type, int32 first, int32 count);
 	
 	void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+	void HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 		
 	/** 
 	 \brief Sets the clip rect

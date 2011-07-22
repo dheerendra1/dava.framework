@@ -64,6 +64,7 @@ RenderManagerGL20::RenderManagerGL20(Core::eRenderer renderer)
     
 void RenderManagerGL20::AttachRenderData(Shader * shader)
 {
+    DVASSERT(shader);
     if (shader)
     {
         int32 currentEnabledAttribCount = 0;
@@ -71,6 +72,18 @@ void RenderManagerGL20::AttachRenderData(Shader * shader)
         //glDisableVertexAttribArray(1);
                                    
         pointerArraysCurrentState = 0;
+        
+        
+        //if (currentRenderData->vboBuffer != 0)
+        //{
+#if defined(__DAVAENGINE_MACOS__)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+#else
+        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+#endif
+        //}
+        
+        
         int32 size = (int32)currentRenderData->streamArray.size();
         for (int32 k = 0; k < size; ++k)
         {

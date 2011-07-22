@@ -44,11 +44,12 @@ Camera::Camera(Scene * scene) : SceneNode(scene)
 	flags = REQUIRE_REBUILD;
     
 	cameraTransform.Identity();
+    currentFrustum = new Frustum();
 }
 	
 Camera::~Camera()
 {
-	
+	SafeRelease(currentFrustum);
 }
 	
 void Camera::RestoreOriginalSceneTransform()
@@ -298,6 +299,11 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
     cnd->cameraTransform = cameraTransform;
     return dstNode;
 }
+    
+Frustum * Camera::GetFrustum() const
+{
+    return currentFrustum;
+}
 
 //SceneNode* Camera::Clone()
 //{
@@ -325,6 +331,7 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
 //	dstNode->cameraTransform = cameraTransform;
 //    return dstNode;
 //}
+
 
 	
 } // ns

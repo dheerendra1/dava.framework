@@ -32,19 +32,38 @@
 
 namespace DAVA 
 {
+Map<String, RenderEffect*> RenderEffect::effectsMap;
+    
 RenderEffect::RenderEffect()
 {
-    
+    const String & name = GetName();
+    Map<String, RenderEffect *>::iterator effectIt = effectsMap.find(name);
+    if (effectIt == effectsMap.end())
+    {
+        effectsMap[name] = this; 
+    }else
+    {
+        Logger::Debug("RenderEffect::RenderEffect effect with such name: %s already registered", name.c_str());
+    }
 }
 
 RenderEffect::~RenderEffect()
 {
-    
+    effectsMap.erase(GetName());
 }
-    
+const char * RenderEffect::GetName()
+{
+    return "EmptyEffect";
+}
+
 void RenderEffect::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
+    DVASSERT("RenderEffect::DrawArrays not implemented but called" && 0);
+}
     
+void RenderEffect::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+    DVASSERT("RenderEffect::DrawElements not implemented but called" && 0);
 }
 
 };

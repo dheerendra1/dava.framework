@@ -40,6 +40,7 @@ namespace DAVA
 class ColorOnlyEffect : public RenderEffect
 {
 public:
+    DECLARE_EFFECT(FixedFunc_ColorOnlyEffect);
     static RenderEffect * Create(Core::eRenderer renderer);
 };
 

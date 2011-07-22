@@ -74,13 +74,21 @@ class Texture;
 if (renderer == rendererType)\
     return new classToCreate()
     
+#define DECLARE_EFFECT(name)\
+    const char * GetName() { return #name; };
+
 class RenderEffect : public BaseObject 
 {
 public:
     RenderEffect();
     virtual ~RenderEffect();
     
+    virtual const char * GetName();
     virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);	
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+    
+public:
+    static Map<String, RenderEffect*> effectsMap;
 };
 };
 
