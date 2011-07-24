@@ -971,7 +971,10 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         primitiveToDraw = PRIMITIVETYPE_TRIANGLESTRIP;
         vertexCount = 4;
 	}else 
-    {	Texture * t = GetTexture(frame);
+    {	
+        clippedVertices.clear();
+        clippedTexCoords.clear();
+        Texture * t = GetTexture(frame);
 		float32 adjWidth = 1.f / t->width;
 		float32 adjHeight = 1.f / t->height;
         
