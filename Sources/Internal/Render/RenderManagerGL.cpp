@@ -181,7 +181,7 @@ void RenderManager::PrepareRealMatrix()
         glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
         glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
         
-        glTranslate = glTranslate * glScale;
+        glTranslate = glScale * glTranslate;
         // todo replace with offset calculations
         SetMatrix(MATRIX_MODELVIEW, glTranslate);
     }
