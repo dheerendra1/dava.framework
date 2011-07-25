@@ -83,17 +83,17 @@ TextureMulColorEffectGL20::~TextureMulColorEffectGL20()
 
 void TextureMulColorEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
+    RenderManager::Instance()->AttachRenderData(shader);
     RenderManager::Instance()->FlushState();
     shader->Set();
-    RenderManager::Instance()->AttachRenderData(shader);
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 
 }
 void TextureMulColorEffectGL20::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
+    RenderManager::Instance()->AttachRenderData(shader);
     RenderManager::Instance()->FlushState();
     shader->Set();
-    RenderManager::Instance()->AttachRenderData(shader);
     RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }
 #endif 

@@ -92,7 +92,7 @@ void GameCore::OnAppStarted()
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_RENDERTARGET_TEST);
+	UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE_BASICS);
 	cursor = 0;
 }
 

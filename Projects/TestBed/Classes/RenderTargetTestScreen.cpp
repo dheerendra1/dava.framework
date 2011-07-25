@@ -78,24 +78,24 @@ void RenderTargetTestScreen::Draw(const UIGeometricData &geometricData)
 	blueSprite->Draw();
 	RenderManager::Instance()->RestoreRenderTarget();
 
-//	RenderManager::Instance()->SetRenderTarget(renderTargetRGB565);
-//	RenderManager::Instance()->ClearWithColor(1.0f, 0.0f, 0.0f, 1.0f);
-//	greenSprite->Draw();
-//	RenderManager::Instance()->RestoreRenderTarget();
+	RenderManager::Instance()->SetRenderTarget(renderTargetRGB565);
+	RenderManager::Instance()->ClearWithColor(1.0f, 0.0f, 0.0f, 1.0f);
+	greenSprite->Draw();
+	RenderManager::Instance()->RestoreRenderTarget();
 	
 	renderTargetRGBA8888->Draw();
 
-//	renderTargetRGB565->SetPosition(100, 100);
-//	renderTargetRGB565->Draw();
-//
-//	RenderManager::Instance()->SetRenderTarget(renderTargetRGBA4444);
-//	RenderManager::Instance()->ClearWithColor(0.0f, 0.5f, 0.0f, 1.0f);
-//	redSprite->Draw();
-//	tranclucentSprite->SetPosition(15, 15);
-//	tranclucentSprite->Draw();
-//	RenderManager::Instance()->RestoreRenderTarget();
-//
-//	renderTargetRGBA4444->SetPosition(200, 200);
-//	renderTargetRGBA4444->Draw();
+	renderTargetRGB565->SetPosition(100, 100);
+	renderTargetRGB565->Draw();
+
+	RenderManager::Instance()->SetRenderTarget(renderTargetRGBA4444);
+	RenderManager::Instance()->ClearWithColor(0.0f, 0.5f, 0.0f, 1.0f);
+	redSprite->Draw();
+	tranclucentSprite->SetPosition(15, 15);
+	tranclucentSprite->Draw();
+	RenderManager::Instance()->RestoreRenderTarget();
+
+	renderTargetRGBA4444->SetPosition(200, 200);
+	renderTargetRGBA4444->Draw();
 
 }

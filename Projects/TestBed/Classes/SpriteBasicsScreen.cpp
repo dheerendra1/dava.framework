@@ -177,7 +177,17 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	drawState.SetPivotPoint(zebraSprite->GetWidth() / 2.0f, zebraSprite->GetHeight() / 2.0f);
 	drawState.SetAngle(DegToRad(90.0f));
 	zebraSprite->Draw(&drawState);
+
+    RenderManager::Instance()->SetColor(0.0f, 0.7f, 0.0f, 0.3f);
+    RenderManager::Instance()->FlushState();
+	drawState.Reset();
+	drawState.SetPosition(250.0f, 130.0f);
+	drawState.SetPivotPoint(zebraSprite->GetWidth() / 2.0f, zebraSprite->GetHeight() / 2.0f);
+	drawState.SetAngle(DegToRad(90.0f));
+	zebraSprite->Draw(&drawState);
 	
+    RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	/*
 	spriteFont->SetPosition(50, 50);
 	spriteFont->SetFrame(32);

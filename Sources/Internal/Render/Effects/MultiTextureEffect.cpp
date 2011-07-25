@@ -75,8 +75,8 @@ MultiTextureEffectGL20::~MultiTextureEffectGL20()
 void MultiTextureEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
     RenderManager::Instance()->FlushState();
-    shader->Set();
     RenderManager::Instance()->AttachRenderData(shader);
+    shader->Set();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 
 }

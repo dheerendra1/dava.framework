@@ -73,9 +73,9 @@ ColorOnlyEffectGL20::~ColorOnlyEffectGL20()
     
 void ColorOnlyEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
-    RenderManager::Instance()->FlushState();
-    shader->Set();
     RenderManager::Instance()->AttachRenderData(shader);
+    RenderManager::Instance()->FlushState();
+    shader->Set();  // must be after FlushState because we recalc final transform matrix for virtual screen
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
     
