@@ -221,6 +221,11 @@ void Camera::SetUp(const Vector3 & _up)
 	up = _up;
     flags |= REQUIRE_REBUILD;
 }
+    
+Vector3 & Camera::GetUp()
+{
+    return up;
+}
 
 void Camera::SetLeft(const Vector3 & _left)
 {
@@ -228,6 +233,10 @@ void Camera::SetLeft(const Vector3 & _left)
     flags |= REQUIRE_REBUILD;
 }
 
+Vector3 & Camera::GetLeft()
+{
+    return left;
+}
 
 void Camera::RebuildCameraFromValues()
 {

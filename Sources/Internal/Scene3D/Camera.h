@@ -65,6 +65,8 @@ public:
 	Vector3 & GetTarget();
 	Vector3 & GetPosition();
 	Vector3 & GetDirection();   // camera forward direction
+    Vector3 & GetUp();
+    Vector3 & GetLeft();    // camera left direction
 	
 	void RebuildCameraFromValues();
 	void ExtractCameraToValues();
