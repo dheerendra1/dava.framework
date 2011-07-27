@@ -134,11 +134,10 @@ void SpriteNode::Draw()
     
 
         //TODO: Add billboards mode
-    /*
-    {//billboarding
+/*    {//billboarding
         Vector3 camDir = scene->GetCamera()->GetDirection();
         Vector3 right;
-        Vector3 up(0.f,1.f,0.f);
+        Vector3 up(0.f,0.f,1.f);
         right = up.CrossProduct(camDir);
         up = camDir.CrossProduct(right);
         up.Normalize();
@@ -147,29 +146,30 @@ void SpriteNode::Draw()
         Matrix4 bm;
         
         bm._data[0][0] = right.x;
-        bm._data[0][1] = right.y;
-        bm._data[0][2] = right.z;
-        bm._data[0][3] = 0.0f;
-        
-        bm._data[1][0] = up.x;
-        bm._data[1][1] = up.y;
-        bm._data[1][2] = up.z;
-        bm._data[1][3] = 0.0f;
-        
-        bm._data[2][0] = camDir.x;
-        bm._data[2][1] = camDir.y;
-        bm._data[2][2] = camDir.z;
-        bm._data[2][3] = 0.0f;
-        
+        bm._data[1][0] = right.y;
+        bm._data[2][0] = right.z;
         bm._data[3][0] = 0.0f;
+        
+        bm._data[0][1] = up.x;
+        bm._data[1][1] = up.y;
+        bm._data[2][1] = up.z;
         bm._data[3][1] = 0.0f;
+        
+        bm._data[0][2] = camDir.x;
+        bm._data[1][2] = camDir.y;
+        bm._data[2][2] = camDir.z;
         bm._data[3][2] = 0.0f;
+        
+        bm._data[0][3] = 0.0f;
+        bm._data[1][3] = 0.0f;
+        bm._data[2][3] = 0.0f;
         bm._data[3][3] = 1.0f;
         
-        meshFinalMatrix = meshFinalMatrix * bm;
+        meshFinalMatrix = bm * prevMatrix;
+        meshFinalMatrix = worldTransform * meshFinalMatrix;
     }
-     */
-    
+ */   
+ 
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
     
     
