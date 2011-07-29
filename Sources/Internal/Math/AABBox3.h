@@ -95,10 +95,10 @@ public:
 	//! \brief get center
 	inline Vector3 GetCenter();
 
-
 	//! \brief copy operator of bounding box class
 	inline AABBox3 & operator =(const AABBox3 & _bbox);
 
+    void GetTransformedBox(const Matrix4 & transform, AABBox3 & result);
 };
 
 //! \brief construct empty bounding box

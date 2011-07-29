@@ -104,7 +104,7 @@ void FrameworkDidLaunched()
 	DAVA::Core::Instance()->SetVirtualScreenSize(920, 690);
 	DAVA::Core::Instance()->RegisterAvailableResourceSize(920, 690, "XGfx");
 #endif 
-
+    
 	GameCore * core = new GameCore();
 	DAVA::Core::SetApplicationCore(core);
 	DAVA::Core::SetOptions(appOptions);

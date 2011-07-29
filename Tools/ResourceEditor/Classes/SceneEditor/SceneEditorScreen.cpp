@@ -33,8 +33,8 @@ void SceneEditorScreen::LoadResources()
 	SceneFile * file = new SceneFile();
 	//file->SetDebugLog(true);
 
-	file->LoadScene("~res:/Scenes/M3/M3.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/M3/M3.sce"));
+	file->LoadScene("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce"));
 
 	SafeRelease(file);
     
@@ -65,12 +65,14 @@ void SceneEditorScreen::LoadResources()
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     Camera * cam = scene->GetCamera(0);
-    scene->SetCamera(cam);
+    scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
     
+    Camera * cam2 = scene->GetCamera(0);
+    scene->SetClipCamera(cam2);
     
     
-    hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y));
+    hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     hierarchy->SetCellHeight(20);
     hierarchy->SetDelegate(this);
     hierarchy->SetClipContents(true);
@@ -80,10 +82,15 @@ void SceneEditorScreen::LoadResources()
     hierarchy->GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
     
     selectedNode = 0;
+    
+    cameraController = new WASDCameraController(500);
+    cameraController->SetCamera(cam);
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    SafeRelease(cameraController);
+    
     SafeRelease(scene3dView);
     SafeRelease(hierarchy);
 	SafeRelease(scene);
@@ -98,27 +105,31 @@ void SceneEditorScreen::WillDisappear()
 	
 }
 
-void SceneEditorScreen::Input(UIEvent * touch)
+
+
+void SceneEditorScreen::Input(UIEvent * event)
 {
-	if (touch->phase == UIEvent::PHASE_BEGAN)
+    cameraController->Input(event);
+    
+	if (event->phase == UIEvent::PHASE_BEGAN)
 	{
 		inTouch = true;	
-		touchStart = touch->point;
+		touchStart = event->point;
 		touchTankAngle = currentTankAngle;
 	}
 	
-	if (touch->phase == UIEvent::PHASE_DRAG)
+	if (event->phase == UIEvent::PHASE_DRAG)
 	{
-		touchCurrent = touch->point;
+		touchCurrent = event->point;
 		
 		float32 dist = (touchCurrent.x - touchStart.x);
 		//Logger::Debug("%f, %f", currentTankAngle, dist);
 		currentTankAngle = touchTankAngle + dist;
 	}
 	
-	if (touch->phase == UIEvent::PHASE_ENDED)
+	if (event->phase == UIEvent::PHASE_ENDED)
 	{
-		touchCurrent = touch->point;
+		touchCurrent = event->point;
 		rotationSpeed = (touchCurrent.x - touchStart.x);
 		inTouch = false;
 		startRotationInSec = 0.0f;
@@ -236,7 +247,16 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(node);
         if (mesh)
         {
-            mesh->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
+            mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
+        }
+        
+        Camera * camera = dynamic_cast<Camera*> (node);
+        if (camera)
+        {
+            //camera->RestoreOriginalSceneTransform();
+            scene->SetCurrentCamera(camera);
+            Camera * cam2 = scene->GetCamera(0);
+            scene->SetClipCamera(cam2);
         }
         
 //        MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");

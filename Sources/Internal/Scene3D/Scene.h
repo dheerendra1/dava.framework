@@ -97,8 +97,15 @@ public:
 	void AddCamera(Camera * c);
 	inline int32	GetCameraCount();
     
-    void SetCamera(Camera * camera);
-    Camera * GetCamera() const;
+    void SetCurrentCamera(Camera * camera);
+    Camera * GetCurrentCamera() const;
+    
+    /* 
+        This camera is used for clipping only. If you do not call this function GetClipCamera returns currentCamera. 
+        You can use SetClipCamera function if you want to test frustum clipping, and view the scene from different angles.
+     */
+    void SetClipCamera(Camera * clipCamera);
+    Camera * GetClipCamera() const;
     
 private:	
 	Vector<Texture*> textures;
@@ -110,6 +117,7 @@ private:
     Map<String, SceneNode*> rootNodes;
     
     Camera * currentCamera;
+    Camera * clipCamera;
 };
 
 // Inline implementation

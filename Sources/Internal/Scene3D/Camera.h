@@ -76,6 +76,10 @@ public:
     
     Frustum * GetFrustum() const;
 
+    
+    // mostly for debug purposes
+    void Draw();
+
 protected:
     enum
     {

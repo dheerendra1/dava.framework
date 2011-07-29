@@ -206,7 +206,9 @@ bool Frustum::IsInside(const Vector3 & point, const float32 radius) const
 // 
 void Frustum::DebugDraw()
 {
-	Vector3 p[50];
+	if (planeArray.size() < 6)return;
+    Vector3 p[50];
+    
 	
 	//for (int i = 0; i < )
 	p[0] = Plane3Intersection(	planeArray[EFP_LEFT],
@@ -243,7 +245,6 @@ void Frustum::DebugDraw()
 								planeArray[EFP_TOP]);
 
 
-    RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
     RenderHelper::Instance()->DrawLine(	p[0], p[1]);
 	RenderHelper::Instance()->DrawLine(	p[1], p[2]);
 	RenderHelper::Instance()->DrawLine(	p[2], p[3]);

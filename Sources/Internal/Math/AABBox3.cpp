@@ -88,7 +88,38 @@ bool AABBox3::IsIntersectsWithRay(Ray3 & r, float32 & tmin, float32 & tmax, floa
 	return ( (tmin < t1) && (tmax > t0) ); 
 } 
 	
-	
+void AABBox3::GetTransformedBox(const Matrix4 & transform, AABBox3 & result)
+{
+    result.min.x = transform.data[12];
+    result.min.y = transform.data[13];
+    result.min.z = transform.data[14];
+    
+    result.max.x = transform.data[12];
+    result.max.y = transform.data[13];
+    result.max.z = transform.data[14];
+    
+    
+    for (int32 i = 0; i < 3; ++i)
+    {
+        for (int32 j = 0; j < 3; ++j)
+        {
+            float32 a = transform._data[i][j] * min.data[j];
+            float32 b = transform._data[i][j] * max.data[j];
+            
+            if( a < b ) 
+            { 
+                result.min.data[i] += a; 
+                result.max.data[i] += b;
+            }
+            else 
+            { 
+                result.min.data[i] += b; 
+                result.max.data[i] += a;
+            }
+        };
+    }
+    
+}
 
 };
 

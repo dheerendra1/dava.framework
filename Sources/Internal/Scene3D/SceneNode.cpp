@@ -39,11 +39,14 @@ SceneNode::SceneNode(Scene * _scene)
 	: scene(_scene)
 	, parent(0)
     , visible(true)
+    , debugFlags(DEBUG_DRAW_NONE)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
 	//animation = 0;
     visible = true;
+    
+    debugFlags = DEBUG_DRAW_NONE;
 }
 
 SceneNode::~SceneNode()
@@ -255,6 +258,8 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
     dstNode->worldTransform = worldTransform;
     dstNode->name = name;
     dstNode->tag = tag;
+    dstNode->debugFlags = debugFlags;
+
 //    Logger::Debug("Node %s clonned", name.c_str());
     
     dstNode->nodeAnimations = nodeAnimations;
@@ -271,6 +276,20 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
 //    Logger::Debug("Children -------------------------------");
     
     return dstNode;
+}
+
+void SceneNode::SetDebugFlags(uint32 _debugFlags, bool isRecursive)
+{
+    debugFlags = _debugFlags;
+    if (isRecursive)
+    {
+        std::deque<SceneNode*>::iterator it = childs.begin();
+        for(; it != childs.end(); it++)
+        {
+            SceneNode *n = (*it);
+            n->SetDebugFlags(_debugFlags, isRecursive);
+        }
+    }
 }
 
     

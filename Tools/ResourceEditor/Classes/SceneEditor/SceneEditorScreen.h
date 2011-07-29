@@ -32,6 +32,7 @@
 #define __SCENE_EDITOR_SCREEN_H__
 
 #include "DAVAEngine.h"
+#include "CameraController.h"
 
 using namespace DAVA;
 
@@ -80,7 +81,7 @@ public:
     // Node preview information
     SceneNode * selectedNode;
     
-    
+    CameraController * cameraController;
 };
 
 #endif // __SCENE_EDITOR_SCREEN_H__

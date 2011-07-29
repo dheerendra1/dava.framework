@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE1B7D5113DF052300BA032C /* CameraController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1B7D5013DF052300BA032C /* CameraController.cpp */; };
 		FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */; };
 		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
 		FE54EBBB13A1190000912810 /* libpng-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE54EBBA13A1190000912810 /* libpng-static.a */; };
@@ -58,6 +59,8 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectMacOS_Prefix.pch; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1B7D4F13DF04B600BA032C /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
+		FE1B7D5013DF052300BA032C /* CameraController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraController.cpp; sourceTree = "<group>"; };
 		FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE54EBBA13A1190000912810 /* libpng-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-static.a"; path = "../../Libs/ImageMagick-6.6.9-0/delegates/lib/libpng-static.a"; sourceTree = SOURCE_ROOT; };
@@ -225,6 +228,8 @@
 		FE96BD8913B2347B009EB81D /* SceneEditor */ = {
 			isa = PBXGroup;
 			children = (
+				FE1B7D5013DF052300BA032C /* CameraController.cpp */,
+				FE1B7D4F13DF04B600BA032C /* CameraController.h */,
 				FE96BD8A13B2347B009EB81D /* SceneEditorScreen.cpp */,
 				FE96BD8B13B2347B009EB81D /* SceneEditorScreen.h */,
 			);
@@ -371,6 +376,7 @@
 				FEF304E21336953A0078054F /* UISpriteEditor.cpp in Sources */,
 				FEF304E5133695BB0078054F /* UIScrollView.cpp in Sources */,
 				FE96BD8C13B2347B009EB81D /* SceneEditorScreen.cpp in Sources */,
+				FE1B7D5113DF052300BA032C /* CameraController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

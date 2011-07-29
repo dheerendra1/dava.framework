@@ -93,11 +93,11 @@ void RenderManagerGL20::AttachRenderData(Shader * shader)
             int32 attribIndex = shader->GetAttributeIndex(stream->formatMark);
             if (attribIndex != -1)
             {
-                RENDER_VERIFY(glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer));
+                glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
                 
                 if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
                 {
-                    RENDER_VERIFY(glEnableVertexAttribArray(attribIndex));
+                    glEnableVertexAttribArray(attribIndex);
                 }
                 if (attribIndex + 1 > currentEnabledAttribCount)
                     currentEnabledAttribCount = attribIndex + 1;    // count of enabled attributes
@@ -108,7 +108,7 @@ void RenderManagerGL20::AttachRenderData(Shader * shader)
         
         for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
         {
-            RENDER_VERIFY(glDisableVertexAttribArray(p));
+            glDisableVertexAttribArray(p);
         }
         
 //        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
@@ -126,7 +126,7 @@ void RenderManagerGL20::AttachRenderData(Shader * shader)
         pointerArraysRendererState = pointerArraysCurrentState;
     }
     
-    
+    // RENDER_VERIFY("RenderManagerGL20::AttachRenderData");
 }  
 
     

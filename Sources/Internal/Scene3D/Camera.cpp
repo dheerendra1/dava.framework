@@ -31,6 +31,7 @@
 #include "Render/RenderBase.h"
 #include "Core/Core.h"
 #include "Render/RenderManager.h"
+#include "Scene3D/Scene.h"
 
 namespace DAVA 
 {
@@ -280,6 +281,11 @@ void Camera::Set()
     }
 	ApplyFrustum();
 	ApplyTransform();
+    
+    if (currentFrustum)
+    {
+        currentFrustum->Set();
+    }
 }
 
 SceneNode* Camera::Clone(SceneNode *dstNode)
@@ -312,6 +318,29 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
 Frustum * Camera::GetFrustum() const
 {
     return currentFrustum;
+}
+    
+void Camera::Draw()
+{
+    if (debugFlags & DEBUG_DRAW_ALL)
+    {
+        Camera * prevCamera = scene->GetCurrentCamera();
+
+        //scene->SetCamera(this)
+        this->Set();
+        
+        // restore previous camera
+        prevCamera->Set();
+        
+        RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
+        
+        if (this == scene->GetClipCamera())
+            RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+        if (currentFrustum)
+        {
+            currentFrustum->DebugDraw();
+        }
+    }
 }
 
 //SceneNode* Camera::Clone()
