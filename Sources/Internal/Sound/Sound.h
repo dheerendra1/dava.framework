@@ -65,15 +65,17 @@ public:
 	static Sound	* CreateFX(const String & fileName, eType type, int32 priority = 0);
 	static Sound	* CreateMusic(const String & fileName, eType type, int32 priority = 0);
 
-	SoundInstance	* Play();
-	void			Stop();
-	void			SetVolume(float32 volume); // [0..1]
-	float32			GetVolume();
-	void			SetLooping(bool looping);
+	virtual SoundInstance	* Play();
+	virtual void			Stop();
+	virtual void			SetVolume(float32 volume); // [0..1]
+	virtual float32			GetVolume();
+	virtual void			SetLooping(bool looping);
+    
+    virtual int32            Release();
 
 	eType			GetType();
 
-private:
+protected:
 	Sound(const String & fileName, eType type, int32 priority = 0);
 	virtual ~Sound();
 
