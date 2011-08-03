@@ -293,7 +293,31 @@ public:
 	 \param[in] isEnabled
 	 */
 	void EnableBlending(bool isEnabled);
-	
+
+    /** 
+	 \brief Enables or diables depth buffer test
+	 \param[in] isEnabled - send true if you want to enable depth test.
+	 */
+	void EnableDepthTest(bool isEnabled);
+    
+    /** 
+	 \brief Checks is the depth test enabled
+     \returns true if depth test is currently enabled
+     */
+    bool IsDepthTestEnabled();
+
+    /** 
+	 \brief Enables or diables depth buffer writinig
+	 \param[in] isEnabled - send true if you want to enable depth writing.
+	 */
+	void EnableDepthWrite(bool isEnabled);
+
+    /** 
+	 \brief Checks is the depth writing enabled
+     \returns true if depth writting is currently enabled
+     */
+    bool IsDepthWriteEnabled();
+
 	/** 
 	 \brief 
 	 */
@@ -562,6 +586,8 @@ private:
 	int oldTextureCoordArrayEnabled;
 	int oldColorArrayEnabled;
 	int oldBlendingEnabled;
+    int depthWriteEnabled;
+    int depthTestEnabled;
 	int32 renderOrientation;
 	//int32 defaultScreenOrientation;
 	Sprite *currentRenderTarget;

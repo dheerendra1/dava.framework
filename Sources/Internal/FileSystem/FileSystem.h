@@ -39,7 +39,7 @@
  */
 namespace DAVA 
 {
-	
+class ResourceArchive;
 /**
 	\ingroup filesystem
 	\brief FileSystem is a wrapper class that allow to perform all basic filesystem operations
@@ -178,10 +178,28 @@ public:
         \returns pointer to newly created buffer with file contents
      */ 
     uint8 * ReadFileContents(const String & pathname, uint32 & fileSize);
+
+	/**
+		\brief Function to attach ResourceArchive to filesystem
+	
+		\param[in] archiveName pathname or local filename of archive we want to attach
+		\param[in] attachPath path we attach our archive 
+	*/ 
+	virtual void AttachArchive(const String & archiveName, const String & attachPath);
     
 private:
 	String tempRetPath;
 	String currentWorkingDirectory;
+
+	struct ResourceArchiveItem
+	{
+		ResourceArchive * archive;
+		String attachPath;
+	};
+
+	List<ResourceArchiveItem> resourceArchiveList;
+
+	friend class File;
 };
 	
 };

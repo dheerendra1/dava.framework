@@ -864,6 +864,12 @@
     <ClInclude Include="..\..\Sources\Internal\Utils\Utils.h">
       <Filter>Internal\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\FileSystem\ResourceArchive.h">
+      <Filter>Internal\FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\FileSystem\Bitstream.h">
+      <Filter>Internal\FileSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2BroadPhase.cpp">
@@ -1474,6 +1480,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Internal\Render\RenderManagerFactory.cpp">
       <Filter>Internal\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\FileSystem\ResourceArchive.cpp">
+      <Filter>Internal\FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\FileSystem\Bitstream.cpp">
+      <Filter>Internal\FileSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

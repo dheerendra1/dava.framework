@@ -105,6 +105,14 @@ public:
 		\returns number of bytes actually written
 	 */
 	virtual uint32 Write(const void * sourceBuffer, uint32 dataSize);
+
+	/** 
+		\brief Write string
+		write null-terminated string from current position in file
+		\param[in] string - string data loaded to this variable
+		\return true if success otherwise false
+	 */
+	virtual bool WriteString(const String & string);
 	
 	/** 
 		\brief Read [dataSize] bytes from this file to [pointerToData] 

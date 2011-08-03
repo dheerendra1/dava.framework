@@ -88,7 +88,10 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
     //glViewport(viewportRect.x, viewportRect.y, viewportRect.dx, viewportRect.dy);
     RenderManager::Instance()->SetViewport(viewportRect);
     
-    glEnable(GL_DEPTH_TEST);
+    RenderManager::Instance()->EnableDepthWrite(true);
+    RenderManager::Instance()->EnableDepthTest(true);
+    RenderManager::Instance()->EnableBlending(false);
+//    glEnable(GL_DEPTH_TEST);
     
 //  glMatrixMode(GL_MODELVIEW);
 //	glPushMatrix();
@@ -107,10 +110,14 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
 //	glMatrixMode(GL_PROJECTION);
 //	glPopMatrix();
     
-    glDisable(GL_DEPTH_TEST);
     
     RenderManager::Instance()->Reset();
 
+    RenderManager::Instance()->EnableDepthTest(false);
+    RenderManager::Instance()->EnableDepthWrite(false);
+    RenderManager::Instance()->EnableBlending(true);
+        //    glDisable(GL_DEPTH_TEST);
+    
     /*
         Restore render orientation
      */

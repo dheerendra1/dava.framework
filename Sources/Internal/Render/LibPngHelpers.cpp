@@ -43,6 +43,7 @@
 #include "Render/RenderManager.h"
 #include "Render/2D/Sprite.h"
 #include "Render/Texture.h"
+#include "FileSystem/FileSystem.h"
 
 using namespace DAVA;
 
@@ -81,9 +82,20 @@ void convert_bytestream_to_rawpp(int32 width, int32 height, uint8 * data, png_by
 	}
 }
 
+struct	PngImageRawData
+{
+	File * file;
+};
+
+static void	PngImageRead(png_structp pngPtr, png_bytep data, png_size_t size)
+{
+	PngImageRawData * self = (PngImageRawData*)pngPtr->io_ptr;
+	self->file->Read(data, size);
+}
+
 int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr)
 {
-	FILE         *infile;         /* PNG file pointer */
+	File         *infile;         /* PNG file pointer */
 	png_structp   png_ptr;        /* internally used by libpng */
 	png_infop     info_ptr;       /* user requested transforms */
 	
@@ -103,8 +115,9 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	png_bytepp row_pointers = NULL;
 	
 	/* Open the file. */
-	infile = fopen(file, "rb");
-	if (!infile) {
+	infile = File::Create(file, File::OPEN | File::READ);
+	if (!infile) 
+	{
 		return 0;
 	}
 	
@@ -114,10 +127,11 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	 */
 	
 	/* Check for the 8-byte signature */
-	fread(sig, 1, 8, infile);
+	infile->Read(sig, 8);
 	
-	if (!png_check_sig((unsigned char *) sig, 8)) {
-		fclose(infile);
+	if (!png_check_sig((unsigned char *) sig, 8)) 
+	{
+		infile->Release();
 		return 0;
 	}
 	
@@ -125,15 +139,17 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	 * Set up the PNG structs 
 	 */
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!png_ptr) {
-		fclose(infile);
+	if (!png_ptr) 
+	{
+		infile->Release();
 		return 4;    /* out of memory */
 	}
 	
 	info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
+	if (!info_ptr) 
+	{
 		png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
-		fclose(infile);
+		infile->Release();
 		return 4;    /* out of memory */
 	}
 	
@@ -142,9 +158,10 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	 * block to handle libpng errors, 
 	 * then check whether the PNG file had a bKGD chunk
 	 */
-	if (setjmp(png_jmpbuf(png_ptr))) {
+	if (setjmp(png_jmpbuf(png_ptr))) 
+	{
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-		fclose(infile);
+		infile->Release();
 		return 0;
 	}
 	
@@ -153,7 +170,10 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	 * stores it in the png_ptr struct for later use.
 	 */
 	/* png_ptr->io_ptr = (png_voidp)infile;*/
-	png_init_io(png_ptr, infile);
+	//png_init_io(png_ptr, infile);
+	PngImageRawData	raw;
+	raw.file = infile;
+	png_set_read_fn (png_ptr, &raw, PngImageRead);
 	
 	/*
 	 * lets libpng know that we already checked the 8 
@@ -264,7 +284,7 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	
 	/* Clean up. */
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-	fclose(infile);
+	infile->Release();
 	
 	*image_data_ptr = image_data;
 	

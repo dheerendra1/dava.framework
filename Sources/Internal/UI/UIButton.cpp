@@ -32,6 +32,7 @@
 #include "Base/ObjectFactory.h"
 #include "UI/UIYamlLoader.h"
 #include "Utils/StringFormat.h"
+#include "FileSystem/LocalizationSystem.h"
 
 namespace DAVA 
 {
@@ -628,7 +629,7 @@ namespace DAVA
 			YamlNode * stateTextNode = node->Get(Format("stateText%s", statePostfix[k].c_str()));
 			if (stateTextNode)
 			{
-				SetStateText(stateArray[k], stateTextNode->AsWString());
+				SetStateText(stateArray[k], LocalizedString(stateTextNode->AsWString()));
 			}
 			
 		}
