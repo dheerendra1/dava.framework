@@ -43,7 +43,10 @@ SpriteNode::SpriteNode(Scene * _scene, const String &pathToSprite, int32 _frame
     sprScale = reqScale;
     sprPivot = pivotPoint;
     frame = _frame;
-    CreateMeshFromSprite();
+    for (int i = 0; i < sprite->GetFrameCount(); i++) 
+    {
+        CreateMeshFromSprite(i);
+    }
 }
 
 SpriteNode::SpriteNode(Scene * _scene, Sprite *spr, int32 _frame
@@ -54,7 +57,10 @@ SpriteNode::SpriteNode(Scene * _scene, Sprite *spr, int32 _frame
     sprPivot = pivotPoint;
     sprite = SafeRetain(spr);
     frame = _frame;
-    CreateMeshFromSprite();
+    for (int i = 0; i < sprite->GetFrameCount(); i++) 
+    {
+        CreateMeshFromSprite(i);
+    }
 }
 
 SpriteNode::~SpriteNode()
@@ -64,11 +70,7 @@ SpriteNode::~SpriteNode()
 
 void SpriteNode::SetFrame(int32 newFrame)
 {
-    if (frame != newFrame) 
-    {
-        frame = newFrame;
-        CreateMeshFromSprite();
-    }
+    frame = newFrame;
 }
 
 int32 SpriteNode::GetFrame()
@@ -77,12 +79,12 @@ int32 SpriteNode::GetFrame()
 }
 
 
-void SpriteNode::CreateMeshFromSprite()
-{//TODO: Add precreation of the all sprite frames
-    float32 x0 = sprite->GetRectOffsetValueForFrame(frame, Sprite::X_OFFSET_TO_ACTIVE) - sprPivot.x;
-    float32 y0 = sprite->GetRectOffsetValueForFrame(frame, Sprite::Y_OFFSET_TO_ACTIVE) - sprPivot.y;
-    float32 x1 = x0 + sprite->GetRectOffsetValueForFrame(frame, Sprite::ACTIVE_WIDTH);
-    float32 y1 = y0 + sprite->GetRectOffsetValueForFrame(frame, Sprite::ACTIVE_HEIGHT);
+void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
+{
+    float32 x0 = sprite->GetRectOffsetValueForFrame(frameToGen, Sprite::X_OFFSET_TO_ACTIVE) - sprPivot.x;
+    float32 y0 = sprite->GetRectOffsetValueForFrame(frameToGen, Sprite::Y_OFFSET_TO_ACTIVE) - sprPivot.y;
+    float32 x1 = x0 + sprite->GetRectOffsetValueForFrame(frameToGen, Sprite::ACTIVE_WIDTH);
+    float32 y1 = y0 + sprite->GetRectOffsetValueForFrame(frameToGen, Sprite::ACTIVE_HEIGHT);
     x0 *= sprScale.x;
     x1 *= sprScale.y;
     y0 *= sprScale.x;
@@ -134,41 +136,42 @@ void SpriteNode::Draw()
     
 
         //TODO: Add billboards mode
-/*    {//billboarding
-        Vector3 camDir = scene->GetCamera()->GetDirection();
-        Vector3 right;
-        Vector3 up(0.f,0.f,1.f);
-        right = up.CrossProduct(camDir);
-        up = camDir.CrossProduct(right);
-        up.Normalize();
-        right.Normalize();
-        
-        Matrix4 bm;
-        
-        bm._data[0][0] = right.x;
-        bm._data[1][0] = right.y;
-        bm._data[2][0] = right.z;
-        bm._data[3][0] = 0.0f;
-        
-        bm._data[0][1] = up.x;
-        bm._data[1][1] = up.y;
-        bm._data[2][1] = up.z;
-        bm._data[3][1] = 0.0f;
-        
-        bm._data[0][2] = camDir.x;
-        bm._data[1][2] = camDir.y;
-        bm._data[2][2] = camDir.z;
-        bm._data[3][2] = 0.0f;
-        
-        bm._data[0][3] = 0.0f;
-        bm._data[1][3] = 0.0f;
-        bm._data[2][3] = 0.0f;
-        bm._data[3][3] = 1.0f;
-        
-        meshFinalMatrix = bm * prevMatrix;
-        meshFinalMatrix = worldTransform * meshFinalMatrix;
-    }
- */   
+//    {//billboarding
+//        Vector3 camDir = scene->GetCamera()->GetDirection();
+//        Vector3 right;
+//        Vector3 up(0.f,0.f,1.f);
+//        right = up.CrossProduct(camDir);
+//        up = camDir.CrossProduct(right);
+////        up.Normalize();
+////        right.Normalize();
+//        
+//        Matrix4 bm;
+//        
+//        bm._00 = right.x;
+//        bm._10 = right.y;
+//        bm._20 = right.z;
+//        bm._30 = 0.0f;
+//        
+//        bm._01 = up.x;
+//        bm._11 = up.y;
+//        bm._21 = up.z;
+//        bm._31 = 0.0f;
+//        
+//        bm._02 = camDir.x;
+//        bm._12 = camDir.y;
+//        bm._22 = camDir.z;
+//        bm._32 = 0.0f;
+//        
+//        bm._03 = 0.0f;
+//        bm._13 = 0.0f;
+//        bm._23 = 0.0f;
+//        bm._33 = 1.0f;
+//        
+//        meshFinalMatrix = bm * meshFinalMatrix;
+////        meshFinalMatrix = bm * prevMatrix;
+////        meshFinalMatrix = worldTransform * meshFinalMatrix;
+//    }
+    
  
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
     
@@ -184,7 +187,7 @@ void SpriteNode::Draw()
     RenderManager::Instance()->SetTexture(sprite->GetTexture(frame));
 	RenderManager::Instance()->FlushState();
     
-    RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, verts.data());
+    RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, &verts[frame*4*3]);
     RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, sprite->GetTextureVerts(frame)); 
 //	glColorPointer(4, GL_FLOAT, 0, colors.data());
 //	glEnableClientState(GL_COLOR_ARRAY);

@@ -39,6 +39,7 @@ SceneNode::SceneNode(Scene * _scene)
 	: scene(_scene)
 	, parent(0)
     , visible(true)
+    , inUpdate(false)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
@@ -65,6 +66,11 @@ void SceneNode::AddNode(SceneNode * node)
 
 void SceneNode::RemoveNode(SceneNode * node)
 {
+    if (inUpdate) 
+    {
+        removedCache.push_back(node);
+        return;
+    }
 	for (std::deque<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
 	{
 		if (*t == node)
@@ -174,6 +180,7 @@ void SceneNode::ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & key)
     
 void SceneNode::Update(float32 timeElapsed)
 {
+    inUpdate = true;
 	// TODO - move node update to render because any of objects can change params of other objects
 	if (nodeAnimations.size() != 0)
 	{
@@ -230,7 +237,18 @@ void SceneNode::Update(float32 timeElapsed)
 	uint32 size = (uint32)childs.size();
 	for (uint32 c = 0; c < size; ++c)
 		childs[c]->Update(timeElapsed);
-	
+
+	inUpdate = false;
+
+    if (!removedCache.empty()) 
+    {
+        for (std::deque<SceneNode*>::iterator t = removedCache.begin(); t != removedCache.end(); ++t)
+        {
+            RemoveNode(*t);
+        }
+        removedCache.clear();
+    }
+        
 }
 
 void SceneNode::Draw()

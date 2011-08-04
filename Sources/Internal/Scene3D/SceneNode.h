@@ -100,7 +100,9 @@ protected:
 	Scene * scene;
 	SceneNode * parent;
 	std::deque<SceneNode*> childs;
+	std::deque<SceneNode*> removedCache;
 	bool visible;
+    bool inUpdate;
 };
 
 inline void SceneNode::SetVisible(bool isVisible)

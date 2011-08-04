@@ -327,7 +327,10 @@ bool SceneFile::ReadStaticMesh()
 		int * indices = new int[indexCount];
 		sceneFP->Read(indices, sizeof(int) * indexCount);
 		for (uint32 i = 0; i < indexCount; ++i)
+        {
 			polygonGroup->SetIndex(i, indices[i]);
+        }
+        delete [] indices;
 	}
 	
 	scene->AddStaticMesh(mesh);
@@ -386,7 +389,10 @@ bool SceneFile::ReadAnimatedMesh()
 		int32 * indices = new int32[indexCount];
 		sceneFP->Read(indices, indexCount *  sizeof(int32));
 		for (int i = 0; i < indexCount; ++i)
+        {
 			polygonGroup->SetIndex(i, indices[i]);
+        }
+        delete [] indices;
 		
 		polygonGroup->CreateBaseVertexArray();
 	}
