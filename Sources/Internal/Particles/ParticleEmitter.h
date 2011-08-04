@@ -234,7 +234,7 @@ public:
 	 If enabled and ParticleEmitter::SetPosition() is called, particles will change their position respectively.
 	 \param[in] follow enable particles following if true.
 	 */
-	void SetParticlesFollow(bool follow);
+	inline void SetParticlesFollow(bool follow);
 
 	/// Particles' color is multiplied by ambientColor before drawing.
 	Color ambientColor;
@@ -297,6 +297,11 @@ inline bool ParticleEmitter::GetCurrentColor(Color * _currentColor)
 	{
 		return false;
 	}
+}
+
+inline void ParticleEmitter::SetParticlesFollow(bool follow)
+{
+	particlesFollow = follow;
 }
 
 	

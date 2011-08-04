@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3239C08813E301A7002CBBF2 /* Bitstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3239C08413E301A7002CBBF2 /* Bitstream.cpp */; };
+		3239C08913E301A7002CBBF2 /* Bitstream.h in Headers */ = {isa = PBXBuildFile; fileRef = 3239C08513E301A7002CBBF2 /* Bitstream.h */; };
+		3239C08A13E301A7002CBBF2 /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3239C08613E301A7002CBBF2 /* ResourceArchive.cpp */; };
+		3239C08B13E301A7002CBBF2 /* ResourceArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 3239C08713E301A7002CBBF2 /* ResourceArchive.h */; };
 		47106C1213CF6DA200EDEBA4 /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47106C1113CF6DA200EDEBA4 /* SpriteNode.cpp */; };
 		4730931113A7E08200C28765 /* UIHierarchyNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4730930F13A7E08200C28765 /* UIHierarchyNode.h */; };
 		4730931213A7E08200C28765 /* UIHierarchyNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4730931013A7E08200C28765 /* UIHierarchyNode.cpp */; };
@@ -638,6 +642,10 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		3239C08413E301A7002CBBF2 /* Bitstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bitstream.cpp; sourceTree = "<group>"; };
+		3239C08513E301A7002CBBF2 /* Bitstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bitstream.h; sourceTree = "<group>"; };
+		3239C08613E301A7002CBBF2 /* ResourceArchive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceArchive.cpp; sourceTree = "<group>"; };
+		3239C08713E301A7002CBBF2 /* ResourceArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceArchive.h; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* Framework_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framework_Prefix.pch; sourceTree = "<group>"; };
 		47106C1113CF6DA200EDEBA4 /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
 		4730930F13A7E08200C28765 /* UIHierarchyNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHierarchyNode.h; sourceTree = "<group>"; };
@@ -1956,6 +1964,10 @@
 		FECFC0E512E87E3000C71562 /* FileSystem */ = {
 			isa = PBXGroup;
 			children = (
+				3239C08413E301A7002CBBF2 /* Bitstream.cpp */,
+				3239C08513E301A7002CBBF2 /* Bitstream.h */,
+				3239C08613E301A7002CBBF2 /* ResourceArchive.cpp */,
+				3239C08713E301A7002CBBF2 /* ResourceArchive.h */,
 				FECFC0E612E87E3000C71562 /* DynamicMemoryFile.cpp */,
 				FECFC0E712E87E3000C71562 /* DynamicMemoryFile.h */,
 				FECFC0E812E87E3000C71562 /* File.cpp */,
@@ -2734,6 +2746,8 @@
 				FED0475E13B743A500A9A859 /* RenderResource.h in Headers */,
 				FED0476213B7450400A9A859 /* RenderStateBlock.h in Headers */,
 				FED0476613B7450C00A9A859 /* Shader.h in Headers */,
+				3239C08913E301A7002CBBF2 /* Bitstream.h in Headers */,
+				3239C08B13E301A7002CBBF2 /* ResourceArchive.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3051,6 +3065,8 @@
 				FED0479A13B7B89500A9A859 /* Matrix4.cpp in Sources */,
 				FEB3CF4F13CCE4FD00268C55 /* RenderManagerFactory.cpp in Sources */,
 				47106C1213CF6DA200EDEBA4 /* SpriteNode.cpp in Sources */,
+				3239C08813E301A7002CBBF2 /* Bitstream.cpp in Sources */,
+				3239C08A13E301A7002CBBF2 /* ResourceArchive.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

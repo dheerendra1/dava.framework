@@ -111,15 +111,20 @@ uint32 DynamicMemoryFile::Read(void * pointerToData, uint32 dataSize)
 	}
 	
 	uint32 realReadSize = dataSize;
-	if (currentPtr + realReadSize > data.size())
+	int32 size = data.size();
+	if (currentPtr + realReadSize > size)
 	{
-		realReadSize = data.size() - currentPtr;
+		realReadSize = size - currentPtr;
+	}
+	if(realReadSize)
+	{
+		Memcpy(pointerToData, &(data[currentPtr]), realReadSize);
+		currentPtr += realReadSize;
+
+		return realReadSize;
 	}
 	
-	Memcpy(pointerToData, &(data[currentPtr]), realReadSize);
-	currentPtr += realReadSize;
-
-	return realReadSize;
+	return 0;
 }
 
 uint32 DynamicMemoryFile::GetPos()

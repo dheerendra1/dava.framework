@@ -29,6 +29,8 @@
 =====================================================================================*/
 #include "FileSystem/File.h"
 #include "FileSystem/FileSystem.h"
+#include "FileSystem/ResourceArchive.h"
+#include "FileSystem/DynamicMemoryFile.h"
 
 
 namespace DAVA 
@@ -54,8 +56,33 @@ File * File::Create(const String &filePath, uint32 attributes)
 }
 
 
-File * File::CreateFromSystemPath(const String &filename, uint32	attributes)
+File * File::CreateFromSystemPath(const String &filename, uint32 attributes)
 {
+	FileSystem * fileSystem = FileSystem::Instance();
+	for (List<FileSystem::ResourceArchiveItem>::iterator ai = fileSystem->resourceArchiveList.begin();
+		ai != fileSystem->resourceArchiveList.end(); ++ai)
+	{
+		FileSystem::ResourceArchiveItem & item = *ai;
+
+		String filenamecpp = filename;
+
+		String::size_type pos = filenamecpp.find(item.attachPath);
+		if (pos == 0)
+		{
+			String relfilename = filenamecpp.substr(item.attachPath.length());
+			uint32 size = item.archive->LoadResource(relfilename, 0);
+			if ( size == -1 )
+			{
+				return 0;
+			}
+
+			int8 * buffer = new int8[size];
+			item.archive->LoadResource(relfilename, buffer);
+			DynamicMemoryFile * file =  DynamicMemoryFile::Create(buffer, size, attributes);
+			return file;
+		}
+	}
+
 	FILE * file = 0;
 	uint32 size = 0;
 	if ((attributes & File::OPEN) && (attributes & File::READ))
@@ -205,6 +232,12 @@ bool File::Seek(int32 position, uint32 seekType)
 bool File::IsEof()
 {
 	return (feof(file) != 0);
+}
+
+bool File::WriteString(const String & strtowrite)
+{
+	const char * str = strtowrite.c_str();
+	return (Write((void*)str, (uint32)(strtowrite.length() + 1)) == strtowrite.length() + 1);
 }
 
 }

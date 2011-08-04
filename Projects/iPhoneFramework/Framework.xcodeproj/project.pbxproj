@@ -16,6 +16,8 @@
 		475D595A1300236500A18EC7 /* Box2DTileCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475D59541300236500A18EC7 /* Box2DTileCollider.cpp */; };
 		475D595B1300236500A18EC7 /* Box2DTileCollider.h in Headers */ = {isa = PBXBuildFile; fileRef = 475D59551300236500A18EC7 /* Box2DTileCollider.h */; };
 		AA747D9F0F9514B9006C5449 /* Framework_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */; };
+		C2F95EF613E9AD2A0087713F /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C2F95EF413E9AD2A0087713F /* ResourceArchive.cpp */; };
+		C2F95EF713E9AD2A0087713F /* ResourceArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = C2F95EF513E9AD2A0087713F /* ResourceArchive.h */; };
 		FE0A4FF8134B15AB001EAA90 /* Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0A4FF5134B15AB001EAA90 /* Cursor.h */; };
 		FE0A4FF9134B15AB001EAA90 /* CursorMacOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE0A4FF6134B15AB001EAA90 /* CursorMacOS.mm */; };
 		FE0A4FFA134B15AB001EAA90 /* CursorWin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0A4FF7134B15AB001EAA90 /* CursorWin32.cpp */; };
@@ -622,6 +624,8 @@
 		475D59541300236500A18EC7 /* Box2DTileCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DTileCollider.cpp; sourceTree = "<group>"; };
 		475D59551300236500A18EC7 /* Box2DTileCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DTileCollider.h; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framework_Prefix.pch; sourceTree = SOURCE_ROOT; };
+		C2F95EF413E9AD2A0087713F /* ResourceArchive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceArchive.cpp; sourceTree = "<group>"; };
+		C2F95EF513E9AD2A0087713F /* ResourceArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceArchive.h; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0A4FF5134B15AB001EAA90 /* Cursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursor.h; sourceTree = "<group>"; };
 		FE0A4FF6134B15AB001EAA90 /* CursorMacOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CursorMacOS.mm; sourceTree = "<group>"; };
@@ -1869,6 +1873,8 @@
 		FECFB36912E5904400C71562 /* FileSystem */ = {
 			isa = PBXGroup;
 			children = (
+				C2F95EF413E9AD2A0087713F /* ResourceArchive.cpp */,
+				C2F95EF513E9AD2A0087713F /* ResourceArchive.h */,
 				FECFB36A12E5904400C71562 /* DynamicMemoryFile.cpp */,
 				FECFB36B12E5904400C71562 /* DynamicMemoryFile.h */,
 				FECFB36C12E5904400C71562 /* File.cpp */,
@@ -2638,6 +2644,7 @@
 				FED0474413B73D0A00A9A859 /* RenderStateBlock.h in Headers */,
 				FE5DB8A413B8D62400C00F98 /* Shader.h in Headers */,
 				47106BE513CF694500EDEBA4 /* SpriteNode.h in Headers */,
+				C2F95EF713E9AD2A0087713F /* ResourceArchive.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2944,6 +2951,7 @@
 				FE5DB8A613B8D62400C00F98 /* ShaderGL.cpp in Sources */,
 				FE203F3F13BCCD3400350E9A /* RenderManagerFactory.cpp in Sources */,
 				47106BE413CF694500EDEBA4 /* SpriteNode.cpp in Sources */,
+				C2F95EF613E9AD2A0087713F /* ResourceArchive.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2964,7 +2972,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/Framework.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -2980,7 +2987,6 @@
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
 				GCC_WARN_PEDANTIC = NO;
-				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
@@ -2995,7 +3001,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DSTROOT = /tmp/Framework.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
@@ -3008,7 +3013,6 @@
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
 				GCC_WARN_PEDANTIC = NO;
-				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
@@ -3055,6 +3059,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "";
 			};
 			name = Debug;
@@ -3095,6 +3100,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "";
 			};
 			name = Release;
@@ -3134,6 +3140,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "";
 			};
 			name = AdHoc;
@@ -3143,7 +3150,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DSTROOT = /tmp/Framework.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
@@ -3156,7 +3162,6 @@
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
 				GCC_WARN_PEDANTIC = NO;
-				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
@@ -3201,6 +3206,7 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "";
 			};
 			name = Distribution;
@@ -3210,7 +3216,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = armv6;
-				DSTROOT = /tmp/Framework.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
@@ -3223,7 +3228,6 @@
 				GCC_WARN_MISSING_PARENTHESES = NO;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
 				GCC_WARN_PEDANTIC = NO;
-				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",

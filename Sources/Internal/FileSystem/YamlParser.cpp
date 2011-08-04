@@ -236,7 +236,7 @@ int read_handler(void *ext, unsigned char *buffer, size_t size, size_t *length)
 {
 	YamlParser::YamlDataHolder * holder = (YamlParser::YamlDataHolder*)ext;
 	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
-	memcpy(buffer, holder->data, sizeToWrite);
+	memcpy(buffer, holder->data+holder->dataOffset, sizeToWrite);
 	*length = sizeToWrite;
 
 	holder->dataOffset += sizeToWrite;

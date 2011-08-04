@@ -537,14 +537,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
-				DSTROOT = /tmp/Box2D_iPhone.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Box2D_iPhone_Prefix.pch;
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Box2D_iPhone;
 			};
 			name = Debug;
@@ -554,11 +552,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DSTROOT = /tmp/Box2D_iPhone.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Box2D_iPhone_Prefix.pch;
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Box2D_iPhone;
 			};
 			name = Release;
@@ -580,6 +576,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -599,6 +596,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -618,6 +616,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = AdHoc;
 		};
@@ -626,11 +625,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DSTROOT = /tmp/Box2D_iPhone.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Box2D_iPhone_Prefix.pch;
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Box2D_iPhone;
 			};
 			name = AdHoc;
@@ -651,6 +648,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
 		};
@@ -659,11 +657,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DSTROOT = /tmp/Box2D_iPhone.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Box2D_iPhone_Prefix.pch;
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Box2D_iPhone;
 			};
 			name = Distribution;
