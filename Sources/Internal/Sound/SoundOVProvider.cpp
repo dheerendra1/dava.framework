@@ -156,7 +156,7 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 		else if(result < 0)
 		{
 			Logger::Error("int32 SoundOVProvider::LoadData failed for file %s with code %d", fileName.c_str(), result);
-			break;
+			return 0;
 		}	
 		else
 		{
@@ -165,6 +165,12 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 	}
 
 	*buffer = data;
+
+	if(infiniteLoad)
+	{
+		ov_clear(&oggFile);
+		file = 0;
+	}
 
 	return size;
 }
