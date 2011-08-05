@@ -107,8 +107,9 @@ bool SoundOVProvider::Init()
 	callbacks.seek_func = OVSeekFunc;
 	callbacks.close_func = OVCloseFunc;
 	callbacks.tell_func = OVTellFunc;
-	if(ov_open_callbacks(file, &oggFile, 0, 0, callbacks) < 0)
+	if(int32 result = ov_open_callbacks(file, &oggFile, 0, 0, callbacks) < 0)
 	{
+		Logger::Error("SoundOVProvider::Init ov_open_callbacks returned %d", result);
 		return false;
 	}
 
@@ -154,7 +155,7 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 		}
 		else if(result < 0)
 		{
-			Logger::Error("int32 SoundOVProvider::LoadData failed for file %s", fileName.c_str());
+			Logger::Error("int32 SoundOVProvider::LoadData failed for file %s with code %d", fileName.c_str(), result);
 			break;
 		}	
 		else
