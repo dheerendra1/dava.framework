@@ -30,6 +30,7 @@
 
 #include "Sound/SoundOVProvider.h"
 #include "FileSystem/File.h"
+#include "Utils/StringFormat.h"
 
 namespace DAVA
 {
@@ -133,6 +134,7 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 	}
 
 	int8 * data = (int8*)Alloc(desiredSize);
+	DVASSERT_MSG(data, "SoundOVProvider::LoadData Alloc failed");
 	int32 size = 0;
 	int32 currentSection;
 
@@ -147,6 +149,7 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 			{
 				desiredSize += OV_CHUNK_SIZE;
 				data = (int8*)Realloc(data, desiredSize);
+				DVASSERT_MSG(data, Format("SoundOVProvider::LoadData Realloc failed for size %d", desiredSize));
 			}
 		}
 		else if(result < 0)

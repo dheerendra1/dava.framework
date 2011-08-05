@@ -59,6 +59,7 @@ Cursor * Cursor::Create(const String & cursorPathname, const Vector2 & hotSpot)
 }
 
 Cursor::Cursor()
+: show(true)
 {
 	cursorSprite = 0;
 	cursorTexture = 0;
@@ -72,8 +73,11 @@ Cursor::~Cursor()
 
 void Cursor::SoftwareDraw(const Vector2 & pos)
 {
-	cursorSprite->SetPosition(pos);
-	cursorSprite->Draw();
+	if(show)
+	{
+		cursorSprite->SetPosition(pos);
+		cursorSprite->Draw();
+	}
 }
 
 void Cursor::HardwareSet()
@@ -89,6 +93,22 @@ void Cursor::HardwareSet()
 		LPDIRECT3DDEVICE9 device = RenderManager::Instance()->GetD3DDevice();
 		device->ShowCursor(true);
 	}
+}
+
+void Cursor::Show(bool _show)
+{
+	show = _show;
+	LPDIRECT3DDEVICE9 device = RenderManager::Instance()->GetD3DDevice();
+	device->ShowCursor(show);
+}
+
+Vector2 Cursor::GetPosotion()
+{
+	POINT ptCursor;
+	GetCursorPos( &ptCursor );
+	ScreenToClient(RenderManager::Instance()->hWnd, &ptCursor);
+
+	return Vector2(ptCursor.x, ptCursor.y);
 }
 
 

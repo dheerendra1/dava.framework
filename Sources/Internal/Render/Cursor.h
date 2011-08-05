@@ -65,6 +65,18 @@ public:
 		\returns pointer to cursor object if it opened successfully. 
 	 */
 	static Cursor * Create(const String & cursorPathname, const Vector2 & hotSpot);
+
+	/**
+	 \brief Show or hide cursor
+	 \param[in] show show cursor if true, else hide cursor
+	 */
+	void Show(bool show);
+
+	/**
+	 \brief Get current cursor position 
+	 \returns Vector2 containing position
+	 */
+	Vector2 GetPosotion();
 	
 #if defined(__DAVAENGINE_MACOS__)
 	void * GetMacOSXCursor();
@@ -88,6 +100,8 @@ public:
 #endif
 	
 	friend class RenderManager;
+
+	bool show;
 };
 
 };
