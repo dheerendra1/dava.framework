@@ -13,6 +13,9 @@
 		475D59591300236500A18EC7 /* Box2DHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 475D59531300236500A18EC7 /* Box2DHelper.h */; };
 		475D595A1300236500A18EC7 /* Box2DTileCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475D59541300236500A18EC7 /* Box2DTileCollider.cpp */; };
 		475D595B1300236500A18EC7 /* Box2DTileCollider.h in Headers */ = {isa = PBXBuildFile; fileRef = 475D59551300236500A18EC7 /* Box2DTileCollider.h */; };
+		47FABE4913EC6551003A37A8 /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FABE4813EC6551003A37A8 /* SpriteNode.cpp */; };
+		47FABE5813EC67D6003A37A8 /* MusicIos.h in Headers */ = {isa = PBXBuildFile; fileRef = 47FABE5613EC67D6003A37A8 /* MusicIos.h */; };
+		47FABE5913EC67D6003A37A8 /* MusicIos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47FABE5713EC67D6003A37A8 /* MusicIos.mm */; };
 		AA747D9F0F9514B9006C5449 /* Framework_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */; };
 		FE0A4FF8134B15AB001EAA90 /* Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0A4FF5134B15AB001EAA90 /* Cursor.h */; };
 		FE0A4FF9134B15AB001EAA90 /* CursorMacOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE0A4FF6134B15AB001EAA90 /* CursorMacOS.mm */; };
@@ -630,6 +633,9 @@
 		475D59531300236500A18EC7 /* Box2DHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DHelper.h; sourceTree = "<group>"; };
 		475D59541300236500A18EC7 /* Box2DTileCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DTileCollider.cpp; sourceTree = "<group>"; };
 		475D59551300236500A18EC7 /* Box2DTileCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DTileCollider.h; sourceTree = "<group>"; };
+		47FABE4813EC6551003A37A8 /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
+		47FABE5613EC67D6003A37A8 /* MusicIos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicIos.h; sourceTree = "<group>"; };
+		47FABE5713EC67D6003A37A8 /* MusicIos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MusicIos.mm; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framework_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0A4FF5134B15AB001EAA90 /* Cursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursor.h; sourceTree = "<group>"; };
@@ -1275,6 +1281,8 @@
 		FE578B3013278D720081BDE9 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
+				47FABE5613EC67D6003A37A8 /* MusicIos.h */,
+				47FABE5713EC67D6003A37A8 /* MusicIos.mm */,
 				FE578B3113278D730081BDE9 /* ALUtils.h */,
 				FE578B3213278D730081BDE9 /* Sound.cpp */,
 				FE578B3313278D730081BDE9 /* Sound.h */,
@@ -2182,6 +2190,7 @@
 				FECFB43412E5904500C71562 /* SkeletonNode.cpp */,
 				FECFB43512E5904500C71562 /* SkeletonNode.h */,
 				FECFB43612E5904500C71562 /* SpriteNode.h */,
+				47FABE4813EC6551003A37A8 /* SpriteNode.cpp */,
 				FECFB43712E5904500C71562 /* StateNode.h */,
 			);
 			path = Scene3D;
@@ -2685,6 +2694,7 @@
 				FEE41FEB13C5A043002F31D4 /* TextureMulColorEffect.h in Headers */,
 				FE3F424213CADF8E009DB893 /* MultiTextureEffect.h in Headers */,
 				FECA0D4313D5E9DD00059D5D /* Frustum.h in Headers */,
+				47FABE5813EC67D6003A37A8 /* MusicIos.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2996,6 +3006,8 @@
 				FEE41FEA13C5A043002F31D4 /* TextureMulColorEffect.cpp in Sources */,
 				FE3F424113CADF8E009DB893 /* MultiTextureEffect.cpp in Sources */,
 				FECA0D4213D5E9DD00059D5D /* Frustum.cpp in Sources */,
+				47FABE4913EC6551003A37A8 /* SpriteNode.cpp in Sources */,
+				47FABE5913EC67D6003A37A8 /* MusicIos.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

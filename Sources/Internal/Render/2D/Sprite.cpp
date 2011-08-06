@@ -583,6 +583,11 @@ Texture* Sprite::GetTexture(int32 frameNumber)
 	return textures[frameTextureIndex[frame]];
 }
 	
+float32 *Sprite::GetTextureVerts(int32 frame)
+{
+    return texCoords[frame];
+}
+    
 int32 Sprite::GetFrameCount()
 {
 	return frameCount;	
