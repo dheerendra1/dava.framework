@@ -41,7 +41,7 @@ Camera::Camera(Scene * scene) : SceneNode(scene)
 	Setup(35.0f, 1.0f, 1.0f, 2500.f, false);
 	up = Vector3(0.0f, 1.0f, 0.0f);
 	left = Vector3(1.0f, 0.0f, 0.0f);
-	flags = REQUIRE_REBUILD;
+	flags = REQUIRE_REBUILD | REQUIRE_REBUILD_MODEL | REQUIRE_REBUILD_PROJECTION;
     
 	cameraTransform.Identity();
 }
@@ -72,6 +72,7 @@ void Camera::SetFOV(float32 _fovy)
 
 void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho)
 {
+    flags |= REQUIRE_REBUILD_PROJECTION;
 	this->fovy = fovy;
 	this->aspect = aspect;
 	this->znear = znear;
@@ -92,19 +93,83 @@ void Camera::Recalc()
 	xmax = ymax * aspect;
 }
 
-void Camera::ApplyFrustum()
+Vector2 Camera::GetOnScreenPosition(const Vector3 &forPoint)
 {
+    Vector4 pv(forPoint);
+    pv = pv * GetUniformProjModelMatrix();
+    return Vector2((GetScreenWidth() * 0.5f) * (1.f + pv.y/pv.w)
+                   , (GetScreenHeight() * 0.5f) * (1.f + pv.x/pv.w));
+}
+
+const Matrix4 &Camera::GetUniformProjModelMatrix()
+{
+    if (flags & REQUIRE_REBUILD)
+    {
+        RebuildCameraFromValues();
+    }
+    if (flags & REQUIRE_REBUILD_PROJECTION)
+    {
+        RecalcFrustum();
+    }
+    if (flags & REQUIRE_REBUILD_MODEL)
+    {
+        RecalcTransform();
+    }
+    if (flags & REQUIRE_REBUILD_UNIFORM_PROJ_MODEL)
+    {
+        uniformProjModelMatrix = modelMatrix * projMatrix;
+        flags &= ~REQUIRE_REBUILD_UNIFORM_PROJ_MODEL;
+    }
+    
+    return uniformProjModelMatrix;
+}
+
+void Camera::RecalcFrustum()
+{
+    flags &= ~REQUIRE_REBUILD_PROJECTION;
+    flags |= REQUIRE_REBUILD_UNIFORM_PROJ_MODEL;
     if (!ortho) 
     {
-        Matrix4 frustumMatrix;
-        frustumMatrix.glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
-        RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, frustumMatrix);
-    }else
-    {
-        Matrix4 orthoMatrix;
-        orthoMatrix.glOrtho(xmin, xmax, ymin, ymax, znear, zfar);
-        RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, orthoMatrix);
+        projMatrix.glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
     }
+    else
+    {
+        projMatrix.glOrtho(xmin, xmax, ymin, ymax, znear, zfar);
+    }
+}
+
+void Camera::RecalcTransform()
+{
+    flags &= ~REQUIRE_REBUILD_MODEL;
+    flags |= REQUIRE_REBUILD_UNIFORM_PROJ_MODEL;
+
+//	Core::eScreenOrientation orientation = Core::Instance()->GetScreenOrientation();
+	
+	switch(Core::Instance()->GetScreenOrientation())
+	{
+		case Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT:
+                //glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
+			modelMatrix.CreateRotation(Vector3(0.0f, 0.0f, 1.0f), DegToRad(-90.0f));
+            break;
+		case Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT:
+                //glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+            modelMatrix.CreateRotation(Vector3(0.0f, 0.0f, 1.0f), DegToRad(90.0f));
+			break;
+        default:
+            break;
+	}
+    modelMatrix = cameraTransform * modelMatrix;
+}
+
+    
+void Camera::ApplyFrustum()
+{
+    if (flags & REQUIRE_REBUILD_PROJECTION)
+    {
+        RecalcFrustum();
+    }
+
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, projMatrix);
     
     /*  Boroda: Matrix Extract Snippet
      
@@ -146,26 +211,14 @@ void Camera::ApplyFrustum()
 
 void Camera::ApplyTransform()
 {
-	//glMatrixMode(GL_MODELVIEW);
+    if (flags & REQUIRE_REBUILD_MODEL)
+    {
+        RecalcTransform();
+    }
+        //glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
     
     //RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, Matrix4::IDENTITY);
-	Matrix4 finalTransform = Matrix4::IDENTITY;
-	Core::eScreenOrientation orientation = Core::Instance()->GetScreenOrientation();
-	
-	switch(orientation)
-	{
-		case Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT:
-			//glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
-			finalTransform.CreateRotation(Vector3(0.0f, 0.0f, 1.0f), DegToRad(-90.0f));
-            break;
-		case Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT:
-			//glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
-            finalTransform.CreateRotation(Vector3(0.0f, 0.0f, 1.0f), DegToRad(90.0f));
-			break;
-        default:
-            break;
-	}
 
 	
 	// Xpen poymesh chto eto napisano
@@ -176,8 +229,7 @@ void Camera::ApplyTransform()
 	
     // Correct code from boroda // commented during refactoring
     //glMultMatrixf(cameraTransform.data);
-    finalTransform = cameraTransform * finalTransform;
-	RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, finalTransform);
+	RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelMatrix);
 }
 
 void Camera::SetPosition(const Vector3 & _position)
@@ -233,6 +285,8 @@ void Camera::RebuildCameraFromValues()
 //    Logger::Debug("camera rebuild: pos(%0.2f %0.2f %0.2f) target(%0.2f %0.2f %0.2f) up(%0.2f %0.2f %0.2f)",
 //                  position.x, position.y, position.z, target.x, target.y, target.z, up.x, up.y, up.z);
     
+    flags &= ~REQUIRE_REBUILD; 
+    flags |= REQUIRE_REBUILD_MODEL;
 	cameraTransform.BuildLookAtMatrixRH(position, target, up);
 }
 	
@@ -266,7 +320,6 @@ void Camera::Set()
     if (flags & REQUIRE_REBUILD)
     {
         RebuildCameraFromValues();
-        flags &= ~REQUIRE_REBUILD; 
     }
 	ApplyFrustum();
 	ApplyTransform();
@@ -296,6 +349,7 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
     cnd->left = left;
     cnd->rotation = rotation;
     cnd->cameraTransform = cameraTransform;
+    cnd->flags = flags;
     return dstNode;
 }
 

@@ -69,6 +69,8 @@ public:
 	void ExtractCameraToValues();
 	
     virtual SceneNode* Clone(SceneNode *dstNode = NULL);
+    const Matrix4 &GetUniformProjModelMatrix();
+    Vector2 GetOnScreenPosition(const Vector3 &forPoint);
 //    virtual SceneNode* Clone();
     
 	
@@ -76,6 +78,9 @@ protected:
     enum
     {
         REQUIRE_REBUILD = 1,
+        REQUIRE_REBUILD_MODEL = 1<<1,
+        REQUIRE_REBUILD_PROJECTION = 1<<2,
+        REQUIRE_REBUILD_UNIFORM_PROJ_MODEL = 1<<3
     };
     
     
@@ -96,9 +101,18 @@ protected:
     
 	Quaternion rotation;	// 
 	Matrix4 cameraTransform;
+
+    Matrix4 modelMatrix;
+	Matrix4 projMatrix;
+    Matrix4 uniformProjModelMatrix;
+
     uint32 flags;
 		
 	void Recalc();
+
+	void RecalcFrustum();
+	void RecalcTransform();
+    
 	
 	/** calls glFrustum for projection matrix */
 	void ApplyFrustum();
