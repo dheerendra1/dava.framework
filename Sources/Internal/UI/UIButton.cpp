@@ -301,6 +301,7 @@ namespace DAVA
 			if(selectedText)
 			{
 				AddControl(selectedText);
+                BringChildBack(selectedText);
 			}
 			
 			selectedBackground = GetActualBackground(controlState);
@@ -326,6 +327,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	
@@ -339,6 +341,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	void UIButton::SetDisabled(bool isDisabled, bool hierarchic)
@@ -351,6 +354,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	
@@ -364,6 +368,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	
@@ -377,6 +382,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	
@@ -390,6 +396,7 @@ namespace DAVA
 		if(selectedText)
 		{
 			AddControl(selectedText);
+            BringChildBack(selectedText);
 		}
 	}
 	
