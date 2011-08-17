@@ -118,6 +118,12 @@ public:
 	 */
 	void LoadFromYaml(YamlNode * node);
 
+	/**
+		\brief Get head(first) particle of the layer.
+		Can be used to iterate through the particles'.
+	 */
+	Particle * GetHeadParticle();
+
 
 private:	
 	void GenerateNewParticle(int32 emitIndex);

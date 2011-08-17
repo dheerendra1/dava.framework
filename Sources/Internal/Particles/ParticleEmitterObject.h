@@ -92,7 +92,7 @@ public:
 	*/
 	virtual void Draw();
 	
-private:
+protected:
 	ParticleEmitter * emitter;
 	int32 removeAfterNRepeats;
 	bool isRemoveWhenEmpty;

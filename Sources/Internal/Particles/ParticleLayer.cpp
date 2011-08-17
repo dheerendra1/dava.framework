@@ -665,6 +665,11 @@ void ParticleLayer::LoadFromYaml(YamlNode * node)
 	
 }
 
+Particle * ParticleLayer::GetHeadParticle()
+{
+	return head;
+}
+
 
 
 }
