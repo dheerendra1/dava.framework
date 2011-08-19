@@ -30,8 +30,7 @@
 #ifndef __DAVAENGINE_PLANE_H__
 #define __DAVAENGINE_PLANE_H__
 
-#include "Base/BaseTypes.h"
-#include "Math/Vector.h"
+#include "Math/Matrix3.h"
 
 namespace DAVA
 {
