@@ -686,12 +686,20 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
 	NSLog(@"[CoreMacOSPlatform] Application did become active");
-	Core::Instance()->Resume();
+//    KeyedArchive * options = DAVA::Core::GetOptions();
+//    if(options->GetBool("suspendOnDeactivate", true))
+//    {
+        Core::Instance()->Resume();
+//    }
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification
 {
-	Core::Instance()->Suspend();
+    KeyedArchive * options = DAVA::Core::GetOptions();
+    if(options->GetBool("suspendOnDeactivate", true))
+    {
+        Core::Instance()->Suspend();
+    }
 	NSLog(@"[CoreMacOSPlatform] Application did resign active");
 }
 
