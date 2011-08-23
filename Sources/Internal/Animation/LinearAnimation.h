@@ -108,6 +108,14 @@ void LinearAnimation<T>::Update(float32 timeElapsed)
 	Animation::Update(timeElapsed);
 	*var = startValue + (endValue - startValue) * normalizedTime;
 }
+
+template<>
+inline //Dizz: inline tells compiler that symbol will be present in multiple object files
+void LinearAnimation<int32>::Update(float32 timeElapsed)
+{
+	Animation::Update(timeElapsed);
+	*var = startValue + (int32)((float32)(endValue - startValue) * normalizedTime);
+}
 	
 //template<Rect>
 	
