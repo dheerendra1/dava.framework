@@ -170,7 +170,8 @@ void Box2DDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const
 void Box2DDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	RenderManager::Instance()->DrawLine(Vector2(p1.x * ptdRatio + cameraPos.x, -p1.y * ptdRatio + cameraPos.y), Vector2(p2.x * ptdRatio, -p2.y * ptdRatio));
+	RenderManager::Instance()->DrawLine(Vector2(p1.x * ptdRatio + cameraPos.x, -p1.y * ptdRatio + cameraPos.y), 
+                                        Vector2(p2.x * ptdRatio + cameraPos.x, -p2.y * ptdRatio + cameraPos.y));
 	RenderManager::Instance()->ResetColor();
 	/*glColor3f(color.r, color.g, color.b);
 	glBegin(GL_LINES);
@@ -181,6 +182,8 @@ void Box2DDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Col
 
 void Box2DDebugDraw::DrawTransform(const b2Transform& xf)
 {
+    b2_float32 tmpTest = xf.GetAngle();
+    
     b2Vec2 p1 = xf.position, p2;
     const float32 k_axisScale = 0.4f;
 
