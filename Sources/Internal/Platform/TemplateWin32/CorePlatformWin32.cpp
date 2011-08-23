@@ -188,6 +188,7 @@ namespace DAVA
 		FrameworkDidLaunched();
 		KeyedArchive * options = Core::GetOptions();
 
+		//fullscreenMode = GetCurrentDisplayMode();
 		if (options)
 		{
 			windowedMode.width = options->GetInt("width");
@@ -1014,18 +1015,22 @@ namespace DAVA
 			return 0;
 		case WM_ACTIVATE:
 			{
-				WORD loWord = LOWORD(wParam);
-				WORD hiWord = HIWORD(wParam);
-				if(!loWord || hiWord)
+				KeyedArchive* options = DAVA::Core::GetOptions();
+				if(options->GetBool("suspendOnDeactivate",true))
 				{
-					Logger::Debug("[PlatformWin32] deactivate application");
-					RenderResource::SaveAllResourcesToSystemMem();
-					Core::Instance()->Suspend();
-				}
-				else
-				{
-					Logger::Debug("[PlatformWin32] activate application");
-					Core::Instance()->Resume();
+					WORD loWord = LOWORD(wParam);
+					WORD hiWord = HIWORD(wParam);
+					if(!loWord || hiWord)
+					{
+						Logger::Debug("[PlatformWin32] deactivate application");
+						RenderResource::SaveAllResourcesToSystemMem();
+						Core::Instance()->Suspend();
+					}
+					else
+					{
+						Logger::Debug("[PlatformWin32] activate application");
+						Core::Instance()->Resume();
+					}
 				}
 			};
 			break;
