@@ -70,6 +70,8 @@ namespace DAVA
 		pivotPoint = Vector2(0, 0);
 		scale = Vector2(1.0f, 1.0f);
 		angle = 0;
+
+		tag = 0;
 		
 		multiInput = false;
 		exclusiveInput = false;
