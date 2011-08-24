@@ -158,7 +158,7 @@ public:
 	static ApplicationCore * GetApplicationCore();
 
 	
-	// platform dependant functions that should be implemented
+	// platform dependent functions that should be implemented
 	virtual eScreenMode GetScreenMode();	// 
 	
 	/**
@@ -194,6 +194,13 @@ public:
 		\brief Quit from application & release all subsystems
 	*/
 	virtual void Quit();
+
+	/**
+		\brief Set icon for application's window.
+		Windows: First of all, you should create icon resource through Project->Add Resource->Icon.
+		param[in] iconId resource id for icon from resource.h file. For example, 101 for #define IDI_ICON1 101
+	 */
+	virtual void SetIcon(int32 iconId) {};
 	
 #if defined(__DAVAENGINE_IPHONE__)
 	static bool IsAutodetectContentScaleFactor();
@@ -210,7 +217,7 @@ public:
 	virtual void CalculateScaleMultipliers();
 	
 	virtual void SetPhysicalScreenSize(int32 width, int32 height);//!< May be used only by the system
-	virtual void SetVirtualScreenSize(int32 width, int32 height);// Sets virtual screen size. You need to set size what takes into account screen orientation modifer
+	virtual void SetVirtualScreenSize(int32 width, int32 height);// Sets virtual screen size. You need to set size what takes into account screen orientation modifier
 	virtual void RegisterAvailableResourceSize(int32 width, int32 height, const String &resourcesFolderName);// Registers available sizes of resources. Can be called many times.
 	
 

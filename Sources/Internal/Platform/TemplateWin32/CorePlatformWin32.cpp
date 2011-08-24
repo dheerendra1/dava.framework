@@ -132,7 +132,7 @@ namespace DAVA
 		wcex.cbClsExtra		= 0;
 		wcex.cbWndExtra		= 0;
 		wcex.hInstance		= hInstance;
-		wcex.hIcon			= NULL;
+		wcex.hIcon			= 0;
 		wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
 		wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
 		wcex.lpszMenuName	= 0;
@@ -493,6 +493,18 @@ namespace DAVA
 	void CoreWin32Platform::Quit()
 	{
 		willQuit = true;
+	}
+
+	void CoreWin32Platform::SetIcon(int32 iconId)
+	{
+		HINSTANCE hInst= GetModuleHandle(0);
+		HICON smallIcon = static_cast<HICON>(LoadImage(hInst,
+			MAKEINTRESOURCE(iconId),
+			IMAGE_ICON,
+			16,
+			16,
+			LR_DEFAULTSIZE));
+		SendMessage(hWindow, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);
 	}
 
 	static Vector<DAVA::UIEvent> activeTouches;

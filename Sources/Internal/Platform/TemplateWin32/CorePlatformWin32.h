@@ -53,6 +53,8 @@ public:
 
 	virtual void ToggleFullscreen();
 
+	virtual void SetIcon(int32 iconId);
+
 	void InitOpenGL();
 	void ReleaseOpenGL();
 
