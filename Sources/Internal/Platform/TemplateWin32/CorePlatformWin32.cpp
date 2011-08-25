@@ -501,8 +501,8 @@ namespace DAVA
 		HICON smallIcon = static_cast<HICON>(LoadImage(hInst,
 			MAKEINTRESOURCE(iconId),
 			IMAGE_ICON,
-			16,
-			16,
+			0,
+			0,
 			LR_DEFAULTSIZE));
 		SendMessage(hWindow, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);
 	}
