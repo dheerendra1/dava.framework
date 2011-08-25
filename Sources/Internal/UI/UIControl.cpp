@@ -111,7 +111,7 @@ namespace DAVA
 		parent = newParent;
 		if(parent && needToRecalcFromAbsoluteCoordinates)
 		{
-			relativePosition = absolutePosition - parent->GetPosition(true);
+			relativePosition = absolutePosition - parent->GetGeometricData().position;
 			needToRecalcFromAbsoluteCoordinates = false;
 		}
 		
@@ -333,7 +333,7 @@ namespace DAVA
 		}
 		if(parent)
 		{
-			absolutePosition = relativePosition + parent->GetPosition(true);
+			absolutePosition = relativePosition + parent->GetGeometricData().position;
 			return absolutePosition;
 		}
 		if(!needToRecalcFromAbsoluteCoordinates)
@@ -354,7 +354,7 @@ namespace DAVA
 		{
 			if(parent)
 			{
-				relativePosition = position - parent->GetPosition(TRUE);
+				relativePosition = position - parent->GetGeometricData().position;
 				needToRecalcFromAbsoluteCoordinates = false;
 			}
 			else
