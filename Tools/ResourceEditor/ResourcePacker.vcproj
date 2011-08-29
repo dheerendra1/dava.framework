@@ -20,6 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -40,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./../../Sources/Internal;./../../Sources/External;./../../Libs/glew/Include;./../../Libs/dxsdk8/include;./../../Libs/libpng/include;&quot;./../../Libs/ImageMagick-6.6.8/Magick++/lib&quot;;&quot;./../../Libs/ImageMagick-6.6.8&quot;"
+				AdditionalIncludeDirectories="./../../Sources/Internal;./../../Sources/External;./../../Libs/glew/Include;./../../Libs/libpng/include;&quot;./../../Libs/ImageMagick-6.6.8/Magick++/lib&quot;;&quot;./../../Libs/ImageMagick-6.6.8&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Win32Framework.lib CORE_DB_Magick++_.lib CORE_DB_magick_.lib CORE_DB_bzlib_.lib CORE_DB_coders_.lib CORE_DB_filters_.lib CORE_DB_jbig_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_libxml_.lib CORE_DB_png_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_wand_.lib CORE_DB_wmf_.lib CORE_DB_xlib_.lib CORE_DB_zlib_.lib X11.lib Xext.lib kernel32.lib user32.lib gdi32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib winmm.lib wsock32.lib advapi32.lib"
+				AdditionalDependencies="Win32Framework.lib CORE_DB_Magick++_.lib CORE_DB_magick_.lib CORE_DB_bzlib_.lib CORE_DB_coders_.lib CORE_DB_filters_.lib CORE_DB_jbig_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_libxml_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_wand_.lib CORE_DB_wmf_.lib CORE_DB_xlib_.lib X11.lib Xext.lib kernel32.lib user32.lib gdi32.lib odbc32.lib odbccp32.lib ole32.lib oleaut32.lib winmm.lib wsock32.lib advapi32.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;./../../Projects/Win32Framework/$(ConfigurationName)&quot;;&quot;./../../Libs/ImageMagick-6.6.8/VisualMagick/lib&quot;"
 				GenerateDebugInformation="true"
@@ -99,6 +100,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -119,7 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./../../Sources/Internal;./../../Sources/External;./../../Libs/glew/Include;./../../Libs/dxsdk8/include;./../../Libs/libpng/include;&quot;./../../Libs/ImageMagick-6.6.8/Magick++/lib&quot;;&quot;./../../Libs/ImageMagick-6.6.8&quot;"
+				AdditionalIncludeDirectories="./../../Sources/Internal;./../../Sources/External;./../../Libs/glew/Include;./../../Libs/libpng/include;&quot;./../../Libs/ImageMagick-6.6.8/Magick++/lib&quot;;&quot;./../../Libs/ImageMagick-6.6.8&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE; _CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"

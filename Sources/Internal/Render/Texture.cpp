@@ -245,6 +245,8 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, void * _data)
 		Logger::Error("[TextureDX9] Could not lock DirectX9 Texture.");
 		return;
 	}
+
+	// \todo instead of hardcoding transformations, use ImageConvert.
 	int32 pixelSizeInBits = GetPixelFormatSize(format);
 	if (format ==  Texture::FORMAT_RGBA8888)
 	{

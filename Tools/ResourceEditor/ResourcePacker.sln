@@ -1,11 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourcePacker", "ResourcePacker.vcxproj", "{8FAAB577-FC43-49A1-90BD-C6E932215DFF}"
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourcePacker", "ResourcePacker.vcproj", "{8FAAB577-FC43-49A1-90BD-C6E932215DFF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A6472D47-5050-406D-89E9-4725192E32F2} = {A6472D47-5050-406D-89E9-4725192E32F2}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32Framework", "..\..\Projects\Win32Framework\Win32Framework.vcxproj", "{A6472D47-5050-406D-89E9-4725192E32F2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32Framework", "..\..\Projects\Win32Framework\Win32Framework.vcproj", "{A6472D47-5050-406D-89E9-4725192E32F2}"
 EndProject
 Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
@@ -22,8 +28,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
-		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal

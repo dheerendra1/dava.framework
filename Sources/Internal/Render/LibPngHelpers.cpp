@@ -40,7 +40,6 @@
 #include <iostream>
 
 #include <png.h>
-#include <pngstruct.h>
 #include "Render/RenderManager.h"
 #include "Render/2D/Sprite.h"
 #include "Render/Texture.h"
@@ -199,6 +198,10 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	
 	*pwidth = width;
 	*pheight = height;
+
+	// adding support of 1bit png images
+	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) 
+		png_set_gray_1_2_4_to_8(png_ptr);
 
 	if (bit_depth > 8) {
 		png_set_strip_16(png_ptr);
