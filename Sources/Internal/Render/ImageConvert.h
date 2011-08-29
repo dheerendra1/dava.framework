@@ -45,7 +45,7 @@ struct ConvertRGBA8888toRGBA4444
 	}
 };
 
-struct UnpackRGBA888
+struct UnpackRGBA8888
 {
 	inline void operator()(uint32 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
 	{
@@ -65,11 +65,11 @@ struct PackRGBA8888
 	}
 };
 
-struct UnpackRGB4444
+struct UnpackRGBA4444
 {
-	inline void operator()(uint32 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
+	inline void operator()(uint16 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
 	{
-		uint32 pixel = *input;
+		uint16 pixel = *input;
 		a = ((pixel >> 12) & 0xF);
 		r = ((pixel >> 8) & 0xF);
 		g = ((pixel >> 4) & 0xF);
@@ -157,5 +157,49 @@ public:
 	};
 };
 
+
+class ImageConvert
+{
+public:
+
+	static void DownscaleTwiceBillinear(	Image::PixelFormat inFormat,
+												Image::PixelFormat outFormat,
+												void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
+												void * outData, uint32 outWidth, uint32 outHeight, uint32 outPitch)
+	{
+		if ((inFormat == Image::FORMAT_RGBA8888) && (outFormat == Image::FORMAT_RGBA8888))
+		{
+			ConvertDownscaleTwiceBillinear<uint32, uint32, UnpackRGBA8888, PackRGBA8888> convert;
+			convert(inData, inWidth, inHeight, inPitch, outData, outWidth, outHeight, outPitch);
+		}else if ((inFormat == Image::FORMAT_RGBA8888) && (outFormat == Image::FORMAT_RGBA4444))
+		{
+			ConvertDownscaleTwiceBillinear<uint32, uint16, UnpackRGBA8888, PackRGBA4444> convert;
+			convert(inData, inWidth, inHeight, inPitch, outData, outWidth, outHeight, outPitch);
+		}else if ((inFormat == Image::FORMAT_RGBA4444) && (outFormat == Image::FORMAT_RGBA8888))
+		{
+			ConvertDownscaleTwiceBillinear<uint16, uint32, UnpackRGBA4444, PackRGBA8888> convert;
+			convert(inData, inWidth, inHeight, inPitch, outData, outWidth, outHeight, outPitch);
+		}else
+		{
+			DVASSERT(0 && "Convert function not implemented");
+		}
+	}
+
+	Image* DownscaleTwiceBillinear(Image * source)
+	{
+		if (source->GetPixelFormat() == Image::FORMAT_RGBA8888)
+		{
+			Image * destination = Image::Create(source->GetWidth() / 2, source->GetHeight() / 2, source->GetPixelFormat());
+			if (destination)
+			{
+				ConvertDownscaleTwiceBillinear<uint32, uint32, UnpackRGBA8888, PackRGBA8888> convertFunc;
+				convertFunc(source->GetData(), source->GetWidth(), source->GetHeight(), source->GetWidth() * Image::GetFormatSize(source->GetPixelFormat()),
+					destination->GetData(), destination->GetWidth(), destination->GetHeight(), destination->GetWidth() * Image::GetFormatSize(destination->GetPixelFormat()));
+			}
+			return destination;
+		}
+		return 0;
+	}
+};
 
 };

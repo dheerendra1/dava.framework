@@ -40,6 +40,7 @@
 #include <iostream>
 
 #include <png.h>
+#include <pngstruct.h>
 #include "Render/RenderManager.h"
 #include "Render/2D/Sprite.h"
 #include "Render/Texture.h"
@@ -106,8 +107,8 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	int           bit_depth;
 	int           color_type;
 	
-	unsigned long width;            /* PNG image width in pixels */
-	unsigned long height;           /* PNG image height in pixels */
+	png_uint_32 width;            /* PNG image width in pixels */
+	png_uint_32 height;           /* PNG image height in pixels */
 	unsigned int rowbytes;         /* raw bytes at row n in image */
 	
 	image_data = NULL;

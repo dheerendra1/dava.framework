@@ -570,12 +570,7 @@ void ParticleLayer::LoadFromYaml(YamlNode * node)
 			pivotPointTemp = pivotPointNode->AsPoint();
 		}
 		SetSprite(_sprite);
-		pivotPoint = Vector2(_sprite->GetWidth() / 2.0f + pivotPointTemp.x, _sprite->GetHeight() / 2.0f + pivotPointTemp.y);
-		
-		RenderManager::Instance()->LockNonMain();
-		_sprite->GetTexture()->GenerateMipmaps();
-		RenderManager::Instance()->UnlockNonMain();
-        
+		pivotPoint = Vector2(_sprite->GetWidth() / 2.0f + pivotPointTemp.x, _sprite->GetHeight() / 2.0f + pivotPointTemp.y);        
         SafeRelease(_sprite);
 	}
 

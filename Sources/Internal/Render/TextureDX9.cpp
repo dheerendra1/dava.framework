@@ -216,8 +216,8 @@ LPDIRECT3DTEXTURE9 Texture::CreateTextureNative(Vector2 & size, PixelFormat & fo
 		texFormat = D3DFMT_A4R4G4B4;
 		colorFormat = FORMAT_RGBA4444;
 	}
-
-	bool genMipmaps = false; // ((flags & ETF_GENERATEMIPMAPS) != 0);
+	
+	bool enableAllMipMapLevels = Texture::isMipmapGenerationEnabled;
 
 	DWORD textureFlags = (isRenderTarget) ? (D3DUSAGE_RENDERTARGET) : (0);
 
@@ -225,7 +225,7 @@ LPDIRECT3DTEXTURE9 Texture::CreateTextureNative(Vector2 & size, PixelFormat & fo
 	if (isRenderTarget)pool = D3DPOOL_DEFAULT;
 
 	hr = device->CreateTexture((UINT)size.dx, (UINT)size.dy,
-		genMipmaps ? 0 : 1, 
+		enableAllMipMapLevels ? 0 : 1, 
 		textureFlags, texFormat, pool, &texture, 0);
 
 	if (FAILED(hr))

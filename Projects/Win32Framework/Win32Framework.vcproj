@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalOptions="/VERBOSE:LIB  "
-				AdditionalDependencies="freetype2312MT_D.lib libpng-win32-debug.lib zlib-win32-debug.lib opengl32.lib glew32.lib d3d9.lib dxerr.lib libogg_static_d.lib libvorbis_static_d.lib libvorbisfile_static_d.lib OpenAL32.lib"
+				AdditionalDependencies="freetype2312MT_D.lib libpngd.lib zlibd.lib opengl32.lib glew32.lib d3d9.lib dxerr.lib libogg_static_d.lib libvorbis_static_d.lib libvorbisfile_static_d.lib OpenAL32.lib"
 				OutputFile="$(ProjectDir)\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories="./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;&quot;$(DXSDK_DIR)/lib/x86&quot;;./../../Libs/oggvorbis/lib/;&quot;C:\Program Files\OpenAL 1.1 SDK\libs\Win32&quot;"
 			/>
@@ -126,7 +126,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="freetype2312MT.lib libpng-win32.lib zlib-win32.lib opengl32.lib glew32.lib d3d9.lib dxerr.lib libogg_static.lib libvorbis_static.lib libvorbisfile_static.lib openal32.lib"
+				AdditionalDependencies="freetype2312MT.lib libpng.lib zlib.lib opengl32.lib glew32.lib d3d9.lib dxerr.lib libogg_static.lib libvorbis_static.lib libvorbisfile_static.lib openal32.lib"
 				OutputFile="$(ProjectDir)\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories="./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;&quot;$(DXSDK_DIR)/lib/x86&quot;;./../../Libs/oggvorbis/lib/;&quot;C:\Program Files\OpenAL 1.1 SDK\libs\Win32&quot;"
 			/>
@@ -1333,6 +1333,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\Sources\Internal\Render\ImageConvert.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\Sources\Internal\Render\IndexBuffer.h"
 					>
 				</File>
@@ -1401,6 +1405,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderManagerFactory.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\Sources\Internal\Render\RenderManagerGL.cpp"
 					>
 				</File>
@@ -1418,6 +1426,14 @@
 				</File>
 				<File
 					RelativePath="..\..\Sources\Internal\Render\RenderStateBlock.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Sources\Internal\FileSystem\ResourceArchive.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Sources\Internal\FileSystem\ResourceArchive.h"
 					>
 				</File>
 				<File
