@@ -27,26 +27,23 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#ifndef __TEMPLATE_PROJECT_MAC_OS_APP_SCREENS_H__
-#define __TEMPLATE_PROJECT_MAC_OS_APP_SCREENS_H__
+#include "DAVAEngine.h"
 
-enum
+using namespace DAVA;
+
+class ImageUsageScreen : public UIScreen
 {
-	SCREEN_TEST = 1,
-	SCREEN_ANIM_3D, 
-	SCREEN_SPRITE_BASICS,
-	SCREEN_CLIP_TEST,
-	SCREEN_RENDERTARGET_TEST,
-	SCREEN_PARTICLE_TEST,
-	SCREEN_SPRITE_PERF_TEST, 
-	SCREEN_GAME_OBJECTS_TEST,
-	SCREEN_BOX2D_GAME_OBJECTS_TEST,
-	SCREEN_FONT_USAGE,
-	SCREEN_STATIC_TEXT,
-	SCREEN_COLLISION_TEST,
+public:
+	virtual void LoadResources();
+	virtual void UnloadResources();
 
-	SCREEN_IMAGE_USAGE,
+	virtual void Draw(const UIGeometricData &geometricData);
+		
+private:
+	Image * testImageOriginal;
+	Image * testImage4444;
+
+	Sprite * testImageRGBA8888;
+	Sprite * testImageRGBA4444;
+	Sprite * testImageRGB565;
 };
-	
-
-#endif // __TEMPLATE_PROJECT_MAC_OS_APP_SCREENS_H__

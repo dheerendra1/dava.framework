@@ -87,7 +87,7 @@ void FontUsageScreen::DrawGraphicsFont(GraphicsFont * font, Vector2 position, fl
 	font->SetSize(fontSize);
 	Size2i size = font->GetStringSize(singleLineString, 0);
 	// Size2i size = font->GetStringSize(singleLineString);
-	Rect rect(position.x, position.y, size.dx, size.dy);
+	Rect rect(position.x, position.y, (float32)size.dx, (float32)size.dy);
 	RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
 	RenderManager::Instance()->DrawRect(rect);
 	RenderManager::Instance()->DrawLine(Vector2(position.x, rect.y + font->GetAscender()), Vector2(position.x + size.dx, rect.y + font->GetAscender()));
@@ -101,7 +101,7 @@ void FontUsageScreen::DrawFTFont(FTFont * ftFont, Vector2 pos, float32 fontSize)
 {
 	ftFont->SetSize(fontSize);
 	Size2i size = ftFont->GetStringSize(singleLineString);
-	Rect rect(pos.x, pos.y, size.dx, size.dy);
+	Rect rect(pos.x, pos.y, (float32)size.dx, (float32)size.dy);
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//RenderManager::Instance()->DrawRect(rect);
 	
@@ -117,7 +117,7 @@ void FontUsageScreen::DrawFTFont(FTFont * ftFont, Vector2 pos, float32 fontSize)
 	Texture *tex = Texture::CreateTextFromData(Texture::FORMAT_RGBA4444, (uint8*)buf, dx, dy, "");
 	delete[] buf;
 	
-	Sprite * ftFontSprite = Sprite::CreateFromTexture(tex, 0, 0, dx, dy);
+	Sprite * ftFontSprite = Sprite::CreateFromTexture(tex, 0, 0, (float32)dx, (float32)dy);
 //	if(!isMultilineEnabled)
 //	{
 //		textSprite->SetDefaultPivotPoint(0.0f, (float32)(font->GetBaseline() - h));

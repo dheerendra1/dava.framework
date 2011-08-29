@@ -203,13 +203,13 @@ UIHierarchyCell *AnimationTestScreen::CellForNode(UIHierarchy *forHierarchy, voi
     c->text->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
     SafeRelease(fnt);
     
-    Color color(0.1, 0.5, 0.05, 1.0);
+    Color color(0.1f, 0.5f, 0.05f, 1.0f);
 	c->openButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
 	c->openButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
 	c->openButton->SetStateDrawType(UIControl::STATE_HOVER, UIControlBackground::DRAW_FILL);
 	c->openButton->GetStateBackground(UIControl::STATE_NORMAL)->color = color;
-	c->openButton->GetStateBackground(UIControl::STATE_HOVER)->color = color + 0.1;
-	c->openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->color = color + 0.3;
+	c->openButton->GetStateBackground(UIControl::STATE_HOVER)->color = color + 0.1f;
+	c->openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->color = color + 0.3f;
  
     return c;//returns cell
 }
