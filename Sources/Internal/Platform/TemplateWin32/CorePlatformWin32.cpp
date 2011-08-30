@@ -132,7 +132,7 @@ namespace DAVA
 		wcex.cbClsExtra		= 0;
 		wcex.cbWndExtra		= 0;
 		wcex.hInstance		= hInstance;
-		wcex.hIcon			= NULL;
+		wcex.hIcon			= 0;
 		wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
 		wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
 		wcex.lpszMenuName	= 0;
@@ -188,6 +188,7 @@ namespace DAVA
 		FrameworkDidLaunched();
 		KeyedArchive * options = Core::GetOptions();
 
+		//fullscreenMode = GetCurrentDisplayMode();
 		if (options)
 		{
 			windowedMode.width = options->GetInt("width");
@@ -264,6 +265,8 @@ namespace DAVA
 
 		Core::Instance()->SystemAppFinished();
 		FrameworkWillTerminate();
+
+		RenderManager::Instance()->Release();
 	}
 
 /*	void CoreWin32Platform::InitOpenGL()
@@ -493,6 +496,18 @@ namespace DAVA
 	void CoreWin32Platform::Quit()
 	{
 		willQuit = true;
+	}
+
+	void CoreWin32Platform::SetIcon(int32 iconId)
+	{
+		HINSTANCE hInst= GetModuleHandle(0);
+		HICON smallIcon = static_cast<HICON>(LoadImage(hInst,
+			MAKEINTRESOURCE(iconId),
+			IMAGE_ICON,
+			0,
+			0,
+			LR_DEFAULTSIZE));
+		SendMessage(hWindow, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);
 	}
 
 	static Vector<DAVA::UIEvent> activeTouches;
@@ -1014,18 +1029,22 @@ namespace DAVA
 			return 0;
 		case WM_ACTIVATE:
 			{
-				WORD loWord = LOWORD(wParam);
-				WORD hiWord = HIWORD(wParam);
-				if(!loWord || hiWord)
+				KeyedArchive* options = DAVA::Core::GetOptions();
+				if(options->GetBool("suspendOnDeactivate",true))
 				{
-					Logger::Debug("[PlatformWin32] deactivate application");
-					RenderResource::SaveAllResourcesToSystemMem();
-					Core::Instance()->Suspend();
-				}
-				else
-				{
-					Logger::Debug("[PlatformWin32] activate application");
-					Core::Instance()->Resume();
+					WORD loWord = LOWORD(wParam);
+					WORD hiWord = HIWORD(wParam);
+					if(!loWord || hiWord)
+					{
+						Logger::Debug("[PlatformWin32] deactivate application");
+						RenderResource::SaveAllResourcesToSystemMem();
+						Core::Instance()->Suspend();
+					}
+					else
+					{
+						Logger::Debug("[PlatformWin32] activate application");
+						Core::Instance()->Resume();
+					}
 				}
 			};
 			break;

@@ -44,6 +44,7 @@ class Box2DGameObjectTestScreen;
 class FontUsageScreen;
 class StaticTextScreen;
 class CollisionTestScreen;
+class ImageUsageScreen;
 
 class GameCore : public DAVA::ApplicationCore
 {
@@ -76,6 +77,7 @@ private:
 	FontUsageScreen * fontUsageScreen;
 	StaticTextScreen * stScreen;
 	CollisionTestScreen * collisionTestScreen;
+	ImageUsageScreen * imageUsageScreen;
 };
 
 

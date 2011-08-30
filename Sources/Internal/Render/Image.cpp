@@ -44,7 +44,29 @@
 
 namespace DAVA 
 {
-	
+uint32 Image::GetFormatSize(Image::PixelFormat format)
+{
+	switch(format)
+	{
+	case FORMAT_RGBA8888:
+		return 4;
+		break;
+	case FORMAT_RGB565: 
+		return 2;
+		break;
+	case FORMAT_RGBA4444:
+		return 2;
+		break;
+	case FORMAT_A8:
+		return 1;
+		break;
+	default:
+		Logger::Error("Image::Create trying to retrieve size of wrong format");
+		return 0;
+	}
+	return 0;
+}
+
 Image::Image()
 :	data(0)
 ,	width(0)

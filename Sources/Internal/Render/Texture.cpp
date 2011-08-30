@@ -38,6 +38,7 @@
 #include "Platform/SystemTimer.h"
 #include "FileSystem/File.h"
 #include "Render/D3D9Helpers.h"
+#include "Render/ImageConvert.h"
 //#include "LibPngHelpers.h"
 
 #if defined(__DAVAENGINE_IPHONE__) 
@@ -238,12 +239,14 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, void * _data)
 		return;
 
 	D3DLOCKED_RECT rect;
-	HRESULT hr = id->LockRect(0, &rect, 0, 0);
+	HRESULT hr = id->LockRect(level, &rect, 0, 0);
 	if (FAILED(hr))
 	{
 		Logger::Error("[TextureDX9] Could not lock DirectX9 Texture.");
 		return;
 	}
+
+	// \todo instead of hardcoding transformations, use ImageConvert.
 	int32 pixelSizeInBits = GetPixelFormatSize(format);
 	if (format ==  Texture::FORMAT_RGBA8888)
 	{
@@ -286,7 +289,7 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, void * _data)
 		}	
 	}
 
-	id->UnlockRect(0);
+	id->UnlockRect(level);
 #endif 
 }
 
@@ -382,6 +385,34 @@ Texture * Texture::CreateFromData(PixelFormat _format, uint8 * _data, uint32 _wi
 	texture->id = CreateTextureNative(Vector2((float32)_width, (float32)_height), texture->format, false, 0);
 	texture->TexImage(0, _width, _height, _data);
 
+	// allocate only 2 levels, and reuse buffers for generation of every mipmap level
+	uint8 *mipMapData = new uint8[(_width / 2) * (_height / 2) * GetPixelFormatSize(texture->format) / 8];
+	uint8 *mipMapData2 = new uint8[(_width / 4) * (_height / 4) * GetPixelFormatSize(texture->format) / 8];
+
+	uint8 * prevMipData = _data;
+	uint8 * currentMipData = mipMapData;
+
+	int32 mipMapWidth = _width / 2;
+	int32 mipMapHeight = _height / 2;
+
+	for (uint32 i = 1; i < texture->id->GetLevelCount(); ++i)
+	{
+		ImageConvert::DownscaleTwiceBillinear((Image::PixelFormat)texture->format, (Image::PixelFormat)texture->format, 
+			prevMipData, mipMapWidth << 1, mipMapHeight << 1, (mipMapWidth << 1) * GetPixelFormatSize(texture->format) / 8,
+			currentMipData, mipMapWidth, mipMapHeight, mipMapWidth * GetPixelFormatSize(texture->format) / 8);
+
+		texture->TexImage(i, mipMapWidth, mipMapHeight, currentMipData);
+		
+		mipMapWidth  >>= 1;
+		mipMapHeight >>= 1;
+		
+		prevMipData = currentMipData;
+		currentMipData = (i & 1) ? (mipMapData2) : (mipMapData); 
+	}
+
+	SafeDeleteArray(mipMapData2);
+	SafeDeleteArray(mipMapData);
+
 #endif 
 	return texture;
 }		
@@ -468,9 +499,7 @@ void Texture::GenerateMipmaps()
 	if (saveId != 0)
 		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
 	
-	
 #elif defined(__DAVAENGINE_DIRECTX9__)
-	// TODO: Create mipmaps
 
 #endif // #if defined(__DAVAENGINE_OPENGL__)
 }

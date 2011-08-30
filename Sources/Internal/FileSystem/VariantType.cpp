@@ -121,7 +121,7 @@ const uint8 *VariantType::AsByteArray()
 int32 VariantType::AsByteArraySize()
 {
 	DVASSERT(type == TYPE_BYTE_ARRAY);
-	return arrayValue.size();
+	return (int32)arrayValue.size();
 }
 	
 

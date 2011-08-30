@@ -32,6 +32,7 @@
 #include "Particles/ParticleLayer.h"
 #include "Render/RenderManager.h"
 #include "Utils/Random.h"
+#include "Animation/LinearAnimation.h"
 
 namespace DAVA 
 {
@@ -86,8 +87,7 @@ ParticleEmitter * ParticleEmitter::Clone()
 	emitter->lifeTime = lifeTime;
 	emitter->emitPointsCount = emitPointsCount;
 	emitter->isPaused = isPaused;
-	emitter->width = width;
-	emitter->height = height;
+	emitter->size = size;
 	emitter->isAutorestart = isAutorestart;
 	emitter->particlesFollow = particlesFollow;
 	return emitter;
@@ -178,14 +178,14 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 	{
 		// TODO: add emitter angle support
 		float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-		Vector2 lineDirection(width * rand05, 0);
+		Vector2 lineDirection(size.x * rand05, 0);
 		particle->position = tempPosition + lineDirection;
 	}else if (type == EMITTER_RECT)
 	{
 		// TODO: add emitter angle support
 		float32 rand05_x = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
 		float32 rand05_y = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-		Vector2 lineDirection(width * rand05_x, height * rand05_y);
+		Vector2 lineDirection(size.x * rand05_x, size.y * rand05_y);
 		particle->position = tempPosition + lineDirection;
 	}else if (type == EMITTER_ONCIRCLE)
 	{
@@ -293,15 +293,15 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
 		}else
 			type = EMITTER_POINT;
 		
-		width = 1.0f;
+		size.x = 1.0f;
 		YamlNode * widthNode = emitterNode->Get("width");
 		if (widthNode)
-			width = widthNode->AsFloat();
+			size.x = widthNode->AsFloat();
 
-		height = 1.0f;
+		size.y = 1.0f;
 		YamlNode * heightNode = emitterNode->Get("height");
 		if (heightNode)
-			height = heightNode->AsFloat();
+			size.y = heightNode->AsFloat();
 
 		YamlNode * autorestartNode = emitterNode->Get("autorestart");
 		if(autorestartNode)
@@ -368,13 +368,19 @@ bool ParticleEmitter::GetAutorestart()
 
 Vector2 ParticleEmitter::GetSize()
 {
-	return Vector2(width, height);
+	return size;
 }
 
-void ParticleEmitter::SetSize(const Vector2& size)
+void ParticleEmitter::SetSize(const Vector2& _size)
 {
-	width = size.x;
-	height = size.y;
+	size = _size;
+}
+
+Animation * ParticleEmitter::SizeAnimation(const Vector2 & newSize, float32 time, Interpolation::FuncType interpolationFunc /*= Interpolation::LINEAR*/, int32 track /*= 0*/)
+{
+	LinearAnimation<Vector2> * animation = new LinearAnimation<Vector2>(this, &size, newSize, time, interpolationFunc);
+	animation->Start(track);
+	return animation;
 }
 
 }

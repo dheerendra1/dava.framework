@@ -41,6 +41,7 @@
 #include "Box2DGameObjectTestScreen.h"
 #include "StaticTextScreen.h"
 #include "CollisionTestScreen.h"
+#include "ImageUsageScreen.h"
 
 using namespace DAVA;
 
@@ -76,6 +77,7 @@ void GameCore::OnAppStarted()
 // 	box2dGameObjectTestScreen = new Box2DGameObjectTestScreen();
  	stScreen = new StaticTextScreen();
 // 	collisionTestScreen = new CollisionTestScreen();
+	imageUsageScreen = new ImageUsageScreen();
     
 //	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
@@ -89,8 +91,9 @@ void GameCore::OnAppStarted()
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_BOX2D_GAME_OBJECTS_TEST, box2dGameObjectTestScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
-    
-	UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE_BASICS);
+	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
+
+	UIScreenManager::Instance()->SetFirst(SCREEN_IMAGE_USAGE);
 	cursor = 0;
 }
 
@@ -111,6 +114,7 @@ void GameCore::OnAppFinished()
     SafeRelease(stScreen);
 // 	SafeRelease(spritePerfScreen);
 // 	SafeRelease(gameObjectTestScreen);
+	SafeRelease(imageUsageScreen);
 }
 
 void GameCore::OnSuspend()

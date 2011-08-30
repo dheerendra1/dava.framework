@@ -70,10 +70,15 @@ void TestScreen::LoadResources()
 	bigBoxEmitterClone->SetPriority(10);
 	bigBoxEmitterClone->SetPosition(Vector2(300, 300));
 	manager->AddObject(bigBoxEmitterClone);
+
+	Texture::EnableMipmapGeneration();
+	testSprite = Sprite::Create("~res:/Gfx/GameObjects/blueboxbig");
+	Texture::DisableMipmapGeneration();
 }
 
 void TestScreen::UnloadResources()
 {
+	SafeRelease(testSprite);
 	SafeRelease(manager);
 }
 
@@ -108,4 +113,22 @@ void TestScreen::Update(float32 timeElapsed)
 void TestScreen::Draw(const UIGeometricData &geometricData)
 {
 	manager->Draw();
+
+
+	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	testSprite->SetPosition(0.0f, 200.0f);
+	testSprite->Draw();
+
+	testSprite->SetPosition(200.0f, 200.0f);
+	testSprite->SetScale(0.5f, 0.5f);
+	testSprite->Draw();
+
+	testSprite->SetPosition(300.0f, 200.0f);
+	testSprite->SetScale(0.3f, 0.3f);
+	testSprite->Draw();
+
+	testSprite->SetPosition(400.0f, 200.0f);
+	testSprite->SetScale(0.1f, 0.1f);
+	testSprite->Draw();
 }

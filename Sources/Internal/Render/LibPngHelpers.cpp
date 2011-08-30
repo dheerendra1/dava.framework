@@ -106,8 +106,8 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	int           bit_depth;
 	int           color_type;
 	
-	unsigned long width;            /* PNG image width in pixels */
-	unsigned long height;           /* PNG image height in pixels */
+	png_uint_32 width;            /* PNG image width in pixels */
+	png_uint_32 height;           /* PNG image height in pixels */
 	unsigned int rowbytes;         /* raw bytes at row n in image */
 	
 	image_data = NULL;
@@ -198,6 +198,10 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	
 	*pwidth = width;
 	*pheight = height;
+
+	// adding support of 1bit png images
+	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) 
+		png_set_gray_1_2_4_to_8(png_ptr);
 
 	if (bit_depth > 8) {
 		png_set_strip_16(png_ptr);

@@ -45,6 +45,9 @@ public:
 	virtual void Input(UIEvent * touch);
 
 private:
+	Sprite * testSprite;
+
+
 	float32 time;
 	GameObjectManager * manager;
 

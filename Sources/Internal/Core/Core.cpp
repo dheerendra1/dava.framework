@@ -139,7 +139,7 @@ void Core::ReleaseSingletons()
 	Accelerometer::Instance()->Release();
 	//SoundSystem::Instance()->Release();
 #endif
-	RenderManager::Instance()->Release();
+	//RenderManager::Instance()->Release();
 	LocalizationSystem::Instance()->Release();
 	Logger::Debug("[Core::Release] successfull");
 	FileSystem::Instance()->Release();
@@ -637,6 +637,7 @@ bool Core::NeedToRecalculateMultipliers()
 {
 	return needTorecalculateMultipliers;
 }
+
 
 
 };

@@ -70,6 +70,8 @@ namespace DAVA
 		pivotPoint = Vector2(0, 0);
 		scale = Vector2(1.0f, 1.0f);
 		angle = 0;
+
+		tag = 0;
 		
 		multiInput = false;
 		exclusiveInput = false;
@@ -109,7 +111,7 @@ namespace DAVA
 		parent = newParent;
 		if(parent && needToRecalcFromAbsoluteCoordinates)
 		{
-			relativePosition = absolutePosition - parent->GetPosition(true);
+			relativePosition = absolutePosition - parent->GetGeometricData().position;
 			needToRecalcFromAbsoluteCoordinates = false;
 		}
 		
@@ -331,7 +333,7 @@ namespace DAVA
 		}
 		if(parent)
 		{
-			absolutePosition = relativePosition + parent->GetPosition(true);
+			absolutePosition = relativePosition + parent->GetGeometricData().position;
 			return absolutePosition;
 		}
 		if(!needToRecalcFromAbsoluteCoordinates)
@@ -352,7 +354,7 @@ namespace DAVA
 		{
 			if(parent)
 			{
-				relativePosition = position - parent->GetPosition(TRUE);
+				relativePosition = position - parent->GetGeometricData().position;
 				needToRecalcFromAbsoluteCoordinates = false;
 			}
 			else

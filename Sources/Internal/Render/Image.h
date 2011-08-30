@@ -73,7 +73,9 @@ public:
 	inline uint8 * GetData();
 	inline PixelFormat GetPixelFormat();
 	inline bool  IsAlphaPremultiplied();
-	
+
+	static uint32 GetFormatSize(Image::PixelFormat format); 
+
 	void ConvertToFormat(PixelFormat format, bool isAlphaPremultiplied = true);
 	
 	void Save(const String & filename);
@@ -103,6 +105,7 @@ Image::PixelFormat Image::GetPixelFormat()
 {
 	return format;
 }
+
 bool  Image::IsAlphaPremultiplied()
 {
 	return isAlphaPremultiplied;

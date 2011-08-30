@@ -36,6 +36,7 @@
 #include "Base/DynamicObjectCache.h"
 #include "Base/RefPtr.h"
 #include "Particles/ParticlePropertyLine.h"
+#include "Animation/Animation.h"
 
 namespace DAVA 
 {
@@ -74,7 +75,7 @@ class ParticleLayer;
 	emitAtPoints - this number means that particles will be generated evenly on circle. If it's not defined particles will be generated randomly.
 	life - emitter life in seconds. When accumulated time in ParticleEmitter::Update exceeds this value, emitter restarts and delete all previous particles. 
  */
-class ParticleEmitter : public BaseObject
+class ParticleEmitter : public AnimatedObject
 {
 public:
 	enum eType
@@ -238,6 +239,16 @@ public:
 
 	/// Particles' color is multiplied by ambientColor before drawing.
 	Color ambientColor;
+
+	/**
+	 \brief Starts size animation for the emitter's rect.
+	 \param[in] newSize New size.
+	 \param[in] time animation time.
+	 \param[in] interpolationFunc time interpolation method.
+	 \param[in] track animation track. 0 by default.
+	 \returns Animation object
+	 */
+	Animation * SizeAnimation(const Vector2 & newSize, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
 	
 protected:
 	void PrepareEmitterParameters(Particle * particle, float32 velocity, int32 emitIndex);
@@ -248,8 +259,7 @@ protected:
 	Vector2 position;
 	float32 angle;
 	eType	type;
-	float32 width;
-	float32 height;
+	Vector2 size;
 	
 	float32	lifeTime;
 	int32	repeatCount;

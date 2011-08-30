@@ -68,7 +68,7 @@ int32 PropertyLineEditControl::FindValueForInsertion(const Vector2 & absolutePoi
 		if (absolutePoint.x < pos.x)
 			return k;
 	}
-	return values.size();
+	return (int32)values.size();
 }
 
 void PropertyLineEditControl::Input(UIEvent * touch)
@@ -112,7 +112,7 @@ void PropertyLineEditControl::Input(UIEvent * touch)
 				//if ((insPos >= 0) && (insPos < (int32)values.size()))
 				{
 					Vector<PropertyRect>::iterator r = values.insert(values.begin() + insPos, PropertyRect(0, 0));
-					int n = r - values.begin();
+					int32 n = (int32)(r - values.begin());
 					FromMouseToPoint(absolutePoint, values[n]);
 				}
 			}

@@ -46,7 +46,7 @@ namespace DAVA
 	{
 		//while(x >= PI)x -= PI_2;
 		//while(x <= -PI)x += PI_2;
-		int32 v = (x + PI) * ONE_DIV_TWO_PI;
+		int32 v = (int32)((x + PI) * ONE_DIV_TWO_PI);
 		x -= v * PI_2;
 		x -= PI;
 			
