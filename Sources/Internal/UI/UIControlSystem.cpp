@@ -108,6 +108,14 @@ UIScreen *UIControlSystem::GetScreen()
 	
 void UIControlSystem::AddPopup(UIPopup *newPopup)
 {
+	for (Vector<UIPopup*>::iterator it = popupsToRemove.begin(); it != popupsToRemove.end(); it++)
+	{
+        if (*it == newPopup) 
+        {
+            popupsToRemove.erase(it);
+            return;
+        }
+	}
 	newPopup->LoadGroup();
 	popupContainer->AddControl(newPopup);
 }
@@ -206,6 +214,7 @@ void UIControlSystem::ProcessScreenLogic()
 			p->Retain();
 			popupContainer->RemoveControl(p);
 			p->UnloadGroup();
+            p->Release();
 		}
 	}
 	popupsToRemove.clear();
