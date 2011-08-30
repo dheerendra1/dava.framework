@@ -80,7 +80,7 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 	this->zfar = zfar;
 	this->ortho = ortho;
 	
-	this->znear = 5;
+	this->znear = 1;
 	this->zfar = 5000;
 	Recalc();
 }
@@ -245,6 +245,11 @@ void Camera::RebuildCameraFromValues()
 //                  position.x, position.y, position.z, target.x, target.y, target.z, up.x, up.y, up.z);
     
 	cameraTransform.BuildLookAtMatrixRH(position, target, up);
+    
+    // update left vector after rebuild
+	left.x = cameraTransform._00;
+	left.y = cameraTransform._10;
+	left.z = cameraTransform._20;
 }
 	
 void Camera::ExtractCameraToValues()
@@ -340,6 +345,7 @@ void Camera::Draw()
         {
             currentFrustum->DebugDraw();
         }
+        RenderManager::Instance()->ResetColor();
     }
 }
 

@@ -99,6 +99,7 @@ public:
 	inline AABBox3 & operator =(const AABBox3 & _bbox);
 
     void GetTransformedBox(const Matrix4 & transform, AABBox3 & result);
+    void GetCorners(Vector3 * cornersArray);
 };
 
 //! \brief construct empty bounding box

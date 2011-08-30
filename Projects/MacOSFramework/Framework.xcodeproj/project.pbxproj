@@ -27,6 +27,8 @@
 		FE0A5031134B2E43001EAA90 /* CursorWin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */; };
 		FE44432A114D8DF600F5EFD6 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444329114D8DF600F5EFD6 /* ApplicationServices.framework */; };
 		FE444430114E77EC00F5EFD6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE44442F114E77EC00F5EFD6 /* OpenAL.framework */; };
+		FE4A005413EBDC24006E924D /* LandscapeNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4A005213EBDC24006E924D /* LandscapeNode.cpp */; };
+		FE4A005513EBDC24006E924D /* LandscapeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4A005313EBDC24006E924D /* LandscapeNode.h */; };
 		FE4E01B913AA733A0013464E /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4E01B713AA733A0013464E /* Camera.cpp */; };
 		FE4E01BA13AA733A0013464E /* Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4E01B813AA733A0013464E /* Camera.h */; };
 		FE4E01BD13AA735E0013464E /* UI3DView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4E01BB13AA735E0013464E /* UI3DView.cpp */; };
@@ -671,6 +673,8 @@
 		FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorWin32.cpp; sourceTree = "<group>"; };
 		FE444329114D8DF600F5EFD6 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		FE44442F114E77EC00F5EFD6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = /System/Library/Frameworks/OpenAL.framework; sourceTree = "<absolute>"; };
+		FE4A005213EBDC24006E924D /* LandscapeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandscapeNode.cpp; sourceTree = "<group>"; };
+		FE4A005313EBDC24006E924D /* LandscapeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeNode.h; sourceTree = "<group>"; };
 		FE4E01B713AA733A0013464E /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		FE4E01B813AA733A0013464E /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		FE4E01BB13AA735E0013464E /* UI3DView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UI3DView.cpp; sourceTree = "<group>"; };
@@ -2276,6 +2280,8 @@
 				FECFC1BD12E87E3000C71562 /* SkeletonNode.h */,
 				FECFC1BE12E87E3000C71562 /* SpriteNode.h */,
 				FECFC1BF12E87E3000C71562 /* StateNode.h */,
+				FE4A005213EBDC24006E924D /* LandscapeNode.cpp */,
+				FE4A005313EBDC24006E924D /* LandscapeNode.h */,
 			);
 			path = Scene3D;
 			sourceTree = "<group>";
@@ -2781,6 +2787,7 @@
 				FECA0D6D13D5F64B00059D5D /* MultiTextureEffect.h in Headers */,
 				FECA0D6F13D5F64B00059D5D /* TextureMulColorEffect.h in Headers */,
 				FECA0D7313D5F67000059D5D /* Frustum.h in Headers */,
+				FE4A005513EBDC24006E924D /* LandscapeNode.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3103,6 +3110,7 @@
 				FECA0D6C13D5F64B00059D5D /* MultiTextureEffect.cpp in Sources */,
 				FECA0D6E13D5F64B00059D5D /* TextureMulColorEffect.cpp in Sources */,
 				FECA0D7213D5F67000059D5D /* Frustum.cpp in Sources */,
+				FE4A005413EBDC24006E924D /* LandscapeNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

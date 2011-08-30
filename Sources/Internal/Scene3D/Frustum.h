@@ -93,6 +93,14 @@ public:
 	//! \param box bounding box
 	bool IsInside(const AABBox3 & box)const;
 
+    //! \brief Check axial aligned bounding box visibility
+	//! \param box bounding box
+	bool IsFullyInside(const AABBox3 & box)const;
+
+    // *********************************************
+    // All above require detailed testing !!! Never tested in real project!!!
+    // *********************************************
+    
 	//! \brief Check axial aligned bounding box visibility
 	//! \param min bounding box minimum point
 	//! \param max bounding box maximum point

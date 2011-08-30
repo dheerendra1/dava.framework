@@ -28,116 +28,142 @@
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
 #ifndef __DAVAENGINE_LANDSCAPE_NODE_H__
-#define __DAVAENGINE_LANDSCAPE_SCENENODE_H__
+#define __DAVAENGINE_LANDSCAPE_NODE_H__
 
 #include "Base/BaseObject.h"
 #include "Base/BaseTypes.h"
 #include "Base/BaseMath.h"
 #include "Render/RenderBase.h"
-#include "Scene3D/SceneNodeAnimationKey.h"
-#include <deque>
+#include "Scene3D/SceneNode.h"
 
 namespace DAVA
 {
 
 class Scene;
-class SceneNodeAnimation;
-class SceneNodeAnimationKey;
-class SceneNode : public BaseObject
+class Image;
+class Texture;
+class RenderDataObject;
+
+
+/**    
+    \brief Implementation of cdlod algorithm to render landscapes
+    This class is base of the landscape code on all platforms
+    Landscape node is always axial aligned for simplicity of frustum culling calculations
+ */ 
+    
+template<class T>
+class QuadTreeNode
+{
+public:
+    QuadTreeNode()
+    {
+        childs = 0;
+        parent = 0;
+        for (int32 k = 0; k < 4; ++k)
+            neighbours[k] = 0;
+    }
+    ~QuadTreeNode()
+    {
+        SafeDeleteArray(childs);
+    }
+    
+    void AllocChilds()
+    {
+        childs = new QuadTreeNode[4];
+    }
+    
+    QuadTreeNode * childs;  // It's array of 4 child nodes
+    QuadTreeNode * parent;
+    QuadTreeNode * neighbours[4]; 
+    T data;
+};
+    
+class QuadTree
+{
+public:
+    
+    
+
+};
+    
+class LandscapeNode : public SceneNode
 {
 public:	
-	SceneNode(Scene * scene);
-	virtual ~SceneNode();
-	
-	// working with childs
-	virtual void	AddNode(SceneNode * node);
-	virtual void	RemoveNode(SceneNode * node);
-	virtual SceneNode * GetChild(int32 index);
-	virtual int32 GetChildrenCount();
-	virtual void	RemoveAllChilds();
-	virtual SceneNode *	FindByName(const String & name);
-	
-	// virtual updates
-	virtual void	Update(float32 timeElapsed);
-	virtual void	Draw();
-	
-	// properties
-	inline void SetVisible(bool isVisible);
-	inline SceneNode * GetParent();
-	
-	// extract data from current node to use it in animations
-	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
+    enum 
+    {
+        LEFT = 0,
+        RIGHT = 1,
+        TOP = 2,
+        BOTTOM = 3,
+    };
+    
+    enum eTextureType
+    {
+        TEXTURE_BASE = 0,
+        TEXTURE_DETAIL,
+        TEXTURE_BUMP,
+        TEXTURE_COUNT,
+    };
+    
+    
+	LandscapeNode(Scene * scene);
+	virtual ~LandscapeNode();
+    
+    void BuildLandscapeFromHeightmapImage(const String & heightmapPathname, const AABBox3 & landscapeBox);
+    void SetTexture(eTextureType type, Texture * texture);
+    
+	virtual void Draw();
+    
+protected:	
+    class LandscapeQuad
+    {
+    public:
+        int16   x, y;
+        int16   size;
+        int8    lod;
+        AABBox3 bbox;
+        uint32  frame;
+    };
+    
+    class LandscapeVertex
+    {
+    public:
+        Vector3 position;
+        Vector2 texCoord;
+    };
 
-	
-	Matrix4 localTransform;
-	Matrix4 worldTransform;
-	String	name;
-	int32	tag;
-	
-	
-	
-	// animations 
-	void ExecuteAnimation(SceneNodeAnimation * animation);	
-	void DetachAnimation(SceneNodeAnimation * animation);
-	virtual void StopAllAnimations(bool recursive = true);
-	void RestoreOriginalTransforms();
+    void RecursiveBuild(QuadTreeNode<LandscapeQuad> * currentNode, int32 level, int32 maxLevels);
+    QuadTreeNode<LandscapeQuad> * FindNodeWithXY(QuadTreeNode<LandscapeQuad> * currentNode, int16 quadX, int16 quadY, int16 quadSize);
+    void FindNeighbours(QuadTreeNode<LandscapeQuad> * currentNode);
+    void MarkFrames(QuadTreeNode<LandscapeQuad> * currentNode, int32 & depth);
 
-	
-	std::deque<SceneNodeAnimation *> nodeAnimations;
-	
-	
-	Matrix4 originalLocalTransform;
-    
-    virtual SceneNode* Clone(SceneNode *dstNode = NULL);
-//    virtual SceneNode* Clone();
+    Vector3 GetPoint(int16 x, int16 y, uint8 height);
+    void DrawQuad(QuadTreeNode<LandscapeQuad> * currentNode, int8 lod);
+    void Draw(QuadTreeNode<LandscapeQuad> * currentNode);
+    void DrawFans();
 
+    Image *     heightmap;
+    AABBox3     box;
     
+    LandscapeVertex * landscapeVertices;
+    RenderDataObject * landscapeRDO;
     
-	enum
-	{
-		DEBUG_DRAW_NONE = 0,
-		DEBUG_DRAW_AABBOX = 1,              
-		DEBUG_DRAW_LOCAL_AXIS = 2,
-        DEBUG_DRAW_ALL = 0xFFFFFFFF,
-	};
-	/**
-        \brief function to enable or disable debug drawing for particular node.
-        By default it's not recursive. Some objects may support flags only partially.
-        For example if node do not have bounding box flag DEBUG_DRAW_AABBOX will not produce any output
-        These flags are mostly for debug purposes and we do not guarantee that logic of the debug rendering will remain unchanged between 
-        framework versions.
-     
-        \param[in] debugFlags flags to be set
-        \param[in] isRecursive do you want to set flags recursively
-     
-     */
-	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
-	
-protected:
+    uint16 * indices;
+    Texture * textures[TEXTURE_COUNT];
     
-//    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
-	void SetParent(SceneNode * node);
-	
-	Scene * scene;
-	SceneNode * parent;
-	std::deque<SceneNode*> childs;
-	bool visible;
-    uint32 debugFlags;
+    int32 lodLevelsCount;
+    float32 lodDistance[8]; //
+    float32 lodSqDistance[8];
+    
+    QuadTreeNode<LandscapeQuad> quadTreeHead;
+
+    List<QuadTreeNode<LandscapeQuad>*> fans;
 };
 
-inline void SceneNode::SetVisible(bool isVisible)
-{
-	visible = isVisible;
-}
-	
-inline SceneNode * SceneNode::GetParent()
-{
-	return parent;
-}
 	
 };
 
-#endif // __DAVAENGINE_SCENENODE_H__
+#endif // __DAVAENGINE_LANDSCAPE_NODE_H__
 
 
 

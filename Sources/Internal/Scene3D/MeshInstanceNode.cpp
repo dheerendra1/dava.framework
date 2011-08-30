@@ -107,7 +107,7 @@ void MeshInstanceNode::Draw()
 		}
 		if (debugFlags & DEBUG_DRAW_LOCAL_AXIS)
 		{
-			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f); 
 			RenderHelper::Instance()->DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(50.0f, 0.0f, 0.0f));
 			
 			RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);

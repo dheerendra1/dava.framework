@@ -46,10 +46,32 @@ void AnimationTestScreen::LoadResources()
 //    scene->AddNode(scene->GetRootNode("~res:/Scenes/garage/hungar.sce"));
 //	file->LoadScene("~res:/Scenes/garage_lit/hungar.sce", scene);
 //  scene->AddNode(scene->GetRootNode("~res:/Scenes/garage_lit/hungar.sce"));
-    file->LoadScene("~res:/Scenes/level_test/level_test_3.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level_test/level_test_3.sce"));
+//    file->LoadScene("~res:/Scenes/level_test/level_test_3.sce", scene);
+//    scene->AddNode(scene->GetRootNode("~res:/Scenes/level_test/level_test_3.sce"));
     
 	SafeRelease(file);
+    
+    
+    cam = new Camera(scene);
+    scene->AddCamera(cam);
+    scene->SetCurrentCamera(cam);
+    
+    
+    LandscapeNode * node = new LandscapeNode(scene);
+    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 0));
+    box.min += cam->GetPosition();
+    box.max += cam->GetPosition();
+    //box.min -= Vector3(512, 512, 0);
+    //box.max = Vector3(512, 512, 0);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain.png", box);
+    
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
+    SafeRelease(tex);
+
+    scene->AddNode(node);
+    // TODO: release landscape node
+    
         
 	currentTankAngle = 0.0f;
 	inTouch = false;
@@ -79,7 +101,7 @@ void AnimationTestScreen::LoadResources()
     cam->SetFOV(75.0f);
     //cam->Setup(60.0f, float32 aspect, float32 znear, float32 zfar, bool ortho)
 
-    scene->SetCamera(cam);
+    scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
     
 //    hierarchy = new UIHierarchy(Rect(0, 0, size.x / 3, size.y));
@@ -93,6 +115,7 @@ void AnimationTestScreen::LoadResources()
 
 void AnimationTestScreen::UnloadResources()
 {
+    //SafeRelease(node);
     SafeRelease(scene3dView);
     SafeRelease(hierarchy);
 	SafeRelease(scene);

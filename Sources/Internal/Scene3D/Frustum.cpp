@@ -60,12 +60,19 @@ void Frustum::Set(const Matrix4 & viewProjection)
 					viewProjection._23 - viewProjection._21,
 					viewProjection._33 - viewProjection._31);
 
+    // DirectX version
+    
 	// near
 	SETUP_PLANE(EFP_NEAR,
 					viewProjection._02,
 					viewProjection._12,
 					viewProjection._22,
 					viewProjection._32);
+//	SETUP_PLANE(EFP_NEAR,
+//                viewProjection._03 + viewProjection._02,
+//                viewProjection._13 + viewProjection._12,
+//                viewProjection._23 + viewProjection._22,
+//                viewProjection._33 + viewProjection._32);
 
 	// far
 	SETUP_PLANE(EFP_FAR,	
@@ -130,6 +137,47 @@ bool Frustum::IsInside(const AABBox3 & box)const
 	}
 	return true;	
 }
+    
+bool Frustum::IsFullyInside(const AABBox3 & box)const
+{
+    for (int plane = 0; plane < planeCount; ++plane)
+    {
+        if (planeArray[plane].DistanceToPoint(Vector3(box.min.x, box.min.y, box.min.z)) > 0.0f)
+        {
+            return false;   
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.min.x, box.min.y, box.max.z)) > 0.0f)
+        {   
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.min.x, box.max.y, box.min.z)) > 0.0f)
+        {
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.max.x, box.min.y, box.min.z)) > 0.0f)
+        {
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.max.x, box.max.y, box.min.z)) > 0.0f)
+        {   
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.min.x, box.max.y, box.max.z)) > 0.0f)
+        {   
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.max.x, box.min.y, box.max.z)) > 0.0f)
+        {
+            return false;
+        }
+        if (planeArray[plane].DistanceToPoint(Vector3(box.max.x, box.max.y, box.max.z)) > 0.0f)
+        {
+            return false;
+        }
+    } 
+    return true;
+}
+
 
 
 //! \brief Check axial aligned bounding box visibility

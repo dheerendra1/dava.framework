@@ -56,7 +56,8 @@ Shader::Shader()
     for (int32 ki = 0; ki < VERTEX_FORMAT_STREAM_MAX_COUNT; ++ki)
          vertexFormatAttribIndeces[ki] = -1;
 }
-    
+
+String VertexTypeStringFromEnum(GLenum type); // Fucking XCode 4 analyzer
 String VertexTypeStringFromEnum(GLenum type)
 {
     if (type == GL_FLOAT)return "GL_FLOAT";

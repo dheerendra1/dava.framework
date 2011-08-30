@@ -550,6 +550,8 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
         case PRIMITIVETYPE_TRIANGLESTRIP:
             stats.primitiveCount[type] += count - 2;
             break;
+        default:
+            break;
     };
 }
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
@@ -605,6 +607,8 @@ void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexForma
         case PRIMITIVETYPE_TRIANGLEFAN:
         case PRIMITIVETYPE_TRIANGLESTRIP:
             stats.primitiveCount[type] += count - 2;
+            break;
+        default:
             break;
     };
 }

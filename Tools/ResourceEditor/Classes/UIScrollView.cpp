@@ -286,7 +286,7 @@ void UIScrollView::Input(UIEvent *currentTouch)
 //			}
 //		}
 //	}
-	int32 saveState = state;
+//  int32 saveState = state;
 	
 	Vector<UIEvent> touches = UIControlSystem::Instance()->GetAllInputs();
 	if(1 == touches.size())

@@ -415,7 +415,6 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../Projects/iPhoneFramework/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				OTHER_LDFLAGS = (
 					"-lFramework",
 					"-ObjC",
@@ -442,7 +441,6 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../Projects/iPhoneFramework/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				OTHER_LDFLAGS = (
 					"-lFramework",
 					"-ObjC",

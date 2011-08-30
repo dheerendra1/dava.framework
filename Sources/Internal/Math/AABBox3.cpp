@@ -121,5 +121,20 @@ void AABBox3::GetTransformedBox(const Matrix4 & transform, AABBox3 & result)
     
 }
 
+void AABBox3::GetCorners(Vector3 * cornersArray)
+{
+    cornersArray[0] = min;
+    cornersArray[1] = max;
+    cornersArray[2].Set(min.x, min.y, max.z);
+    cornersArray[3].Set(min.x, max.y, min.z);
+    cornersArray[4].Set(max.x, min.y, min.z);
+    cornersArray[5].Set(max.x, max.y, min.z);
+    cornersArray[6].Set(max.x, min.y, max.z);
+    cornersArray[7].Set(min.x, max.y, max.z);
+}
+
+    
+    
+    
 };
 

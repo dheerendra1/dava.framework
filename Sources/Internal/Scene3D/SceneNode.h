@@ -56,6 +56,7 @@ public:
 	virtual int32 GetChildrenCount();
 	virtual void	RemoveAllChilds();
 	virtual SceneNode *	FindByName(const String & name);
+    virtual void SetName(const String & name);
 	
 	// virtual updates
 	virtual void	Update(float32 timeElapsed);

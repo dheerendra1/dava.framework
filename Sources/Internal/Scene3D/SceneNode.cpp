@@ -292,6 +292,11 @@ void SceneNode::SetDebugFlags(uint32 _debugFlags, bool isRecursive)
     }
 }
 
+void SceneNode::SetName(const String & _name)
+{
+    name = _name;
+}
+
     
 };
 

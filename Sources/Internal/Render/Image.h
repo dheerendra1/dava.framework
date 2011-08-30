@@ -65,6 +65,7 @@ public:
 	virtual ~Image();
 	
 	static Image * Create(int32 width, int32 height, PixelFormat format);
+    // \todo Change function name to Image::Create for consistency
 	static Image * CreateFromFile(const String & pathName);
 	static Vector2 GetImageSize(const String & pathName);
 	
@@ -77,7 +78,21 @@ public:
 	void ConvertToFormat(PixelFormat format, bool isAlphaPremultiplied = true);
 	
 	void Save(const String & filename);
-
+    
+    
+    /*
+        \todo extract all image format conversion functions to separate functions to allow to use them in different places, like textures.
+        enum eAlphaAction
+        {  
+            ALPHA_ACTION_NONE,
+            ALPHA_ACTION_REMOVE_PREMULTIPLICATION,
+            ALPHA_ACTION_ADD_PREMULTIPLICATION, 
+        };
+        static void ConvertFromRGBA8888toRGB565(const uint8 * sourceData, int32 width, int32 height, uint8 * destData, eAlphaAction action = ALPHA_ACTION_NONE);
+        static void ConvertFromRGBA8888toRGBA4444(const uint8 * sourceData, int32 width, int32 height, uint8 * destData, eAlphaAction action = ALPHA_ACTION_NONE);
+        static void ConvertFromRGBA8888toA8(const uint8 * sourceData, int32 width, int32 height, uint8 * destData, eAlphaAction action = ALPHA_ACTION_NONE);
+        
+     */
 private:
 	uint8 * data;
 	int32	width;

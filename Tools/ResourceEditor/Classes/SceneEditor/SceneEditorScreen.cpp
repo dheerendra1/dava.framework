@@ -29,6 +29,8 @@
 
 void SceneEditorScreen::LoadResources()
 {
+    
+    RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
 	scene = new Scene();
 	SceneFile * file = new SceneFile();
 	//file->SetDebugLog(true);
@@ -64,12 +66,34 @@ void SceneEditorScreen::LoadResources()
     scene3dView = new UI3DView(Rect(200, 100, 520, 480));
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
+    scene3dView->SetInputEnabled(false);
+    
     Camera * cam = scene->GetCamera(0);
     scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
+    //cam->SetFOV(90.0f);
+    cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
     
     Camera * cam2 = scene->GetCamera(0);
     scene->SetClipCamera(cam2);
+    
+    
+    // 483, -2000, 119
+    LandscapeNode * node = new LandscapeNode(scene);
+    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 0));
+    box.min += cam->GetPosition();
+    box.max += cam->GetPosition();
+    //box.min -= Vector3(512, 512, 0);
+    //box.max = Vector3(512, 512, 0);
+    node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain.png", box);
+    
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
+    SafeRelease(tex);
+    
+    node->SetName("landscapeNode");
+    scene->AddNode(node);
     
     
     hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
@@ -83,7 +107,7 @@ void SceneEditorScreen::LoadResources()
     
     selectedNode = 0;
     
-    cameraController = new WASDCameraController(500);
+    cameraController = new WASDCameraController(40);
     cameraController->SetCamera(cam);
 }
 
@@ -98,6 +122,10 @@ void SceneEditorScreen::UnloadResources()
 
 void SceneEditorScreen::WillAppear()
 {
+    for (int32 k = 0; k < 32; ++k)
+    {
+        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
+    }
 }
 
 void SceneEditorScreen::WillDisappear()
