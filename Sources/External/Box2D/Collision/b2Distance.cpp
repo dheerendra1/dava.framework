@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2007-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2007-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -19,7 +19,7 @@
 #include <Box2D/Collision/b2Distance.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2LoopShape.h>
+#include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
@@ -47,24 +47,24 @@ void b2DistanceProxy::Set(const b2Shape* shape, b2_int32 index)
 		}
 		break;
 
-	case b2Shape::e_loop:
+	case b2Shape::e_chain:
 		{
-			const b2LoopShape* loop = (b2LoopShape*)shape;
-			b2Assert(0 <= index && index < loop->GetCount());
+			const b2ChainShape* chain = (b2ChainShape*)shape;
+			b2Assert(0 <= index && index < chain->GetVertexCount());
 
-			m_buffer[0] = loop->GetVertex(index);
-			if (index + 1 < loop->GetCount())
+			m_buffer[0] = chain->GetVertex(index);
+			if (index + 1 < chain->GetVertexCount())
 			{
-				m_buffer[1] = loop->GetVertex(index + 1);
+				m_buffer[1] = chain->GetVertex(index + 1);
 			}
 			else
 			{
-				m_buffer[1] = loop->GetVertex(0);
+				m_buffer[1] = chain->GetVertex(0);
 			}
 
 			m_vertices = m_buffer;
 			m_count = 2;
-			m_radius = loop->m_radius;
+			m_radius = chain->m_radius;
 		}
 		break;
 
@@ -532,10 +532,10 @@ void b2Distance(b2DistanceOutput* output,
 
 		// Compute a tentative new simplex vertex using support points.
 		b2SimplexVertex* vertex = vertices + simplex.m_count;
-		vertex->indexA = proxyA->GetSupport(b2MulT(transformA.R, -d));
+		vertex->indexA = proxyA->GetSupport(b2MulT(transformA.q, -d));
 		vertex->wA = b2Mul(transformA, proxyA->GetVertex(vertex->indexA));
 		b2Vec2 wBLocal;
-		vertex->indexB = proxyB->GetSupport(b2MulT(transformB.R, d));
+		vertex->indexB = proxyB->GetSupport(b2MulT(transformB.q, d));
 		vertex->wB = b2Mul(transformB, proxyB->GetVertex(vertex->indexB));
 		vertex->w = vertex->wB - vertex->wA;
 

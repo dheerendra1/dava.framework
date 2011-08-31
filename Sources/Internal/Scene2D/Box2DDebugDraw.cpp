@@ -182,15 +182,13 @@ void Box2DDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Col
 
 void Box2DDebugDraw::DrawTransform(const b2Transform& xf)
 {
-    b2_float32 tmpTest = xf.GetAngle();
-    
-    b2Vec2 p1 = xf.position, p2;
-    const float32 k_axisScale = 0.4f;
+    b2Vec2 p1 = xf.p, p2;
+    const float32 k_axisScale = 0.8f;
 
-    p2 = p1 + k_axisScale * xf.R.col1;
+    p2 = p1 + b2Vec2(k_axisScale * xf.q.c, k_axisScale * xf.q.s);
     DrawSegment(p1, p2, b2Color(1.0f, 0.0f, 0.0f));
 
-    p2 = p1 + k_axisScale * xf.R.col2;
+    p2 = p1 + b2Vec2(-k_axisScale * xf.q.s, k_axisScale * xf.q.c);
     DrawSegment(p1, p2, b2Color(0.0f, 1.0f, 0.0f));
 
     /*b2Vec2 p1 = xf.position, p2;

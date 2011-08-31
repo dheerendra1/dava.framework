@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -96,20 +96,34 @@ protected:
 	friend class b2Joint;
 	b2DistanceJoint(const b2DistanceJointDef* data);
 
-	void InitVelocityConstraints(const b2TimeStep& step);
-	void SolveVelocityConstraints(const b2TimeStep& step);
-	bool SolvePositionConstraints(b2_float32 baumgarte);
+	void InitVelocityConstraints(const b2SolverData& data);
+	void SolveVelocityConstraints(const b2SolverData& data);
+	bool SolvePositionConstraints(const b2SolverData& data);
 
-	b2Vec2 m_localAnchor1;
-	b2Vec2 m_localAnchor2;
-	b2Vec2 m_u;
 	b2_float32 m_frequencyHz;
 	b2_float32 m_dampingRatio;
-	b2_float32 m_gamma;
 	b2_float32 m_bias;
+
+	// Solver shared
+	b2Vec2 m_localAnchorA;
+	b2Vec2 m_localAnchorB;
+	b2_float32 m_gamma;
 	b2_float32 m_impulse;
-	b2_float32 m_mass;
 	b2_float32 m_length;
+
+	// Solver temp
+	b2_int32 m_indexA;
+	b2_int32 m_indexB;
+	b2Vec2 m_u;
+	b2Vec2 m_rA;
+	b2Vec2 m_rB;
+	b2Vec2 m_localCenterA;
+	b2Vec2 m_localCenterB;
+	b2_float32 m_invMassA;
+	b2_float32 m_invMassB;
+	b2_float32 m_invIA;
+	b2_float32 m_invIB;
+	b2_float32 m_mass;
 };
 
 inline void b2DistanceJoint::SetLength(b2_float32 length)

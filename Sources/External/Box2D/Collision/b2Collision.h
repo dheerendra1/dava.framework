@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -40,7 +40,7 @@ struct b2ContactFeature
 	enum Type
 	{
 		e_vertex = 0,
-		e_face = 1,
+		e_face = 1
 	};
 
 	b2_uint8 indexA;		///< Feature index on shapeA
@@ -72,7 +72,6 @@ struct b2ManifoldPoint
 	b2_float32 normalImpulse;	///< the non-penetration impulse
 	b2_float32 tangentImpulse;	///< the friction impulse
 	b2ContactID id;			///< uniquely identifies a contact point between two shapes
-	bool isNew;
 };
 
 /// A manifold for two touching convex shapes.

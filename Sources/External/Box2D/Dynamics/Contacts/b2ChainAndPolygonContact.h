@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -16,22 +16,22 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef B2_LOOP_AND_POLYGON_CONTACT_H
-#define B2_LOOP_AND_POLYGON_CONTACT_H
+#ifndef B2_CHAIN_AND_POLYGON_CONTACT_H
+#define B2_CHAIN_AND_POLYGON_CONTACT_H
 
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 
 class b2BlockAllocator;
 
-class b2LoopAndPolygonContact : public b2Contact
+class b2ChainAndPolygonContact : public b2Contact
 {
 public:
 	static b2Contact* Create(	b2Fixture* fixtureA, b2_int32 indexA,
 								b2Fixture* fixtureB, b2_int32 indexB, b2BlockAllocator* allocator);
 	static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
 
-	b2LoopAndPolygonContact(b2Fixture* fixtureA, b2_int32 indexA, b2Fixture* fixtureB, b2_int32 indexB);
-	~b2LoopAndPolygonContact() {}
+	b2ChainAndPolygonContact(b2Fixture* fixtureA, b2_int32 indexA, b2Fixture* fixtureB, b2_int32 indexB);
+	~b2ChainAndPolygonContact() {}
 
 	void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB);
 };

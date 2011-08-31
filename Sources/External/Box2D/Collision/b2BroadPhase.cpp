@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -31,7 +31,6 @@ b2BroadPhase::b2BroadPhase()
 	m_moveCapacity = 16;
 	m_moveCount = 0;
 	m_moveBuffer = (b2_int32*)b2Alloc(m_moveCapacity * sizeof(b2_int32));
-	
 }
 
 b2BroadPhase::~b2BroadPhase()
@@ -62,6 +61,11 @@ void b2BroadPhase::MoveProxy(b2_int32 proxyId, const b2AABB& aabb, const b2Vec2&
 	{
 		BufferMove(proxyId);
 	}
+}
+
+void b2BroadPhase::TouchProxy(b2_int32 proxyId)
+{
+	BufferMove(proxyId);
 }
 
 void b2BroadPhase::BufferMove(b2_int32 proxyId)
@@ -116,7 +120,6 @@ bool b2BroadPhase::QueryCallback(b2_int32 proxyId)
 
 	return true;
 }
-
 	//added for tiles
 void b2BroadPhase::CreateTiledMap(const b2Vec2 &location, const b2Vec2 &tileSize, b2_int32 mapWidth, b2_int32 mapHeight)
 {
