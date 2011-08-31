@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2010 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -74,25 +74,30 @@ protected:
 	friend class b2Joint;
 	b2RopeJoint(const b2RopeJointDef* data);
 
-	void InitVelocityConstraints(const b2TimeStep& step);
-	void SolveVelocityConstraints(const b2TimeStep& step);
-	bool SolvePositionConstraints(b2_float32 baumgarte);
+	void InitVelocityConstraints(const b2SolverData& data);
+	void SolveVelocityConstraints(const b2SolverData& data);
+	bool SolvePositionConstraints(const b2SolverData& data);
 
+	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
-
 	b2_float32 m_maxLength;
 	b2_float32 m_length;
-
-	// Jacobian info
-	b2Vec2 m_u, m_rA, m_rB;
-
-	// Effective mass
-	b2_float32 m_mass;
-
-	// Impulses for accumulation/warm starting.
 	b2_float32 m_impulse;
 
+	// Solver temp
+	b2_int32 m_indexA;
+	b2_int32 m_indexB;
+	b2Vec2 m_u;
+	b2Vec2 m_rA;
+	b2Vec2 m_rB;
+	b2Vec2 m_localCenterA;
+	b2Vec2 m_localCenterB;
+	b2_float32 m_invMassA;
+	b2_float32 m_invMassB;
+	b2_float32 m_invIA;
+	b2_float32 m_invIB;
+	b2_float32 m_mass;
 	b2LimitState m_state;
 };
 

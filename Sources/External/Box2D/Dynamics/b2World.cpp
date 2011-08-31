@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -27,7 +27,7 @@
 #include <Box2D/Collision/b2BroadPhase.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
-#include <Box2D/Collision/Shapes/b2LoopShape.h>
+#include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
 #include <Box2D/Collision/b2TimeOfImpact.h>
 #include <new>
@@ -517,26 +517,26 @@ void b2World::Solve(const b2TimeStep& step)
 
 	m_stackAllocator.Free(stack);
 
-	// Synchronize fixtures, check for out of range bodies.
-	for (b2Body* b = m_bodyList; b; b = b->GetNext())
-	{
-		// If a body was not in an island then it did not move.
-		if ((b->m_flags & b2Body::e_islandFlag) == 0)
+		// Synchronize fixtures, check for out of range bodies.
+		for (b2Body* b = m_bodyList; b; b = b->GetNext())
 		{
-			continue;
+			// If a body was not in an island then it did not move.
+			if ((b->m_flags & b2Body::e_islandFlag) == 0)
+			{
+				continue;
+			}
+
+			if (b->GetType() == b2_staticBody)
+			{
+				continue;
+			}
+
+			// Update fixtures (for broad-phase).
+			b->SynchronizeFixtures();
 		}
 
-		if (b->GetType() == b2_staticBody)
-		{
-			continue;
-		}
-
-		// Update fixtures (for broad-phase).
-		b->SynchronizeFixtures();
-	}
-
-	// Look for new contacts.
-	m_contactManager.FindNewContacts();
+		// Look for new contacts.
+		m_contactManager.FindNewContacts();
 }
 
 // Find TOI contacts and solve them.
@@ -602,15 +602,15 @@ void b2World::SolveTOI(const b2TimeStep& step)
 				b2Body* bA = fA->GetBody();
 				b2Body* bB = fB->GetBody();
 
-				b2BodyType typeA = bA->GetType();
-				b2BodyType typeB = bB->GetType();
+				b2BodyType typeA = bA->m_type;
+				b2BodyType typeB = bB->m_type;
 				b2Assert(typeA == b2_dynamicBody || typeB == b2_dynamicBody);
 
-				bool awakeA = bA->IsAwake() && typeA != b2_staticBody;
-				bool awakeB = bB->IsAwake() && typeB != b2_staticBody;
+				bool activeA = bA->IsAwake() && typeA != b2_staticBody;
+				bool activeB = bB->IsAwake() && typeB != b2_staticBody;
 
-				// Is at least one body awake?
-				if (awakeA == false && awakeB == false)
+				// Is at least one body active (awake and dynamic or kinematic)?
+				if (activeA == false && activeB == false)
 				{
 					continue;
 				}
@@ -734,8 +734,18 @@ void b2World::SolveTOI(const b2TimeStep& step)
 			b2Body* body = bodies[i];
 			if (body->m_type == b2_dynamicBody)
 			{
-				for (b2ContactEdge* ce = body->m_contactList; ce && island.m_bodyCount < b2_maxTOIContacts; ce = ce->next)
+				for (b2ContactEdge* ce = body->m_contactList; ce; ce = ce->next)
 				{
+					if (island.m_bodyCount == island.m_bodyCapacity)
+					{
+						break;
+					}
+
+					if (island.m_contactCount == island.m_contactCapacity)
+					{
+						break;
+					}
+
 					b2Contact* contact = ce->contact;
 
 					// Has this contact already been added to the island?
@@ -816,7 +826,7 @@ void b2World::SolveTOI(const b2TimeStep& step)
 		subStep.positionIterations = 20;
 		subStep.velocityIterations = step.velocityIterations;
 		subStep.warmStarting = false;
-		island.SolveTOI(subStep, bA, bB);
+		island.SolveTOI(subStep, bA->m_islandIndex, bB->m_islandIndex);
 
 		// Reset island flags and synchronize broad-phase proxies.
 		for (b2_int32 i = 0; i < island.m_bodyCount; ++i)
@@ -877,9 +887,9 @@ void b2World::Step(b2_float32 dt, b2_int32 velocityIterations, b2_int32 position
 	step.dtRatio = m_inv_dt0 * dt;
 
 	step.warmStarting = m_warmStarting;
-
+	
 	// Update contacts. This is where some contacts are destroyed.
-	m_contactManager.Collide();
+		m_contactManager.Collide();
 
 	// Integrate velocities, solve velocity constraints, and integrate positions.
 	if (m_stepComplete && step.dt > 0.0f)
@@ -982,7 +992,7 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 
 			b2Vec2 center = b2Mul(xf, circle->m_p);
 			b2_float32 radius = circle->m_radius;
-			b2Vec2 axis = xf.R.col1;
+			b2Vec2 axis = b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
 
 			m_debugDraw->DrawSolidCircle(center, radius, axis, color);
 		}
@@ -997,17 +1007,18 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 		}
 		break;
 
-	case b2Shape::e_loop:
+	case b2Shape::e_chain:
 		{
-			b2LoopShape* loop = (b2LoopShape*)fixture->GetShape();
-			b2_int32 count = loop->GetCount();
-			const b2Vec2* vertices = loop->GetVertices();
+			b2ChainShape* chain = (b2ChainShape*)fixture->GetShape();
+			b2_int32 count = chain->GetVertexCount();
+			const b2Vec2* vertices = chain->GetVertices();
 
-			b2Vec2 v1 = b2Mul(xf, vertices[count - 1]);
-			for (b2_int32 i = 0; i < count; ++i)
+			b2Vec2 v1 = b2Mul(xf, vertices[0]);
+			for (b2_int32 i = 1; i < count; ++i)
 			{
 				b2Vec2 v2 = b2Mul(xf, vertices[i]);
 				m_debugDraw->DrawSegment(v1, v2, color);
+				m_debugDraw->DrawCircle(v1, 0.05f, color);
 				v1 = v2;
 			}
 		}
@@ -1028,6 +1039,9 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 			m_debugDraw->DrawSolidPolygon(vertices, vertexCount, color);
 		}
 		break;
+            
+    default:
+        break;
 	}
 }
 
@@ -1037,8 +1051,8 @@ void b2World::DrawJoint(b2Joint* joint)
 	b2Body* bodyB = joint->GetBodyB();
 	const b2Transform& xf1 = bodyA->GetTransform();
 	const b2Transform& xf2 = bodyB->GetTransform();
-	b2Vec2 x1 = xf1.position;
-	b2Vec2 x2 = xf2.position;
+	b2Vec2 x1 = xf1.p;
+	b2Vec2 x2 = xf2.p;
 	b2Vec2 p1 = joint->GetAnchorA();
 	b2Vec2 p2 = joint->GetAnchorB();
 
@@ -1170,7 +1184,7 @@ void b2World::DrawDebugData()
 		for (b2Body* b = m_bodyList; b; b = b->GetNext())
 		{
 			b2Transform xf = b->GetTransform();
-			xf.position = b->GetWorldCenter();
+			xf.p = b->GetWorldCenter();
 			m_debugDraw->DrawTransform(xf);
 		}
 	}
@@ -1179,4 +1193,19 @@ void b2World::DrawDebugData()
 b2_int32 b2World::GetProxyCount() const
 {
 	return m_contactManager.m_broadPhase.GetProxyCount();
+}
+
+b2_int32 b2World::GetTreeHeight() const
+{
+	return m_contactManager.m_broadPhase.GetTreeHeight();
+}
+
+b2_int32 b2World::GetTreeBalance() const
+{
+	return m_contactManager.m_broadPhase.GetTreeBalance();
+}
+
+b2_float32 b2World::GetTreeQuality() const
+{
+	return m_contactManager.m_broadPhase.GetTreeQuality();
 }

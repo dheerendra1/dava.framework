@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -31,7 +31,6 @@ struct b2Pair
 	b2_int32 next;
 };
 
-
 /// The broad-phase is used for computing pairs and performing volume queries and ray casts.
 /// This broad-phase does not persist pairs. Instead, this reports potentially new pairs.
 /// It is up to the client to consume the new pairs and to track subsequent overlap.
@@ -41,7 +40,7 @@ public:
 
 	enum
 	{
-		e_nullProxy = -1,
+		e_nullProxy = -1
 	};
 
 	b2BroadPhase();
@@ -57,6 +56,9 @@ public:
 	/// Call MoveProxy as many times as you like, then when you are done
 	/// call UpdatePairs to finalized the proxy pairs (for your time step).
 	void MoveProxy(b2_int32 proxyId, const b2AABB& aabb, const b2Vec2& displacement);
+
+	/// Call to trigger a re-processing of it's pairs on the next call to UpdatePairs.
+	void TouchProxy(b2_int32 proxyId);
 
 	/// Get the fat AABB for a proxy.
 	const b2AABB& GetFatAABB(b2_int32 proxyId) const;
@@ -89,15 +91,19 @@ public:
 	template <typename T>
 	void RayCast(T* callback, const b2RayCastInput& input) const;
 
-	/// Compute the height of the embedded tree.
-	b2_int32 ComputeHeight() const;
+	/// Get the height of the embedded tree.
+	b2_int32 GetTreeHeight() const;
 	
+	/// Get the balance of the embedded tree.
+	b2_int32 GetTreeBalance() const;
+	
+	/// Get the quality metric of the embedded tree.
+	b2_float32 GetTreeQuality() const;
+
 		//added for tiles
 	void CreateTiledMap(const b2Vec2 &location, const b2Vec2 &tileSize, b2_int32 mapWidth, b2_int32 mapHeight);
 //	void DestroyTiledMap();
 		//added for tiles end
-	
-
 private:
 
 	friend class b2DynamicTree;
@@ -120,9 +126,7 @@ private:
 	b2_int32 m_pairCount;
 
 	b2_int32 m_queryProxyId;
-	
 };
-
 
 /// This is used to sort pairs.
 inline bool b2PairLessThan(const b2Pair& pair1, const b2Pair& pair2)
@@ -162,9 +166,19 @@ inline b2_int32 b2BroadPhase::GetProxyCount() const
 	return m_proxyCount;
 }
 
-inline b2_int32 b2BroadPhase::ComputeHeight() const
+inline b2_int32 b2BroadPhase::GetTreeHeight() const
 {
-	return m_tree.ComputeHeight();
+	return m_tree.GetHeight();
+}
+
+inline b2_int32 b2BroadPhase::GetTreeBalance() const
+{
+	return m_tree.GetMaxBalance();
+}
+
+inline b2_float32 b2BroadPhase::GetTreeQuality() const
+{
+	return m_tree.GetAreaRatio();
 }
 
 template <typename T>
@@ -220,8 +234,7 @@ void b2BroadPhase::UpdatePairs(T* callback)
 	}
 
 	// Try to keep the tree balanced.
-	m_tree.Rebalance(4);
-	
+	//m_tree.Rebalance(4);
 }
 
 template <typename T>

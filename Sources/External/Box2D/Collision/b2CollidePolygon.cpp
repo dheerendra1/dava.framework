@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -23,18 +23,17 @@
 static b2_float32 b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf1, b2_int32 edge1,
 							  const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	b2_int32 count1 = poly1->m_vertexCount;
 	const b2Vec2* vertices1 = poly1->m_vertices;
 	const b2Vec2* normals1 = poly1->m_normals;
 
 	b2_int32 count2 = poly2->m_vertexCount;
 	const b2Vec2* vertices2 = poly2->m_vertices;
 
-	b2Assert(0 <= edge1 && edge1 < count1);
+	b2Assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
 
 	// Convert normal from poly1's frame into poly2's frame.
-	b2Vec2 normal1World = b2Mul(xf1.R, normals1[edge1]);
-	b2Vec2 normal1 = b2MulT(xf2.R, normal1World);
+	b2Vec2 normal1World = b2Mul(xf1.q, normals1[edge1]);
+	b2Vec2 normal1 = b2MulT(xf2.q, normal1World);
 
 	// Find support vertex on poly2 for -normal.
 	b2_int32 index = 0;
@@ -66,7 +65,7 @@ static b2_float32 b2FindMaxSeparation(b2_int32* edgeIndex,
 
 	// Vector pointing from the centroid of poly1 to the centroid of poly2.
 	b2Vec2 d = b2Mul(xf2, poly2->m_centroid) - b2Mul(xf1, poly1->m_centroid);
-	b2Vec2 dLocal1 = b2MulT(xf1.R, d);
+	b2Vec2 dLocal1 = b2MulT(xf1.q, d);
 
 	// Find edge normal on poly1 that has the largest projection onto d.
 	b2_int32 edge = 0;
@@ -143,17 +142,16 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 							 const b2PolygonShape* poly1, const b2Transform& xf1, b2_int32 edge1,
 							 const b2PolygonShape* poly2, const b2Transform& xf2)
 {
-	b2_int32 count1 = poly1->m_vertexCount;
 	const b2Vec2* normals1 = poly1->m_normals;
 
 	b2_int32 count2 = poly2->m_vertexCount;
 	const b2Vec2* vertices2 = poly2->m_vertices;
 	const b2Vec2* normals2 = poly2->m_normals;
 
-	b2Assert(0 <= edge1 && edge1 < count1);
+	b2Assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
 
 	// Get the normal of the reference edge in poly2's frame.
-	b2Vec2 normal1 = b2MulT(xf2.R, b2Mul(xf1.R, normals1[edge1]));
+	b2Vec2 normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));
 
 	// Find the incident edge on poly2.
 	b2_int32 index = 0;
@@ -256,7 +254,7 @@ void b2CollidePolygons(b2Manifold* manifold,
 	b2Vec2 localNormal = b2Cross(localTangent, 1.0f);
 	b2Vec2 planePoint = 0.5f * (v11 + v12);
 
-	b2Vec2 tangent = b2Mul(xf1.R, localTangent);
+	b2Vec2 tangent = b2Mul(xf1.q, localTangent);
 	b2Vec2 normal = b2Cross(tangent, 1.0f);
 	
 	v11 = b2Mul(xf1, v11);

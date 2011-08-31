@@ -85,7 +85,7 @@ public:
 	// return size of pixel format in bits 
 	static int32 GetPixelFormatSize(PixelFormat format);
 	
-	static Texture * CreateFromData(PixelFormat format, uint8 * data, uint32 width, uint32 height);
+	static Texture * CreateFromData(PixelFormat format, const uint8 *data, uint32 width, uint32 height);
 	static Texture * CreateTextFromData(PixelFormat format, uint8 * data, uint32 width, uint32 height, const char * addInfo = 0);
 	static Texture * CreateFromFile(const String & pathName);
 	static Texture * CreateFBO(uint32 w, uint32 h, PixelFormat format);
@@ -159,10 +159,5 @@ private:
 	Texture();
 	virtual ~Texture();
 };
-
-
-
 };
-
 #endif // __DAVAENGINE_TEXTUREGLES_H__
-

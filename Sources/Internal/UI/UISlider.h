@@ -62,7 +62,10 @@ public:
 	inline void SetEventsContinuos(bool isEventsContinuos);
 	inline float32 GetValue();
 	void SetValue(float32 value);
-	
+
+    void SetThumb(UIControl *newThumb);
+    inline UIControl *GetThumb();
+
 	virtual void LoadFromYamlNode(YamlNode * node, UIYamlLoader * loader);
 	
 protected:
@@ -80,7 +83,6 @@ protected:
 	
 	void RecalcButtonPos();
 
-	UIControl * sliderZone;
 	UIControl * thumbButton;
 	UIControlBackground * bgMin;
 	UIControlBackground * bgMax;
@@ -90,6 +92,13 @@ protected:
 	
 	void InitThumb();
 };
+    
+    
+inline UIControl *UISlider::GetThumb()
+{
+    return thumbButton;
+}
+
 
 inline bool UISlider::IsEventsContinuos()
 {

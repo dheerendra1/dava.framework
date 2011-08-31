@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -24,12 +24,14 @@
 #include <Box2D/Common/b2StackAllocator.h>
 #include <Box2D/Dynamics/b2ContactManager.h>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/b2TimeStep.h>
 
 struct b2AABB;
 struct b2BodyDef;
+struct b2Color;
 struct b2JointDef;
-struct b2TimeStep;
 class b2Body;
+class b2Draw;
 class b2Fixture;
 class b2Joint;
 
@@ -160,6 +162,16 @@ public:
 	/// Get the number of contacts (each may have 0 or more contact points).
 	b2_int32 GetContactCount() const;
 
+	/// Get the height of the dynamic tree.
+	b2_int32 GetTreeHeight() const;
+
+	/// Get the balance of the dynamic tree.
+	b2_int32 GetTreeBalance() const;
+
+	/// Get the quality metric of the dynamic tree. The smaller the better.
+	/// The minimum is 1.
+	b2_float32 GetTreeQuality() const;
+
 	/// Change the global gravity vector.
 	void SetGravity(const b2Vec2& gravity);
 	
@@ -185,10 +197,11 @@ private:
 	{
 		e_newFixture	= 0x0001,
 		e_locked		= 0x0002,
-		e_clearForces	= 0x0004,
+		e_clearForces	= 0x0004
 	};
 
 	friend class b2Body;
+	friend class b2Fixture;
 	friend class b2ContactManager;
 	friend class b2Controller;
 

@@ -199,7 +199,7 @@ namespace DAVA
 //	angularVelocity = 0.0f;
 //	fixedRotation = false;
 //	bullet = false;
-//	inertiaScale = 1.0f;
+//	gravityScale = 1.0f;
 //	active = true;
 //	allowSleep = true;
 //	awake = true;
@@ -240,7 +240,7 @@ namespace DAVA
 	
 	b2BodyDef Box2DHelper::DynamicBodyDef(Box2DGameObjectManager *manager
 										   , const Vector2 &position, float32 angle/* = 0.0f*/
-										   , bool fixedRotation/* = false*/, float32 inertiaScale/* = 1.0f*/
+										   , bool fixedRotation/* = false*/, float32 gravityScale/* = 1.0f*/
 										   , const Vector2 &linearVelocity/* = Vector2(0.0f, 0.0f)*/, float32 angularVlocity/* = 0.0f*/
 										   , float32 linearDamping/* = GetDefaultLinerDamping()*/, float32 angularDamping/* = GetDefaultAngularDamping()*/
 										   , bool active/* = true*/, bool allowSleep/* = true*/, bool awake/* = true*/)
@@ -249,7 +249,7 @@ namespace DAVA
 		bodyDef.position = manager->VectorGameManagerToBox2D(position);
 		bodyDef.angle = manager->AngleGameManagerToBox2D(angle);
 		bodyDef.fixedRotation = fixedRotation;
-		bodyDef.inertiaScale = inertiaScale;
+		bodyDef.gravityScale = gravityScale;
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.linearVelocity = manager->VectorGameManagerToBox2D(linearVelocity);
 		bodyDef.angularVelocity = manager->AngleGameManagerToBox2D(angularVlocity);
@@ -264,7 +264,7 @@ namespace DAVA
 
 	b2BodyDef Box2DHelper::DynamicBulletBodyDef(Box2DGameObjectManager *manager
 										  , const Vector2 &position, float32 angle/* = 0.0f*/
-										  , bool fixedRotation/* = false*/, float32 inertiaScale/* = 1.0f*/
+										  , bool fixedRotation/* = false*/, float32 gravityScale/* = 1.0f*/
 										  , const Vector2 &linearVelocity/* = Vector2(0.0f, 0.0f)*/, float32 angularVlocity/* = 0.0f*/
 										  , float32 linearDamping/* = GetDefaultLinerDamping()*/, float32 angularDamping/* = GetDefaultAngularDamping()*/
 										  , bool active/* = true*/, bool allowSleep/* = true*/, bool awake/* = true*/)
@@ -273,7 +273,7 @@ namespace DAVA
 		bodyDef.position = manager->VectorGameManagerToBox2D(position);
 		bodyDef.angle = manager->AngleGameManagerToBox2D(angle);
 		bodyDef.fixedRotation = fixedRotation;
-		bodyDef.inertiaScale = inertiaScale;
+		bodyDef.gravityScale = gravityScale;
 		bodyDef.type = b2_dynamicBody;
 		bodyDef.linearVelocity = manager->VectorGameManagerToBox2D(linearVelocity);
 		bodyDef.angularVelocity = manager->AngleGameManagerToBox2D(angularVlocity);

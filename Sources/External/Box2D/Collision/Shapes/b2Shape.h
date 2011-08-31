@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -49,8 +49,8 @@ public:
 		e_circle = 0,
 		e_edge = 1,
 		e_polygon = 2,
-		e_loop = 3,
-		e_typeCount = 4,
+		e_chain = 3,
+		e_typeCount = 4
 	};
 
 	b2Shape() { m_type = e_unknown; }

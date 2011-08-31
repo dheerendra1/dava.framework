@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -114,8 +114,12 @@ void b2ContactManager::Collide()
 		b2_int32 indexB = c->GetChildIndexB();
 		b2Body* bodyA = fixtureA->GetBody();
 		b2Body* bodyB = fixtureB->GetBody();
+		 
+		bool activeA = bodyA->IsAwake() && bodyA->m_type != b2_staticBody;
+		bool activeB = bodyB->IsAwake() && bodyB->m_type != b2_staticBody;
 
-		if (bodyA->IsAwake() == false && bodyB->IsAwake() == false)
+		// At least one body must be awake and it must be dynamic or kinematic.
+		if (activeA == false && activeB == false)
 		{
 			c = c->GetNext();
 			continue;
@@ -190,6 +194,8 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		return;
 	}
 
+	// TODO_ERIN use a hash table to remove a potential bottleneck when both
+	// bodies have a lot of contacts.
 	// Does a contact already exist?
 	b2ContactEdge* edge = bodyB->GetContactList();
 	while (edge)
@@ -274,6 +280,10 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		bodyB->m_contactList->prev = &c->m_nodeB;
 	}
 	bodyB->m_contactList = &c->m_nodeB;
+
+	// Wake up the bodies
+	bodyA->SetAwake(true);
+	bodyB->SetAwake(true);
 
 	++m_contactCount;
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -65,17 +65,27 @@ protected:
 
 	b2WeldJoint(const b2WeldJointDef* def);
 
-	void InitVelocityConstraints(const b2TimeStep& step);
-	void SolveVelocityConstraints(const b2TimeStep& step);
+	void InitVelocityConstraints(const b2SolverData& data);
+	void SolveVelocityConstraints(const b2SolverData& data);
+	bool SolvePositionConstraints(const b2SolverData& data);
 
-	bool SolvePositionConstraints(b2_float32 baumgarte);
-
+	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
 	b2_float32 m_referenceAngle;
-
 	b2Vec3 m_impulse;
 
+	// Solver temp
+	b2_int32 m_indexA;
+	b2_int32 m_indexB;
+	b2Vec2 m_rA;
+	b2Vec2 m_rB;
+	b2Vec2 m_localCenterA;
+	b2Vec2 m_localCenterB;
+	b2_float32 m_invMassA;
+	b2_float32 m_invMassB;
+	b2_float32 m_invIA;
+	b2_float32 m_invIB;
 	b2Mat33 m_mass;
 };
 

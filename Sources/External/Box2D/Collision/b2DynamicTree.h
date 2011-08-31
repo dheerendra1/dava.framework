@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -23,19 +23,17 @@
 #include <Box2D/Common/b2GrowableStack.h>
 #include <vector>
 
-/// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
-
 #define b2_nullNode (-1)
 
 /// A node in the dynamic tree. The client does not interact with this directly.
-struct b2DynamicTreeNode
+struct b2TreeNode
 {
 	bool IsLeaf() const
 	{
 		return child1 == b2_nullNode;
 	}
 
-	/// This is the fattened AABB.
+	/// Enlarged AABB
 	b2AABB aabb;
 
 	void* userData;
@@ -48,9 +46,12 @@ struct b2DynamicTreeNode
 
 	b2_int32 child1;
 	b2_int32 child2;
-	b2_int32 leafCount;
+
+	// leaf = 0, free node = -1
+	b2_int32 height;
 };
 
+/// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
 /// A dynamic tree arranges data in a binary tree to accelerate
 /// queries such as volume queries and ray casts. Leafs are proxies
 /// with an AABB. In the tree we expand the proxy AABB by b2_fatAABBFactor
@@ -61,7 +62,6 @@ struct b2DynamicTreeNode
 class b2DynamicTree
 {
 public:
-
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();
 
@@ -80,19 +80,12 @@ public:
 	/// @return true if the proxy was re-inserted.
 	bool MoveProxy(b2_int32 proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
 
-	/// Perform some iterations to re-balance the tree.
-	void Rebalance(b2_int32 iterations);
-
 	/// Get proxy user data.
 	/// @return the proxy user data or 0 if the id is invalid.
 	void* GetUserData(b2_int32 proxyId) const;
 
 	/// Get the fat AABB for a proxy.
 	const b2AABB& GetFatAABB(b2_int32 proxyId) const;
-
-	/// Compute the height of the binary tree in O(N) time. Should not be
-	/// called often.
-	b2_int32 ComputeHeight() const;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
@@ -109,13 +102,27 @@ public:
 	template <typename T>
 	void RayCast(T* callback, const b2RayCastInput& input) const;
 
+	/// Validate this tree. For testing.
 	void Validate() const;
 
+	/// Compute the height of the binary tree in O(N) time. Should not be
+	/// called often.
+	b2_int32 GetHeight() const;
+
+	/// Get the maximum balance of an node in the tree. The balance is the difference
+	/// in height of the two children of a node.
+	b2_int32 GetMaxBalance() const;
+
+	/// Get the ratio of the sum of the node areas to the root area.
+	b2_float32 GetAreaRatio() const;
+
+	/// Build an optimal tree. Very expensive. For testing.
+	void RebuildBottomUp();
+	
 		//added for tiles
 	void CreateTiledMap(const b2Vec2 &location, const b2Vec2 &tileSize, b2_int32 mapWidth, b2_int32 mapHeight);
 		//	void DestroyTiledMap();
 		//added for tiles end
-	
 private:
 
 	b2_int32 AllocateNode();
@@ -124,23 +131,27 @@ private:
 	void InsertLeaf(b2_int32 node);
 	void RemoveLeaf(b2_int32 node);
 
+	b2_int32 Balance(b2_int32 index);
+
+	b2_int32 ComputeHeight() const;
 	b2_int32 ComputeHeight(b2_int32 nodeId) const;
 	
-	b2_int32 CountLeaves(b2_int32 nodeId) const;
+	void ValidateStructure(b2_int32 index) const;
+	void ValidateMetrics(b2_int32 index) const;
 
 	b2_int32 m_root;
 
-	b2DynamicTreeNode* m_nodes;
+	b2TreeNode* m_nodes;
 	b2_int32 m_nodeCount;
 	b2_int32 m_nodeCapacity;
 
 	b2_int32 m_freeList;
 
-	/// This is used incrementally traverse the tree for re-balancing.
+	/// This is used to incrementally traverse the tree for re-balancing.
 	b2_uint32 m_path;
 
 	b2_int32 m_insertionCount;
-	
+
 		//added for tiles
 	std::vector<b2_int32> *tileMap;
 	b2Vec2 mapLocation;
@@ -149,8 +160,6 @@ private:
 	b2_int32 mapHeight;
 		//added for tiles end
 };
-
-
 
 inline void* b2DynamicTree::GetUserData(b2_int32 proxyId) const
 {
@@ -178,7 +187,7 @@ inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 			continue;
 		}
 
-		const b2DynamicTreeNode* node = m_nodes + nodeId;
+		const b2TreeNode* node = m_nodes + nodeId;
 
 		if (b2TestOverlap(node->aabb, aabb))
 		{
@@ -275,7 +284,7 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 			continue;
 		}
 
-		const b2DynamicTreeNode* node = m_nodes + nodeId;
+		const b2TreeNode* node = m_nodes + nodeId;
 
 		if (b2TestOverlap(node->aabb, segmentAABB) == false)
 		{

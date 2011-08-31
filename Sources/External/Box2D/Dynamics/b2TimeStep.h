@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -19,7 +19,7 @@
 #ifndef B2_TIME_STEP_H
 #define B2_TIME_STEP_H
 
-#include <Box2D/Common/b2Settings.h>
+#include <Box2D/Common/b2Math.h>
 
 /// This is an internal structure.
 struct b2TimeStep
@@ -30,6 +30,28 @@ struct b2TimeStep
 	b2_int32 velocityIterations;
 	b2_int32 positionIterations;
 	bool warmStarting;
+};
+
+/// This is an internal structure.
+struct b2Position
+{
+	b2Vec2 c;
+	b2_float32 a;
+};
+
+/// This is an internal structure.
+struct b2Velocity
+{
+	b2Vec2 v;
+	b2_float32 w;
+};
+
+/// Solver Data
+struct b2SolverData
+{
+	b2TimeStep step;
+	b2Position* positions;
+	b2Velocity* velocities;
 };
 
 #endif

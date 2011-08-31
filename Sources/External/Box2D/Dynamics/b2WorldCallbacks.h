@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -66,6 +66,7 @@ struct b2ContactImpulse
 {
 	b2_float32 normalImpulses[b2_maxManifoldPoints];
 	b2_float32 tangentImpulses[b2_maxManifoldPoints];
+	b2_int32 count;
 };
 
 /// Implement this class to get contact information. You can use these results for

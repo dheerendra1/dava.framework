@@ -57,8 +57,6 @@ UISlider::UISlider(const Rect & rect)
 	thumbButton->relativePosition.y -= Abs(rect.dy - thumbButton->size.y) / 2.0f; 
 #endif
 	
-	bgMin = new UIControlBackground();
-	bgMax = new UIControlBackground();
 	
 	leftInactivePart = 0;
 	rightInactivePart = 0;
@@ -84,8 +82,6 @@ UISlider::UISlider() : bgMin(0),	bgMax(0)
 	inputEnabled = true;
 	isEventsContinuos = true;
 	
-	bgMin = new UIControlBackground();
-	bgMax = new UIControlBackground();
 	
 	leftInactivePart = 0;
 	rightInactivePart = 0;
@@ -96,18 +92,35 @@ UISlider::UISlider() : bgMin(0),	bgMax(0)
 	
 void UISlider::InitThumb()
 {
-	Rect rect = GetRect();
-	
 	thumbButton = new UIControl(Rect(0, 0, 40.f, 40.f));
 	thumbButton->SetInputEnabled(false);
 	
-	thumbButton->relativePosition.y -= Abs(rect.dy - thumbButton->size.y) / 2.0f; 
+	thumbButton->relativePosition.y = size.y * 0.5f;
+    thumbButton->pivotPoint = thumbButton->size*0.5f;
 	
 	AddControl(thumbButton);
 	
 	SetValue(currentValue);
 }
 
+void UISlider::SetThumb(UIControl *newThumb)
+{
+    RemoveControl(thumbButton);
+    SafeRelease(thumbButton);
+    
+    thumbButton = SafeRetain(newThumb);
+
+	thumbButton->SetInputEnabled(false);
+	
+	thumbButton->relativePosition.y = size.y * 0.5f;
+    thumbButton->pivotPoint = thumbButton->size*0.5f;
+	
+	AddControl(thumbButton);
+	
+	SetValue(currentValue);
+}
+    
+    
 UISlider::~UISlider()
 {
 	SafeRelease(bgMin);
@@ -129,29 +142,45 @@ void UISlider::SetThumbSprite(const String & spriteName, int32 frame)
 
 void UISlider::SetMinSprite(Sprite * sprite, int32 frame)
 {
+    if (!bgMin) 
+    {
+        bgMin = new UIControlBackground();
+    }
 	bgMin->SetSprite(sprite, frame);
 }
 void UISlider::SetMinSprite(const String & spriteName, int32 frame)
 {
+    if (!bgMin) 
+    {
+        bgMin = new UIControlBackground();
+    }
 	bgMin->SetSprite(spriteName, frame);
 }
 	
 void UISlider::SetMaxSprite(Sprite * sprite, int32 frame)
 {
+    if (!bgMax)
+    {
+        bgMax = new UIControlBackground();
+    }
 	bgMax->SetSprite(sprite, frame);
 }
 	
 void UISlider::SetMaxSprite(const String & spriteName, int32 frame)
 {
+    if (!bgMax)
+    {
+        bgMax = new UIControlBackground();
+    }
 	bgMax->SetSprite(spriteName, frame);
 }
 	
 void UISlider::RecalcButtonPos()
 {
-	float x = Interpolation::Linear((float32)leftInactivePart, size.x - rightInactivePart, minValue, currentValue, maxValue);
-	thumbButton->relativePosition.x = x - thumbButton->size.x * 0.5f;
+	thumbButton->relativePosition.x = Interpolation::Linear((float32)leftInactivePart, size.x - rightInactivePart, minValue, currentValue, maxValue);
+//	thumbButton->relativePosition.x = x - thumbButton->size.x * 0.5f;
 	
-	clipPointRelative = x;
+	clipPointRelative = thumbButton->relativePosition.x;
 	
 	//Rect rect = GetRect();
 	//thumbButton->relativePosition.y -= Abs(rect.dy - thumbButton->size.y) / 2.0f; 

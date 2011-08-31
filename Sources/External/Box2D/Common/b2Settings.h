@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -110,7 +110,8 @@ typedef float b2_float32;
 /// This scale factor controls how fast overlap is resolved. Ideally this would be 1 so
 /// that overlap is removed in one time step. However using values close to 1 often lead
 /// to overshoot.
-#define b2_contactBaumgarte			0.2f
+#define b2_baumgarte				0.2f
+#define b2_toiBaugarte				0.75f
 
 
 // Sleep
@@ -143,17 +144,5 @@ struct b2Version
 
 /// Current version.
 extern b2Version b2_version;
-
-/// Friction mixing law. Feel free to customize this.
-inline b2_float32 b2MixFriction(b2_float32 friction1, b2_float32 friction2)
-{
-	return std::sqrt(friction1 * friction2);
-}
-
-/// Restitution mixing law. Feel free to customize this.
-inline b2_float32 b2MixRestitution(b2_float32 restitution1, b2_float32 restitution2)
-{
-	return restitution1 > restitution2 ? restitution1 : restitution2;
-}
 
 #endif

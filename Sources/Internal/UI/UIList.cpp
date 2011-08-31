@@ -119,6 +119,20 @@ void UIList::SetDelegate(UIListDelegate *newDelegate)
 	delegate = newDelegate;
 }
 
+void UIList::ResetScrollPos()
+{
+	if(orientation == ORIENTATION_HORIZONTAL)
+	{
+		scrollContainer->relativePosition.x = 0;
+        scroll->SetPosition(0);
+	}
+	else 
+	{
+		scrollContainer->relativePosition.y = 0;
+        scroll->SetPosition(0);
+	}
+}
+
 void UIList::FullRefresh()
 {
 	scrollContainer->RemoveAllControls();
