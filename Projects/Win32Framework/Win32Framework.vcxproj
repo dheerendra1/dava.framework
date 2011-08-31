@@ -64,7 +64,7 @@
     </ClCompile>
     <Lib>
       <AdditionalOptions>/VERBOSE:LIB   %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>freetype2312MT_D.lib;libpng-win32-debug.lib;zlib-win32-debug.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static_d.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype2312MT_D.lib;libpngd.lib;zlibd.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static_d.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(ProjectDir)\$(Configuration)\$(ProjectName).lib</OutputFile>
       <AdditionalLibraryDirectories>./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;$(DXSDK_DIR)/lib/x86;./../../Libs/oggvorbis/lib/;C:\Program Files\OpenAL 1.1 SDK\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
@@ -81,7 +81,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>freetype2312MT.lib;libpng-win32.lib;zlib-win32.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype2312MT.lib;libpng.lib;zlib.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(ProjectDir)\$(Configuration)\$(ProjectName).lib</OutputFile>
       <AdditionalLibraryDirectories>./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;$(DXSDK_DIR)/lib/x86;./../../Libs/oggvorbis/lib/;C:\Program Files\OpenAL 1.1 SDK\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
@@ -93,9 +93,9 @@
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\b2Distance.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\b2DynamicTree.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\b2TimeOfImpact.h" />
+    <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2ChainShape.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2CircleShape.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2EdgeShape.h" />
-    <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2LoopShape.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2PolygonShape.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Collision\Shapes\b2Shape.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Common\b2BlockAllocator.h" />
@@ -110,26 +110,26 @@
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\b2TimeStep.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\b2World.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\b2WorldCallbacks.h" />
+    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.h" />
+    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2CircleContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2Contact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ContactSolver.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.h" />
-    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndCircleContact.h" />
-    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndPolygonContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonContact.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2DistanceJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2FrictionJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2GearJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2Joint.h" />
-    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2LineJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2MouseJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2PrismaticJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2PulleyJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2RopeJoint.h" />
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2WeldJoint.h" />
+    <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\..\Sources\External\Yaml\config.h" />
     <ClInclude Include="..\..\Sources\External\Yaml\yaml.h" />
     <ClInclude Include="..\..\Sources\External\Yaml\yaml_private.h" />
@@ -354,9 +354,9 @@
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2Distance.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2DynamicTree.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2TimeOfImpact.cpp" />
+    <ClCompile Include="..\..\Sources\External\Box2D\Collision\Shapes\b2ChainShape.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\Shapes\b2CircleShape.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\Shapes\b2EdgeShape.cpp" />
-    <ClCompile Include="..\..\Sources\External\Box2D\Collision\Shapes\b2LoopShape.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\Shapes\b2PolygonShape.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Common\b2BlockAllocator.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Common\b2Math.cpp" />
@@ -368,26 +368,26 @@
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\b2Island.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\b2World.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\b2WorldCallbacks.cpp" />
+    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.cpp" />
+    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2CircleContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2Contact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ContactSolver.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.cpp" />
-    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndCircleContact.cpp" />
-    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndPolygonContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonContact.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2DistanceJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2FrictionJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2GearJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2Joint.cpp" />
-    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2LineJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2MouseJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2PulleyJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2RopeJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
+    <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\..\Sources\External\Yaml\api.c" />
     <ClCompile Include="..\..\Sources\External\Yaml\dumper.c" />
     <ClCompile Include="..\..\Sources\External\Yaml\emitter.c" />

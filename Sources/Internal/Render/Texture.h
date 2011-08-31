@@ -107,7 +107,7 @@ public:
 	static void DisableMipmapGeneration();
 	void GenerateMipmaps();
 	
-	void TexImage(int32 level, uint32 width, uint32 height, void * _data);
+	void TexImage(int32 level, uint32 width, uint32 height, const void * _data);
 
 	void SetWrapMode(TextureWrap wrapS, TextureWrap wrapT);
 	
