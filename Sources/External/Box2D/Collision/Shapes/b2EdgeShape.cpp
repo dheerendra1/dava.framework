@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2010 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -58,8 +58,8 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	B2_NOT_USED(childIndex);
 
 	// Put the ray into the edge's frame of reference.
-	b2Vec2 p1 = b2MulT(xf.R, input.p1 - xf.position);
-	b2Vec2 p2 = b2MulT(xf.R, input.p2 - xf.position);
+	b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
+	b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
 	b2Vec2 d = p2 - p1;
 
 	b2Vec2 v1 = m_vertex1;
@@ -80,7 +80,7 @@ bool b2EdgeShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 	}
 
 	b2_float32 t = numerator / denominator;
-	if (t < 0.0f || 1.0f < t)
+	if (t < 0.0f || input.maxFraction < t)
 	{
 		return false;
 	}

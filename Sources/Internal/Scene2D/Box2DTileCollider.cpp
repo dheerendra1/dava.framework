@@ -138,8 +138,8 @@ namespace DAVA
 				sh = new b2EdgeShape();
 				*sh = *fixtureDef.shape;
 				break;
-			case b2Shape::e_loop:
-				sh = new b2LoopShape();
+			case b2Shape::e_chain:
+				sh = new b2ChainShape();
 				*sh = *fixtureDef.shape;
 				break;
 			case b2Shape::e_polygon:

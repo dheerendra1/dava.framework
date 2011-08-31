@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -22,8 +22,8 @@
 #include <Box2D/Dynamics/Contacts/b2PolygonContact.h>
 #include <Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h>
 #include <Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h>
-#include <Box2D/Dynamics/Contacts/b2LoopAndCircleContact.h>
-#include <Box2D/Dynamics/Contacts/b2LoopAndPolygonContact.h>
+#include <Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h>
+#include <Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h>
 #include <Box2D/Dynamics/Contacts/b2ContactSolver.h>
 
 #include <Box2D/Collision/b2Collision.h>
@@ -44,8 +44,8 @@ void b2Contact::InitializeRegisters()
 	AddType(b2PolygonContact::Create, b2PolygonContact::Destroy, b2Shape::e_polygon, b2Shape::e_polygon);
 	AddType(b2EdgeAndCircleContact::Create, b2EdgeAndCircleContact::Destroy, b2Shape::e_edge, b2Shape::e_circle);
 	AddType(b2EdgeAndPolygonContact::Create, b2EdgeAndPolygonContact::Destroy, b2Shape::e_edge, b2Shape::e_polygon);
-	AddType(b2LoopAndCircleContact::Create, b2LoopAndCircleContact::Destroy, b2Shape::e_loop, b2Shape::e_circle);
-	AddType(b2LoopAndPolygonContact::Create, b2LoopAndPolygonContact::Destroy, b2Shape::e_loop, b2Shape::e_polygon);
+	AddType(b2ChainAndCircleContact::Create, b2ChainAndCircleContact::Destroy, b2Shape::e_chain, b2Shape::e_circle);
+	AddType(b2ChainAndPolygonContact::Create, b2ChainAndPolygonContact::Destroy, b2Shape::e_chain, b2Shape::e_polygon);
 }
 
 void b2Contact::AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* destoryFcn,
@@ -144,6 +144,9 @@ b2Contact::b2Contact(b2Fixture* fA, b2_int32 indexA, b2Fixture* fB, b2_int32 ind
 	m_nodeB.other = NULL;
 
 	m_toiCount = 0;
+
+	m_friction = b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction);
+	m_restitution = b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution);
 }
 
 // Update the contact manifold and touching status.
@@ -190,7 +193,6 @@ void b2Contact::Update(b2ContactListener* listener)
 			mp2->normalImpulse = 0.0f;
 			mp2->tangentImpulse = 0.0f;
 			b2ContactID id2 = mp2->id;
-			bool found = false;
 
 			for (b2_int32 j = 0; j < oldManifold.pointCount; ++j)
 			{
@@ -200,15 +202,8 @@ void b2Contact::Update(b2ContactListener* listener)
 				{
 					mp2->normalImpulse = mp1->normalImpulse;
 					mp2->tangentImpulse = mp1->tangentImpulse;
-					found = true;
 					break;
 				}
-			}
-
-			if (found == false)
-			{
-				mp2->normalImpulse = 0.0f;
-				mp2->tangentImpulse = 0.0f;
 			}
 		}
 

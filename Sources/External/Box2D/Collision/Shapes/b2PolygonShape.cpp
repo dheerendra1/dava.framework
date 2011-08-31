@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -55,14 +55,14 @@ void b2PolygonShape::SetAsBox(b2_float32 hx, b2_float32 hy, const b2Vec2& center
 	m_centroid = center;
 
 	b2Transform xf;
-	xf.position = center;
-	xf.R.Set(angle);
+	xf.p = center;
+	xf.q.Set(angle);
 
 	// Transform vertices and normals.
 	for (b2_int32 i = 0; i < m_vertexCount; ++i)
 	{
 		m_vertices[i] = b2Mul(xf, m_vertices[i]);
-		m_normals[i] = b2Mul(xf.R, m_normals[i]);
+		m_normals[i] = b2Mul(xf.q, m_normals[i]);
 	}
 }
 
@@ -158,10 +158,10 @@ void b2PolygonShape::Set(const b2Vec2* vertices, b2_int32 count)
 			
 			b2Vec2 r = m_vertices[j] - m_vertices[i1];
 
-			// Your polygon is non-convex (it has an indentation) or
-			// has colinear edges.
+			// If this crashes, your polygon is non-convex, has colinear edges,
+			// or the winding order is wrong.
 			b2_float32 s = b2Cross(edge, r);
-			b2Assert(s > 0.0f);
+			b2Assert(s > 0.0f && "ERROR: Please ensure your polygon is convex and has a CCW winding order");
 		}
 	}
 #endif
@@ -172,7 +172,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, b2_int32 count)
 
 bool b2PolygonShape::TestPoint(const b2Transform& xf, const b2Vec2& p) const
 {
-	b2Vec2 pLocal = b2MulT(xf.R, p - xf.position);
+	b2Vec2 pLocal = b2MulT(xf.q, p - xf.p);
 
 	for (b2_int32 i = 0; i < m_vertexCount; ++i)
 	{
@@ -192,8 +192,8 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	B2_NOT_USED(childIndex);
 
 	// Put the ray into the polygon's frame of reference.
-	b2Vec2 p1 = b2MulT(xf.R, input.p1 - xf.position);
-	b2Vec2 p2 = b2MulT(xf.R, input.p2 - xf.position);
+	b2Vec2 p1 = b2MulT(xf.q, input.p1 - xf.p);
+	b2Vec2 p2 = b2MulT(xf.q, input.p2 - xf.p);
 	b2Vec2 d = p2 - p1;
 
 	b2_float32 lower = 0.0f, upper = input.maxFraction;
@@ -251,7 +251,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 	if (index >= 0)
 	{
 		output->fraction = lower;
-		output->normal = b2Mul(xf.R, m_normals[index]);
+		output->normal = b2Mul(xf.q, m_normals[index]);
 		return true;
 	}
 
@@ -309,29 +309,24 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, b2_float32 density) const
 	b2_float32 area = 0.0f;
 	b2_float32 I = 0.0f;
 
-	// pRef is the reference point for forming triangles.
+	// s is the reference point for forming triangles.
 	// It's location doesn't change the result (except for rounding error).
-	b2Vec2 pRef(0.0f, 0.0f);
-#if 0
+	b2Vec2 s(0.0f, 0.0f);
+
 	// This code would put the reference point inside the polygon.
 	for (b2_int32 i = 0; i < m_vertexCount; ++i)
 	{
-		pRef += m_vertices[i];
+		s += m_vertices[i];
 	}
-	pRef *= 1.0f / count;
-#endif
+	s *= 1.0f / m_vertexCount;
 
 	const b2_float32 k_inv3 = 1.0f / 3.0f;
 
 	for (b2_int32 i = 0; i < m_vertexCount; ++i)
 	{
 		// Triangle vertices.
-		b2Vec2 p1 = pRef;
-		b2Vec2 p2 = m_vertices[i];
-		b2Vec2 p3 = i + 1 < m_vertexCount ? m_vertices[i+1] : m_vertices[0];
-
-		b2Vec2 e1 = p2 - p1;
-		b2Vec2 e2 = p3 - p1;
+		b2Vec2 e1 = m_vertices[i] - s;
+		b2Vec2 e2 = i + 1 < m_vertexCount ? m_vertices[i+1] - s : m_vertices[0] - s;
 
 		b2_float32 D = b2Cross(e1, e2);
 
@@ -339,16 +334,15 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, b2_float32 density) const
 		area += triangleArea;
 
 		// Area weighted centroid
-		center += triangleArea * k_inv3 * (p1 + p2 + p3);
+		center += triangleArea * k_inv3 * (e1 + e2);
 
-		b2_float32 px = p1.x, py = p1.y;
 		b2_float32 ex1 = e1.x, ey1 = e1.y;
 		b2_float32 ex2 = e2.x, ey2 = e2.y;
 
-		b2_float32 intx2 = k_inv3 * (0.25f * (ex1*ex1 + ex2*ex1 + ex2*ex2) + (px*ex1 + px*ex2)) + 0.5f*px*px;
-		b2_float32 inty2 = k_inv3 * (0.25f * (ey1*ey1 + ey2*ey1 + ey2*ey2) + (py*ey1 + py*ey2)) + 0.5f*py*py;
+		b2_float32 intx2 = ex1*ex1 + ex2*ex1 + ex2*ex2;
+		b2_float32 inty2 = ey1*ey1 + ey2*ey1 + ey2*ey2;
 
-		I += D * (intx2 + inty2);
+		I += (0.25f * k_inv3 * D) * (intx2 + inty2);
 	}
 
 	// Total mass
@@ -357,8 +351,11 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, b2_float32 density) const
 	// Center of mass
 	b2Assert(area > b2_epsilon);
 	center *= 1.0f / area;
-	massData->center = center;
+	massData->center = center + s;
 
-	// Inertia tensor relative to the local origin.
+	// Inertia tensor relative to the local origin (point s).
 	massData->I = density * I;
+	
+	// Shift to center of mass then to original body origin.
+	massData->I += massData->mass * (b2Dot(massData->center, massData->center) - b2Dot(center, center));
 }

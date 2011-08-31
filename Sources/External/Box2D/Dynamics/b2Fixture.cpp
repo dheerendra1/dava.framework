@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -18,10 +18,11 @@
 
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
 #include <Box2D/Collision/Shapes/b2EdgeShape.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
-#include <Box2D/Collision/Shapes/b2LoopShape.h>
+#include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/b2BroadPhase.h>
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2BlockAllocator.h>
@@ -102,11 +103,11 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 		}
 		break;
 
-	case b2Shape::e_loop:
+	case b2Shape::e_chain:
 		{
-			b2LoopShape* s = (b2LoopShape*)m_shape;
-			s->~b2LoopShape();
-			allocator->Free(s, sizeof(b2LoopShape));
+			b2ChainShape* s = (b2ChainShape*)m_shape;
+			s->~b2ChainShape();
+			allocator->Free(s, sizeof(b2ChainShape));
 		}
 		break;
 
@@ -166,7 +167,7 @@ void b2Fixture::Synchronize(b2BroadPhase* broadPhase, const b2Transform& transfo
 	
 		proxy->aabb.Combine(aabb1, aabb2);
 
-		b2Vec2 displacement = transform2.position - transform1.position;
+		b2Vec2 displacement = transform2.p - transform1.p;
 
 		broadPhase->MoveProxy(proxy->proxyId, proxy->aabb, displacement);
 	}
@@ -176,6 +177,11 @@ void b2Fixture::SetFilterData(const b2Filter& filter)
 {
 	m_filter = filter;
 
+	Refilter();
+}
+
+void b2Fixture::Refilter()
+{
 	if (m_body == NULL)
 	{
 		return;
@@ -195,10 +201,28 @@ void b2Fixture::SetFilterData(const b2Filter& filter)
 
 		edge = edge->next;
 	}
+
+	b2World* world = m_body->GetWorld();
+
+	if (world == NULL)
+	{
+		return;
+	}
+
+	// Touch each proxy so that new pairs may be created
+	b2BroadPhase* broadPhase = &world->m_contactManager.m_broadPhase;
+	for (b2_int32 i = 0; i < m_proxyCount; ++i)
+	{
+		broadPhase->TouchProxy(m_proxies[i].proxyId);
+	}
 }
 
 void b2Fixture::SetSensor(bool sensor)
 {
-	m_isSensor = sensor;
+	if (sensor != m_isSensor)
+	{
+		m_body->SetAwake(true);
+		m_isSensor = sensor;
+	}
 }
 

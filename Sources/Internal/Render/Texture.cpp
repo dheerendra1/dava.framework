@@ -293,9 +293,8 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, void * _data)
 #endif 
 }
 
-Texture * Texture::CreateFromData(PixelFormat _format, uint8 * _data, uint32 _width, uint32 _height)
+Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint32 _width, uint32 _height)
 {
-
 	Texture * texture = new Texture();
 	if (!texture)return 0;
 	
@@ -312,9 +311,7 @@ Texture * Texture::CreateFromData(PixelFormat _format, uint8 * _data, uint32 _wi
 			break;
 		}
 		Logger::Error("TEXTURE %d GENERATE ERROR: %d", i, glGetError());
-	}
-	
-
+	}	
 
 	int saveId;
 	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));

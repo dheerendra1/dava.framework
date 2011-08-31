@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
+* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -62,8 +62,6 @@ struct b2FixtureDef
 		isSensor = false;
 	}
 
-	virtual ~b2FixtureDef() {}
-
 	/// The shape, this must be set. The shape will be cloned, so you
 	/// can create the shape on the stack.
 	const b2Shape* shape;
@@ -124,10 +122,14 @@ public:
 
 	/// Set the contact filtering data. This will not update contacts until the next time
 	/// step when either parent body is active and awake.
+	/// This automatically calls Refilter.
 	void SetFilterData(const b2Filter& filter);
 
 	/// Get the contact filtering data.
 	const b2Filter& GetFilterData() const;
+
+	/// Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide.
+	void Refilter();
 
 	/// Get the parent body of this fixture. This is NULL if the fixture is not attached.
 	/// @return the parent body.
@@ -170,15 +172,15 @@ public:
 	/// Get the coefficient of friction.
 	b2_float32 GetFriction() const;
 
-	/// Set the coefficient of friction. This will immediately update the mixed friction
-	/// on all associated contacts.
+	/// Set the coefficient of friction. This will _not_ change the friction of
+	/// existing contacts.
 	void SetFriction(b2_float32 friction);
 
 	/// Get the coefficient of restitution.
 	b2_float32 GetRestitution() const;
 
-	/// Set the coefficient of restitution. This will immediately update the mixed restitution
-	/// on all associated contacts.
+	/// Set the coefficient of restitution. This will _not_ change the restitution of
+	/// existing contacts.
 	void SetRestitution(b2_float32 restitution);
 
 	/// Get the fixture's AABB. This AABB may be enlarge and/or stale.
@@ -192,7 +194,6 @@ protected:
 	friend class b2World;
 	friend class b2Contact;
 	friend class b2ContactManager;
-	friend class b2TileCollider;
 
 	b2Fixture();
 
