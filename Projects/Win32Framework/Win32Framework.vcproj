@@ -219,6 +219,14 @@
 						Name="Shapes"
 						>
 						<File
+							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2ChainShape.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2ChainShape.h"
+							>
+						</File>
+						<File
 							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2CircleShape.cpp"
 							>
 						</File>
@@ -232,14 +240,6 @@
 						</File>
 						<File
 							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2EdgeShape.h"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2LoopShape.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Collision\Shapes\b2LoopShape.h"
 							>
 						</File>
 						<File
@@ -355,6 +355,22 @@
 						Name="Contacts"
 						>
 						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.h"
+							>
+						</File>
+						<File
 							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2CircleContact.cpp"
 							>
 						</File>
@@ -392,22 +408,6 @@
 						</File>
 						<File
 							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.h"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndCircleContact.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndCircleContact.h"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndPolygonContact.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Contacts\b2LoopAndPolygonContact.h"
 							>
 						</File>
 						<File
@@ -463,14 +463,6 @@
 							>
 						</File>
 						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2LineJoint.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2LineJoint.h"
-							>
-						</File>
-						<File
 							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2MouseJoint.cpp"
 							>
 						</File>
@@ -516,6 +508,14 @@
 						</File>
 						<File
 							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2WeldJoint.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2WheelJoint.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\Sources\External\Box2D\Dynamics\Joints\b2WheelJoint.h"
 							>
 						</File>
 					</Filter>

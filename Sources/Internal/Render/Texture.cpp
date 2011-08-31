@@ -205,7 +205,7 @@ Texture * Texture::CreateTextFromData(PixelFormat format, uint8 * data, uint32 w
 	return tx;
 }
 	
-void Texture::TexImage(int32 level, uint32 width, uint32 height, void * _data)
+void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _data)
 {
 #if defined(__DAVAENGINE_OPENGL__)
 
@@ -386,7 +386,7 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	uint8 *mipMapData = new uint8[(_width / 2) * (_height / 2) * GetPixelFormatSize(texture->format) / 8];
 	uint8 *mipMapData2 = new uint8[(_width / 4) * (_height / 4) * GetPixelFormatSize(texture->format) / 8];
 
-	uint8 * prevMipData = _data;
+	const uint8 * prevMipData = _data;
 	uint8 * currentMipData = mipMapData;
 
 	int32 mipMapWidth = _width / 2;
