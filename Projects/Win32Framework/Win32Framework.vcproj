@@ -1365,6 +1365,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderDataObject.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderDataObject.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\Sources\Internal\Render\RenderEffect.cpp"
 					>
 				</File>
@@ -1401,7 +1409,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderManagerFactory.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\Sources\Internal\Render\RenderManagerGL.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderManagerGL20.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Sources\Internal\Render\RenderManagerGL20.h"
 					>
 				</File>
 				<File
@@ -1553,6 +1573,34 @@
 					</File>
 					<File
 						RelativePath="..\..\Sources\Internal\Render\3D\StaticMesh.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Effects"
+					>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.h"
 						>
 					</File>
 				</Filter>

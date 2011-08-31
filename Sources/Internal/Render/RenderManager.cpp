@@ -272,10 +272,14 @@ void RenderManager::AttachRenderData(Shader * shader)
     if (!shader)
     {
         // TODO: should be moved to RenderManagerGL
-#if defined(__DAVAENGINE_MACOS__)
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
-#else
-        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+#if defined(__DAVAENGINE_OPENGL__)
+	#if defined(__DAVAENGINE_MACOS__)
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+	#else
+			glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+	#endif
+#elif defined(__DAVAENGINE_DIRECTX9__)
+	DVASSERT(currentRenderData->vboBuffer == 0);
 #endif
         pointerArraysCurrentState = 0;
         int32 size = (int32)currentRenderData->streamArray.size();
@@ -441,6 +445,18 @@ void RenderManager::RestoreRenderEffect()
 	renderEffectStack.pop();
 	SetNewRenderEffect(renderEffect);
 	SafeRelease(renderEffect);
+}
+
+void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+	if (currentRenderEffect)
+		currentRenderEffect->DrawElements(type, count, indexFormat, indices);
+}
+
+void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+{
+	if (currentRenderEffect)
+		currentRenderEffect->DrawArrays(type, first, count);
 }
 
 void RenderManager::Lock()

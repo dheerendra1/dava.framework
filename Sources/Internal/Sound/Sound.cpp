@@ -38,6 +38,9 @@
 #include "Sound/SoundSystem.h"
 #include "Sound/SoundChannel.h"
 #include "Sound/SoundGroup.h"
+#if defined(__DAVAENGINE_IPHONE__)
+#include "Sound/MusicIos.h"
+#endif
 
 namespace DAVA
 {
@@ -59,10 +62,16 @@ Sound	* Sound::CreateFX(const String & fileName, eType type, int32 priority /*= 
 
 Sound	* Sound::CreateMusic(const String & fileName, eType type, int32 priority /*= 0*/)
 {
+#if defined(__DAVAENGINE_IPHONE__)
+    Sound * sound = new MusicIos(fileName);
+    SoundSystem::Instance()->GroupMusic()->AddSound(sound);
+    return sound;
+#else
 	Sound * sound = new Sound(fileName, type, priority);
 	SoundSystem::Instance()->GroupMusic()->AddSound(sound);
 	sound->Init();
 	return sound;
+#endif //#if defined(__DAVAENGINE_IPHONE__)
 }
 
 Sound::Sound(const String & _fileName, eType _type, int32 _priority)
@@ -81,7 +90,6 @@ Sound::Sound(const String & _fileName, eType _type, int32 _priority)
 
 Sound::~Sound()
 {
-	Stop();
 	if(group)
 	{
 		group->RemoveSound(this);
@@ -237,6 +245,15 @@ void Sound::Stop()
 void Sound::SetSoundGroup(SoundGroup * _group)
 {
 	group = _group;
+}
+
+int32 Sound::Release()
+{
+    if(GetRetainCount() == 1)
+    {
+        Stop();
+    }
+    return BaseObject::Release();
 }
 
 };

@@ -102,7 +102,18 @@ void ColorOnlyEffectGL20::DrawElements(ePrimitiveType type, int32 count, eIndexF
     
 void ColorOnlyEffectDX9::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
-    
+	RenderManager::Instance()->EnableTexturing(true);
+	RenderManager::Instance()->AttachRenderData(0);
+	RenderManager::Instance()->FlushState();
+	RenderManager::Instance()->HWDrawArrays(mode, first, count);
+}
+
+void ColorOnlyEffectDX9::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+	RenderManager::Instance()->EnableTexturing(true);
+	RenderManager::Instance()->AttachRenderData(0);
+	RenderManager::Instance()->FlushState();
+	RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }
 #endif
     

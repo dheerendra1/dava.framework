@@ -71,6 +71,7 @@ class ColorOnlyEffectDX9 : public ColorOnlyEffect
 {
 public:
     virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
     
 #endif 

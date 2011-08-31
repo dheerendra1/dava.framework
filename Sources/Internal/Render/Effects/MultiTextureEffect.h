@@ -50,7 +50,8 @@ public:
 class MultiTextureEffectGL : public MultiTextureEffect
 {
 public:
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
 
 class MultiTextureEffectGL20 : public MultiTextureEffect
@@ -58,7 +59,9 @@ class MultiTextureEffectGL20 : public MultiTextureEffect
 public:
     MultiTextureEffectGL20();
     ~MultiTextureEffectGL20();
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 protected:
     Shader * shader;
 };
@@ -67,7 +70,8 @@ protected:
 class MultiTextureEffectDX9 : public MultiTextureEffect
 {
 public:
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
 
 #endif 

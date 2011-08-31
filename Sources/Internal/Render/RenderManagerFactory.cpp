@@ -39,7 +39,9 @@ void RenderManager::Create(Core::eRenderer renderer)
     //new RenderManager(renderer);
     if (renderer == Core::RENDERER_OPENGL_ES_2_0)
     {
-        new RenderManagerGL20(renderer);
+#if defined(__DAVAENGINE_OPENGL__)
+	new RenderManagerGL20(renderer);
+#endif        
     }
     else
     {

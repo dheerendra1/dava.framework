@@ -56,7 +56,7 @@ public:
     
 protected:
     
-    void CreateMeshFromSprite();
+    void CreateMeshFromSprite(int32 frameToGen);
     Vector<float32> verts;
     Vector<float32> colors;
     
