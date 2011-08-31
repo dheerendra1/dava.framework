@@ -80,13 +80,14 @@ void SceneEditorScreen::LoadResources()
     
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 0));
+    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 25));
     box.min += cam->GetPosition();
     box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
+    
     node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain.png", box);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
     
     Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
@@ -138,6 +139,20 @@ void SceneEditorScreen::WillDisappear()
 void SceneEditorScreen::Input(UIEvent * event)
 {
     cameraController->Input(event);
+    
+    
+    if (event->phase == UIEvent::PHASE_KEYCHAR)
+    {
+        if (event->keyChar == '1')
+            cameraController->SetSpeed(40);
+        if (event->keyChar == '2')
+            cameraController->SetSpeed(80);
+        if (event->keyChar == '3')
+            cameraController->SetSpeed(160);
+        if (event->keyChar == '4')
+            cameraController->SetSpeed(320);
+        
+    }
     
 	if (event->phase == UIEvent::PHASE_BEGAN)
 	{

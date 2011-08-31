@@ -81,7 +81,7 @@ public:
     // Node preview information
     SceneNode * selectedNode;
     
-    CameraController * cameraController;
+    WASDCameraController * cameraController;
 };
 
 #endif // __SCENE_EDITOR_SCREEN_H__

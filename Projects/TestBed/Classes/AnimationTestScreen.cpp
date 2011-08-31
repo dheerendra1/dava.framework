@@ -63,7 +63,7 @@ void AnimationTestScreen::LoadResources()
     box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain.png", box);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
     
     Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
@@ -87,19 +87,18 @@ void AnimationTestScreen::LoadResources()
     }
     
 	//originalCameraPosition = scene->GetCamera(0)->GetPosition();
-//	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
-//	positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
-//	positionJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
-//	
-//	AddControl(positionJoypad);
+
     
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
     scene3dView->SetInputEnabled(false);
     scene3dView->SetScene(scene);
     cam = scene->GetCamera(0);
-    cam->SetFOV(75.0f);
-    //cam->Setup(60.0f, float32 aspect, float32 znear, float32 zfar, bool ortho)
+    //cam->SetFOV(75.0f);
+    cam->Setup(60.0f, 320.0f / 480.0f, 1.0f, 3000.0f, false);
+    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    cam->SetDirection(Vector3(1.0f, 0.0f, 0.0f));
+    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
 
     scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
@@ -111,6 +110,18 @@ void AnimationTestScreen::LoadResources()
     
     viewXAngle = 0;
     viewYAngle = 0;
+
+
+	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
+	positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
+	positionJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
+	AddControl(positionJoypad);
+    
+    
+    angleJoypad = new UIJoypad(Rect(480 - 80, 320 - 80, 80, 80));
+	angleJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
+	angleJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
+	AddControl(angleJoypad);
 }
 
 void AnimationTestScreen::UnloadResources()
@@ -132,6 +143,8 @@ void AnimationTestScreen::WillDisappear()
 
 void AnimationTestScreen::Input(UIEvent * touch)
 {
+
+    
 //	if (touch->phase == UIEvent::PHASE_BEGAN)
 //	{
 //		inTouch = true;	
@@ -156,24 +169,28 @@ void AnimationTestScreen::Input(UIEvent * touch)
 //		startRotationInSec = 0.0f;
 //	}
     
-    if (touch->phase == UIEvent::PHASE_BEGAN) 
-    {
-        oldTouchPoint = touch->point;
-    }
-    else if(touch->phase == UIEvent::PHASE_DRAG || touch->phase == UIEvent::PHASE_ENDED)
-    {
-        Vector2 dp = oldTouchPoint - touch->point;
-        viewXAngle += dp.x * 0.5f;
-        viewYAngle += dp.y * 0.5f;
-        oldTouchPoint = touch->point;
-        //ClampAngles();
-        //LOG_AS_FLOAT(viewXAngle);
-        //LOG_AS_FLOAT(viewYAngle);
-    }
+//    if (touch->phase == UIEvent::PHASE_BEGAN) 
+//    {
+//        oldTouchPoint = touch->point;
+//    }
+//    else if(touch->phase == UIEvent::PHASE_DRAG || touch->phase == UIEvent::PHASE_ENDED)
+//    {
+//        Vector2 dp = oldTouchPoint - touch->point;
+//        viewXAngle += dp.x * 0.5f;
+//        viewYAngle += dp.y * 0.5f;
+//        oldTouchPoint = touch->point;
+//        //ClampAngles();
+//        //LOG_AS_FLOAT(viewXAngle);
+//        //LOG_AS_FLOAT(viewYAngle);
+//    }
 }
 
 void AnimationTestScreen::Update(float32 timeElapsed)
 {
+    Vector2 angleJoypadPos = angleJoypad->GetDigitalPosition();   
+    viewXAngle += angleJoypadPos.x * timeElapsed * 25.0f;
+    viewYAngle += angleJoypadPos.y * timeElapsed * 25.0f;
+    
     aimUser.Identity();
     Matrix4 mt, mt2;
     mt.CreateTranslation(Vector3(0,10,0));
@@ -184,12 +201,17 @@ void AnimationTestScreen::Update(float32 timeElapsed)
     aimUser *= mt2;
     
     Vector3 dir = Vector3() * aimUser;
-    cam->SetDirection(dir);
     
-//    cam->SetTarget(targetPosition);
-//
-//    Vector3 position = targetPosition - Vector3(sinf(DegToRad(viewXAngle)) * 50, 50, cosf(DegToRad(viewXAngle)) * 50);
-//    cam->SetPosition(position);
+    Vector2 joypadPos = positionJoypad->GetDigitalPosition();
+    
+    Vector3 pos = cam->GetPosition();
+    pos += -joypadPos.y * dir * timeElapsed;
+    //pos.y += joypadPos.y * dir.y;
+
+    cam->SetPosition(pos);
+    cam->SetDirection(dir);
+
+
     
     
 //    Camera * cam = scene->GetCamera(0);

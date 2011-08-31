@@ -78,9 +78,11 @@ public:
     T data;
 };
     
-class QuadTree
+template <class T>
+class LinearQuadTree
 {
 public:
+    
     
     
 
@@ -119,8 +121,10 @@ protected:
     {
     public:
         int16   x, y;
+        //int16   xbuf, ybuf;
         int16   size;
         int8    lod;
+        int8    rdoQuad;
         AABBox3 bbox;
         uint32  frame;
     };
@@ -131,6 +135,10 @@ protected:
         Vector3 position;
         Vector2 texCoord;
     };
+    
+    
+    static const int32 RENDER_QUAD_WIDTH = 129;
+    
 
     void RecursiveBuild(QuadTreeNode<LandscapeQuad> * currentNode, int32 level, int32 maxLevels);
     QuadTreeNode<LandscapeQuad> * FindNodeWithXY(QuadTreeNode<LandscapeQuad> * currentNode, int16 quadX, int16 quadY, int16 quadSize);
@@ -145,8 +153,11 @@ protected:
     Image *     heightmap;
     AABBox3     box;
     
-    LandscapeVertex * landscapeVertices;
-    RenderDataObject * landscapeRDO;
+    int8 AllocateRDOQuad(LandscapeQuad * quad);
+    void ReleaseAllRDOQuads();
+
+    Vector<LandscapeVertex *> landscapeVerticesArray;
+    Vector<RenderDataObject *> landscapeRDOArray;
     
     uint16 * indices;
     Texture * textures[TEXTURE_COUNT];
@@ -158,6 +169,8 @@ protected:
     QuadTreeNode<LandscapeQuad> quadTreeHead;
 
     List<QuadTreeNode<LandscapeQuad>*> fans;
+    
+    int32 allocatedMemoryForQuads;
 };
 
 	

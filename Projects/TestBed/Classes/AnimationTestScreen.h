@@ -74,6 +74,7 @@ public:
 	Vector3 originalCameraPosition;
 
 	UIJoypad * positionJoypad;
+    UIJoypad * angleJoypad;
     UI3DView * scene3dView;
     
     Matrix4 aimUser;
