@@ -31,7 +31,7 @@
 #include "Render/RenderManagerGL20.h"
 #include "Render/Shader.h"
 
-#ifdef __DAVAENGINE_OPENGL__
+#if defined(__DAVAENGINE_OPENGL__)
 
 namespace DAVA
 {

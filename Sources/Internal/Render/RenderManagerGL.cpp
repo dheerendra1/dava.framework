@@ -504,12 +504,6 @@ void RenderManager::SetColorPointer(int size, eVertexDataType _typeIndex, int st
 	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
     RENDER_VERIFY(glColorPointer(size, type, stride, pointer));
 }
-    
-void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
-{
-    if (currentRenderEffect)
-        currentRenderEffect->DrawArrays(type, first, count);
-}
 
 void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 {
@@ -551,11 +545,6 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
             stats.primitiveCount[type] += count - 2;
             break;
     };
-}
-void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
-{
-   if (currentRenderEffect)
-       currentRenderEffect->DrawElements(type, count, indexFormat, indices);
 }
     
 void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)

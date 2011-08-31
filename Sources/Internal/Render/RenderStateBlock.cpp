@@ -28,6 +28,8 @@
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
 #include "Render/RenderStateBlock.h"
+#include "Render/RenderManager.h"
+#include "Platform/Thread.h"
 
 namespace DAVA
 {
@@ -107,7 +109,7 @@ void RenderStateBlock::UpdateBlendFuncGL(uint32 newValue, uint32 oldValue)
 #if defined(__DAVAENGINE_DIRECTX9__)
 void RenderStateBlock::UpdateBlendDX(uint32 newValue, uint32 oldValue)
 {
-    direct3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, newValue)
+//    direct3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, newValue)
 }
     
 
@@ -133,10 +135,10 @@ void RenderStateBlock::UpdateBlendFuncDX(uint32 newValue, uint32 oldValue)
     uint32 oldSFactor = oldValue & 0xff;
     uint32 oldDFactor = (oldValue >> 8) & 0xff;
     
-    if(newSFactor != oldSFactor )
-        RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_SRCBLEND, BLEND_MODE_MAP[newSFactor]));
-    if (newDFactor != oldDFactor)
-        RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_DESTBLEND, BLEND_MODE_MAP[newDFactor]));
+//     if(newSFactor != oldSFactor )
+//         RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_SRCBLEND, BLEND_MODE_MAP[newSFactor]));
+//     if (newDFactor != oldDFactor)
+//         RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_DESTBLEND, BLEND_MODE_MAP[newDFactor]));
 
 }
 #endif 

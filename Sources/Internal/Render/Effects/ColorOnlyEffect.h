@@ -48,7 +48,8 @@ public:
 class ColorOnlyEffectGL : public ColorOnlyEffect
 {
 public:
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
 
 class ColorOnlyEffectGL20 : public ColorOnlyEffect
@@ -57,7 +58,8 @@ public:
     ColorOnlyEffectGL20();
     ~ColorOnlyEffectGL20();
     
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 protected:
     Shader * shader;
 };
@@ -66,7 +68,8 @@ protected:
 class ColorOnlyEffectDX9 : public ColorOnlyEffect
 {
 public:
-    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
 };
     
 #endif 

@@ -674,13 +674,10 @@ void RenderManager::FlushState()
 		oldSFactor = newSFactor;
 		oldDFactor = newDFactor;
 	}
-	if(oldR != newR || oldG != newG || oldB != newB || oldA != newA)
+	if(oldColor.r != newColor.r || oldColor.g != newColor.g || oldColor.b != newColor.b || oldColor.a != newColor.a)
 	{
 		// TODO: FIX COLORS & RenderEffects
-		oldR = newR;
-		oldG = newG;
-		oldB = newB;
-		oldA = newA;
+		oldColor = newColor;
 	}
 	if(newTextureEnabled != oldTextureEnabled)
 	{
@@ -817,7 +814,7 @@ void RTTR()
 }
 
 
-void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * _inpIndices)
+void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * _inpIndices)
 {
 #if 1
 	int32 startIndex = 0;
@@ -891,7 +888,7 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 	}
 	for(int k = 0; k < maxIndex; ++k)
 	{
-		dataPtr[k].color = D3DCOLOR_COLORVALUE(oldR * oldA, oldG * oldA, oldB * oldA, oldA);
+		dataPtr[k].color = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
 		dataPtr[k].u = 0;
 		dataPtr[k].v = 0;
 		// Logger::Debug("v:%f %f %f %f c: #%08x", oldR, oldG, oldB, oldA, dataPtr[k].color);
@@ -992,7 +989,7 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 #endif
 }
 
-void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 {
 	//RTTR();
 
@@ -1040,7 +1037,7 @@ void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
 		}
 		for(int k = 0; k < count; ++k)
 		{
-			dataPtr[k].color = D3DCOLOR_COLORVALUE(oldR * oldA, oldG * oldA, oldB * oldA, oldA);
+			dataPtr[k].color = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
 			dataPtr[k].u = 0;
 			dataPtr[k].v = 0;
 			// Logger::Debug("v:%f %f %f %f c: #%08x", oldR, oldG, oldB, oldA, dataPtr[k].color);

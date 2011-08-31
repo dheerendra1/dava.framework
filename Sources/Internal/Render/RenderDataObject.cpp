@@ -72,8 +72,10 @@ RenderDataObject::~RenderDataObject()
     //streamArray.clear();
     //streamMap.clear();
     
+#if defined(__DAVAENGINE_OPENGL__)
     if (vboBuffer)
         RENDER_VERIFY(glDeleteBuffers(1, &vboBuffer));
+#endif
 }
 
 RenderDataStream * RenderDataObject::SetStream(eVertexFormat formatMark, eVertexDataType vertexType, int32 size, int32 stride, void * pointer)
