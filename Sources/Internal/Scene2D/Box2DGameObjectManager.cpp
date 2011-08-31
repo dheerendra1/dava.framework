@@ -69,7 +69,7 @@ Box2DGameObjectManager::~Box2DGameObjectManager()
 	SafeDelete(box2DWorld);
 }
 	
-	Box2DGameObjectManager * Box2DGameObjectManager::Create(float32 stepTime, float32 pixelsInMeter, int32 velocityIterationsCount/* = 8*/, int32 positionIterationsCount/* = 2*/)
+Box2DGameObjectManager * Box2DGameObjectManager::Create(float32 stepTime, float32 pixelsInMeter, int32 velocityIterationsCount/* = 8*/, int32 positionIterationsCount/* = 2*/)
 {
 	Box2DGameObjectManager * manager = new Box2DGameObjectManager(stepTime, pixelsInMeter, velocityIterationsCount, positionIterationsCount);
 	return manager;
@@ -103,8 +103,6 @@ void Box2DGameObjectManager::Update(float32 timeElapsed)
 	currentTimeDelta += timeElapsed;
 	while (currentTimeDelta >= stepTimeDelta) 
 	{
-		
-		
 		// Instruct the world to perform a single step of simulation. It is
 		// generally best to keep the time step and iterations fixed.
 		box2DWorld->Step(stepTimeDelta, velocityIterations, positionIterations);
@@ -288,6 +286,10 @@ void Box2DGameObjectManager::PostSolve(b2Contact* contact, const b2ContactImpuls
 		}
 	}
 }
-	
-	
+
+void Box2DGameObjectManager::RemoveObject(Box2DGameObject * _object)
+{
+    _object->GetBox2DBody()->SetActive(false);
+    GameObjectManager::RemoveObject(_object);
+}
 };

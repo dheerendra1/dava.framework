@@ -43,7 +43,8 @@
 
 namespace DAVA 
 {
-
+    class Box2DGameObject;
+    
 class Box2DTileContactListener
 {
 public:
@@ -87,7 +88,9 @@ public:
 	virtual void BeginContact(b2Contact* contact);/// handle begin event 
 	virtual void EndContact(b2Contact* contact);/// handle end event 
 	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);/// handle pre-solve event 
-	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);/// handle post-solve event 
+	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);/// handle post-solve event
+    
+    virtual void RemoveObject(Box2DGameObject *_object);
 	
 protected:
 	Box2DDebugDraw * debugDraw;
