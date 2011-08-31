@@ -26,8 +26,6 @@
 		FECFB14912E58BC600C71562 /* b2CircleShape.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB0F012E58BC600C71562 /* b2CircleShape.h */; };
 		FECFB14A12E58BC600C71562 /* b2EdgeShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB0F112E58BC600C71562 /* b2EdgeShape.cpp */; };
 		FECFB14B12E58BC600C71562 /* b2EdgeShape.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB0F212E58BC600C71562 /* b2EdgeShape.h */; };
-		FECFB14C12E58BC600C71562 /* b2LoopShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB0F312E58BC600C71562 /* b2LoopShape.cpp */; };
-		FECFB14D12E58BC600C71562 /* b2LoopShape.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB0F412E58BC600C71562 /* b2LoopShape.h */; };
 		FECFB14E12E58BC600C71562 /* b2PolygonShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB0F512E58BC600C71562 /* b2PolygonShape.cpp */; };
 		FECFB14F12E58BC600C71562 /* b2PolygonShape.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB0F612E58BC600C71562 /* b2PolygonShape.h */; };
 		FECFB15012E58BC600C71562 /* b2Shape.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB0F712E58BC600C71562 /* b2Shape.h */; };
@@ -63,10 +61,6 @@
 		FECFB16E12E58BC600C71562 /* b2EdgeAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB11812E58BC600C71562 /* b2EdgeAndCircleContact.h */; };
 		FECFB16F12E58BC600C71562 /* b2EdgeAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB11912E58BC600C71562 /* b2EdgeAndPolygonContact.cpp */; };
 		FECFB17012E58BC600C71562 /* b2EdgeAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB11A12E58BC600C71562 /* b2EdgeAndPolygonContact.h */; };
-		FECFB17112E58BC600C71562 /* b2LoopAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB11B12E58BC600C71562 /* b2LoopAndCircleContact.cpp */; };
-		FECFB17212E58BC600C71562 /* b2LoopAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB11C12E58BC600C71562 /* b2LoopAndCircleContact.h */; };
-		FECFB17312E58BC600C71562 /* b2LoopAndPolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB11D12E58BC600C71562 /* b2LoopAndPolygonContact.cpp */; };
-		FECFB17412E58BC600C71562 /* b2LoopAndPolygonContact.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB11E12E58BC600C71562 /* b2LoopAndPolygonContact.h */; };
 		FECFB17512E58BC600C71562 /* b2PolygonAndCircleContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB11F12E58BC600C71562 /* b2PolygonAndCircleContact.cpp */; };
 		FECFB17612E58BC600C71562 /* b2PolygonAndCircleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB12012E58BC600C71562 /* b2PolygonAndCircleContact.h */; };
 		FECFB17712E58BC600C71562 /* b2PolygonContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB12112E58BC600C71562 /* b2PolygonContact.cpp */; };
@@ -79,8 +73,6 @@
 		FECFB17E12E58BC600C71562 /* b2GearJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB12912E58BC600C71562 /* b2GearJoint.h */; };
 		FECFB17F12E58BC600C71562 /* b2Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB12A12E58BC600C71562 /* b2Joint.cpp */; };
 		FECFB18012E58BC600C71562 /* b2Joint.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB12B12E58BC600C71562 /* b2Joint.h */; };
-		FECFB18112E58BC600C71562 /* b2LineJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB12C12E58BC600C71562 /* b2LineJoint.cpp */; };
-		FECFB18212E58BC600C71562 /* b2LineJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB12D12E58BC600C71562 /* b2LineJoint.h */; };
 		FECFB18312E58BC600C71562 /* b2MouseJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB12E12E58BC600C71562 /* b2MouseJoint.cpp */; };
 		FECFB18412E58BC600C71562 /* b2MouseJoint.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFB12F12E58BC600C71562 /* b2MouseJoint.h */; };
 		FECFB18512E58BC600C71562 /* b2PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFB13012E58BC600C71562 /* b2PrismaticJoint.cpp */; };
@@ -122,8 +114,6 @@
 		FECFB0F012E58BC600C71562 /* b2CircleShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2CircleShape.h; sourceTree = "<group>"; };
 		FECFB0F112E58BC600C71562 /* b2EdgeShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2EdgeShape.cpp; sourceTree = "<group>"; };
 		FECFB0F212E58BC600C71562 /* b2EdgeShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2EdgeShape.h; sourceTree = "<group>"; };
-		FECFB0F312E58BC600C71562 /* b2LoopShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2LoopShape.cpp; sourceTree = "<group>"; };
-		FECFB0F412E58BC600C71562 /* b2LoopShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2LoopShape.h; sourceTree = "<group>"; };
 		FECFB0F512E58BC600C71562 /* b2PolygonShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2PolygonShape.cpp; sourceTree = "<group>"; };
 		FECFB0F612E58BC600C71562 /* b2PolygonShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2PolygonShape.h; sourceTree = "<group>"; };
 		FECFB0F712E58BC600C71562 /* b2Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Shape.h; sourceTree = "<group>"; };
@@ -159,10 +149,6 @@
 		FECFB11812E58BC600C71562 /* b2EdgeAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2EdgeAndCircleContact.h; sourceTree = "<group>"; };
 		FECFB11912E58BC600C71562 /* b2EdgeAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2EdgeAndPolygonContact.cpp; sourceTree = "<group>"; };
 		FECFB11A12E58BC600C71562 /* b2EdgeAndPolygonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2EdgeAndPolygonContact.h; sourceTree = "<group>"; };
-		FECFB11B12E58BC600C71562 /* b2LoopAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2LoopAndCircleContact.cpp; sourceTree = "<group>"; };
-		FECFB11C12E58BC600C71562 /* b2LoopAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2LoopAndCircleContact.h; sourceTree = "<group>"; };
-		FECFB11D12E58BC600C71562 /* b2LoopAndPolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2LoopAndPolygonContact.cpp; sourceTree = "<group>"; };
-		FECFB11E12E58BC600C71562 /* b2LoopAndPolygonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2LoopAndPolygonContact.h; sourceTree = "<group>"; };
 		FECFB11F12E58BC600C71562 /* b2PolygonAndCircleContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2PolygonAndCircleContact.cpp; sourceTree = "<group>"; };
 		FECFB12012E58BC600C71562 /* b2PolygonAndCircleContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2PolygonAndCircleContact.h; sourceTree = "<group>"; };
 		FECFB12112E58BC600C71562 /* b2PolygonContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2PolygonContact.cpp; sourceTree = "<group>"; };
@@ -175,8 +161,6 @@
 		FECFB12912E58BC600C71562 /* b2GearJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2GearJoint.h; sourceTree = "<group>"; };
 		FECFB12A12E58BC600C71562 /* b2Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Joint.cpp; sourceTree = "<group>"; };
 		FECFB12B12E58BC600C71562 /* b2Joint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Joint.h; sourceTree = "<group>"; };
-		FECFB12C12E58BC600C71562 /* b2LineJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2LineJoint.cpp; sourceTree = "<group>"; };
-		FECFB12D12E58BC600C71562 /* b2LineJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2LineJoint.h; sourceTree = "<group>"; };
 		FECFB12E12E58BC600C71562 /* b2MouseJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2MouseJoint.cpp; sourceTree = "<group>"; };
 		FECFB12F12E58BC600C71562 /* b2MouseJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2MouseJoint.h; sourceTree = "<group>"; };
 		FECFB13012E58BC600C71562 /* b2PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2PrismaticJoint.cpp; sourceTree = "<group>"; };
@@ -299,8 +283,6 @@
 				FECFB0F012E58BC600C71562 /* b2CircleShape.h */,
 				FECFB0F112E58BC600C71562 /* b2EdgeShape.cpp */,
 				FECFB0F212E58BC600C71562 /* b2EdgeShape.h */,
-				FECFB0F312E58BC600C71562 /* b2LoopShape.cpp */,
-				FECFB0F412E58BC600C71562 /* b2LoopShape.h */,
 				FECFB0F512E58BC600C71562 /* b2PolygonShape.cpp */,
 				FECFB0F612E58BC600C71562 /* b2PolygonShape.h */,
 				FECFB0F712E58BC600C71562 /* b2Shape.h */,
@@ -359,10 +341,6 @@
 				FECFB11812E58BC600C71562 /* b2EdgeAndCircleContact.h */,
 				FECFB11912E58BC600C71562 /* b2EdgeAndPolygonContact.cpp */,
 				FECFB11A12E58BC600C71562 /* b2EdgeAndPolygonContact.h */,
-				FECFB11B12E58BC600C71562 /* b2LoopAndCircleContact.cpp */,
-				FECFB11C12E58BC600C71562 /* b2LoopAndCircleContact.h */,
-				FECFB11D12E58BC600C71562 /* b2LoopAndPolygonContact.cpp */,
-				FECFB11E12E58BC600C71562 /* b2LoopAndPolygonContact.h */,
 				FECFB11F12E58BC600C71562 /* b2PolygonAndCircleContact.cpp */,
 				FECFB12012E58BC600C71562 /* b2PolygonAndCircleContact.h */,
 				FECFB12112E58BC600C71562 /* b2PolygonContact.cpp */,
@@ -382,8 +360,6 @@
 				FECFB12912E58BC600C71562 /* b2GearJoint.h */,
 				FECFB12A12E58BC600C71562 /* b2Joint.cpp */,
 				FECFB12B12E58BC600C71562 /* b2Joint.h */,
-				FECFB12C12E58BC600C71562 /* b2LineJoint.cpp */,
-				FECFB12D12E58BC600C71562 /* b2LineJoint.h */,
 				FECFB12E12E58BC600C71562 /* b2MouseJoint.cpp */,
 				FECFB12F12E58BC600C71562 /* b2MouseJoint.h */,
 				FECFB13012E58BC600C71562 /* b2PrismaticJoint.cpp */,
@@ -415,7 +391,6 @@
 				FECFB14712E58BC600C71562 /* b2TimeOfImpact.h in Headers */,
 				FECFB14912E58BC600C71562 /* b2CircleShape.h in Headers */,
 				FECFB14B12E58BC600C71562 /* b2EdgeShape.h in Headers */,
-				FECFB14D12E58BC600C71562 /* b2LoopShape.h in Headers */,
 				FECFB14F12E58BC600C71562 /* b2PolygonShape.h in Headers */,
 				FECFB15012E58BC600C71562 /* b2Shape.h in Headers */,
 				FECFB15212E58BC600C71562 /* b2BlockAllocator.h in Headers */,
@@ -435,15 +410,12 @@
 				FECFB16C12E58BC600C71562 /* b2ContactSolver.h in Headers */,
 				FECFB16E12E58BC600C71562 /* b2EdgeAndCircleContact.h in Headers */,
 				FECFB17012E58BC600C71562 /* b2EdgeAndPolygonContact.h in Headers */,
-				FECFB17212E58BC600C71562 /* b2LoopAndCircleContact.h in Headers */,
-				FECFB17412E58BC600C71562 /* b2LoopAndPolygonContact.h in Headers */,
 				FECFB17612E58BC600C71562 /* b2PolygonAndCircleContact.h in Headers */,
 				FECFB17812E58BC600C71562 /* b2PolygonContact.h in Headers */,
 				FECFB17A12E58BC600C71562 /* b2DistanceJoint.h in Headers */,
 				FECFB17C12E58BC600C71562 /* b2FrictionJoint.h in Headers */,
 				FECFB17E12E58BC600C71562 /* b2GearJoint.h in Headers */,
 				FECFB18012E58BC600C71562 /* b2Joint.h in Headers */,
-				FECFB18212E58BC600C71562 /* b2LineJoint.h in Headers */,
 				FECFB18412E58BC600C71562 /* b2MouseJoint.h in Headers */,
 				FECFB18612E58BC600C71562 /* b2PrismaticJoint.h in Headers */,
 				FECFB18812E58BC600C71562 /* b2PulleyJoint.h in Headers */,
@@ -516,7 +488,6 @@
 				FECFB14612E58BC600C71562 /* b2TimeOfImpact.cpp in Sources */,
 				FECFB14812E58BC600C71562 /* b2CircleShape.cpp in Sources */,
 				FECFB14A12E58BC600C71562 /* b2EdgeShape.cpp in Sources */,
-				FECFB14C12E58BC600C71562 /* b2LoopShape.cpp in Sources */,
 				FECFB14E12E58BC600C71562 /* b2PolygonShape.cpp in Sources */,
 				FECFB15112E58BC600C71562 /* b2BlockAllocator.cpp in Sources */,
 				FECFB15412E58BC600C71562 /* b2Math.cpp in Sources */,
@@ -533,15 +504,12 @@
 				FECFB16B12E58BC600C71562 /* b2ContactSolver.cpp in Sources */,
 				FECFB16D12E58BC600C71562 /* b2EdgeAndCircleContact.cpp in Sources */,
 				FECFB16F12E58BC600C71562 /* b2EdgeAndPolygonContact.cpp in Sources */,
-				FECFB17112E58BC600C71562 /* b2LoopAndCircleContact.cpp in Sources */,
-				FECFB17312E58BC600C71562 /* b2LoopAndPolygonContact.cpp in Sources */,
 				FECFB17512E58BC600C71562 /* b2PolygonAndCircleContact.cpp in Sources */,
 				FECFB17712E58BC600C71562 /* b2PolygonContact.cpp in Sources */,
 				FECFB17912E58BC600C71562 /* b2DistanceJoint.cpp in Sources */,
 				FECFB17B12E58BC600C71562 /* b2FrictionJoint.cpp in Sources */,
 				FECFB17D12E58BC600C71562 /* b2GearJoint.cpp in Sources */,
 				FECFB17F12E58BC600C71562 /* b2Joint.cpp in Sources */,
-				FECFB18112E58BC600C71562 /* b2LineJoint.cpp in Sources */,
 				FECFB18312E58BC600C71562 /* b2MouseJoint.cpp in Sources */,
 				FECFB18512E58BC600C71562 /* b2PrismaticJoint.cpp in Sources */,
 				FECFB18712E58BC600C71562 /* b2PulleyJoint.cpp in Sources */,
