@@ -58,7 +58,7 @@ void FrameworkDidLaunched()
 //	appOptions->SetInt("fullscreen.width",	1024);
 //	appOptions->SetInt("fullscreen.height", 768);
 
-	
+    
 	appOptions->SetInt("fullscreen", 0);
 	appOptions->SetInt("bpp", 32); 
 
