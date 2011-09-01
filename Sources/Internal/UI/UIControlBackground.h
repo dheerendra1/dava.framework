@@ -232,7 +232,7 @@ protected:
 	int colorInheritType;
 	
 	Vector2 lastDrawPos;
-	
+	RenderDataObject * rdoObject;
 protected:
 	~UIControlBackground();
 	Color drawColor;

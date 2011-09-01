@@ -46,7 +46,6 @@ Map<String, Sprite*> spriteMap;
 static int32 fboCounter = 0;
 Vector<Vector2> Sprite::clippedTexCoords;
 Vector<Vector2> Sprite::clippedVertices;
-RenderDataObject * Sprite::spriteRenderObject = 0;
 
 Sprite::Sprite()
 {
@@ -76,10 +75,7 @@ Sprite::Sprite()
 	
 	resourceToPhysicalFactor = 1.0f;
     
-    if (!spriteRenderObject)
-    {
-        spriteRenderObject = new RenderDataObject(); // create single render data object to save memory. it will not be released. 
-    }
+    spriteRenderObject = new RenderDataObject();
     vertexStream = spriteRenderObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
     texCoordStream  = spriteRenderObject->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, 0);    
 }
@@ -531,6 +527,8 @@ int32 Sprite::Release()
 	
 void Sprite::Clear()
 {
+	SafeRelease(spriteRenderObject);
+
 	SafeDeleteArray(polyIndeces);
 	SafeDeleteArray(polyArray);
 	
@@ -903,35 +901,48 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
 		}
 		else 
 		{
-			//135
-            //			tempVertices[0] = frameVertices[frame][0] + x;//x1
-            //			tempVertices[1] = frameVertices[frame][1] + y;//y1
-            //			tempVertices[2] = frameVertices[frame][2] + x;//x2
-            //			tempVertices[3] = frameVertices[frame][3] + y;//y1
-            //			tempVertices[4] = frameVertices[frame][4] + x;//x1
-            //			tempVertices[5] = frameVertices[frame][5] + y;//y2
-            //			tempVertices[6] = frameVertices[frame][6] + x;//x2
-            //			tempVertices[7] = frameVertices[frame][7] + y;//y2
-            
-			//134
-			tempVertices[0] = tempVertices[4] = frameVertices[frame][0] + x;//x1
-			tempVertices[5] = tempVertices[7] = frameVertices[frame][5] + y;//y2
-			tempVertices[1] = tempVertices[3] = frameVertices[frame][1] + y;//y1
-			tempVertices[2] = tempVertices[6] = frameVertices[frame][2] + x;//x2
-            
-			//136
-            //			float x1 = frameVertices[frame][0] + x;//x1
-            //			float y2 = frameVertices[frame][5] + y;//y2
-            //			float y1 = frameVertices[frame][1] + y;//y2
-            //			float x2 = frameVertices[frame][2] + x;//x2
-            //			tempVertices[0] = x1;
-            //			tempVertices[7] = y2;
-            //			tempVertices[1] = y1;
-            //			tempVertices[2] = x2;
-            //			tempVertices[3] = y1;
-            //			tempVertices[4] = x1;
-            //			tempVertices[5] = y2;
-            //			tempVertices[6] = x2;
+			if(state && state->usePerPixelAccuracy && !(flags & EST_ROTATE))
+			{
+				tempVertices[0] = tempVertices[4] = floorf((frameVertices[frame][0] + x) * Core::GetVirtualToPhysicalFactor() + 0.5f);//x1
+				tempVertices[1] = tempVertices[3] = floorf((frameVertices[frame][1] + y) * Core::GetVirtualToPhysicalFactor() + 0.5f);//y1
+				tempVertices[2] = tempVertices[6] = (frameVertices[frame][2] - frameVertices[frame][0]) * Core::GetVirtualToPhysicalFactor() + tempVertices[0];//x2
+				tempVertices[5] = tempVertices[7] = (frameVertices[frame][5] - frameVertices[frame][1]) * Core::GetVirtualToPhysicalFactor() + tempVertices[1];//y2
+			
+				RenderManager::Instance()->SetPhysicalViewScale();
+			}
+			else
+			{
+				//135
+				//			tempVertices[0] = frameVertices[frame][0] + x;//x1
+				//			tempVertices[1] = frameVertices[frame][1] + y;//y1
+				//			tempVertices[2] = frameVertices[frame][2] + x;//x2
+				//			tempVertices[3] = frameVertices[frame][3] + y;//y1
+				//			tempVertices[4] = frameVertices[frame][4] + x;//x1
+				//			tempVertices[5] = frameVertices[frame][5] + y;//y2
+				//			tempVertices[6] = frameVertices[frame][6] + x;//x2
+				//			tempVertices[7] = frameVertices[frame][7] + y;//y2
+
+				//134
+				tempVertices[0] = tempVertices[4] = frameVertices[frame][0] + x;//x1
+				tempVertices[5] = tempVertices[7] = frameVertices[frame][5] + y;//y2
+				tempVertices[1] = tempVertices[3] = frameVertices[frame][1] + y;//y1
+				tempVertices[2] = tempVertices[6] = frameVertices[frame][2] + x;//x2
+
+				//136
+				//			float x1 = frameVertices[frame][0] + x;//x1
+				//			float y2 = frameVertices[frame][5] + y;//y2
+				//			float y1 = frameVertices[frame][1] + y;//y2
+				//			float x2 = frameVertices[frame][2] + x;//x2
+				//			tempVertices[0] = x1;
+				//			tempVertices[7] = y2;
+				//			tempVertices[1] = y1;
+				//			tempVertices[2] = x2;
+				//			tempVertices[3] = y1;
+				//			tempVertices[4] = x1;
+				//			tempVertices[5] = y2;
+				//			tempVertices[6] = x2;
+			}
+			
 		}
         
 	}
@@ -997,6 +1008,8 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         vertexCount = clipPolygon->pointCount;
 	}
 
+	DVASSERT(vertexStream->pointer != 0);
+	DVASSERT(texCoordStream->pointer != 0);
 }
 
 void Sprite::Draw()
@@ -1038,21 +1051,21 @@ void Sprite::Draw()
 	
 void Sprite::Draw(DrawState * state)
 {
-    PrepareSpriteRenderData(state);
-	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-    RenderManager::Instance()->SetRenderData(spriteRenderObject);
-
 	if (state->usePerPixelAccuracy) 
 		RenderManager::Instance()->PushMappingMatrix();
-    
-    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
-    RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
-    RenderManager::Instance()->RestoreRenderEffect();
 
-	
+	PrepareSpriteRenderData(state);
+	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
+	RenderManager::Instance()->SetRenderData(spriteRenderObject);
+
+	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
+	RenderManager::Instance()->RestoreRenderEffect();
+
+
 	if (state->usePerPixelAccuracy) 
 		RenderManager::Instance()->PopMappingMatrix();
-	
+
 }
 
 void Sprite::DrawPoints(Vector2 *verticies, Vector2 *textureCoordinates)

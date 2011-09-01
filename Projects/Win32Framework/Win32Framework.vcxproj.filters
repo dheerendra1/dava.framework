@@ -97,6 +97,9 @@
     <Filter Include="Internal\Utils">
       <UniqueIdentifier>{190e9a7b-9cd9-4a83-86a7-64af948b776d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Internal\Render\Effects">
+      <UniqueIdentifier>{61100d52-442d-45fd-b286-f3baf188d2bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\External\Box2D\Box2D.h">
@@ -870,6 +873,21 @@
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonContact.h">
       <Filter>External\Box2D\Dynamics\Contacts</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\RenderDataObject.h">
+      <Filter>Internal\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Scene3D\Frustum.h">
+      <Filter>Internal\Scene3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.h">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.h">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.h">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2BroadPhase.cpp">
@@ -1486,6 +1504,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\Contacts\b2PolygonContact.cpp">
       <Filter>External\Box2D\Dynamics\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\RenderDataObject.cpp">
+      <Filter>Internal\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Scene3D\Frustum.cpp">
+      <Filter>Internal\Scene3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.cpp">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.cpp">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.cpp">
+      <Filter>Internal\Render\Effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

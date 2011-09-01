@@ -343,7 +343,7 @@ private:
     // For rendering of clipped objects
     static Vector<Vector2> clippedTexCoords;
     static Vector<Vector2> clippedVertices;
-    static RenderDataObject * spriteRenderObject;
+    RenderDataObject * spriteRenderObject;
 };
 	
 	

@@ -269,14 +269,15 @@ void RenderManager::SetRenderData(RenderDataObject * object)
     
 void RenderManager::AttachRenderData(Shader * shader)
 {
+	RenderManager::Instance()->LockNonMain();
     if (!shader)
     {
         // TODO: should be moved to RenderManagerGL
 #if defined(__DAVAENGINE_OPENGL__)
 	#if defined(__DAVAENGINE_MACOS__)
-			glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+			RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer));
 	#else
-			glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+			RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer));
 	#endif
 #elif defined(__DAVAENGINE_DIRECTX9__)
 	DVASSERT(currentRenderData->vboBuffer == 0);
@@ -325,6 +326,7 @@ void RenderManager::AttachRenderData(Shader * shader)
 //        }
 //    }
 //    pointerArraysRendererState = pointerArraysCurrentState;
+	RenderManager::Instance()->UnlockNonMain();
 }
 
 void RenderManager::EnableTexturing(bool isEnabled)
