@@ -32,24 +32,27 @@
 #include "Render/2D/Sprite.h"
 #include "Utils/Utils.h"
 #include "Core/Core.h"
+#include "Render/Shader.h"
+#include "Render/RenderDataObject.h"
+#include "Render/Effects/ColorOnlyEffect.h"
+#include "Render/Effects/TextureMulColorEffect.h"
+
 
 namespace DAVA
 {
+    
+RenderEffect * RenderManager::FLAT_COLOR = 0;
+RenderEffect * RenderManager::TEXTURE_MUL_FLAT_COLOR = 0;
 
-
+    
 RenderManager::RenderManager(Core::eRenderer _renderer)
 {
 	Logger::Debug("[RenderManager] created");
     renderer = _renderer;
     
-	oldR = 0;
-	oldG = 0;
-	oldB = 0;
-	oldA = 0;
-	newR = 0;
-	newG = 0;
-	newB = 0;
-	newA = 0;
+	oldColor = Color::Clear();
+    newColor = Color::Clear();
+
 	oldSFactor = BLEND_NONE;
 	oldDFactor = BLEND_NONE;
 	newSFactor = BLEND_NONE;
@@ -64,6 +67,7 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	oldBlendingEnabled = 0;
     depthWriteEnabled = 0;
     depthTestEnabled = 0;
+    
 	renderOrientation = 0;
 	currentRenderTarget = NULL;
 	
@@ -101,24 +105,18 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	backBufferSurface = 0;
 #endif
 	cursor = 0;
+    currentRenderData = 0;
+    pointerArraysCurrentState = 0;
+    pointerArraysRendererState = 0;
     
-#if defined(__DAVAENGINE_OPENGL__)
-    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
-    {
-        InitGL20();
-    }
-#endif
+    statsFrameCountToShowDebug = 0;
+    frameToShowDebugStats = -1;
 }
 	
 RenderManager::~RenderManager()
 {
-#if defined(__DAVAENGINE_OPENGL__)
-    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
-    {
-        ReleaseGL20();
-    }
-#endif
-
+    SafeRelease(FLAT_COLOR);
+    SafeRelease(TEXTURE_MUL_FLAT_COLOR);
 	SafeRelease(cursor);
 	Logger::Debug("[RenderManager] released");
 }
@@ -135,14 +133,19 @@ bool RenderManager::IsInsideDraw()
 
 void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 {
+    FLAT_COLOR = ColorOnlyEffect::Create(renderer);
+    TEXTURE_MUL_FLAT_COLOR = TextureMulColorEffect::Create(renderer);
+    
+    
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
-	Logger::Debug("[RenderManager::Init] orientation: %d x %d", frameBufferWidth, frameBufferHeight);
+    const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
+	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
 }
 
 void RenderManager::Reset()
 {
-	oldR = oldG = oldB = oldA = -1;
+	oldColor.r = oldColor.g = oldColor.b = oldColor.a = -1.0f;
 	ResetColor();
 //#if defined(__DAVAENGINE_OPENGL__)
 	oldSFactor = oldDFactor = BLEND_NONE;
@@ -151,8 +154,6 @@ void RenderManager::Reset()
 	newTextureEnabled = oldTextureEnabled = -1;
 	oldVertexArrayEnabled = -1;
 	oldTextureCoordArrayEnabled = -1;
-    depthWriteEnabled = -1;
-    depthTestEnabled = -1;
 #if defined(__DAVAENGINE_OPENGL__)
 	oldBlendingEnabled = -1;
 #endif 	
@@ -193,43 +194,45 @@ int32 RenderManager::GetScreenHeight()
 
 void RenderManager::SetColor(float r, float g, float b, float a)
 {
-	newR = r;
-	newG = g;
-	newB = b;
-	newA = a;
+	newColor.r = r;
+	newColor.g = g;
+	newColor.b = b;
+	newColor.a = a;
 }
 	
 void RenderManager::SetColor(const Color & _color)
 {
-	newR = _color.r;
-	newG = _color.g;
-	newB = _color.b;
-	newA = _color.a;
+	newColor = _color;
 }
 	
 float RenderManager::GetColorR()
 {
-	return newR;
+	return newColor.r;
 }
 	
 float RenderManager::GetColorG()
 {
-	return newG;
+	return newColor.g;
 }
 	
 float RenderManager::GetColorB()
 {
-	return newB;
+	return newColor.b;
 }
 	
 float RenderManager::GetColorA()
 {
-	return newA;
+	return newColor.a;
+}
+    
+const Color & RenderManager::GetColor() const
+{
+    return newColor;
 }
 
 void RenderManager::ResetColor()
 {
-	newA = newR = newG = newB = 1.0f;
+	newColor.r = newColor.g = newColor.b = newColor.a = 1.0f;
 }
 	
 	
@@ -244,18 +247,12 @@ void RenderManager::SetTexture(Texture *texture)
 			{
 				Logger::Debug("Bind texture: id %d", currentTexture->id);
 			}
-			if(!currentRenderEffect)
-			{
+            
 #if defined(__DAVAENGINE_OPENGL__)
-				RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, currentTexture->id));
+            RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, currentTexture->id));
 #elif defined(__DAVAENGINE_DIRECTX9__)
-				RENDER_VERIFY(GetD3DDevice()->SetTexture(0, currentTexture->id));
+            RENDER_VERIFY(GetD3DDevice()->SetTexture(0, currentTexture->id));
 #endif 
-			}
-			else
-			{
-				currentRenderEffect->SetTexture(currentTexture);
-			}
 		}
 	}
 }
@@ -265,75 +262,74 @@ Texture *RenderManager::GetTexture()
 	return currentTexture;	
 }
 
+void RenderManager::SetRenderData(RenderDataObject * object)
+{
+    currentRenderData = object;
+}
+    
+void RenderManager::AttachRenderData(Shader * shader)
+{
+    if (!shader)
+    {
+        // TODO: should be moved to RenderManagerGL
+#if defined(__DAVAENGINE_OPENGL__)
+	#if defined(__DAVAENGINE_MACOS__)
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+	#else
+			glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+	#endif
+#elif defined(__DAVAENGINE_DIRECTX9__)
+	DVASSERT(currentRenderData->vboBuffer == 0);
+#endif
+        pointerArraysCurrentState = 0;
+        int32 size = (int32)currentRenderData->streamArray.size();
+        for (int32 k = 0; k < size; ++k)
+        {
+            RenderDataStream * stream = currentRenderData->streamArray[k];
+            switch(stream->formatMark)
+            {
+                case EVF_VERTEX:
+                    SetVertexPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_VERTEX;
+                    break;
+                case EVF_TEXCOORD0:
+                    SetTexCoordPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_TEXCOORD0;
+                    break;
+                default:
+                    break;
+            };
+        };
+        
+        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
+
+        if (difference & EVF_VERTEX)
+        {
+            EnableVertexArray(pointerArraysCurrentState & EVF_VERTEX);
+        }
+        if (difference & EVF_TEXCOORD0)
+        {
+            EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
+        }
+        pointerArraysRendererState = pointerArraysCurrentState;
+    }
+//    for (uint32 formatFlag = EVF_LOWER_BIT; formatFlag <= EVF_HIGHER_BIT; formatFlag >>= 1)
+//    {
+//        if (formatFlag & EVF_VERTEX)
+//        {
+//            
+//        }
+//        if (formatFlag & EVF_TEXCOORD0)
+//        {
+//            
+//        }
+//    }
+//    pointerArraysRendererState = pointerArraysCurrentState;
+}
 
 void RenderManager::EnableTexturing(bool isEnabled)
 {
 	newTextureEnabled = isEnabled;
-}
-
-static GLfloat fillVertices[8];
-
-void RenderManager::FillRect(const Rect & rect)
-{
-	EnableTexturing(false);
-	
-    fillVertices[0] = rect.x;						
-	fillVertices[1] = rect.y;
-	fillVertices[2] = rect.x + rect.dx;
-	fillVertices[3] = rect.y;
-	fillVertices[4] = rect.x;						
-	fillVertices[5] = rect.y + rect.dy;
-	fillVertices[6] = rect.x + rect.dx;			
-	fillVertices[7] = rect.y + rect.dy;
-
-	SetVertexPointer(2, TYPE_FLOAT, 0, fillVertices);
-	EnableVertexArray(true);
-	EnableTextureCoordArray(false);
-	
-	FlushState();
-	DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-
-	EnableTextureCoordArray(true);	
-	EnableTexturing(true);
-}
-	
-void RenderManager::DrawRect(const Rect & rect)
-{
-	EnableTexturing(false);
-	
-	GLfloat spriteVertices[] = 
-	{
-		rect.x			,			rect.y,
-		rect.x + rect.dx,			rect.y,
-		rect.x + rect.dx,			rect.y + rect.dy,
-		rect.x			,			rect.y + rect.dy,
-		rect.x			,			rect.y,
-	};
-	SetVertexPointer(2, TYPE_FLOAT, 0, spriteVertices);
-	
-	FlushState();
-	DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 5);
-	
-	EnableTexturing(true);
-}
-
-void RenderManager::DrawLine(const Vector2 &start, const Vector2 &end)
-{
-	EnableTexturing(false);
-		
-		
-	GLfloat lineVertices[] = 
-	{
-		start.x,	start.y,
-		end.x,		end.y
-	};
-	SetVertexPointer(2, TYPE_FLOAT, 0, lineVertices);
-		
-	FlushState();
-	DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
-		
-		
-	EnableTexturing(true);
 }
 		
 void RenderManager::SetClip(const Rect &rect)
@@ -419,7 +415,7 @@ bool RenderManager::IsRenderTarget()
 {
 	return currentRenderTarget != NULL;
 }
-
+    
 bool RenderManager::IsDepthTestEnabled()
 {
     return depthTestEnabled > 0;
@@ -433,19 +429,8 @@ bool RenderManager::IsDepthWriteEnabled()
 
 void RenderManager::SetNewRenderEffect(RenderEffect *renderEffect)
 {
-	if(currentRenderEffect)
-	{
-		currentRenderEffect->StopEffect();
-	}
-	
 	SafeRelease(currentRenderEffect);
-
 	currentRenderEffect = SafeRetain(renderEffect);
-	
-	if(currentRenderEffect)
-	{
-		currentRenderEffect->StartEffect();
-	}
 }
 
 void RenderManager::SetRenderEffect(RenderEffect *renderEffect)
@@ -460,6 +445,18 @@ void RenderManager::RestoreRenderEffect()
 	renderEffectStack.pop();
 	SetNewRenderEffect(renderEffect);
 	SafeRelease(renderEffect);
+}
+
+void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+	if (currentRenderEffect)
+		currentRenderEffect->DrawElements(type, count, indexFormat, indices);
+}
+
+void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+{
+	if (currentRenderEffect)
+		currentRenderEffect->DrawArrays(type, first, count);
 }
 
 void RenderManager::Lock()
@@ -626,6 +623,11 @@ const RenderManager::Caps & RenderManager::GetCaps()
 	return caps;
 }
     
+const RenderManager::Stats & RenderManager::GetStats()
+{
+    return stats;
+}
+    
 void RenderManager::RectFromRenderOrientationToViewport(Rect & rect)
 {
     switch(renderOrientation)
@@ -671,7 +673,7 @@ const Matrix4 & RenderManager::GetUniformMatrix(eUniformMatrixType type)
     {
         if (type == UNIFORM_MATRIX_MODELVIEWPROJECTION)
         {
-            uniformMatrices[type] = matrices[MATRIX_MODELVIEW] * matrices[MATRIX_PROJECTION];
+            uniformMatrices[type] =  matrices[MATRIX_MODELVIEW] * matrices[MATRIX_PROJECTION];
         }
         uniformMatrixFlags[type] = 1; // matrix is ready
     }
@@ -683,5 +685,33 @@ void RenderManager::ClearUniformMatrices()
     for (int32 k = 0; k < UNIFORM_MATRIX_COUNT; ++k)
         uniformMatrixFlags[k] = 0;
 }
+    
+void RenderManager::Stats::Clear()
+{
+    drawArraysCalls = 0;
+    drawElementsCalls = 0;
+    for (int32 k = 0; k < PRIMITIVETYPE_COUNT; ++k)
+        primitiveCount[k] = 0;
+}
+
+void RenderManager::EnableOutputDebugStatsEveryNFrame(int32 _frameToShowDebugStats)
+{
+    frameToShowDebugStats = _frameToShowDebugStats;
+}
+
+void RenderManager::ProcessStats()
+{
+    if (frameToShowDebugStats == -1)return;
+    
+    statsFrameCountToShowDebug++;
+    if (statsFrameCountToShowDebug >= frameToShowDebugStats)
+    {
+        statsFrameCountToShowDebug = 0;
+        Logger::Debug("== Frame stats: DrawArraysCount: %d DrawElementCount: %d ==", stats.drawArraysCalls, stats.drawElementsCalls);
+        for (int32 k = 0; k < PRIMITIVETYPE_COUNT; ++k)
+            Logger::Debug("== Primitive Stats: %d ==", stats.primitiveCount[k]);
+    }
+}
+
 	
 };

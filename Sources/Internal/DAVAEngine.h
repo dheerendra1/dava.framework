@@ -149,7 +149,7 @@
 #include "UI/UIScreenManager.h"
 
 
-// Game object manager
+// Game object manager / 2D Scene
 #include "Scene2D/GameObject.h"
 #include "Scene2D/GameObjectManager.h"
 #include "Collision/CollisionObject2.h"
@@ -178,7 +178,7 @@
 #include "Render/3D/StaticMesh.h"
 #include "Render/3D/PolygonGroup.h"
 
-// 2D scene management
+// 3D scene management
 #include "Scene3D/Scene.h"
 #include "Scene3D/SceneNode.h"
 #include "Scene3D/SceneNode2d.h"
@@ -186,6 +186,7 @@
 #include "Scene3D/SpriteNode.h"
 #include "Scene3D/StateNode.h"
 #include "Scene3D/MeshInstanceNode.h"
+#include "Scene3D/LandscapeNode.h"
 
 
 // Application core 

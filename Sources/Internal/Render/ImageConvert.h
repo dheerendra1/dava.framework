@@ -34,7 +34,7 @@ namespace DAVA
 
 struct ConvertRGBA8888toRGBA4444
 {
-	inline void operator()(uint32 * input, uint16 *output)
+	inline void operator()(const uint32 * input, uint16 *output)
 	{
 		uint32 pixel = *input;
 		uint32 a = ((pixel >> 24) & 0xFF) >> 4;
@@ -93,12 +93,12 @@ public:
                     void * outData, uint32 outWidth, uint32 outHeight, uint32 outPitch)
     {
 		CONVERT_FUNC func;
-        uint8 * readPtr = reinterpret_cast<uint8*>(inData);
+        const uint8 * readPtr = reinterpret_cast<const uint8*>(inData);
         uint8 * writePtr = reinterpret_cast<uint8*>(outData);
         
         for (uint32 y = 0; y < inHeight; ++y)
         {
-            TYPE_IN * readPtrLine = reinterpret_cast<TYPE_IN*>(readPtr);
+            const TYPE_IN * readPtrLine = reinterpret_cast<const TYPE_IN*>(readPtr);
             TYPE_OUT * writePtrLine = reinterpret_cast<TYPE_OUT*>(writePtr);
             for (uint32 x = 0; x < inWidth; ++x)
             {

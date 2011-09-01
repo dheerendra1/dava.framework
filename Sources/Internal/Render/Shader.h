@@ -32,6 +32,7 @@
 
 #include "Render/RenderBase.h"
 #include "Render/RenderResource.h"
+#include "Render/VertexBuffer.h"
 
 namespace DAVA
 {
@@ -57,8 +58,7 @@ public:
         UNIFORM_COLOR,
         UNIFORM_COUNT,
     };
-    
-    
+
     Shader();
     virtual ~Shader();
     
@@ -66,8 +66,14 @@ public:
     virtual bool LoadFromYaml(const String & pathname);
     virtual void Set();
     virtual int32 FindUniformLocationByName(const String & name);
-//  virtual uint32 GetInParams(); 
+    int32 GetAttributeIndex(eVertexFormat vertexFormat);
 
+    /**
+        This function return vertex format required by shader
+     */
+    //virtual uint32 GetVertexFormat();
+    //virtual uint32 GetAttributeIndex(eVertexFormat fmt);
+    
 private:
 #if defined(__DAVAENGINE_DIRECTX9__)
     
@@ -77,16 +83,24 @@ private:
     GLuint fragmentShader;
     GLuint program;
     
+    String * attributeNames;
     GLint activeAttributes;
     GLint activeUniforms;
+    
+    
     eUniform *uniformIDs;
     String * uniformNames;
     GLint * uniformLocations;
+    
+    int32 vertexFormatAttribIndeces[VERTEX_FORMAT_STREAM_MAX_COUNT];
     
     GLint CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources);    
     GLint LinkProgram(GLuint prog);
     void DeleteShaders();
     eUniform GetUniformByName(const char * name);
+    int32 GetAttributeIndexByName(const char * name);
+    
+    static GLuint activeProgram;
 #endif
 };
 };

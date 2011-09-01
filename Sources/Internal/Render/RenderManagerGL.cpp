@@ -127,7 +127,7 @@ bool RenderManager::IsDeviceLost()
 
 void RenderManager::BeginFrame()
 {
-    
+    stats.Clear();
 	RENDER_VERIFY(glViewport(0, 0, frameBufferWidth, frameBufferHeight));
 	
 	SetRenderOrientation(Core::Instance()->GetScreenOrientation());
@@ -181,8 +181,9 @@ void RenderManager::PrepareRealMatrix()
         glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
         glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
         
+        glTranslate = glScale * glTranslate;
         // todo replace with offset calculations
-        SetMatrix(MATRIX_MODELVIEW, glScale * glTranslate);
+        SetMatrix(MATRIX_MODELVIEW, glTranslate);
     }
 }
 	
@@ -201,6 +202,8 @@ void RenderManager::EndFrame()
     
 void RenderManager::SetViewport(const Rect & rect)
 {
+    PrepareRealMatrix();
+    
 	int32 x = (int32)(rect.x * currentDrawScale.x + currentDrawOffset.x);
 	int32 y = (int32)(rect.y * currentDrawScale.y + currentDrawOffset.y);
 	int32 width, height;
@@ -456,21 +459,12 @@ void RenderManager::FlushState()
 		oldSFactor = newSFactor;
 		oldDFactor = newDFactor;
 	}
-	if(oldR != newR || oldG != newG || oldB != newB || oldA != newA)
+	if(oldColor != newColor)
 	{
-		if(!currentRenderEffect)
-		{
-			RENDER_VERIFY(glColor4f(newR * newA, newG * newA, newB * newA, newA));
-		}
-		else
-		{
-			currentRenderEffect->SetColor(newR, newG, newB, newA);
-		}
-		oldR = newR;
-		oldG = newG;
-		oldB = newB;
-		oldA = newA;
-	}
+        if (renderer != Core::RENDERER_OPENGL_ES_2_0)
+            RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
+		oldColor = newColor;
+	}   
 	if(newTextureEnabled != oldTextureEnabled)
 	{
 		if(newTextureEnabled)
@@ -487,63 +481,31 @@ void RenderManager::FlushState()
 	PrepareRealMatrix();
 }
 
-GLint types[TYPE_COUNT] = {GL_FLOAT};
-
 void RenderManager::SetTexCoordPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glTexCoordPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		currentRenderEffect->SetTexCoordPointer(size, type, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glTexCoordPointer(size, type, stride, pointer));
 }
 
 void RenderManager::SetVertexPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glVertexPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		currentRenderEffect->SetVertexPointer(size, type, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glVertexPointer(size, type, stride, pointer));
 }
 
 void RenderManager::SetNormalPointer(eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glNormalPointer(type, stride, pointer));
-	}
-	else
-	{
-		// TODO
-		//currentRenderEffect->SetVertexPointer(size, _typeIndex, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glNormalPointer(type, stride, pointer));
 }
 
 void RenderManager::SetColorPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
 {
-	GLint type = types[_typeIndex];
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glColorPointer(size, type, stride, pointer));
-	}
-	else
-	{
-		// TODO
-		//currentRenderEffect->SetVertexPointer(size, _typeIndex, stride, pointer);
-	}
+	GLint type = VERTEX_DATA_TYPE_TO_GL[_typeIndex];
+    RENDER_VERIFY(glColorPointer(size, type, stride, pointer));
 }
 
-void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 {
 	const int32 types[PRIMITIVETYPE_COUNT] = 
 	{
@@ -562,17 +524,32 @@ void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
 		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
 	}
 
-	if(!currentRenderEffect)
-	{
-		RENDER_VERIFY(glDrawArrays(mode, first, count));
-	}
-	else
-	{
-		currentRenderEffect->DrawArrays(mode, first, count);
-	}
+    RENDER_VERIFY(glDrawArrays(mode, first, count));
+    stats.drawArraysCalls++;
+    switch(type)
+    {
+        case PRIMITIVETYPE_POINTLIST: 
+            stats.primitiveCount[type] += count;
+            break;
+        case PRIMITIVETYPE_LINELIST:
+            stats.primitiveCount[type] += count / 2;
+            break;
+        case PRIMITIVETYPE_LINESTRIP:
+            stats.primitiveCount[type] += count - 1;
+            break;
+        case PRIMITIVETYPE_TRIANGLELIST:
+            stats.primitiveCount[type] += count / 3;
+            break;
+        case PRIMITIVETYPE_TRIANGLEFAN:
+        case PRIMITIVETYPE_TRIANGLESTRIP:
+            stats.primitiveCount[type] += count - 2;
+            break;
+        default:
+            break;
+    };
 }
-
-void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+    
+void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
 	const int32 types[PRIMITIVETYPE_COUNT] = 
 	{
@@ -601,6 +578,28 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 	};
 	
 	RENDER_VERIFY(glDrawElements(mode, count, indexTypes[indexFormat], indices));
+    stats.drawElementsCalls++;
+    switch(type)
+    {
+        case PRIMITIVETYPE_POINTLIST: 
+            stats.primitiveCount[type] += count;
+            break;
+        case PRIMITIVETYPE_LINELIST:
+            stats.primitiveCount[type] += count / 2;
+            break;
+        case PRIMITIVETYPE_LINESTRIP:
+            stats.primitiveCount[type] += count - 1;
+            break;
+        case PRIMITIVETYPE_TRIANGLELIST:
+            stats.primitiveCount[type] += count / 3;
+            break;
+        case PRIMITIVETYPE_TRIANGLEFAN:
+        case PRIMITIVETYPE_TRIANGLESTRIP:
+            stats.primitiveCount[type] += count - 2;
+            break;
+        default:
+            break;
+    };
 }
 
 void RenderManager::ClearWithColor(float32 r, float32 g, float32 b, float32 a)
@@ -721,32 +720,36 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
 {
     GLint matrixMode[2] = {GL_MODELVIEW, GL_PROJECTION};
-    glMatrixMode(matrixMode[type]);
-    glLoadMatrixf(matrix.data);
     matrices[type] = matrix;
-}
+    uniformMatrixFlags[UNIFORM_MATRIX_MODELVIEWPROJECTION] = 0; // require update
     
-    
-void RenderManager::InitGL20()
-{
-    colorOnly = 0;
-    colorWithTexture = 0;
-    
-    
-    colorOnly = new Shader();
-    colorOnly->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
-    colorWithTexture = new Shader();
-    colorWithTexture->LoadFromYaml("~res:/Shaders/Default/fixed_func_texture.shader");
-        
-    
+    if (renderer != Core::RENDERER_OPENGL_ES_2_0)
+    {
+        RENDER_VERIFY(glMatrixMode(matrixMode[type]));
+        RENDER_VERIFY(glLoadMatrixf(matrix.data));
+    }
 }
 
-void RenderManager::ReleaseGL20()
-{
-    SafeRelease(colorOnly);
-    SafeRelease(colorWithTexture);
-}
-
+//void RenderManager::InitGL20()
+//{
+//    colorOnly = 0;
+//    colorWithTexture = 0;
+//    
+//    
+//    colorOnly = new Shader();
+//    colorOnly->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
+//    colorWithTexture = new Shader();
+//    colorWithTexture->LoadFromYaml("~res:/Shaders/Default/fixed_func_texture.shader");
+//        
+//    
+//}
+//
+//void RenderManager::ReleaseGL20()
+//{
+//    SafeRelease(colorOnly);
+//    SafeRelease(colorWithTexture);
+//}
+//
 
 
 

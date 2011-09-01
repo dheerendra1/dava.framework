@@ -42,7 +42,7 @@ void ImageUsageScreen::LoadResources()
 // 		testImageOriginal->GetData(), testImageOriginal->GetWidth(), testImageOriginal->GetHeight(), testImageOriginal->GetWidth() * 4,
 // 		testImage4444->GetData(), testImage4444->GetWidth(), testImage4444->GetHeight(), testImage4444->GetWidth() * 2);
 
-	ConvertDownscaleTwiceBillinear<uint32, uint16, UnpackRGBA888, PackRGBA4444> convertDownscale;
+	ConvertDownscaleTwiceBillinear<uint32, uint16, UnpackRGBA8888, PackRGBA4444> convertDownscale;
 	convertDownscale(testImageOriginal->GetData(), testImageOriginal->GetWidth(), testImageOriginal->GetHeight(), testImageOriginal->GetWidth() * 4,
 		testImage4444->GetData(), testImage4444->GetWidth(), testImage4444->GetHeight(), testImage4444->GetWidth() *  2);
 

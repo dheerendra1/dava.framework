@@ -91,8 +91,13 @@ void TestScreen::WillDisappear()
 	
 }
 
-void TestScreen::Input(UIEvent * touch)
+void TestScreen::Input(UIEvent * event)
 {
+	if (event->phase == UIEvent::PHASE_KEYCHAR)
+		if (event->keyChar == '1')
+		{
+			Core::Instance()->ToggleFullscreen();
+		}
 
 }
 

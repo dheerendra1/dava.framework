@@ -137,4 +137,15 @@ namespace DAVA
 	
 	Logger::Debug("sin default:%lld sin fast: %lld, %f %f, %f", t2 - t1, xt2 - xt1, y2 - y1, y2, y1);
 	*/
+    
+    uint32 CountLeadingZeros(uint32 value)
+    {
+        static const int MultiplyDeBruijnBitPosition2[32] = 
+        {
+            0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 
+            31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
+        };
+        uint32 r = MultiplyDeBruijnBitPosition2[(uint32)(value * 0x077CB531U) >> 27];
+        return r;
+    }
 };

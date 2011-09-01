@@ -89,8 +89,8 @@ void FontUsageScreen::DrawGraphicsFont(GraphicsFont * font, Vector2 position, fl
 	// Size2i size = font->GetStringSize(singleLineString);
 	Rect rect(position.x, position.y, (float32)size.dx, (float32)size.dy);
 	RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
-	RenderManager::Instance()->DrawRect(rect);
-	RenderManager::Instance()->DrawLine(Vector2(position.x, rect.y + font->GetAscender()), Vector2(position.x + size.dx, rect.y + font->GetAscender()));
+	RenderHelper::Instance()->DrawRect(rect);
+	RenderHelper::Instance()->DrawLine(Vector2(position.x, rect.y + font->GetAscender()), Vector2(position.x + size.dx, rect.y + font->GetAscender()));
 
 	RenderManager::Instance()->ResetColor();
 	Size2i checkSize = font->DrawString(position.x, position.y, singleLineString);
@@ -105,7 +105,7 @@ void FontUsageScreen::DrawFTFont(FTFont * ftFont, Vector2 pos, float32 fontSize)
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	//RenderManager::Instance()->DrawRect(rect);
 	
-	RenderManager::Instance()->DrawLine(Vector2(pos.x, pos.y + ftFont->GetAscender()), Vector2(pos.x + size.dx, pos.y + ftFont->GetAscender()));
+	RenderHelper::Instance()->DrawLine(Vector2(pos.x, pos.y + ftFont->GetAscender()), Vector2(pos.x + size.dx, pos.y + ftFont->GetAscender()));
 	
 	int32 dx = 960;
 	int32 dy = 40;

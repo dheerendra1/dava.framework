@@ -189,14 +189,16 @@ namespace DAVA
 		KeyedArchive * options = Core::GetOptions();
 
 		//fullscreenMode = GetCurrentDisplayMode();
+		fullscreenMode = GetCurrentDisplayMode();//FindBestMode(fullscreenMode);
 		if (options)
 		{
 			windowedMode.width = options->GetInt("width");
 			windowedMode.height = options->GetInt("height");
 			windowedMode.bpp = options->GetInt("bpp");
-
-			fullscreenMode.width = options->GetInt("fullscreen.width", windowedMode.width);
-			fullscreenMode.height = options->GetInt("fullscreen.height", windowedMode.height);
+			
+			// get values from config in case if they are available
+			fullscreenMode.width = options->GetInt("fullscreen.width", fullscreenMode.width);
+			fullscreenMode.height = options->GetInt("fullscreen.height", fullscreenMode.height);
 			fullscreenMode.bpp = windowedMode.bpp;
 
 			isFullscreen = (0 != options->GetInt("fullscreen"));	
@@ -205,7 +207,6 @@ namespace DAVA
 			SetWindowText(hWindow, titleW.c_str());
 		}
 
-		fullscreenMode = GetCurrentDisplayMode();//FindBestMode(fullscreenMode);
 		Logger::Info("[PlatformWin32] best display fullscreen mode matched: %d x %d x %d refreshRate: %d", fullscreenMode.width, fullscreenMode.height, fullscreenMode.bpp, fullscreenMode.refreshRate);
 
 		currentMode = windowedMode;

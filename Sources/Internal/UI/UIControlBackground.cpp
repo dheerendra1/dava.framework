@@ -30,9 +30,10 @@
 
 #include "UI/UIControlBackground.h"
 #include "Debug/DVAssert.h"
-#include "Render/RenderManager.h"
 #include "UI/UIControl.h"
 #include "Core/Core.h"
+#include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 
 namespace DAVA
 {
@@ -364,7 +365,7 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 		
 		case DRAW_FILL:
 		{//TODO: add rotation
-			RenderManager::Instance()->FillRect(drawRect);
+			RenderHelper::Instance()->FillRect(drawRect);
 		}	
 		break;
 			

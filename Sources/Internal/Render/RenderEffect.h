@@ -70,28 +70,25 @@ class Texture;
 //    
 //};
     
+#define CONDITIONAL_CREATE(rendererType, classToCreate)\
+if (renderer == rendererType)\
+    return new classToCreate()
+    
+#define DECLARE_EFFECT(name)\
+    const char * GetName() { return #name; };
+
 class RenderEffect : public BaseObject 
 {
 public:
-    /**
-     
-     
-     */
-    virtual void LoadFromYaml();
+    RenderEffect();
+    virtual ~RenderEffect();
+    
+    virtual const char * GetName();
+    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);	
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
     
 public:
-    //Shader * shader;
-    
-    virtual void StartEffect(){};
-    virtual void StopEffect(){};
-
-    virtual void SetColor(float r, float g, float b, float a);
-
-    virtual void SetTexture(Texture *texture);
-
-    virtual void SetTexCoordPointer(int size, int type, int stride, const void *pointer);
-    virtual void SetVertexPointer(int size, int type, int stride, const void *pointer);
-    virtual void DrawArrays(int32 mode, int32 first, int32 count);		
+    static Map<String, RenderEffect*> effectsMap;
 };
 };
 

@@ -86,7 +86,10 @@ namespace DAVA
 	{
 		return (a > b) ? (a) : (b);
 	}*/
-	
+    /**
+        \brief Fast function to compute index of bit that is set in a value. Only one bit should be set to make it work correctly.
+     */
+    uint32 CountLeadingZeros(uint32 value);
 
 
 };

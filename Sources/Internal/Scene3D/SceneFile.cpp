@@ -308,7 +308,7 @@ bool SceneFile::ReadStaticMesh()
 		if (debugLogEnabled)Logger::Debug("--- index count: %d\n", indexCount);
 		
 		PolygonGroup * polygonGroup = mesh->GetPolygonGroup(polyGroupIndex);
-		polygonGroup->AllocateData(EVF_COORD | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0, vertexCount, indexCount, 1);
+		polygonGroup->AllocateData(EVF_VERTEX | /*EVF_NORMAL | EVF_COLOR | */EVF_TEXCOORD0, vertexCount, indexCount, 1);
 		
 		for (uint32 v = 0; v < vertexCount; ++v)
 		{
@@ -319,11 +319,16 @@ bool SceneFile::ReadStaticMesh()
 			sceneFP->Read(&texCoords0, sizeof(Vector2));
 			sceneFP->Read(&texCoords1, sizeof(Vector2));
 		
-			polygonGroup->SetCoord(v, position);
-			polygonGroup->SetNormal(v, normal);
-			polygonGroup->SetTexcoord(0, v, texCoords0);
+            if (polygonGroup->GetFormat() & EVF_VERTEX)
+                polygonGroup->SetCoord(v, position);
+            if (polygonGroup->GetFormat() & EVF_NORMAL)
+                polygonGroup->SetNormal(v, normal);
+            if (polygonGroup->GetFormat() & EVF_TEXCOORD0)
+                polygonGroup->SetTexcoord(0, v, texCoords0);
 		}
 		
+        polygonGroup->BuildVertexBuffer();
+
 		int * indices = new int[indexCount];
 		sceneFP->Read(indices, sizeof(int) * indexCount);
 		for (uint32 i = 0; i < indexCount; ++i)
@@ -356,7 +361,7 @@ bool SceneFile::ReadAnimatedMesh()
 		if (debugLogEnabled)Logger::Debug("--- index count: %d\n", indexCount);
 		
 		PolygonGroup * polygonGroup = mesh->GetPolygonGroup(polyGroupIndex);
-		polygonGroup->AllocateData(EVF_COORD | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0 | EVF_JOINTWEIGHT, vertexCount, indexCount, 1);
+		polygonGroup->AllocateData(EVF_VERTEX | EVF_NORMAL | EVF_COLOR | EVF_TEXCOORD0 | EVF_JOINTWEIGHT, vertexCount, indexCount, 1);
 		
 		for (int v = 0; v < vertexCount; ++v)
 		{
@@ -385,6 +390,8 @@ bool SceneFile::ReadAnimatedMesh()
 			polygonGroup->SetTexcoord(0, v, texCoords0);
 			polygonGroup->SetJointCount(v, jointCount);
 		}
+        
+        polygonGroup->BuildVertexBuffer();
 		
 		int32 * indices = new int32[indexCount];
 		sceneFP->Read(indices, indexCount *  sizeof(int32));

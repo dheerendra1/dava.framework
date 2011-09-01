@@ -289,7 +289,8 @@ void Box2DGameObjectManager::PostSolve(b2Contact* contact, const b2ContactImpuls
 
 void Box2DGameObjectManager::RemoveObject(Box2DGameObject * _object)
 {
-    _object->GetBox2DBody()->SetActive(false);
+    if(b2Body *body = _object->GetBox2DBody())
+        body->SetActive(false);
     GameObjectManager::RemoveObject(_object);
 }
 };
