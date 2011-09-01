@@ -195,7 +195,7 @@ void UISlider::SetValue(float32 value)
 void UISlider::Input(UIEvent *currentInput)
 {
 #ifndef __DAVAENGINE_IPHONE__
-	if (currentInput->phase == UIEvent::PHASE_MOVE)
+	if (currentInput->phase == UIEvent::PHASE_MOVE || currentInput->phase == UIEvent::PHASE_KEYCHAR)
 		return;
 #endif
 	
