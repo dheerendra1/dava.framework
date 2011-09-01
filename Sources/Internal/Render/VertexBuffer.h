@@ -42,42 +42,7 @@ enum eBufferType
 	EBT_DYNAMIC = 0x01,
 };
 
-// TODO: we have same structs & functions in PolygonGroup -- we should find a right place for them
-enum eVertexFormat
-{
-	EVF_COORD			= 1,
-	EVF_NORMAL			= 2,
-	EVF_COLOR			= 4,
-	EVF_TEXCOORD0		= 8,
-	EVF_TEXCOORD1		= 16,
-	EVF_TEXCOORD2		= 32,
-	EVF_TEXCOORD3		= 64,
-	EVF_TANGENT			= 128,
-	EVF_BINORMAL		= 256,
-	EVF_JOINTWEIGHT		= 512,
-	EVF_LOWER_BIT		= EVF_COORD,
-	EVF_HIGHER_BIT		= EVF_JOINTWEIGHT, 
-	EVF_NEXT_AFTER_HIGHER_BIT
-						= (EVF_HIGHER_BIT << 1),
-	EVF_FORCE_DWORD     = 0x7fffffff,
-};
 
-inline int32 GetVertexSize(int32 flags)
-{
-	int32 size = 0;
-	if (flags & EVF_COORD) size += 3 * sizeof(float32);
-	if (flags & EVF_NORMAL) size += 3 * sizeof(float32);
-	if (flags & EVF_COLOR) size += 4;
-	if (flags & EVF_TEXCOORD0) size += 2 * sizeof(float32);
-	if (flags & EVF_TEXCOORD1) size += 2 * sizeof(float32);
-	if (flags & EVF_TEXCOORD2) size += 2 * sizeof(float32);
-	if (flags & EVF_TEXCOORD3) size += 2 * sizeof(float32);
-	if (flags & EVF_TANGENT) size += 3 * sizeof(float32);
-	if (flags & EVF_BINORMAL) size += 3 * sizeof(float32);
-
-	if (flags & EVF_JOINTWEIGHT) size += 2 * sizeof(float32); // 4 * 3 + 4 * 3= 12 + 12 
-	return size;
-}
 
 //! Interface to work with VertexBuffers
 class VertexBuffer : public RenderResource

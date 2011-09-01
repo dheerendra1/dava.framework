@@ -33,6 +33,8 @@
 		FEC3EC7113432F4400442ADD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC7013432F4400442ADD /* libz.dylib */; };
 		FEC3EC7313432F5500442ADD /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC7213432F5500442ADD /* libbz2.dylib */; };
 		FEC3EC8D1343346D00442ADD /* libpng-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC3EC8C1343346D00442ADD /* libpng-static.a */; };
+		FECCC5191403DFCD00033316 /* CameraController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECCC5151403DFCD00033316 /* CameraController.cpp */; };
+		FECCC51A1403DFCD00033316 /* SceneEditorScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECCC5171403DFCD00033316 /* SceneEditorScreen.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +118,10 @@
 		FEC3EC7013432F4400442ADD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		FEC3EC7213432F5500442ADD /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
 		FEC3EC8C1343346D00442ADD /* libpng-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-static.a"; path = "../../Libs/ImageMagick-6.6.9-0/delegates/lib/libpng-static.a"; sourceTree = SOURCE_ROOT; };
+		FECCC5151403DFCD00033316 /* CameraController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraController.cpp; sourceTree = "<group>"; };
+		FECCC5161403DFCD00033316 /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
+		FECCC5171403DFCD00033316 /* SceneEditorScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneEditorScreen.cpp; sourceTree = "<group>"; };
+		FECCC5181403DFCD00033316 /* SceneEditorScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneEditorScreen.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +170,7 @@
 				FEC3E2AC133A946000442ADD /* iPhoneProjectDelegate.mm */,
 				FEC3E2AD133A946000442ADD /* ResourcePackerScreen.cpp */,
 				FEC3E2AE133A946000442ADD /* ResourcePackerScreen.h */,
+				FECCC5141403DFCD00033316 /* SceneEditor */,
 				FEC3E2AF133A946000442ADD /* TexturePacker */,
 				FEC3E2BA133A946000442ADD /* UIFileTree.cpp */,
 				FEC3E2BB133A946000442ADD /* UIFileTree.h */,
@@ -234,6 +241,18 @@
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
+		};
+		FECCC5141403DFCD00033316 /* SceneEditor */ = {
+			isa = PBXGroup;
+			children = (
+				FECCC5151403DFCD00033316 /* CameraController.cpp */,
+				FECCC5161403DFCD00033316 /* CameraController.h */,
+				FECCC5171403DFCD00033316 /* SceneEditorScreen.cpp */,
+				FECCC5181403DFCD00033316 /* SceneEditorScreen.h */,
+			);
+			name = SceneEditor;
+			path = Classes/SceneEditor;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -317,6 +336,8 @@
 				FEC3E2CD133A946000442ADD /* UIScrollView.cpp in Sources */,
 				FEC3E2CE133A946000442ADD /* UISpriteEditor.cpp in Sources */,
 				FEC3E4EB133CBC1100442ADD /* main.cpp in Sources */,
+				FECCC5191403DFCD00033316 /* CameraController.cpp in Sources */,
+				FECCC51A1403DFCD00033316 /* SceneEditorScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,8 +409,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../SDK/Sources,
-					./../../SDK/External,
+					./../../Sources/Internal,
+					./../../Sources/External,
 					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
 					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
 				);
@@ -425,8 +446,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../SDK/Sources,
-					./../../SDK/External,
+					./../../Sources/Internal,
+					./../../Sources/External,
 					"./../../Libs/ImageMagick-6.6.9/include/ImageMagick",
 					"./../../Libs/ImageMagick-6.6.9-0/delegates/include",
 				);

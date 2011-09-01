@@ -29,48 +29,64 @@
 
 void SceneEditorScreen::LoadResources()
 {
-	scene = new Scene();
-	//RotatingCubeNode * cubeNode = new RotatingCubeNode(scene);
-	//scene->AddNode(cubeNode);
+    RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
 
-	SceneFile * file = new SceneFile();
-	file->SetDebugLog(true);
-	//file->LoadScene("~res:/Scenes/1.sce", scene);
-	file->LoadScene("~res:/Scenes/M3.sce", scene);
-	//file->LoadScene("~res:/Scenes/M3.sce", scene);
+    GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+    GetBackground()->SetColor(Color(0.7f, 0.7f, 0.7f, 1.0f));
+
+    
+    scene = new Scene();
+
+    
+    SceneFile * file = new SceneFile();
+	//file->SetDebugLog(true);
+	file->LoadScene("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce"));
 	SafeRelease(file);
     
-    GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
-    GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
-    
-    
-    
-//    MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
-//    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
-//	turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
-//    turretN->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
-    
+
 	currentTankAngle = 0.0f;
 	inTouch = false;
 	startRotationInSec = 0.0f;
 	rotationSpeed = 8.0f;
-
-	//  originalCameraPosition = scene->GetCamera(0)->GetPosition();
-    //	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
-    //	positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
-    //	positionJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
-    //	
-    //	AddControl(positionJoypad);
+    
     
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(200, 100, 520, 480));
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
-    Camera * cam = scene->GetCamera(0);
-    scene->SetCamera(cam);
-    AddControl(scene3dView);
+    scene3dView->SetInputEnabled(false);
     
-    hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y));
+    Camera * cam = scene->GetCamera(0);
+    scene->SetCurrentCamera(cam);
+    AddControl(scene3dView);
+    //cam->SetFOV(90.0f);
+    cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
+    
+    Camera * cam2 = scene->GetCamera(0);
+    scene->SetClipCamera(cam2);
+    
+    
+    // 483, -2000, 119
+    LandscapeNode * node = new LandscapeNode(scene);
+    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 25));
+    box.min += cam->GetPosition();
+    box.max += cam->GetPosition();
+    //box.min -= Vector3(512, 512, 0);
+    //box.max = Vector3(512, 512, 0);
+    
+    node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
+    
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
+    SafeRelease(tex);
+    
+    node->SetName("landscapeNode");
+    scene->AddNode(node);
+    
+    
+    hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     hierarchy->SetCellHeight(20);
     hierarchy->SetDelegate(this);
     hierarchy->SetClipContents(true);
@@ -78,12 +94,17 @@ void SceneEditorScreen::LoadResources()
     
     hierarchy->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     hierarchy->GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
-  
+    
     selectedNode = 0;
+    
+    cameraController = new WASDCameraController(40);
+    cameraController->SetCamera(cam);
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    SafeRelease(cameraController);
+    
     SafeRelease(scene3dView);
     SafeRelease(hierarchy);
 	SafeRelease(scene);
@@ -91,6 +112,10 @@ void SceneEditorScreen::UnloadResources()
 
 void SceneEditorScreen::WillAppear()
 {
+    for (int32 k = 0; k < 32; ++k)
+    {
+        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
+    }
 }
 
 void SceneEditorScreen::WillDisappear()
@@ -98,27 +123,45 @@ void SceneEditorScreen::WillDisappear()
 	
 }
 
-void SceneEditorScreen::Input(UIEvent * touch)
+
+
+void SceneEditorScreen::Input(UIEvent * event)
 {
-	if (touch->phase == UIEvent::PHASE_BEGAN)
+    cameraController->Input(event);
+    
+    
+    if (event->phase == UIEvent::PHASE_KEYCHAR)
+    {
+        if (event->keyChar == '1')
+            cameraController->SetSpeed(40);
+        if (event->keyChar == '2')
+            cameraController->SetSpeed(80);
+        if (event->keyChar == '3')
+            cameraController->SetSpeed(160);
+        if (event->keyChar == '4')
+            cameraController->SetSpeed(320);
+        
+    }
+    
+	if (event->phase == UIEvent::PHASE_BEGAN)
 	{
 		inTouch = true;	
-		touchStart = touch->point;
+		touchStart = event->point;
 		touchTankAngle = currentTankAngle;
 	}
 	
-	if (touch->phase == UIEvent::PHASE_DRAG)
+	if (event->phase == UIEvent::PHASE_DRAG)
 	{
-		touchCurrent = touch->point;
+		touchCurrent = event->point;
 		
 		float32 dist = (touchCurrent.x - touchStart.x);
 		//Logger::Debug("%f, %f", currentTankAngle, dist);
 		currentTankAngle = touchTankAngle + dist;
 	}
 	
-	if (touch->phase == UIEvent::PHASE_ENDED)
+	if (event->phase == UIEvent::PHASE_ENDED)
 	{
-		touchCurrent = touch->point;
+		touchCurrent = event->point;
 		rotationSpeed = (touchCurrent.x - touchStart.x);
 		inTouch = false;
 		startRotationInSec = 0.0f;
@@ -149,8 +192,11 @@ void SceneEditorScreen::Update(float32 timeElapsed)
 
 void SceneEditorScreen::Draw(const UIGeometricData &geometricData)
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    UIScreen::Draw(geometricData);
+    
+    RenderManager::Instance()->ClearDepthBuffer();
+    //glClearColor(0.0, 0.0, 0.0, 1.0f);
+    //glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 
@@ -192,6 +238,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
     { //if cell of requested type isn't find in the store create new cell
         c = new UIHierarchyCell(Rect(0, 0, 200, 15), "Node cell");
     }
+    
         //fill cell whith data
     Font *fnt;
     fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
@@ -232,9 +279,17 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(node);
         if (mesh)
         {
-            mesh->SetDebugFlags(MeshInstanceNode::DEBUG_DRAW_AABBOX | MeshInstanceNode::DEBUG_DRAW_LOCAL_AXIS);
+            mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
         }
         
+        Camera * camera = dynamic_cast<Camera*> (node);
+        if (camera)
+        {
+            //camera->RestoreOriginalSceneTransform();
+            scene->SetCurrentCamera(camera);
+            Camera * cam2 = scene->GetCamera(0);
+            scene->SetClipCamera(cam2);
+        }
         
 //        MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));

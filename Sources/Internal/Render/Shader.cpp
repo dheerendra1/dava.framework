@@ -37,20 +37,27 @@
 namespace DAVA 
 {
 #if defined(__DAVAENGINE_OPENGL__)
+GLuint Shader::activeProgram = 0;
+
 Shader::Shader()
 {
     vertexShader = 0;
     fragmentShader = 0;
     program = 0;
     
+    attributeNames = 0;
     activeAttributes = 0;
     activeUniforms = 0;
 
     uniformIDs = 0;
     uniformNames = 0;
     uniformLocations = 0;
-}
     
+    for (int32 ki = 0; ki < VERTEX_FORMAT_STREAM_MAX_COUNT; ++ki)
+         vertexFormatAttribIndeces[ki] = -1;
+}
+
+String VertexTypeStringFromEnum(GLenum type); // Fucking XCode 4 analyzer
 String VertexTypeStringFromEnum(GLenum type)
 {
     if (type == GL_FLOAT)return "GL_FLOAT";
@@ -63,19 +70,39 @@ String VertexTypeStringFromEnum(GLenum type)
     return "";
 }
     
-const char * UniformStrings[Shader::UNIFORM_COUNT] = 
+const char * uniformStrings[Shader::UNIFORM_COUNT] = 
     {
         "none",
         "modelViewProjectionMatrix",
+        "flatColor",
+    };
+const char * attributeStrings[VERTEX_FORMAT_STREAM_MAX_COUNT] = 
+    {
+        "inPosition",
+        "inNormal",
+        "inColor",
+        "inTexCoord",
+        "inTexCoord1",
+        "inTexCoord2",
+        "inTexCoord3",
+        "inTangent",
+        "inBinormal",
+        "inJointWeight"
     };
     
 Shader::eUniform Shader::GetUniformByName(const char * name)
 {
-    for (int k = 0; k < UNIFORM_COUNT; ++k)
-        if (strcmp(name, UniformStrings[k]) == 0)return (Shader::eUniform)k; 
+    for (int32 k = 0; k < UNIFORM_COUNT; ++k)
+        if (strcmp(name, uniformStrings[k]) == 0)return (Shader::eUniform)k; 
     return Shader::UNIFORM_NONE;
 };
 
+int32 Shader::GetAttributeIndexByName(const char * name)
+{
+    for (int32 k = 0; k < VERTEX_FORMAT_STREAM_MAX_COUNT; ++k)
+        if (strcmp(name, attributeStrings[k]) == 0)return k;
+    return -1;
+}
     
 bool Shader::LoadFromYaml(const String & pathname)
 {
@@ -165,12 +192,19 @@ bool Shader::LoadFromYaml(const String & pathname)
     Logger::Debug("shader loaded: %s attributeCount: %d", pathname.c_str(), activeAttributes);
 
     char attributeName[512];
+    attributeNames = new String[activeAttributes];
     for (int32 k = 0; k < activeAttributes; ++k)
     {
         GLint size;
         GLenum type;
         RENDER_VERIFY(glGetActiveAttrib(program, k, 512, 0, &size, &type, attributeName));
+        attributeNames[k] = attributeName;
+        
+        int32 flagIndex = GetAttributeIndexByName(attributeName);
+        vertexFormatAttribIndeces[flagIndex] = k;
         Logger::Debug("shader attr: %s size: %d type: %s", attributeName, size, VertexTypeStringFromEnum(type).c_str());
+        if (vertexFormatAttribIndeces[k] != -1)
+            Logger::Debug("shader attr matched: 0x%08x", (1 << flagIndex));
     }
  
     RENDER_VERIFY(glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms));
@@ -202,7 +236,12 @@ Shader::~Shader()
     SafeDeleteArray(uniformLocations);
     DeleteShaders();
 }
-
+    
+    
+int32 Shader::GetAttributeIndex(eVertexFormat vertexFormat)
+{
+    return vertexFormatAttribIndeces[CountLeadingZeros(vertexFormat)];
+}
 
 void Shader::DeleteShaders()
 {
@@ -270,16 +309,31 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     
 void Shader::Set()
 {
-    glUseProgram(program);
+    if (activeProgram != program)
+    {
+        glUseProgram(program);
+        activeProgram = program;
+    }
     
     for (int32 k = 0; k < activeUniforms; ++k)
     {
         switch (uniformIDs[k])
         {
         case UNIFORM_MODEL_VIEW_PROJECTION_MATRIX:
+            {    
+                const Matrix4 & modelViewProj = RenderManager::Instance()->GetUniformMatrix(RenderManager::UNIFORM_MATRIX_MODELVIEWPROJECTION);
+                glUniformMatrix4fv(uniformLocations[k], 1, GL_FALSE, modelViewProj.data);
+                break;
+            }
+        case UNIFORM_COLOR:
+            {
+                const Color & c = RenderManager::Instance()->GetColor();
+                glUniform4fv(uniformLocations[k], 1, &c.r);
+                break;
+            }       
+        default:
             
-            const Matrix4 & modelViewProj = RenderManager::Instance()->GetUniformMatrix(RenderManager::UNIFORM_MATRIX_MODELVIEWPROJECTION);
-            glUniformMatrix4fv(uniformLocations[k], 1, GL_FALSE, modelViewProj.data);
+            break;
         }
     }
     

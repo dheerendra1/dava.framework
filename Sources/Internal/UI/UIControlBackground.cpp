@@ -30,9 +30,10 @@
 
 #include "UI/UIControlBackground.h"
 #include "Debug/DVAssert.h"
-#include "Render/RenderManager.h"
 #include "UI/UIControl.h"
 #include "Core/Core.h"
+#include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 
 namespace DAVA
 {
@@ -51,6 +52,8 @@ UIControlBackground::UIControlBackground()
 ,	usePerPixelAccuracy(false)
 ,	lastDrawPos(0, 0)
 {
+	rdoObject = new RenderDataObject();
+	//rdoObject->SetStream()
 }
 	
 UIControlBackground *UIControlBackground::Clone()
@@ -75,6 +78,7 @@ void UIControlBackground::CopyDataFrom(UIControlBackground *srcBackground)
 
 UIControlBackground::~UIControlBackground()
 {
+	SafeRelease(rdoObject);
 	SafeRelease(spr);
 }
 	
@@ -364,7 +368,7 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 		
 		case DRAW_FILL:
 		{//TODO: add rotation
-			RenderManager::Instance()->FillRect(drawRect);
+			RenderHelper::Instance()->FillRect(drawRect);
 		}	
 		break;
 			
@@ -625,7 +629,7 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 //			vertices[i] *= Core::GetVirtualToPhysicalFactor();
 //	}
 //	}
-	
+
 
 	uint16 indeces[18 * 3] = 
 	{
@@ -635,14 +639,14 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 		2, 6, 5, 
 		2, 3, 6,
 		3, 7, 6,
-		
+
 		4, 5, 8,
 		5, 9, 8,
 		5, 6, 9,
 		6, 10, 9,
 		6, 7, 10,
 		7, 11, 10,
-		
+
 		8, 9, 12,
 		9, 12, 13,
 		9, 10, 13,
@@ -650,14 +654,18 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 		10, 11, 14,
 		11, 15, 14
 	};
-	
-	
+
+	/*
+		TODO: fix that to use RenderDataObject instead of direct access to HWDrawElements 
+	*/
+	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, vertices);
 	RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords);
 	RenderManager::Instance()->SetTexture(texture);
 	RenderManager::Instance()->FlushState();
 	
-	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
+	RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
+	RenderManager::Instance()->RestoreRenderEffect();
 	/*GLenum glErr = glGetError();
 	if (glErr != GL_NO_ERROR)
 	{

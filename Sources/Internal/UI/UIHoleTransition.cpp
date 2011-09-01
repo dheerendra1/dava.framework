@@ -29,9 +29,10 @@
 =====================================================================================*/
 
 #include "UI/UIHoleTransition.h"
-#include "Render/RenderManager.h"
-#include "Platform/SystemTimer.h"
 #include "UI/UIControlSystem.h"
+#include "Platform/SystemTimer.h"
+#include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 
 namespace DAVA 
 {
@@ -92,7 +93,7 @@ void UIHoleTransition::Draw(const UIGeometricData &geometricData)
 	 */
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
-	RenderManager::Instance()->FillRect(Rect(0.0f, 0.0f, (float32)GetScreenWidth(), (float32)GetScreenHeight()));
+	RenderHelper::Instance()->FillRect(Rect(0.0f, 0.0f, (float32)GetScreenWidth(), (float32)GetScreenHeight()));
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	Texture * tx = renderTargetPrevScreen->GetTexture();

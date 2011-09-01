@@ -76,7 +76,7 @@ public:
 	 \brief Get current cursor position 
 	 \returns Vector2 containing position
 	 */
-	Vector2 GetPosotion();
+	Vector2 GetPosition();
 	
 #if defined(__DAVAENGINE_MACOS__)
 	void * GetMacOSXCursor();

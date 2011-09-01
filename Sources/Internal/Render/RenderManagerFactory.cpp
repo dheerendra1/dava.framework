@@ -28,7 +28,7 @@
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
 #include "RenderManager.h"
-
+#include "RenderManagerGL20.h"
 
 namespace DAVA 
 {
@@ -36,15 +36,17 @@ namespace DAVA
 
 void RenderManager::Create(Core::eRenderer renderer)
 {
-    new RenderManager(renderer);
-//    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
-//    {
-//        new RenderManager();
-//    }
-//    else
-//    {
-//        new RenderManagerGLES20();
-//    }
+    //new RenderManager(renderer);
+    if (renderer == Core::RENDERER_OPENGL_ES_2_0)
+    {
+#if defined(__DAVAENGINE_OPENGL__)
+	new RenderManagerGL20(renderer);
+#endif        
+    }
+    else
+    {
+        new RenderManager(renderer);
+    }
 }
 
     

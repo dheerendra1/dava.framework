@@ -34,7 +34,7 @@ namespace DAVA
 
 struct ConvertRGBA8888toRGBA4444
 {
-	inline void operator()(uint32 * input, uint16 *output)
+	inline void operator()(const uint32 * input, uint16 *output)
 	{
 		uint32 pixel = *input;
 		uint32 a = ((pixel >> 24) & 0xFF) >> 4;
@@ -47,7 +47,7 @@ struct ConvertRGBA8888toRGBA4444
 
 struct UnpackRGBA8888
 {
-	inline void operator()(uint32 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
+	inline void operator()(const uint32 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
 	{
 		uint32 pixel = *input;
 		a = ((pixel >> 24) & 0xFF);
@@ -67,7 +67,7 @@ struct PackRGBA8888
 
 struct UnpackRGBA4444
 {
-	inline void operator()(uint16 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
+	inline void operator()(const uint16 * input, uint32 & r, uint32 & g, uint32 & b, uint32 & a)
 	{
 		uint16 pixel = *input;
 		a = ((pixel >> 12) & 0xF);
@@ -89,16 +89,16 @@ template<class TYPE_IN, class TYPE_OUT, typename CONVERT_FUNC>
 class ConvertDirect
 {
 public:
-    void operator()(void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
+    void operator()(const void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
                     void * outData, uint32 outWidth, uint32 outHeight, uint32 outPitch)
     {
 		CONVERT_FUNC func;
-        uint8 * readPtr = reinterpret_cast<uint8*>(inData);
+        const uint8 * readPtr = reinterpret_cast<const uint8*>(inData);
         uint8 * writePtr = reinterpret_cast<uint8*>(outData);
         
         for (uint32 y = 0; y < inHeight; ++y)
         {
-            TYPE_IN * readPtrLine = reinterpret_cast<TYPE_IN*>(readPtr);
+            const TYPE_IN * readPtrLine = reinterpret_cast<const TYPE_IN*>(readPtr);
             TYPE_OUT * writePtrLine = reinterpret_cast<TYPE_OUT*>(writePtr);
             for (uint32 x = 0; x < inWidth; ++x)
             {
@@ -116,17 +116,17 @@ template<class TYPE_IN, class TYPE_OUT, typename UNPACK_FUNC, typename PACK_FUNC
 class ConvertDownscaleTwiceBillinear
 {
 public:
-	void operator()(void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
+	void operator()(const void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
 		void * outData, uint32 outWidth, uint32 outHeight, uint32 outPitch)
 	{
 		UNPACK_FUNC unpackFunc;
 		PACK_FUNC packFunc;
-		uint8 * readPtr = reinterpret_cast<uint8*>(inData);
+		const uint8 * readPtr = reinterpret_cast<const uint8*>(inData);
 		uint8 * writePtr = reinterpret_cast<uint8*>(outData);
 
 		for (uint32 y = 0; y < outHeight; ++y)
 		{
-			TYPE_IN * readPtrLine = reinterpret_cast<TYPE_IN*>(readPtr);
+			const TYPE_IN * readPtrLine = reinterpret_cast<const TYPE_IN*>(readPtr);
 			TYPE_OUT * writePtrLine = reinterpret_cast<TYPE_OUT*>(writePtr);
 			
 			for (uint32 x = 0; x < outWidth; ++x)
@@ -164,7 +164,7 @@ public:
 
 	static void DownscaleTwiceBillinear(	Image::PixelFormat inFormat,
 												Image::PixelFormat outFormat,
-												void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
+												const void * inData, uint32 inWidth, uint32 inHeight, uint32 inPitch,
 												void * outData, uint32 outWidth, uint32 outHeight, uint32 outPitch)
 	{
 		if ((inFormat == Image::FORMAT_RGBA8888) && (outFormat == Image::FORMAT_RGBA8888))

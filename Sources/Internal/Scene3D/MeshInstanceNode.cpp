@@ -38,7 +38,6 @@ namespace DAVA
 MeshInstanceNode::MeshInstanceNode(Scene * _scene)
 :	SceneNode3d(_scene)
 ,	visible(true)
-,	debugFlags(DEBUG_DRAW_NONE)
 {
 	
 }
@@ -61,13 +60,15 @@ void MeshInstanceNode::AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupInde
 void MeshInstanceNode::Draw()
 {
 	if (!visible)return;
-		
-
-
     
+    
+    AABBox3 transformedBox;
+    bbox.GetTransformedBox(worldTransform, transformedBox);
+    if (!scene->GetClipCamera()->GetFrustum()->IsInside(transformedBox))return;
+    
+		
 	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
 	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
-    
     
     /* float32 proj[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, proj);
@@ -106,14 +107,14 @@ void MeshInstanceNode::Draw()
 		}
 		if (debugFlags & DEBUG_DRAW_LOCAL_AXIS)
 		{
-			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-			RenderHelper::DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(50.0f, 0.0f, 0.0f));
+			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f); 
+			RenderHelper::Instance()->DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(50.0f, 0.0f, 0.0f));
 			
 			RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
-			RenderHelper::DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 50.0f, 0.0f));
+			RenderHelper::Instance()->DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 50.0f, 0.0f));
 			
 			RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
-			RenderHelper::DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 50.0f));
+			RenderHelper::Instance()->DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 50.0f));
 		}
 		glEnable(GL_DEPTH_TEST);
 		RenderManager::Instance()->EnableTexturing(true);
@@ -137,7 +138,6 @@ SceneNode* MeshInstanceNode::Clone(SceneNode *dstNode)
     nd->materials = materials;
     nd->visible = visible;
     nd->bbox = bbox;
-    nd->debugFlags = debugFlags;
     
     return dstNode;
 }

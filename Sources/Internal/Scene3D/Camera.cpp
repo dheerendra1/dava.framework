@@ -31,6 +31,7 @@
 #include "Render/RenderBase.h"
 #include "Core/Core.h"
 #include "Render/RenderManager.h"
+#include "Scene3D/Scene.h"
 
 namespace DAVA 
 {
@@ -44,11 +45,12 @@ Camera::Camera(Scene * scene) : SceneNode(scene)
 	flags = REQUIRE_REBUILD | REQUIRE_REBUILD_MODEL | REQUIRE_REBUILD_PROJECTION;
     
 	cameraTransform.Identity();
+    currentFrustum = new Frustum();
 }
 	
 Camera::~Camera()
 {
-	
+	SafeRelease(currentFrustum);
 }
 	
 void Camera::RestoreOriginalSceneTransform()
@@ -79,7 +81,7 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 	this->zfar = zfar;
 	this->ortho = ortho;
 	
-	this->znear = 5;
+	this->znear = 1;
 	this->zfar = 5000;
 	Recalc();
 }
@@ -144,7 +146,8 @@ void Camera::RecalcTransform()
     flags |= REQUIRE_REBUILD_UNIFORM_PROJ_MODEL;
 
 //	Core::eScreenOrientation orientation = Core::Instance()->GetScreenOrientation();
-	
+	modelMatrix = Matrix4::IDENTITY;
+    
 	switch(Core::Instance()->GetScreenOrientation())
 	{
 		case Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT:
@@ -272,6 +275,11 @@ void Camera::SetUp(const Vector3 & _up)
 	up = _up;
     flags |= REQUIRE_REBUILD;
 }
+    
+Vector3 & Camera::GetUp()
+{
+    return up;
+}
 
 void Camera::SetLeft(const Vector3 & _left)
 {
@@ -279,6 +287,10 @@ void Camera::SetLeft(const Vector3 & _left)
     flags |= REQUIRE_REBUILD;
 }
 
+Vector3 & Camera::GetLeft()
+{
+    return left;
+}
 
 void Camera::RebuildCameraFromValues()
 {
@@ -288,6 +300,11 @@ void Camera::RebuildCameraFromValues()
     flags &= ~REQUIRE_REBUILD; 
     flags |= REQUIRE_REBUILD_MODEL;
 	cameraTransform.BuildLookAtMatrixRH(position, target, up);
+    
+    // update left vector after rebuild
+	left.x = cameraTransform._00;
+	left.y = cameraTransform._10;
+	left.z = cameraTransform._20;
 }
 	
 void Camera::ExtractCameraToValues()
@@ -323,6 +340,11 @@ void Camera::Set()
     }
 	ApplyFrustum();
 	ApplyTransform();
+    
+    if (currentFrustum)
+    {
+        currentFrustum->Set();
+    }
 }
 
 SceneNode* Camera::Clone(SceneNode *dstNode)
@@ -352,6 +374,35 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
     cnd->flags = flags;
     return dstNode;
 }
+    
+Frustum * Camera::GetFrustum() const
+{
+    return currentFrustum;
+}
+    
+void Camera::Draw()
+{
+    if (debugFlags & DEBUG_DRAW_ALL)
+    {
+        Camera * prevCamera = scene->GetCurrentCamera();
+
+        //scene->SetCamera(this)
+        this->Set();
+        
+        // restore previous camera
+        prevCamera->Set();
+        
+        RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
+        
+        if (this == scene->GetClipCamera())
+            RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+        if (currentFrustum)
+        {
+            currentFrustum->DebugDraw();
+        }
+        RenderManager::Instance()->ResetColor();
+    }
+}
 
 //SceneNode* Camera::Clone()
 //{
@@ -379,6 +430,7 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
 //	dstNode->cameraTransform = cameraTransform;
 //    return dstNode;
 //}
+
 
 	
 } // ns

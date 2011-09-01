@@ -63,11 +63,24 @@ class Shader;
 class RenderManager : public Singleton<RenderManager>
 {
 public:
+    static RenderEffect * FLAT_COLOR;
+    static RenderEffect * TEXTURE_MUL_FLAT_COLOR;
+    
+    
     struct Caps
 	{
         Core::eRenderer renderer;
 		bool            isHardwareCursorSupported;
 	};
+    
+    struct Stats
+    {
+        void Clear();
+        
+        uint32 drawArraysCalls;
+        uint32 drawElementsCalls;
+        uint32 primitiveCount[PRIMITIVETYPE_COUNT];
+    };
     
     static void Create(Core::eRenderer renderer);
 
@@ -116,13 +129,13 @@ public:
 	void EndFrame();	
 	bool IsInsideDraw(); // function returns true if we are between calls to BeginFrame & EndFrame
 
-	void ChangeOrientation(int32 orientation);
-	void ChangeResolution(int32 screenWidth, int32 screenHeight);
-
 	// RenderManager capabilities & performance statistics
 	void DetectRenderingCapabilities();
 	const RenderManager::Caps & GetCaps();
     
+    const RenderManager::Stats & GetStats();
+    void EnableOutputDebugStatsEveryNFrame(int32 frameToShowDebugStats);
+    void ProcessStats();
     
 	/** 
 	 \brief Init FBO system function
@@ -140,11 +153,18 @@ public:
     Shader * colorWithTexture;
 #endif 
     
-private:
+protected:
 	RenderManager::Caps caps;
+    RenderManager::Stats stats;
+    int32 statsFrameCountToShowDebug;
+    int32 frameToShowDebugStats;
     Core::eRenderer renderer;
     
 public:
+    
+    /**
+        === Render Manager threading functions 
+     */
 	/** 
 	 \brief 
 	 */
@@ -166,26 +186,33 @@ public:
 	int32 GetNonMainLockCount();
 	
     
+    /**
+     === Viewport and orientation 
+     */
+
 	/** 
 	 \brief 
 	 \param[in] orientation
 	 */
 	void SetRenderOrientation(int32 orientation);
-    
+	/** 
+	 \brief 
+	 \returns 
+	 */
+	int32 GetRenderOrientation();
     
     /**
         \brief 
         
      */
     void SetViewport(const Rect & rect); 
-                     
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	int32 GetRenderOrientation();
+       
+    
+    
+    /**
+     === State Management
+     */
 
-	
 	/** 
 	 \brief 
 	 */
@@ -213,249 +240,149 @@ public:
 	 \param[in] a
 	 */
 	void SetColor(float32 r, float32 g, float32 b, float32 a);
-	
-	/** 
-	 \brief 
-	 \param[in] r
-	 \param[in] g
-	 \param[in] b
-	 \param[in] a
-	 */
 	void SetColor(const Color & color);
-	
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	float GetColorR();
-
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	float GetColorG();
-	
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	float GetColorB();
-	
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	float GetColorA();
-	
-	/** 
-	 \brief 
-	 */
+	float32 GetColorR();
+	float32 GetColorG();
+    float32 GetColorB();
+    float32 GetColorA();
+    const Color & GetColor() const;
 	void ResetColor();
-	
-	/** 
-	 \brief 
-	 \param[in] texture
-	 */
+
+	// 
 	void SetTexture(Texture *texture);
+	Texture * GetTexture();
 	
-	/** 
-	 \brief 
-	 \returns 
-	 */
-	Texture *GetTexture();
-	
-	/** 
-	 \brief 
-	 \param[in] isEnabled
-	 */
+	void EnableBlending(bool isEnabled);
 	void EnableTexturing(bool isEnabled);
 	
-	/** 
-	 \brief 
-	 \param[in] isEnabled
-	 */
 	void EnableVertexArray(bool isEnabled);
-	
-	/** 
-	 \brief 
-	 \param[in] isEnabled
-	 */
 	void EnableTextureCoordArray(bool isEnabled);
-
-	/** 
-	 \brief 
-	 \param[in] isEnabled
-	 */
 	void EnableColorArray(bool isEnabled);
-	
-	/** 
-	 \brief 
-	 \param[in] isEnabled
-	 */
-	void EnableBlending(bool isEnabled);
 
-    /** 
-	 \brief Enables or diables depth buffer test
-	 \param[in] isEnabled - send true if you want to enable depth test.
-	 */
-	void EnableDepthTest(bool isEnabled);
-    
-    /** 
-	 \brief Checks is the depth test enabled
-     \returns true if depth test is currently enabled
-     */
     bool IsDepthTestEnabled();
-
-    /** 
-	 \brief Enables or diables depth buffer writinig
-	 \param[in] isEnabled - send true if you want to enable depth writing.
-	 */
-	void EnableDepthWrite(bool isEnabled);
-
-    /** 
-	 \brief Checks is the depth writing enabled
-     \returns true if depth writting is currently enabled
-     */
     bool IsDepthWriteEnabled();
 
-	/** 
-	 \brief 
-	 */
-	void SetTexCoordPointer(int size, eVertexDataType type, int stride, const void *pointer);
+    void EnableDepthTest(bool isEnabled);
+    void EnableDepthWrite(bool isEnabled);
+    
+    void SetRenderData(RenderDataObject * object);
+    virtual void AttachRenderData(Shader * shader);
 	
 	/** 
 	 \brief 
 	 */
-	void SetVertexPointer(int size, eVertexDataType type, int stride, const void *pointer);
-
-	void SetColorPointer(int size, eVertexDataType type, int stride, const void *pointer);
-	
+	void SetTexCoordPointer(int32 size, eVertexDataType type, int stride, const void *pointer);
+    void SetVertexPointer(int32 size, eVertexDataType type, int stride, const void *pointer);
+	void SetColorPointer(int32 size, eVertexDataType type, int stride, const void *pointer);
 	void SetNormalPointer(eVertexDataType type, int stride, const void *pointer);
 
+    
 	/** 
-	 \brief 
+        \brief 
 	 */
 	void DrawArrays(ePrimitiveType type, int32 first, int32 count);
-	
+	void HWDrawArrays(ePrimitiveType type, int32 first, int32 count);
 	
 	void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
-	
-	/** 
-	 \brief 
-	 \param[in] rect
-	 */
-	void FillRect(const Rect & rect);
-
-	/** 
-	 \brief 
-	 \param[in] rect
-	 */
-	void DrawRect(const Rect & rect);
-
-	/** 
-	 \brief draws line with current color
-	 \param[in] start point of line start
-	 \param[in] end point of line end
-	 */
-	void DrawLine(const Vector2 &start, const Vector2 &end);
-	
+	void HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+		
 	/** 
 	 \brief Sets the clip rect
 	 \param[in] rect
 	 */
-	void SetClip(const Rect &rect);
+	virtual void SetClip(const Rect &rect);
 
 	/** 
 	 \brief Sets the clip rect as an intersection of the current rect and rect sent to method
 	 \param[in] rect
 	 */
-	void ClipRect(const Rect &rect);
+	virtual void ClipRect(const Rect &rect);
 	
 	/** 
 	 \brief Sets clip yo the full screen
 	 */
-	void RemoveClip();
+	virtual void RemoveClip();
 
 	/** 
 	 \brief Store current clip
 	 */
-	void ClipPush();
+	virtual void ClipPush();
 
 	/** 
 	 \brief Restore current screen
 	 */
-	void ClipPop();
+	virtual void ClipPop();
 	
 	/** 
         \brief Clear rendering surface with required color 
         \param[in] r,g,b,a Clear color components
 	 */
-	void ClearWithColor(float32 r, float32 g, float32 b, float32 a);\
+	virtual void ClearWithColor(float32 r, float32 g, float32 b, float32 a);\
     
     /** 
         \brief Clear attached depth buffer with requested depth
         \param[in] depth by default 1.0f, means clear the depth
      */
-    void ClearDepthBuffer(float32 depth = 1.0f);
+    virtual void ClearDepthBuffer(float32 depth = 1.0f);
 	
 	/** 
 	 \brief Sets the sprite to use as a render target. Sprite should be created with CreateAsRenderTarget method.
 			Call RestoreRenderTarget when you finish drawing to your sprite 
 	 \param[in] renderTarget - Render target sprite. If NULL 0 render manager will draw to the screen.
 	 */
-	void SetRenderTarget(Sprite *renderTarget);
+	virtual void SetRenderTarget(Sprite *renderTarget);
 
 	/** 
-	 \brief Restores the previous render target
+        \brief Restores the previous render target
 	 */
-	void RestoreRenderTarget();
+	virtual void RestoreRenderTarget();
 
 	/** 
 	 \brief Checks is render target using for drawing now
 	 \param[out] true if render manager sets to a render targe. false if render manager draws to the screen now
 	 */
-	bool IsRenderTarget();
+	virtual bool IsRenderTarget();
 	
 	/** 
-	 \brief Sets the effect for the rendering. Call RestoreRenderEffect when you finish using your effect.
-	 \param[in] renderEffect - if NULL, sets the effect to none
+        \brief Sets the effect for the rendering. Call RestoreRenderEffect when you finish using your effect.
+        \param[in] renderEffect - if NULL, sets the effect to none
 	 */
-	void SetRenderEffect(RenderEffect *renderEffect);
+	virtual void SetRenderEffect(RenderEffect *renderEffect);
 
 	/** 
-	 \brief Restores render manager to the previous effect
+        \brief Restores render manager to the previous effect
 	 */
-	void RestoreRenderEffect();
+	virtual void RestoreRenderEffect();
 
 	/** 
 	 \brief Sets the requested framerate. For iPhone can be set to 60, 30, 20, 15
 	 \param[in] newFps requested frames per second
 	 */
-	void SetFPS(int32 newFps);
+	virtual void SetFPS(int32 newFps);
 
 	/** 
 	 \brief Returns current requested framerate
 	 \returns frames per second
 	 */
-	int32 GetFPS();
+    virtual int32 GetFPS();
 
-	void SetDebug(bool isDebugEnabled);
+	virtual void SetDebug(bool isDebugEnabled);
 
-
-	/** 
-	 \brief 
-	 \param[in] offset
-	 */
-	void SetDrawTranslate(const Vector2 &offset);
 
 	/** 
 	 \brief 
 	 \param[in] offset
 	 */
-	void SetDrawScale(const Vector2 &scale);
+	virtual void SetDrawTranslate(const Vector2 &offset);
 
-	void IdentityDrawMatrix();
-	void IdentityTotalMatrix();
+	/** 
+	 \brief 
+	 \param[in] offset
+	 */
+	virtual void SetDrawScale(const Vector2 &scale);
+
+	virtual void IdentityDrawMatrix();
+	virtual void IdentityTotalMatrix();
 	
 	/*
 		TODO:	Hottych - напиши пожалуйста что делают эти функции детально, 
@@ -463,16 +390,16 @@ public:
 				Думаю что пока воспоминания свежи, напиши документацию по системе виртуальных преобразований
 				Можешь писать на русском - я переведу потом.
 	 */
-	void SetPhysicalViewScale();
-	void SetPhysicalViewOffset();
-	void SetVirtualViewScale();
-	void SetVirtualViewOffset();
+	virtual void SetPhysicalViewScale();
+	virtual void SetPhysicalViewOffset();
+	virtual void SetVirtualViewScale();
+	virtual void SetVirtualViewOffset();
 
-	void PushDrawMatrix();
-	void PopDrawMatrix();
+	virtual void PushDrawMatrix();
+    virtual void PopDrawMatrix();
 
-	void PushMappingMatrix();
-	void PopMappingMatrix();
+    virtual void PushMappingMatrix();
+	virtual void PopMappingMatrix();
     
     
     
@@ -492,10 +419,10 @@ public:
         UNIFORM_MATRIX_COUNT,
     };
     
-    void SetMatrix(eMatrixType type, const Matrix4 & matrix);
-    const Matrix4 & GetMatrix(eMatrixType type);
-    const Matrix4 & GetUniformMatrix(eUniformMatrixType type);
-    void  ClearUniformMatrices();
+    virtual void SetMatrix(eMatrixType type, const Matrix4 & matrix);
+    virtual const Matrix4 & GetMatrix(eMatrixType type);
+    virtual const Matrix4 & GetUniformMatrix(eUniformMatrixType type);
+    virtual void  ClearUniformMatrices();
 
 
 	/**
@@ -503,7 +430,7 @@ public:
 		It acts differently in different operation systems but idea is common. 
 		When you call this function on next refresh cursor will be changed to the new one.
 	*/
-	void SetCursor(Cursor * cursor);
+	virtual void SetCursor(Cursor * cursor);
 
 	/**
 		\brief This function get hardware cursor that actively set
@@ -511,9 +438,9 @@ public:
 		we use default cursor that is provided by operational system. 
 		\returns pointer to custom cursor or null if there is no cursor set by default.
 	 */
-	Cursor * GetCursor();
+	virtual Cursor * GetCursor();
 	
-private:
+protected:
     //
     // general matrices for rendermanager 
     // 
@@ -523,8 +450,6 @@ private:
     Matrix4 uniformMatrices[UNIFORM_MATRIX_COUNT];
     
 
-
-    
     void RectFromRenderOrientationToViewport(Rect & rect);
     
 	// SHOULD BE REPLACED WITH MATRICES IN FUTURE
@@ -576,20 +501,27 @@ private:
 	uint32 fboViewFramebuffer;
 
 	// state information
-	float oldR, oldG, oldB, oldA;
-	float newR, newG, newB, newA;
-	eBlendMode oldSFactor, oldDFactor;
-	eBlendMode newSFactor, newDFactor;
-	Texture *currentTexture;
-	int newTextureEnabled, oldTextureEnabled;
-	int oldVertexArrayEnabled;
-	int oldTextureCoordArrayEnabled;
-	int oldColorArrayEnabled;
-	int oldBlendingEnabled;
-    int depthWriteEnabled;
-    int depthTestEnabled;
-	int32 renderOrientation;
-	//int32 defaultScreenOrientation;
+	Color oldColor;                 // UNIFORM - can be used or not used by RenderEffect
+	Color newColor;                 // UNIFORM - can be used or not used by RenderEffect
+    
+	eBlendMode oldSFactor, oldDFactor;  // STATE
+	eBlendMode newSFactor, newDFactor;  // STATE
+    
+	Texture *currentTexture;                        // Texture that was set
+	
+    int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
+	int oldVertexArrayEnabled;                      // state
+	int oldTextureCoordArrayEnabled;                // state
+	int oldColorArrayEnabled;                       // state
+	int oldBlendingEnabled;                         // state
+    int depthWriteEnabled;                          // state
+    int depthTestEnabled;                           // state
+    
+    uint32 pointerArraysCurrentState;
+    uint32 pointerArraysRendererState;
+    
+    
+    int32 renderOrientation;
 	Sprite *currentRenderTarget;
 	std::stack<Rect> clipStack;
 	std::stack<RenderTarget> renderTargetStack;
@@ -599,7 +531,8 @@ private:
 	std::stack<RenderEffect*> renderEffectStack;
 	RenderEffect *currentRenderEffect;
 	
-    
+    RenderDataObject * currentRenderData;
+
     /* 
         Size of the original renderTarget created for 3D rendering.
     */

@@ -52,16 +52,6 @@ public:
 	
 	inline AABBox3 & GetBoundingBox();
 	
-	
-	enum
-	{
-		DEBUG_DRAW_NONE = 0,
-		DEBUG_DRAW_AABBOX = 1,
-		DEBUG_DRAW_LOCAL_AXIS = 2,
-	};
-	
-	inline void SetDebugFlags(int32 debugFlags);
-	
 	std::vector<StaticMesh*> & GetMeshes()
 	{
 		return meshes;
@@ -79,7 +69,6 @@ protected:
 	std::vector<Material*> materials;
 	bool visible;
 	AABBox3 bbox;
-	int32 debugFlags;
 };
 	
 // inline functions implementation
@@ -96,11 +85,6 @@ inline bool MeshInstanceNode::GetVisible()
 inline AABBox3 & MeshInstanceNode::GetBoundingBox()
 {
 	return bbox;
-}
-	
-inline void MeshInstanceNode::SetDebugFlags(int32 _debugFlags)
-{
-	debugFlags = _debugFlags;
 }
 
 };

@@ -31,6 +31,7 @@
 #include "UI/UI3DView.h"
 #include "Scene3D/Scene.h"
 #include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 #include "Core/Core.h"
 
 namespace DAVA 
@@ -81,7 +82,7 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
     if (debugDrawEnabled)
     {//TODO: Add debug draw for rotated controls
         RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-        RenderManager::Instance()->DrawRect(viewportRect);
+        RenderHelper::Instance()->DrawRect(viewportRect);
         RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 

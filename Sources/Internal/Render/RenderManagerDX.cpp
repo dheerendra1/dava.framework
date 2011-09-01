@@ -173,7 +173,7 @@ bool RenderManager::ChangeDisplayMode(DisplayMode mode, bool isFullscreen)
 		presentParams.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 		presentParams.PresentationInterval = isVSyncEnabled ? D3DPRESENT_INTERVAL_ONE : D3DPRESENT_INTERVAL_IMMEDIATE;
 
-		// request 32bit mode if user specified 32 bit, added by Thomas Stüfe
+		// request 32bit mode if user specified 32 bit, added by Thomas Stï¿¼fe
 		//if ( bitsPerPixel == 32 ) 
 		//	presentParams.BackBufferFormat = D3DFMT_X8R8G8B8;
 		
@@ -358,7 +358,7 @@ void RenderManager::SetupDefaultDeviceState()
 
 	if (!vertexBuffer)
 	{
-		vertexBuffer = new DynamicVertexBuffer(EVF_COORD | EVF_COLOR | EVF_TEXCOORD0, 4096);
+		vertexBuffer = new DynamicVertexBuffer(EVF_VERTEX | EVF_COLOR | EVF_TEXCOORD0, 4096);
 		if (!vertexBuffer)return;
 	}
 	
@@ -448,6 +448,8 @@ bool RenderManager::IsDeviceLost()
 
 void RenderManager::BeginFrame()
 {
+    stats.Clear();
+
 	//RENDER_VERIFY(renderQuery->Issue(D3DISSUE_BEGIN));
 	RENDER_VERIFY(direct3DDevice->BeginScene());
 
@@ -531,6 +533,8 @@ void RenderManager::EndFrame()
 
 void RenderManager::SetViewport(const Rect & rect)
 {
+    PrepareRealMatrix();
+    
 	int32 x = (int32)(rect.x * currentDrawScale.x + currentDrawOffset.x);
 	int32 y = (int32)(rect.y * currentDrawScale.y + currentDrawOffset.y);
 	int32 width = (int32)(rect.dx * currentDrawScale.x);
@@ -670,13 +674,10 @@ void RenderManager::FlushState()
 		oldSFactor = newSFactor;
 		oldDFactor = newDFactor;
 	}
-	if(oldR != newR || oldG != newG || oldB != newB || oldA != newA)
+	if(oldColor.r != newColor.r || oldColor.g != newColor.g || oldColor.b != newColor.b || oldColor.a != newColor.a)
 	{
 		// TODO: FIX COLORS & RenderEffects
-		oldR = newR;
-		oldG = newG;
-		oldB = newB;
-		oldA = newA;
+		oldColor = newColor;
 	}
 	if(newTextureEnabled != oldTextureEnabled)
 	{
@@ -813,7 +814,7 @@ void RTTR()
 }
 
 
-void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * _inpIndices)
+void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * _inpIndices)
 {
 #if 1
 	int32 startIndex = 0;
@@ -887,7 +888,7 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 	}
 	for(int k = 0; k < maxIndex; ++k)
 	{
-		dataPtr[k].color = D3DCOLOR_COLORVALUE(oldR * oldA, oldG * oldA, oldB * oldA, oldA);
+		dataPtr[k].color = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
 		dataPtr[k].u = 0;
 		dataPtr[k].v = 0;
 		// Logger::Debug("v:%f %f %f %f c: #%08x", oldR, oldG, oldB, oldA, dataPtr[k].color);
@@ -988,7 +989,7 @@ void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat 
 #endif
 }
 
-void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
+void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 {
 	//RTTR();
 
@@ -1036,7 +1037,7 @@ void RenderManager::DrawArrays(ePrimitiveType type, int32 first, int32 count)
 		}
 		for(int k = 0; k < count; ++k)
 		{
-			dataPtr[k].color = D3DCOLOR_COLORVALUE(oldR * oldA, oldG * oldA, oldB * oldA, oldA);
+			dataPtr[k].color = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
 			dataPtr[k].u = 0;
 			dataPtr[k].v = 0;
 			// Logger::Debug("v:%f %f %f %f c: #%08x", oldR, oldG, oldB, oldA, dataPtr[k].color);

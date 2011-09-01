@@ -12,6 +12,7 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		4751F96A12CB9FE800AB961C /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */; };
 		47A1101D12CBCAF8003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */; };
+		FE044F5D140EEBAD002A6D27 /* ImageUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */; };
 		FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */; };
 		FE76D9EE1163F2F0009E83B6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */; };
 		FE76D9EF1163F2F0009E83B6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9ED1163F2F0009E83B6 /* OpenGLES.framework */; };
@@ -68,6 +69,8 @@
 		47A1101B12CBCAF8003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticTextScreen.h; sourceTree = "<group>"; };
 		47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTextScreen.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TemplateProjectiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageUsageScreen.cpp; sourceTree = "<group>"; };
+		FE044F5C140EEBAD002A6D27 /* ImageUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUsageScreen.h; sourceTree = "<group>"; };
 		FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyLineEditControl.cpp; sourceTree = "<group>"; };
 		FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyLineEditControl.h; sourceTree = "<group>"; };
 		FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -173,6 +176,8 @@
 				FEF4E03412CD07DD004B850E /* Box2DGameObjectTestScreen.h */,
 				FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */,
 				FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */,
+				FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */,
+				FE044F5C140EEBAD002A6D27 /* ImageUsageScreen.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -358,6 +363,7 @@
 				FEA0293612E392F800935314 /* CollisionTestScreen.cpp in Sources */,
 				FECFB8A912E597B100C71562 /* main.mm in Sources */,
 				FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */,
+				FE044F5D140EEBAD002A6D27 /* ImageUsageScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +382,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vitaliy Borodovsky (MS45DK374J)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -384,6 +391,7 @@
 				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
 				PRODUCT_NAME = TemplateProjectiPhone;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B40FEC58-A683-48FB-9EC1-CEC9F14F7781";
 			};
 			name = Debug;
 		};
@@ -413,7 +421,6 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../Projects/iPhoneFramework/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				OTHER_LDFLAGS = (
 					"-lFramework",
 					"-ObjC",
@@ -421,6 +428,7 @@
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1806687B-2E4A-46C6-B885-FFE5BB283826";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -439,13 +447,13 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../Projects/iPhoneFramework/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				OTHER_LDFLAGS = (
 					"-lFramework",
 					"-ObjC",
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;

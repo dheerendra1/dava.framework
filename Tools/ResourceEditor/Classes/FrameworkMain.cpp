@@ -83,7 +83,7 @@ void FrameworkDidLaunched()
 #if defined(__DAVAENGINE_IPHONE__)
 	KeyedArchive * appOptions = new KeyedArchive();
 	appOptions->SetInt("orientation", Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT);
-	
+    
 	DAVA::Core::Instance()->SetVirtualScreenSize(480, 320);
 	DAVA::Core::Instance()->RegisterAvailableResourceSize(480, 320, "XGfx");
 #else
@@ -92,19 +92,19 @@ void FrameworkDidLaunched()
 //	appOptions->SetInt("height", 690);
 
 	appOptions->SetString("title", "DAVA SDK - Studio");
-	appOptions->SetInt("width",	920);
+	appOptions->SetInt("width",	1024);
 	appOptions->SetInt("height", 690);
 
-	appOptions->SetInt("fullscreen.width",	1280);
-	appOptions->SetInt("fullscreen.height", 800);
+	//appOptions->SetInt("fullscreen.width",	1280);
+	//appOptions->SetInt("fullscreen.height", 800);
 	
 	appOptions->SetInt("fullscreen", 0);
 	appOptions->SetInt("bpp", 32); 
 
-	DAVA::Core::Instance()->SetVirtualScreenSize(920, 690);
-	DAVA::Core::Instance()->RegisterAvailableResourceSize(920, 690, "XGfx");
+	DAVA::Core::Instance()->SetVirtualScreenSize(1024, 690);
+	DAVA::Core::Instance()->RegisterAvailableResourceSize(1024, 690, "XGfx");
 #endif 
-
+    
 	GameCore * core = new GameCore();
 	DAVA::Core::SetApplicationCore(core);
 	DAVA::Core::SetOptions(appOptions);

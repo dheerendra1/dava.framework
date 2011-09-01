@@ -185,28 +185,28 @@ Rect PropertyLineEditControl::RectFromPosition(const Vector2 & pos)
 void PropertyLineEditControl::Draw(const UIGeometricData &geometricData)
 {
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 0.3f);
-	RenderManager::Instance()->FillRect(geometricData.GetUnrotatedRect());
+	RenderHelper::Instance()->FillRect(geometricData.GetUnrotatedRect());
 
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 0.9f);
-	RenderManager::Instance()->DrawRect(GetWorkZone());
+	RenderHelper::Instance()->DrawRect(GetWorkZone());
 
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	for (int32 k = 0; k < (int32)values.size() - 1; ++k)
 	{
-		RenderManager::Instance()->DrawLine(CalcRealPosition(values[k]), CalcRealPosition(values[k + 1]));
+		RenderHelper::Instance()->DrawLine(CalcRealPosition(values[k]), CalcRealPosition(values[k + 1]));
 	}
 	
 	Vector2 vlast = CalcRealPosition(values[(int32)values.size() - 1]);
 	Vector2 vlast2 = CalcRealPosition(PropertyRect(maxX, maxY));
 	vlast2.y = vlast.y;
 	
-	RenderManager::Instance()->DrawLine(vlast, vlast2);
+	RenderHelper::Instance()->DrawLine(vlast, vlast2);
 	
 	for (int32 k = 0; k < (int32)values.size(); ++k)
 	{
 		Vector2 pos = CalcRealPosition(values[k]);
-		RenderManager::Instance()->DrawRect(RectFromPosition(pos));
+		RenderHelper::Instance()->DrawRect(RectFromPosition(pos));
 	}
 
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);

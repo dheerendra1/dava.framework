@@ -92,8 +92,8 @@ void GameCore::OnAppStarted()
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
-
-	UIScreenManager::Instance()->SetFirst(SCREEN_IMAGE_USAGE);
+    
+	UIScreenManager::Instance()->SetFirst(SCREEN_ANIM_3D);
 	cursor = 0;
 }
 
