@@ -44,6 +44,7 @@ public:
 
 	static Color White() { return Color(); }
 	static Color Transparent() { return Color(1.f, 1.f, 1.f, 0.f); }
+    static Color Clear() { return Color(0.f, 0.f, 0.f, 0.f); }
 	static Color Black() { return Color(0.f, 0.f, 0.f, 1.f); }
 
 	union

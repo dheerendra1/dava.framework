@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =====================================================================================*/
 #include "FileSystem/FileSystem.h"
-#include "ResourceArchive.h"
+#include "FileSystem/ResourceArchive.h"
 #ifdef LINUX
 #include "MacTypes.h"
 #endif

@@ -44,6 +44,7 @@ SceneNode::SceneNode(Scene * _scene)
 	localTransform.Identity();
 	worldTransform.Identity();
 	//animation = 0;
+    debugFlags = DEBUG_DRAW_NONE;
 }
 
 SceneNode::~SceneNode()
@@ -237,7 +238,7 @@ void SceneNode::Update(float32 timeElapsed)
 	uint32 size = (uint32)childs.size();
 	for (uint32 c = 0; c < size; ++c)
 		childs[c]->Update(timeElapsed);
-
+	
 	inUpdate = false;
 
     if (!removedCache.empty()) 
@@ -272,6 +273,8 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
     dstNode->worldTransform = worldTransform;
     dstNode->name = name;
     dstNode->tag = tag;
+    dstNode->debugFlags = debugFlags;
+
 //    Logger::Debug("Node %s clonned", name.c_str());
     
     dstNode->nodeAnimations = nodeAnimations;
@@ -288,6 +291,25 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
 //    Logger::Debug("Children -------------------------------");
     
     return dstNode;
+}
+
+void SceneNode::SetDebugFlags(uint32 _debugFlags, bool isRecursive)
+{
+    debugFlags = _debugFlags;
+    if (isRecursive)
+    {
+        std::deque<SceneNode*>::iterator it = childs.begin();
+        for(; it != childs.end(); it++)
+        {
+            SceneNode *n = (*it);
+            n->SetDebugFlags(_debugFlags, isRecursive);
+        }
+    }
+}
+
+void SceneNode::SetName(const String & _name)
+{
+    name = _name;
 }
 
     

@@ -56,6 +56,7 @@ public:
 	virtual int32 GetChildrenCount();
 	virtual void	RemoveAllChilds();
 	virtual SceneNode *	FindByName(const String & name);
+    virtual void SetName(const String & name);
 	
 	// virtual updates
 	virtual void	Update(float32 timeElapsed);
@@ -92,6 +93,27 @@ public:
 //    virtual SceneNode* Clone();
 
 	
+    
+	enum
+	{
+		DEBUG_DRAW_NONE = 0,
+		DEBUG_DRAW_AABBOX = 1,              
+		DEBUG_DRAW_LOCAL_AXIS = 2,
+        DEBUG_DRAW_ALL = 0xFFFFFFFF,
+	};
+	/**
+        \brief function to enable or disable debug drawing for particular node.
+        By default it's not recursive. Some objects may support flags only partially.
+        For example if node do not have bounding box flag DEBUG_DRAW_AABBOX will not produce any output
+        These flags are mostly for debug purposes and we do not guarantee that logic of the debug rendering will remain unchanged between 
+        framework versions.
+     
+        \param[in] debugFlags flags to be set
+        \param[in] isRecursive do you want to set flags recursively
+     
+     */
+	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
+	
 protected:
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
@@ -103,6 +125,7 @@ protected:
 	std::deque<SceneNode*> removedCache;
 	bool visible;
     bool inUpdate;
+    uint32 debugFlags;
 };
 
 inline void SceneNode::SetVisible(bool isVisible)

@@ -33,6 +33,10 @@
 #include "Sound/SoundSystem.h"
 #include "Sound/Sound.h"
 #include "Animation/LinearAnimation.h"
+#if defined(__DAVAENGINE_IPHONE__)
+#include "Sound/MusicIos.h"
+#endif
+
 
 namespace DAVA
 {
@@ -40,6 +44,9 @@ namespace DAVA
 SoundInstance::SoundInstance()
 :	state(STATE_PLAYING),
 	animatedVolume(-1.f)
+#if defined(__DAVAENGINE_IPHONE__)
+    ,buddyMusic(0)
+#endif
 {
 	SoundSystem::Instance()->AddSoundInstance(this);
 }
@@ -53,6 +60,31 @@ bool SoundInstance::Update()
 {
 	if(STATE_PLAYING == state)
 	{
+#if defined(__DAVAENGINE_IPHONE__)
+        if(buddyMusic)
+        {   
+            if(!buddyMusic->IsPlaying())
+            {
+                soundInstanceEventDispatcher.PerformEvent(EVENT_COMPLETED);
+
+                state = STATE_COMPLETED;
+                SoundSystem::Instance()->RemoveSoundInstance(this);
+                Release();
+                return false;
+            }
+        }
+        else if(SoundChannel::STATE_FREE == buddyChannel->GetState() || state == STATE_FORCED_STOPPED)
+		{
+			soundInstanceEventDispatcher.PerformEvent(EVENT_COMPLETED);
+
+			state = STATE_COMPLETED;
+			SoundSystem::Instance()->RemoveSoundInstance(this);
+			buddyChannel->GetBuddySound()->RemoveSoundInstance(this);
+			buddyChannel = 0;
+            Release();
+			return false;
+		}
+#else
 		if(SoundChannel::STATE_FREE == buddyChannel->GetState() || state == STATE_FORCED_STOPPED)
 		{
 			soundInstanceEventDispatcher.PerformEvent(EVENT_COMPLETED);
@@ -64,10 +96,11 @@ bool SoundInstance::Update()
 			Release();
 			return false;
 		}
+#endif
 		if(-1.f != animatedVolume)
 		{
 			SetVolume(animatedVolume);
-		}
+        }
 	}
 
 	return true;
@@ -75,21 +108,53 @@ bool SoundInstance::Update()
 
 void SoundInstance::SetVolume(float32 volume)
 {
+#if defined(__DAVAENGINE_IPHONE__)
+    if(buddyMusic)
+    {
+        buddyMusic->SetVolume(volume);
+    }
+    else if(buddyChannel)
+    {
+		buddyChannel->SetVolume(volume);
+    }
+#else
 	if(buddyChannel)
 		buddyChannel->SetVolume(volume);
+#endif //#if defined(__DAVAENGINE_IPHONE__)
+
+
 }
 
 float32 SoundInstance::GetVolume()
 {
+#if defined(__DAVAENGINE_IPHONE__)
+    if(buddyMusic)
+    {
+        return buddyMusic->GetVolume();
+    }
+    else return buddyChannel ? buddyChannel->GetVolume() : 0.f;
+#else
 	return buddyChannel ? buddyChannel->GetVolume() : 0.f;
+#endif
 }
 
 void SoundInstance::Stop()
 {
+#if defined(__DAVAENGINE_IPHONE__)
+    if(buddyMusic)
+    {
+        buddyMusic->Stop();
+    }
+    else if(buddyChannel)
+	{
+		buddyChannel->Stop();
+	}
+#else
 	if(buddyChannel)
 	{
 		buddyChannel->Stop();
 	}
+#endif
 	state = STATE_FORCED_STOPPED;
 }
 

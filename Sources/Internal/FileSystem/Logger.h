@@ -30,9 +30,13 @@
 #ifndef __DAVAENGINE_LOGGER_H__
 #define __DAVAENGINE_LOGGER_H__
 
-#define LOG_AS_INT(param) Logger::Debug("%s = %d", #param, param)
-#define LOG_AS_FLOAT(param) Logger::Debug("%s = %.4f", #param, param)
-#define LOG_AS_BOOL(param) Logger::Debug("%s = %s", #param, param?"true":"false")
+#define LOG_AS_INT(param) Logger::Debug("%s = %d", #param, param);
+#define LOG_AS_FLOAT(param) Logger::Debug("%s = %.4f", #param, param);
+#define LOG_AS_BOOL(param) Logger::Debug("%s = %s", #param, param?"true":"false");
+#define LOG_AS_MATRIX4(param)   Logger::Debug("%s_0 = %f, %f, %f, %f", #param, param._00, param._01, param._02, param._03); \
+                                Logger::Debug("%s_1 = %f, %f, %f, %f", #param, param._10, param._11, param._12, param._13); \
+                                Logger::Debug("%s_2 = %f, %f, %f, %f", #param, param._20, param._21, param._22, param._23); \
+                                Logger::Debug("%s_2 = %f, %f, %f, %f", #param, param._30, param._31, param._32, param._33);
 
 #include "Base/BaseTypes.h"
 #include "Base/Singleton.h"

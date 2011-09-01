@@ -84,7 +84,7 @@ public :
 inline int32 BuildD3D9VertexFormat(int32 vertexFormat)
 {
 	int32 resFormat = 0;
-	if (vertexFormat & EVF_COORD) resFormat |= D3DFVF_XYZ;
+	if (vertexFormat & EVF_VERTEX) resFormat |= D3DFVF_XYZ;
 	if (vertexFormat & EVF_NORMAL) resFormat |= D3DFVF_NORMAL;
 	//if (vertexFormat & EVF_TANGENT) resFormat |= D3DFVF_NORMAL2;
 	//if (vertexFormat & EVF_BINORMAL) resFormat |= D3DFVF_NORMAL3;

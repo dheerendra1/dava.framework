@@ -30,6 +30,7 @@
 
 #include "UI/UIScreenTransition.h"
 #include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 #include "Platform/SystemTimer.h"
 #include "UI/UIControlSystem.h"
 
@@ -90,7 +91,7 @@ void UIScreenTransition::StartTransition(UIScreen * _prevScreen, UIScreen * _nex
 	RenderManager::Instance()->SetRenderTarget(renderTargetPrevScreen);
 	RenderManager::Instance()->SetVirtualViewOffset();
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
-	RenderManager::Instance()->FillRect(screenRect);
+	RenderHelper::Instance()->FillRect(screenRect);
 	RenderManager::Instance()->ResetColor(); //SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 //	int32 prevScreenGroupId = 0;
@@ -118,7 +119,7 @@ void UIScreenTransition::StartTransition(UIScreen * _prevScreen, UIScreen * _nex
 	RenderManager::Instance()->SetVirtualViewOffset();
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
-	RenderManager::Instance()->FillRect(screenRect);
+	RenderHelper::Instance()->FillRect(screenRect);
 	RenderManager::Instance()->ResetColor();//SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	float32 timeElapsed = SystemTimer::FrameDelta();
 	nextScreen->SystemUpdate(timeElapsed);

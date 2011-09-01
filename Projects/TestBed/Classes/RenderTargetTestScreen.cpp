@@ -37,7 +37,7 @@ void RenderTargetTestScreen::LoadResources()
 	blueSprite = Sprite::Create("~res:/Gfx/SpriteBasics/bluesprite");
 	tranclucentSprite = Sprite::Create("~res:/Gfx/SpriteBasics/transclucentsprite");
 	zebraSprite = Sprite::Create("~res:/Gfx/SpriteBasics/zebrasprite");
-	
+    
 	renderTargetRGBA8888 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGBA8888);
 	renderTargetRGB565 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGB565);
 	renderTargetRGBA4444 = Sprite::CreateAsRenderTarget(256, 256, Texture::FORMAT_RGBA4444);

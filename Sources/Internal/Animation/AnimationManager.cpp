@@ -111,6 +111,7 @@ void AnimationManager::DeleteAnimations(AnimatedObject * _owner, int32 track)
 //				Logger::Debug("ANIMATION LOGGER: AnimationManager::Set  DELETE_ME 0x%x    for owner 0x%x", (int)animation, (int)_owner);
 //			}
 //#endif
+            animation->owner = 0;   // zero owner to avoid any issues (it was a problem with DumpState, when animations was deleted before). 
 			animation->state &= ~Animation::STATE_IN_PROGRESS;
 			animation->state &= ~Animation::STATE_FINISHED;
 			animation->state |= Animation::STATE_DELETE_ME;
@@ -262,8 +263,11 @@ void AnimationManager::DumpState()
 	Logger::Info("------------ Currently allocated animations - %2d ---------", animations.size());
 	for (int k = 0; k < (int)animations.size(); ++k)
 	{
-		Animation * animation = animations[k];
-		Logger::Debug("addr:0x%08x state:%d class: %s ownerClass: %s", animation, animation->state, typeid(*animation).name(), typeid(*animation->owner).name());
+		Animation * animation = animations[k];  
+        String ownerName = "no owner";
+        if (animation->owner)
+            ownerName = typeid(*animation->owner).name();
+		Logger::Debug("addr:0x%08x state:%d class: %s ownerClass: %s", animation, animation->state, typeid(*animation).name(), ownerName.c_str());
 	}
 	Logger::Info("============================================================");
 }

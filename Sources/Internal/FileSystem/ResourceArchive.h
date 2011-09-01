@@ -24,8 +24,8 @@
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 =====================================================================================*/
-#ifndef __LOGENGINE_IARCHIVE_H__
-#define __LOGENGINE_IARCHIVE_H__
+#ifndef __DAVAENGINE_RESOURCE_ARCHIVE_H__
+#define __DAVAENGINE_RESOURCE_ARCHIVE_H__
 
 #include "Base/BaseTypes.h"
 #include "FileSystem/Bitstream.h"
@@ -199,6 +199,6 @@ private:
 };
 
 
-#endif // __LOGENGINE_IARCHIVE_H__
+#endif // __DAVAENGINE_RESOURCE_ARCHIVE_H__
 
 

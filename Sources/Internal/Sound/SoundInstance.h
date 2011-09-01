@@ -42,6 +42,9 @@ namespace DAVA
 class Sound;
 class SoundSystem;
 class SoundChannel;
+#if defined(__DAVAENGINE_IPHONE__)
+class MusicIos;
+#endif
 
 /**
 	\ingroup sound
@@ -112,6 +115,10 @@ private:
 
 friend class Sound;
 friend class SoundSystem;
+#if defined(__DAVAENGINE_IPHONE__)
+    friend class MusicIos;
+    MusicIos * buddyMusic;
+#endif
 };
 
 };

@@ -32,34 +32,38 @@
 
 namespace DAVA 
 {
-#if defined(__DAVAENGINE_OPENGL__)
-	void RenderEffect::SetColor(float r, float g, float b, float a)
-	{
-		glColor4f(r * a, g * a, b * a, a);
-	}
+Map<String, RenderEffect*> RenderEffect::effectsMap;
+    
+RenderEffect::RenderEffect()
+{
+    const String & name = GetName();
+    Map<String, RenderEffect *>::iterator effectIt = effectsMap.find(name);
+    if (effectIt == effectsMap.end())
+    {
+        effectsMap[name] = this; 
+    }else
+    {
+        Logger::Debug("RenderEffect::RenderEffect effect with such name: %s already registered", name.c_str());
+    }
+}
 
-	void RenderEffect::SetTexture(Texture *texture)
-	{
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-	}
-	
-	void RenderEffect::SetTexCoordPointer(int size, int type, int stride, const void *pointer)
-	{
-		glTexCoordPointer(size, type, stride, pointer);
-	}
-	void RenderEffect::SetVertexPointer(int size, int type, int stride, const void *pointer)
-	{
-		glVertexPointer(size, type, stride, pointer);
-	}
-	void RenderEffect::DrawArrays(int32 mode, int32 first, int32 count)
-	{
-		glDrawArrays(mode, first, count);
-	}
-#elif defined(__DAVAENGINE_DIRECTX9__)
+RenderEffect::~RenderEffect()
+{
+    effectsMap.erase(GetName());
+}
+const char * RenderEffect::GetName()
+{
+    return "EmptyEffect";
+}
 
-
-
-#endif 
-
+void RenderEffect::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
+{
+    DVASSERT("RenderEffect::DrawArrays not implemented but called" && 0);
+}
+    
+void RenderEffect::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+{
+    DVASSERT("RenderEffect::DrawElements not implemented but called" && 0);
+}
 
 };

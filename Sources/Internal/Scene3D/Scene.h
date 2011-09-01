@@ -97,8 +97,15 @@ public:
 	void AddCamera(Camera * c);
 	inline int32	GetCameraCount();
     
-    void SetCamera(Camera * camera);
-    Camera * GetCamera() const;
+    void SetCurrentCamera(Camera * camera);
+    Camera * GetCurrentCamera() const;
+    
+    /* 
+        This camera is used for clipping only. If you do not call this function GetClipCamera returns currentCamera. 
+        You can use SetClipCamera function if you want to test frustum clipping, and view the scene from different angles.
+     */
+    void SetClipCamera(Camera * clipCamera);
+    Camera * GetClipCamera() const;
     
 private:	
 	Vector<Texture*> textures;
@@ -110,38 +117,39 @@ private:
     Map<String, SceneNode*> rootNodes;
     
     Camera * currentCamera;
+    Camera * clipCamera;
 };
 
 // Inline implementation
 	
-    int32 Scene::GetAnimationCount()
-    {
-        return (int32)animations.size();
-    }
-    int32 Scene::GetTextureCount()
-    {
-        return (int32)textures.size();
-    }
-    
-    int32 Scene::GetMaterialCount()
-    {
-        return (int32)materials.size();
-    }
-    
-    int32 Scene::GetStaticMeshCount()
-    {
-        return (int32)staticMeshes.size();
-    }
-    
-    int32 Scene::GetAnimatedMeshCount()
-    {
-        return (int32)animatedMeshes.size();
-    }
-    
-    int32 Scene::GetCameraCount()
-    {
-        return (int32)cameras.size();
-    }
+int32 Scene::GetAnimationCount()
+{
+    return (int32)animations.size();
+}
+int32 Scene::GetTextureCount()
+{
+    return (int32)textures.size();
+}
+
+int32 Scene::GetMaterialCount()
+{
+    return (int32)materials.size();
+}
+
+int32 Scene::GetStaticMeshCount()
+{
+    return (int32)staticMeshes.size();
+}
+
+int32 Scene::GetAnimatedMeshCount()
+{
+    return (int32)animatedMeshes.size();
+}
+
+int32 Scene::GetCameraCount()
+{
+    return (int32)cameras.size();
+}
 };
 
 

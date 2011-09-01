@@ -99,6 +99,9 @@ Image * Image::Create(int32 width, int32 height, PixelFormat format)
 		case FORMAT_RGBA4444:
 			image->data = new uint8[width * height * 2];
 			break;
+        case FORMAT_A8:
+			image->data = new uint8[width * height];
+			break;
 		default:
 			Logger::Error("Image::Create trying to create image with wrong format");
 			break;
@@ -197,7 +200,10 @@ Image * Image::CreateFromFile(const String & pathName)
 	
 	info = CGImageGetAlphaInfo(image);
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? true : false);
-	if(CGImageGetColorSpace(image)) 
+	
+    CGColorSpaceRef imageColorSpace = CGImageGetColorSpace(image);
+    
+    if(CGColorSpaceGetNumberOfComponents(imageColorSpace) >= 3) 
 	{
 		if(hasAlpha)pixelFormat = Image::FORMAT_RGBA8888;
 		else pixelFormat = Image::FORMAT_RGB565;
@@ -250,8 +256,13 @@ Image * Image::CreateFromFile(const String & pathName)
 			break;
 			
 		case Image::FORMAT_A8:
-			data = new uint8[height * width];
-			context = CGBitmapContextCreate(data, width, height, 8, width, NULL, kCGImageAlphaOnly);
+			colorSpace = CGColorSpaceCreateDeviceRGB();
+			data = new uint8[height * width * 4];
+			context = CGBitmapContextCreate(data, width, height, 8, 4 * width, colorSpace, kCGImageAlphaNoneSkipLast | kCGBitmapByteOrder32Big);
+			CGColorSpaceRelease(colorSpace);
+
+			//data = new uint8[height * width * 4];
+			//context = CGBitmapContextCreate(data, width, height, 8, width, NULL, kCGImageAlphaOnly);
 			break;				
 		default:
 			return 0;
@@ -274,6 +285,19 @@ Image * Image::CreateFromFile(const String & pathName)
 		outPixel16 = (unsigned short*)tempData;
 		for(int32 i = 0; i < width * height; ++i, ++inPixel32)
 			*outPixel16++ = ((((*inPixel32 >> 0) & 0xFF) >> 3) << 11) | ((((*inPixel32 >> 8) & 0xFF) >> 2) << 5) | ((((*inPixel32 >> 16) & 0xFF) >> 3) << 0);
+		SafeDeleteArray(data);
+		data = tempData;
+	}
+    
+    if(pixelFormat == Image::FORMAT_A8) 
+	{
+		tempData = new uint8[height * width];
+		inPixel32 = (unsigned int*)data;
+		uint8 * outPixel8 = (uint8*)tempData;
+		
+        for(int32 i = 0; i < width * height; ++i, ++inPixel32)
+			*outPixel8++ = *inPixel32;
+        
 		SafeDeleteArray(data);
 		data = tempData;
 	}

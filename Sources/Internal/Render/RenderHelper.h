@@ -32,6 +32,7 @@
 
 #include "Base/BaseTypes.h"
 #include "Base/BaseMath.h"
+#include "Base/StaticSingleton.h"
 #include "Render/RenderBase.h"
 
 #include "Render/Texture.h"
@@ -40,20 +41,29 @@
 namespace DAVA
 {
 	
-/*
-	VB:
+/**
+    \brief 
  
-	This class is for DEBUG usage and possibility fastly show Framework / 3D Engine primitives 
-	to the screen without writing a lot of code
-	
-	Please do not use this functions in release code
- 
-	All functions are VERY SLOW and not DESIGNED FOR PERFORMANCE
  */
-class RenderHelper
+class RenderDataObject;
+class RenderDataStream;
+    
+class RenderHelper : public StaticSingleton<RenderHelper>
 {
 public:
-	
+	RenderHelper();
+    ~RenderHelper();
+    
+    void DrawLine(const Vector2 & pt1, const Vector2 & pt2); 
+	void DrawLine(const Vector3 & pt1, const Vector3 & pt2); 
+    void DrawRect(const Rect & rect);
+    void FillRect(const Rect & rect);
+    
+
+    RenderDataObject * renderDataObject;
+    RenderDataStream * vertexStream; 
+    float32 vertices[32];
+    
 	// point helpers
 	static void DrawPoint(const Vector2 & pt, float32 ptSize = 1.0f);
 	static void DrawPoint(const Vector3 & pt, float32 ptSize = 1.0f);
@@ -66,9 +76,9 @@ public:
 	static void DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform);
 	static void DrawPolygonPoints(Polygon2 & polygon, bool closed);
 	static void DrawPolygonPoints(Polygon3 & polygon, bool closed);
-	static void DrawLine(const Vector2 & pt1, const Vector2 & pt2); 
-	static void DrawLine(const Vector3 & pt1, const Vector3 & pt2); 
-	static void DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2); 
+    
+	
+    static void DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2); 
 	static void DrawStrippedLine(Polygon2 & polygon, float lineLen, float spaceLen, float halfWidth, Texture * texture, float initialPos);
 	static void DrawBox(const AABBox2 & box);
 	static void DrawBox(const AABBox3 & box);

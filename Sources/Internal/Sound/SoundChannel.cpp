@@ -92,7 +92,7 @@ void SoundChannel::Stop()
 		{
 			AL_VERIFY(alSourcei(source, AL_BUFFER, 0));
 		}
-#endif
+#endif //__DAVASOUND_AL__
 	}
 }
 
@@ -100,6 +100,7 @@ void SoundChannel::Play(Sound * sound, bool _looping)
 {
 	buddySound = sound;
 	looping = _looping;
+    
 	if(Sound::TYPE_STATIC == buddySound->GetType())
 	{
 		PlayStatic();
