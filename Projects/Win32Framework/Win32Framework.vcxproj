@@ -244,6 +244,9 @@
     <ClInclude Include="..\..\Sources\Internal\Render\D3D9Helpers.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\DynamicIndexBuffer.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\DynamicVertexBuffer.h" />
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.h" />
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.h" />
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\Image.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\IndexBuffer.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\LibPngHelpers.h" />
@@ -251,6 +254,7 @@
     <ClInclude Include="..\..\Sources\Internal\Render\Material.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\OGLHelpers.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\RenderBase.h" />
+    <ClInclude Include="..\..\Sources\Internal\Render\RenderDataObject.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\RenderEffect.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\RenderGrayscaleEffect.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\RenderHelper.h" />
@@ -283,6 +287,7 @@
     <ClInclude Include="..\..\Sources\Internal\Scene2D\GameObjectManager.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\BoneNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\Camera.h" />
+    <ClInclude Include="..\..\Sources\Internal\Scene3D\Frustum.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\MeshInstanceNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\PathManip.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\RotatingCubeNode.h" />
@@ -462,9 +467,13 @@
     <ClCompile Include="..\..\Sources\Internal\Render\D3D9Helpers.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\DynamicIndexBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\DynamicVertexBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\ColorOnlyEffect.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\MultiTextureEffect.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\Image.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\LibPngHelpers.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderBase.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\RenderDataObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderEffect.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderGrayscaleEffect.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderHelper.cpp" />
@@ -500,6 +509,7 @@
     <ClCompile Include="..\..\Sources\Internal\Scene2D\GameObjectManager.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\BoneNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\Camera.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Scene3D\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\MeshInstanceNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\PathManip.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\RotatingCubeNode.cpp" />
