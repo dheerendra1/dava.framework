@@ -37,7 +37,6 @@ namespace DAVA
 {
 MeshInstanceNode::MeshInstanceNode(Scene * _scene)
 :	SceneNode3d(_scene)
-,	visible(true)
 {
 	
 }
@@ -136,7 +135,6 @@ SceneNode* MeshInstanceNode::Clone(SceneNode *dstNode)
     nd->meshes = meshes;
     nd->polygonGroupIndexes = polygonGroupIndexes;
     nd->materials = materials;
-    nd->visible = visible;
     nd->bbox = bbox;
     
     return dstNode;
