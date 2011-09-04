@@ -33,7 +33,7 @@
 void StaticTextScreen::LoadResources()
 {
 	Font *fnt;
-	fnt = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+	fnt = FTFont::Create("~res:/Fonts/korinna.ttf");
 //	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
 	fnt->SetSize(12);
 //	fnt->SetSize(12);
@@ -49,7 +49,7 @@ void StaticTextScreen::LoadResources()
 	tx->SetFont(fnt);
 //	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_LEFT|ALIGN_TOP);
-	tx->SetText(L"aaa");
+	tx->SetText(L"Aja broir");
 //	tx->SetText(L"This text is aligned by the Left and Top borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
@@ -134,7 +134,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	tx->SetMultiline(true);
+	//tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_LEFT|ALIGN_BOTTOM);
 	tx->SetText(L"This text is aligned by the Left and Bottom borders.");
 	tc->AddControl(tx);
@@ -147,7 +147,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	tx->SetMultiline(true);
+	//tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HCENTER|ALIGN_BOTTOM);
 	tx->SetText(L"This text is aligned by the Center and Bottom borders.");
 	tc->AddControl(tx);
@@ -160,7 +160,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	tx->SetMultiline(true);
+	//tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_RIGHT|ALIGN_BOTTOM);
 	tx->SetText(L"This text is aligned by the Right and Bottom borders.");
 	tc->AddControl(tx);
@@ -175,9 +175,9 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	tx->SetMultiline(true);
+	//tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HJUSTIFY|ALIGN_TOP);
-	tx->SetText(L"This text is Justify and it's looks little better than the others.");
+	tx->SetText(L"This text is Justify and it's looks little better than the others. aja. AVA.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);

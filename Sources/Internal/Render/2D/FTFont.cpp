@@ -25,13 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Ivan Petrochenko
 =====================================================================================*/
-#include <ft2build.h>
-#include <freetype/ftglyph.h>
-//#include "ftglyph.h"
-#include FT_FREETYPE_H
-
 #include "Render/2D/FTFont.h"
 #include "Render/2D/FontManager.h"
 #include "FileSystem/Logger.h"
@@ -40,10 +35,65 @@
 #include "FileSystem/File.h"
 #include "Core/Core.h"
 
+#include <ft2build.h>
+#include <freetype/ftglyph.h>
+#include FT_FREETYPE_H
+
+
 namespace DAVA
 {
 
 Map<String,FTInternalFont*> fontMap;
+
+class FTInternalFont : public BaseObject
+{
+	friend class FTFont;
+	String fontPath;
+	uint8 * memoryFont;
+	uint32 memoryFontSize;
+private:
+	FTInternalFont(const String& path);
+	virtual ~FTInternalFont();
+
+public:
+	FT_Face face;
+	Size2i DrawString(const WideString& str, void * buffer, int32 bufWidth, int32 bufHeight, 
+		uint8 r, uint8 g, uint8 b, uint8 a, 
+		uint8 sr, uint8 sg, uint8 sb, uint8 sa,
+		const Vector2 & shadowOffset, 
+		float32 size, bool realDraw, 
+		int32 offsetX, int32 offsetY,
+		int32 justifyWidth,
+		Vector<int32> *charSizes = NULL,
+		bool contentScaleIncluded = false);
+	uint32 GetFontHeight(float32 size);
+	int32 GetAscender(float32 size);
+	int32 GetDescender(float32 size);
+
+	bool IsCharAvaliable(char16 ch);
+
+	void SetFTCharSize(float32 size);
+
+	virtual int32 Release();
+
+private:
+	static Mutex drawStringMutex;
+
+	struct Glyph
+	{
+		FT_UInt		index;
+		FT_Glyph	image;    /* the glyph image */
+
+		FT_Pos		delta;    /* delta caused by hinting */
+	};
+	Vector<Glyph> glyphs;
+
+	void ClearString();
+	void LoadString(const WideString& str);
+	void Prepare(FT_Vector * advances);
+
+	inline FT_Pos Round(FT_Pos val);
+};
 
 FTFont::FTFont(FTInternalFont* _internalFont)
 :	Font(),
@@ -187,6 +237,7 @@ bool FTFont::IsCharAvaliable(char16 ch)
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 	
 FTInternalFont::FTInternalFont(const String& path)
 :	face(0),
@@ -257,401 +308,396 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 		offsetX = (int32)(Core::GetVirtualToPhysicalFactor() * offsetX);
 	}
 
+	FT_Vector pen;
+	pen.x = offsetX;
+	pen.y = offsetY;
+
 	int32 penX = offsetX;
 	int32 penY = offsetY;
 	int16 * resultBuf = (int16*)buffer;
-	
-	
 	 
 	SetFTCharSize(size);
-	
-	bool use_kerning = (FT_HAS_KERNING(face) > 0);
-	int32 previous = 0;
-	
-	FT_UInt num_glyphs = 0;
-	
-	int32 num_chars = (int32)str.length();
-	FT_Glyph * glyphs = new FT_Glyph[num_chars];
-	FT_Vector * pos = new FT_Vector[num_chars];
-	
-	//calculate string rect
-	FT_BBox  bbox;
-	
-	
-	/* initialize string bbox to "empty" values */
-	bbox.xMin = bbox.yMin =  32000;
-	bbox.xMax = bbox.yMax = -32000;
-	int prevSz = 0;
-	int spacesCount = 0;
-	
-	for(int32 n = 0; n < num_chars; n++)
+
+	LoadString(str);
+	int32 strLen = str.length();
+	FT_Vector * advances = new FT_Vector[strLen];
+	Prepare(advances);
+
+
+	FT_Error error;
+	for(int32 i = 0; i < strLen; ++i)
 	{
-		/* convert character code to glyph index */
-		if (str[n] == L' ') 
-		{
-			spacesCount++;
-		}
-		int32 glyph_index = FT_Get_Char_Index(face, str[n]);
-		
-		/* retrieve kerning distance and move pen position */
-		if (use_kerning && previous && glyph_index)
-		{
-			FT_Vector  delta;
-			FT_Get_Kerning( face, previous, glyph_index, FT_KERNING_DEFAULT, &delta );
-			penX += delta.x >> 6;
-		}
-		
-		/* store current pen position */
-		pos[num_glyphs].x = penX;
-		
-		
-		/* load glyph image into the slot without rendering */
-		FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_DEFAULT );
-		if ( error )
-		{
-			if(charSizes)
-			{
-				(*charSizes).push_back(0);
-			}
-			continue;  /* ignore errors, jump to next glyph */
-		}
-		
-		/* extract glyph image and store it in our table */
-		error = FT_Get_Glyph( face->glyph, &glyphs[num_glyphs] );
-		if ( error )
-		{
-			if(charSizes)
-			{
-				(*charSizes).push_back(0);
-			}
-			continue;  /* ignore errors, jump to next glyph */
-		}
-		
-		/* increment pen position */
-		//penX += face->glyph->metrics.width >> 6;
-		penX += (face->glyph->metrics.horiAdvance + (1<<5)) >> 6;
-		//pos[num_glyphs].y = penY - ((face->glyph->metrics.height - face->glyph->metrics.horiBearingY) >>6);
-		pos[num_glyphs].y = ((face->glyph->metrics.horiBearingY + (1<<5)) >>6);
-		/* record current glyph index */
-		previous = glyph_index;
-		
-		
-		
-		/* for each glyph image, compute its bounding box, */
-		/* translate it, and grow the string bbox          */
-		FT_BBox  glyph_bbox;
-		
-		
-		FT_Glyph_Get_CBox(glyphs[num_glyphs], ft_glyph_bbox_pixels, &glyph_bbox );
-		
-		if(!glyph_bbox.xMin && !glyph_bbox.xMax && !glyph_bbox.yMin && !glyph_bbox.yMax)
-		{
-			//SPACE symbol
-			num_glyphs++;
-			if(charSizes)
-			{
-				(*charSizes).push_back(0);
-			}
+		Glyph		& glyph = glyphs[i];
+		FT_Glyph	image;
+		FT_BBox		bbox;
+
+		if (!glyph.image)
 			continue;
-		}
-		glyph_bbox.xMin += pos[num_glyphs].x;
-		glyph_bbox.xMax += pos[num_glyphs].x;
-		
-		if(isShadow)
-		{
-			if(shadowOffset.x > 0) glyph_bbox.xMax += (FT_Pos)shadowOffset.x;
-			if(shadowOffset.x < 0) glyph_bbox.xMin += (FT_Pos)shadowOffset.x;
-			if(shadowOffset.y > 0) glyph_bbox.yMax += (FT_Pos)shadowOffset.y;
-			if(shadowOffset.y < 0) glyph_bbox.yMin += (FT_Pos)shadowOffset.y;
-		}
-		
-		if (glyph_bbox.xMin < bbox.xMin)
-			bbox.xMin = glyph_bbox.xMin;
-		
-		if (glyph_bbox.yMin < bbox.yMin)
-			bbox.yMin = glyph_bbox.yMin;
-		
-		if (glyph_bbox.xMax > bbox.xMax)
-			bbox.xMax = glyph_bbox.xMax;
-		
-		if (glyph_bbox.yMax > bbox.yMax)
-			bbox.yMax = glyph_bbox.yMax;
-		
-		
-		if(charSizes)
-		{
-			int sz = bbox.xMax-bbox.xMin;
-			(*charSizes).push_back(sz - prevSz);
-			prevSz = sz;
-		}
-		/* increment number of glyphs */
-		num_glyphs++;
-	}
 
+		error = FT_Glyph_Copy(glyph.image, &image);
+		if(error)
+			continue;
 
-	//if(bbox.yMin > 0) bbox.yMin = 0;
-	if(bbox.xMin > 0) bbox.xMin = 0;
+		//if(image->format != FT_GLYPH_FORMAT_BITMAP)
+		//{
+		//	if ( sc->vertical )
+		//		error = FT_Glyph_Transform( image, NULL, &glyph->vvector );
 
-	/* check that we really grew the string bbox */
-	if ( bbox.xMin > bbox.xMax )
-	{
-		bbox.xMin = 0;
-		bbox.yMin = 0;
-		bbox.xMax = 0;
-		bbox.yMax = 0;
-	}
-	
-	if(realDraw)
-	{
-		if (justifyWidth > 0 && spacesCount > 0) 
+		//	if ( !error )
+		//		error = FT_Glyph_Transform( image, sc->matrix, &pen );
+
+		//	if ( error )
+		//	{
+		//		FT_Done_Glyph( image );
+		//		continue;
+		//	}
+		//}
+		//else
+		//{
+		//	DVASSERT(0);
+		//}
+
+		pen.x += (advances[i].x >> 6);
+		pen.y += (advances[i].y >> 6);
+
+		FT_Glyph_Get_CBox(image, FT_GLYPH_BBOX_PIXELS, &bbox);
+
+		/* check bounding box; if it is completely outside the */
+		/* display surface, we don't need to render it         */
+		//if ( bbox.xMax > 0                      &&
+		//	bbox.yMax > 0                      &&
+		//	bbox.xMin < display->bitmap->width &&
+		//	bbox.yMin < display->bitmap->rows  )
 		{
-			int oversize = justifyWidth - (bbox.xMax - bbox.xMin);
-			int spaceAdd = oversize / spacesCount;
-			int totalAdd = 0;
-			if (oversize > 0) 
+			error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
+			if(!error)
 			{
-				oversize -= spacesCount * spaceAdd;
-				for(int32 n = 0; n < num_chars; n++)
-				{
-					/* convert character code to glyph index */
-					if (str[n] == L' ') 
-					{
-						if (oversize > 0)
-						{
-							totalAdd += spaceAdd + 1;
-							oversize--;
-						}
-						else 
-						{
-							totalAdd += spaceAdd;
-						}
-						
-					}
-					pos[n].x = pos[n].x + totalAdd;
-				}
-			}
-		}
-		//create bufer
-		//uint32 width = 256;//bbox.xMax - bbox.xMin;
-		//uint32 height = 256;//bbox.yMax - bbox.yMin;
-		//int16 * resultBuf = new int16[bufWidth*bufHeight];
-		
-		// VB: Please be patient --- please do not clear the buffer here 
-		// because it can break multiline text
-		// Dizz: I'm patient just as a boa
-		
-		if(isShadow)
-		{
-			for (uint32 n = 0; n < num_glyphs; n++)
-			{
-				FT_Glyph   image;
-				FT_Vector  pen;
-				
-				image = glyphs[n];
-				
-				pen.x = (FT_Pos)(pos[n].x + shadowOffset.x);
-				pen.y = (FT_Pos)(penY - pos[n].y + ((face->size->metrics.ascender+ (1<<5))>>6) + shadowOffset.y);
-				
-				//DVASSERT(pen.x >= 0 && pen.y >= 0);
-				
-	//			if(pen.x > bufWidth || pen.y > bufHeight)
-	//			{
-	//				continue;
-	//			}
-				
-				FT_Error error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
-				if ( !error )
-				{
-					FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
-					FT_Bitmap * bitmap = &bit->bitmap;
+				FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
+				FT_Bitmap * bitmap = &bit->bitmap;
 
-					//TODO: optimize
-					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
-					int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
-					for(int32 h = 0; h < realH; h++)
-					{
-						for(int32 w = 0; w < realW; w++)
-						{
-							int lowBoundX = pen.x+w;
-							int lowBoundY = pen.y+h;
-							
-							if(lowBoundX < 0 || lowBoundY < 0)
-							{
-								continue;
-							}
-						
-							int oldPix = bitmap->buffer[h*bitmap->width+w];
-							
-							uint8 preAlpha = (oldPix*sa)>>8;
-							
-							resultBuf[(pen.y+h)*bufWidth + (pen.x+w)] = (
-							(((preAlpha*sr)>>12)<<12) |
-							(((preAlpha*sg)>>12)<<8) | 
-							(((preAlpha*sb)>>12)<<4) | 
-							((preAlpha)>>4)); 
-						}
-					}
-					FT_Done_Glyph( image );
-				}
-			}
-			
-			
-			for (uint32 n = 0; n < num_glyphs; n++)
-			{
-				FT_Glyph   image;
-				FT_Vector  pen;
-				
-				image = glyphs[n];
-				
-				pen.x = pos[n].x;
-				pen.y = penY - pos[n].y + ((face->size->metrics.ascender+ (1<<5))>>6);
-				
-				//DVASSERT(pen.x >= 0 && pen.y >= 0);
-				
-				FT_Error error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
-				if ( !error )
+				int32 left = bit->left;
+				int32 top = bit->top;
+
+				//TODO: optimize
+				int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
+				int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
+				for(int32 h = 0; h < realH; h++)
 				{
-					FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
-					FT_Bitmap * bitmap = &bit->bitmap;
-
-					//TODO: optimize
-					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
-					int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
-					for(int32 h = 0; h < realH; h++)
+					for(int32 w = 0; w < realW; w++)
 					{
-						for(int32 w = 0; w < realW; w++)
-						{
-							int lowBoundX = pen.x+w;
-							int lowBoundY = pen.y+h;
-							
-							if(lowBoundX < 0 || lowBoundY < 0)
-							{
-								continue;
-							}
-						
-							int16 oldPix = bitmap->buffer[h*bitmap->width+w];
-							
-							uint8 preAlpha = (oldPix*a)>>8;
+						int lowBoundX = pen.x+w;
+						int lowBoundY = pen.y+h;
 
-							int32 ind = (pen.y+h)*bufWidth + (pen.x+w);
-							
+						if(lowBoundX < 0 || lowBoundY < 0)
+						{
+							continue;
+						}
+
+						int oldPix = bitmap->buffer[h*bitmap->width+w];
+
+						uint8 preAlpha = (oldPix*a)>>8;
+						if(preAlpha)
+						{
+							int32 revAlpha = 256-preAlpha;
+							int32 ind = (pen.y+h+top)*bufWidth + (pen.x+w);
+
 							uint8 prevA = (resultBuf[ind] & 0xf)<<4;
 							uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
 							uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
 							uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
-							
+
 							//		    source		        destination
 							//		    one			        1-srcAlpha
-							uint8 tempA = ((preAlpha))+(((256-preAlpha)*prevA)>>8);
-							uint8 tempR = ((preAlpha*r)>>8)+(((256-preAlpha)*prevR)>>8); 
-							uint8 tempG = ((preAlpha*g)>>8)+(((256-preAlpha)*prevG)>>8);
-							uint8 tempB = ((preAlpha*b)>>8)+(((256-preAlpha)*prevB)>>8);
-							
+							uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
+							uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
+							uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
+							uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
 							resultBuf[ind] = (
-							(((tempR)>>4)<<12) |
-							(((tempG)>>4)<<8) | 
-							(((tempB)>>4)<<4) | 
-							((tempA)>>4)); 
+								(((tempR)>>4)<<12) |
+								(((tempG)>>4)<<8) | 
+								(((tempB)>>4)<<4) | 
+								((tempA)>>4)); 
 						}
+
 					}
-					FT_Done_Glyph( image );
 				}
 			}
 		}
-		else
-		{
-		
-			for(uint32 n = 0; n < num_glyphs; n++)
-			{
-				FT_Glyph   image;
-				FT_Vector  pen;
-				
-				image = glyphs[n];
-				
-				pen.x = pos[n].x;
-				pen.y = penY - pos[n].y + ((face->size->metrics.ascender + (1<<5))>>6);
-				
-				//DVASSERT(pen.x >= 0 && pen.y >= 0);
-				
-	//			if(pen.x > bufWidth || pen.y > bufHeight)
+
+		FT_Done_Glyph(image);
+	}
+	
+	return Size2i(300, 100);
+
+	//
+	//bool use_kerning = (FT_HAS_KERNING(face) > 0);
+	//int32 previous = 0;
+	//
+	//FT_UInt num_glyphs = 0;
+	//
+	//int32 num_chars = (int32)str.length();
+	//FT_Glyph * glyphs = new FT_Glyph[num_chars];
+	//FT_Vector * pos = new FT_Vector[num_chars];
+	//
+	////calculate string rect
+	//FT_BBox  bbox;
+	//
+	//
+	///* initialize string bbox to "empty" values */
+	//bbox.xMin = bbox.yMin =  32000;
+	//bbox.xMax = bbox.yMax = -32000;
+	//int prevSz = 0;
+	//int spacesCount = 0;
+	//
+	//for(int32 n = 0; n < num_chars; n++)
+	//{
+	//	/* convert character code to glyph index */
+	//	if (str[n] == L' ') 
+	//	{
+	//		spacesCount++;
+	//	}
+	//	int32 glyph_index = FT_Get_Char_Index(face, str[n]);
+	//	
+	//	/* retrieve kerning distance and move pen position */
+	//	if (use_kerning && previous && glyph_index)
+	//	{
+	//		FT_Vector  delta;
+	//		FT_Get_Kerning( face, previous, glyph_index, FT_KERNING_UNFITTED, &delta );
+	//		penX += delta.x >> 6;
+	//	}
+	//	
+	//	/* store current pen position */
+	//	pos[num_glyphs].x = penX;
+	//	
+	//	
+	//	/* load glyph image into the slot without rendering */
+	//	FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_DEFAULT );
+	//	if ( error )
+	//	{
+	//		if(charSizes)
+	//		{
+	//			(*charSizes).push_back(0);
+	//		}
+	//		continue;  /* ignore errors, jump to next glyph */
+	//	}
+	//	
+	//	/* extract glyph image and store it in our table */
+	//	error = FT_Get_Glyph( face->glyph, &glyphs[num_glyphs] );
+	//	if ( error )
+	//	{
+	//		if(charSizes)
+	//		{
+	//			(*charSizes).push_back(0);
+	//		}
+	//		continue;  /* ignore errors, jump to next glyph */
+	//	}
+	//	
+	//	/* increment pen position */
+	//	//penX += face->glyph->metrics.width >> 6;
+	//	penX += (face->glyph->metrics.horiAdvance + (1<<5)) >> 6;
+	//	//pos[num_glyphs].y = penY - ((face->glyph->metrics.height - face->glyph->metrics.horiBearingY) >>6);
+	//	pos[num_glyphs].y = ((face->glyph->metrics.horiBearingY + (1<<5)) >>6);
+	//	/* record current glyph index */
+	//	previous = glyph_index;
+	//	
+	//	
+	//	
+	//	/* for each glyph image, compute its bounding box, */
+	//	/* translate it, and grow the string bbox          */
+	//	FT_BBox  glyph_bbox;
+	//	
+	//	
+	//	FT_Glyph_Get_CBox(glyphs[num_glyphs], ft_glyph_bbox_pixels, &glyph_bbox );
+	//	
+	//	if(!glyph_bbox.xMin && !glyph_bbox.xMax && !glyph_bbox.yMin && !glyph_bbox.yMax)
+	//	{
+	//		//SPACE symbol
+	//		num_glyphs++;
+	//		if(charSizes)
+	//		{
+	//			(*charSizes).push_back(0);
+	//		}
+	//		continue;
+	//	}
+	//	glyph_bbox.xMin += pos[num_glyphs].x;
+	//	glyph_bbox.xMax += pos[num_glyphs].x;
+	//	
+	//	if(isShadow)
+	//	{
+	//		if(shadowOffset.x > 0) glyph_bbox.xMax += (FT_Pos)shadowOffset.x;
+	//		if(shadowOffset.x < 0) glyph_bbox.xMin += (FT_Pos)shadowOffset.x;
+	//		if(shadowOffset.y > 0) glyph_bbox.yMax += (FT_Pos)shadowOffset.y;
+	//		if(shadowOffset.y < 0) glyph_bbox.yMin += (FT_Pos)shadowOffset.y;
+	//	}
+	//	
+	//	if (glyph_bbox.xMin < bbox.xMin)
+	//		bbox.xMin = glyph_bbox.xMin;
+	//	
+	//	if (glyph_bbox.yMin < bbox.yMin)
+	//		bbox.yMin = glyph_bbox.yMin;
+	//	
+	//	if (glyph_bbox.xMax > bbox.xMax)
+	//		bbox.xMax = glyph_bbox.xMax;
+	//	
+	//	if (glyph_bbox.yMax > bbox.yMax)
+	//		bbox.yMax = glyph_bbox.yMax;
+	//	
+	//	
+	//	if(charSizes)
+	//	{
+	//		int sz = bbox.xMax-bbox.xMin;
+	//		(*charSizes).push_back(sz - prevSz);
+	//		prevSz = sz;
+	//	}
+	//	/* increment number of glyphs */
+	//	num_glyphs++;
+	//}
+
+
+	////if(bbox.yMin > 0) bbox.yMin = 0;
+	//if(bbox.xMin > 0) bbox.xMin = 0;
+
+	///* check that we really grew the string bbox */
+	//if ( bbox.xMin > bbox.xMax )
+	//{
+	//	bbox.xMin = 0;
+	//	bbox.yMin = 0;
+	//	bbox.xMax = 0;
+	//	bbox.yMax = 0;
+	//}
+	//
+	//if(realDraw)
+	//{
+	//	if (justifyWidth > 0 && spacesCount > 0) 
+	//	{
+	//		int oversize = justifyWidth - (bbox.xMax - bbox.xMin);
+	//		int spaceAdd = oversize / spacesCount;
+	//		int totalAdd = 0;
+	//		if (oversize > 0) 
+	//		{
+	//			oversize -= spacesCount * spaceAdd;
+	//			for(int32 n = 0; n < num_chars; n++)
 	//			{
-	//				continue;
+	//				/* convert character code to glyph index */
+	//				if (str[n] == L' ') 
+	//				{
+	//					if (oversize > 0)
+	//					{
+	//						totalAdd += spaceAdd + 1;
+	//						oversize--;
+	//					}
+	//					else 
+	//					{
+	//						totalAdd += spaceAdd;
+	//					}
+	//					
+	//				}
+	//				pos[n].x = pos[n].x + totalAdd;
 	//			}
-				
-				FT_Error error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
-				if ( !error )
-				{
-					FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
-					FT_Bitmap * bitmap = &bit->bitmap;
+	//		}
+	//	}
+	//	//create bufer
+	//	//uint32 width = 256;//bbox.xMax - bbox.xMin;
+	//	//uint32 height = 256;//bbox.yMax - bbox.yMin;
+	//	//int16 * resultBuf = new int16[bufWidth*bufHeight];
+	//	
+	//	// VB: Please be patient --- please do not clear the buffer here 
+	//	// because it can break multiline text
+	//	// Dizz: I'm patient just as a boa
+	//	
+	//	{
+	//	
+	//		for(uint32 n = 0; n < num_glyphs; n++)
+	//		{
+	//			FT_Glyph   image;
+	//			FT_Vector  pen;
+	//			
+	//			image = glyphs[n];
+	//			
+	//			pen.x = pos[n].x;
+	//			pen.y = penY - pos[n].y + ((face->size->metrics.ascender + (1<<5))>>6);
+	//			
+	//			//DVASSERT(pen.x >= 0 && pen.y >= 0);
+	//			
+	////			if(pen.x > bufWidth || pen.y > bufHeight)
+	////			{
+	////				continue;
+	////			}
+	//			
+	//			FT_Error error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
+	//			if ( !error )
+	//			{
+	//				FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
+	//				FT_Bitmap * bitmap = &bit->bitmap;
 
-					//TODO: optimize
-					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
-					int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
-					for(int32 h = 0; h < realH; h++)
-					{
-						for(int32 w = 0; w < realW; w++)
-						{
-							int lowBoundX = pen.x+w;
-							int lowBoundY = pen.y+h;
-							
-							if(lowBoundX < 0 || lowBoundY < 0)
-							{
-								continue;
-							}
-							
-							int oldPix = bitmap->buffer[h*bitmap->width+w];
-							
-							uint8 preAlpha = (oldPix*a)>>8;
-							if(preAlpha)
-							{
-								int32 revAlpha = 256-preAlpha;
-								int32 ind = (pen.y+h)*bufWidth + (pen.x+w);
-								
-								uint8 prevA = (resultBuf[ind] & 0xf)<<4;
-								uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
-								uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
-								uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
-								
-								//		    source		        destination
-								//		    one			        1-srcAlpha
-								uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
-								uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
-								uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
-								uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
-								resultBuf[ind] = (
-												  (((tempR)>>4)<<12) |
-												  (((tempG)>>4)<<8) | 
-												  (((tempB)>>4)<<4) | 
-												  ((tempA)>>4)); 
-								
-								//							resultBuf[(pen.y+h)*bufWidth + (pen.x+w)] = (
-								//							(((preAlpha*r)>>12)<<12) |
-								//							(((preAlpha*g)>>12)<<8) | 
-								//							(((preAlpha*b)>>12)<<4) | 
-								//							((preAlpha)>>4)); 
-							}
-							
-						}
-					}
-					FT_Done_Glyph( image );
-				}
-			}
-		}
-	}
-	
-	// VB: we must release not only converted glypths but original glypths also
-	for (int idx = 0; idx < num_chars; idx++)                           
-		FT_Done_Glyph( glyphs[idx] );    
-	
-	delete[] glyphs;
-	delete[] pos;
+	//				//TODO: optimize
+	//				int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
+	//				int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
+	//				for(int32 h = 0; h < realH; h++)
+	//				{
+	//					for(int32 w = 0; w < realW; w++)
+	//					{
+	//						int lowBoundX = pen.x+w;
+	//						int lowBoundY = pen.y+h;
+	//						
+	//						if(lowBoundX < 0 || lowBoundY < 0)
+	//						{
+	//							continue;
+	//						}
+	//						
+	//						int oldPix = bitmap->buffer[h*bitmap->width+w];
+	//						
+	//						uint8 preAlpha = (oldPix*a)>>8;
+	//						if(preAlpha)
+	//						{
+	//							int32 revAlpha = 256-preAlpha;
+	//							int32 ind = (pen.y+h)*bufWidth + (pen.x+w);
+	//							
+	//							uint8 prevA = (resultBuf[ind] & 0xf)<<4;
+	//							uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
+	//							uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
+	//							uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
+	//							
+	//							//		    source		        destination
+	//							//		    one			        1-srcAlpha
+	//							uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
+	//							uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
+	//							uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
+	//							uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
+	//							resultBuf[ind] = (
+	//											  (((tempR)>>4)<<12) |
+	//											  (((tempG)>>4)<<8) | 
+	//											  (((tempB)>>4)<<4) | 
+	//											  ((tempA)>>4)); 
+	//							
+	//							//							resultBuf[(pen.y+h)*bufWidth + (pen.x+w)] = (
+	//							//							(((preAlpha*r)>>12)<<12) |
+	//							//							(((preAlpha*g)>>12)<<8) | 
+	//							//							(((preAlpha*b)>>12)<<4) | 
+	//							//							((preAlpha)>>4)); 
+	//						}
+	//						
+	//					}
+	//				}
+	//				FT_Done_Glyph( image );
+	//			}
+	//		}
+	//	}
+	//}
+	//
+	//// VB: we must release not only converted glypths but original glypths also
+	//for (int idx = 0; idx < num_chars; idx++)                           
+	//	FT_Done_Glyph( glyphs[idx] );    
+	//
+	//delete[] glyphs;
+	//delete[] pos;
 
-	drawStringMutex.Unlock();
-	if (!contentScaleIncluded) 
-	{
-		return Size2i((int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (bbox.xMax-bbox.xMin))), (int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin))));
-	}
-	return Size2i( bbox.xMax-bbox.xMin, ((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin);
+	//drawStringMutex.Unlock();
+	//if (!contentScaleIncluded) 
+	//{
+	//	return Size2i((int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (bbox.xMax-bbox.xMin))), (int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin))));
+	//}
+	//return Size2i( bbox.xMax-bbox.xMin, ((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin);
 }
 
 
@@ -696,6 +742,112 @@ int32 FTInternalFont::GetDescender(float32 size)
 {
 	SetFTCharSize(size);
 	return (int32)(Core::GetPhysicalToVirtualFactor() * (face->size->metrics.descender >> 6));
+}
+
+void FTInternalFont::Prepare(FT_Vector * advances)
+{
+	FT_Vector	* prevAdvance = 0;
+	FT_Vector	extent = {0, 0};
+	FT_UInt		prevIndex   = 0;
+	bool		useKerning = (FT_HAS_KERNING(face) > 0);
+	int32		size = glyphs.size();
+
+	for(int32 i = 0; i < size; ++i)
+	{
+		Glyph & glyph = glyphs[i];
+
+		advances[i] = glyph.image->advance;
+		advances[i].x >>= 10;
+		advances[i].y >>= 10;
+
+		if(prevAdvance)
+		{
+			//prevAdvance->x += track_kern;
+
+			if(useKerning)
+			{
+				FT_Vector  kern;
+
+				FT_Get_Kerning(face, prevIndex, glyph.index, FT_KERNING_UNFITTED, &kern );
+
+				prevAdvance->x += kern.x;
+				prevAdvance->y += kern.y;
+
+				//if(sc->kerning_mode > KERNING_MODE_NORMAL)
+					prevAdvance->x += glyph.delta;
+			}
+
+			//if(handle->hinted)
+			//{
+			//	prevAdvance->x = Round(prevAdvance->x);
+			//	prevAdvance->y = Round(prevAdvance->y);
+			//}
+
+			extent.x += prevAdvance->x;
+			extent.y += prevAdvance->y;
+		}
+
+		prevIndex   = glyph.index;
+		prevAdvance = &advances[i];
+	}
+
+	if(prevAdvance)
+	{
+		//if(handle->hinted)
+		//{
+		//	prevAdvance->x = Round(prevAdvance->x);
+		//	prevAdvance->y = Round(prevAdvance->y);
+		//}
+
+		extent.x += prevAdvance->x;
+		extent.y += prevAdvance->y;
+	}
+}
+
+void FTInternalFont::ClearString()
+{
+	int32 size = glyphs.size();
+	for(int32 i = 0; i < size; ++i)
+	{
+		if(glyphs[i].image)
+		{
+			FT_Done_Glyph(glyphs[i].image);
+		}
+	}
+
+	glyphs.clear();
+}
+
+void FTInternalFont::LoadString(const WideString& str)
+{
+	ClearString();
+
+	FT_Pos prevRsbDelta = 0;
+	int32 size = str.size();
+	for(int32 i = 0; i < size; ++i)
+	{
+		Glyph glyph;
+		glyph.index = FT_Get_Char_Index(face, str[i]);
+		if (!FT_Load_Glyph( face, glyph.index, FT_LOAD_DEFAULT)  &&
+			!FT_Get_Glyph(face->glyph, &glyph.image))
+		{
+			FT_Glyph_Metrics*  metrics = &face->glyph->metrics;
+
+			if(prevRsbDelta - face->glyph->lsb_delta >= 32 )
+				glyph.delta = -1 << 6;
+			else if(prevRsbDelta - face->glyph->lsb_delta < -32)
+				glyph.delta = 1 << 6;
+			else
+				glyph.delta = 0;
+		}
+
+		glyphs.push_back(glyph);
+	}
+}
+
+FT_Pos FTInternalFont::Round(FT_Pos val)
+{
+	return (((val) + 32) & -64);
 }
 
 	
