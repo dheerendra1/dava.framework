@@ -42,9 +42,9 @@ namespace DAVA
 
 	
 /**
-	\defgroup baseobjects Base Objects in SDK
-	Objects from Base section are used across all other SDK subsystems. 
-	Root class of our framework is BaseObject. Class main purpose is reference counting for all objects inside framework.
+	\defgroup baseobjects Framework Base Objects
+	This group contain all framework classes which defines the basics of our system. 
+	All architecture approaches & patterns we've selected in our framework is well-known and described. 
  */
 /** 
 	\ingroup baseobjects
