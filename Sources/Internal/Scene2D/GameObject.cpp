@@ -172,11 +172,12 @@ void GameObject::RemoveFromManagerAnimation(BaseObject * animation, void * userD
 		manager->RemoveObject(this);
 }
 
-void GameObject::RemoveFromManagerAnimation(int32 track)
+Animation* GameObject::RemoveFromManagerAnimation(int32 track)
 {
 	Animation * animation = new Animation(this, 0.001f, Interpolation::LINEAR);
 	animation->AddEvent(Animation::EVENT_ANIMATION_START, Message(this, &GameObject::RemoveFromManagerAnimation));
 	animation->Start(track);
+    return animation;
 }
 
 /*
