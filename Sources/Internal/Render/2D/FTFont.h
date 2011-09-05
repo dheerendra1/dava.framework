@@ -25,7 +25,7 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Ivan Petrochenko
+        * Created by Vitaliy Borodovsky 
 =====================================================================================*/
 #ifndef __DAVAENGINE_FTFONT_H__
 #define __DAVAENGINE_FTFONT_H__
@@ -38,9 +38,6 @@
 
 struct FT_FaceRec_;
 typedef struct FT_FaceRec_*  FT_Face;
-
-struct FT_GlyphRec_;
-typedef struct FT_GlyphRec_*  FT_Glyph;
 
 namespace DAVA
 {	
@@ -87,7 +84,40 @@ public:
 	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, const WideString & str, bool contentScaleIncluded = false);
 };
 
+class FTInternalFont : public BaseObject
+{
+	friend class FTFont;
+	String fontPath;
+	uint8 * memoryFont;
+	uint32 memoryFontSize;
+private:
+	FTInternalFont(const String& path);
+	virtual ~FTInternalFont();
+	
+public:
+	FT_Face face;
+	Size2i DrawString(const WideString& str, void * buffer, int32 bufWidth, int32 bufHeight, 
+		uint8 r, uint8 g, uint8 b, uint8 a, 
+		uint8 sr, uint8 sg, uint8 sb, uint8 sa,
+		const Vector2 & shadowOffset, 
+		float32 size, bool realDraw, 
+		int32 offsetX, int32 offsetY,
+		int32 justifyWidth,
+		Vector<int32> *charSizes = NULL,
+		bool contentScaleIncluded = false);
+	uint32 GetFontHeight(float32 size);
+	int32 GetAscender(float32 size);
+	int32 GetDescender(float32 size);
 
+	bool IsCharAvaliable(char16 ch);
+
+	void SetFTCharSize(float32 size);
+	
+	virtual int32 Release();
+
+private:
+	static Mutex drawStringMutex;
+};
 	
 };
 
