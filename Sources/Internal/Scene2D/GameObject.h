@@ -152,6 +152,7 @@ public:
 		\returns true if collision occurs, false if there is no collision or one of objects do not have collision object set
 	 */
 	bool			IsCollideWith(GameObject * gameObject);
+    bool            IsCollideWith(CollisionObject2 * collision2);
 	void			SetCollisionObject(CollisionObject2 * obj);
 	void			BuildCollisionObjectFromSpritePoly(int32 frame);
 	inline			CollisionObject2 * GetCollision();
