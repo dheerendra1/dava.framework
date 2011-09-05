@@ -286,7 +286,7 @@ void UIScrollView::Input(UIEvent *currentTouch)
 //			}
 //		}
 //	}
-	int32 saveState = state;
+//  int32 saveState = state;
 	
 	Vector<UIEvent> touches = UIControlSystem::Instance()->GetAllInputs();
 	if(1 == touches.size())
@@ -545,7 +545,7 @@ void UIScrollView::SystemDraw(const UIGeometricData & geometricData)
 	if (debugDrawEnabled)
 	{//TODO: Add debug draw for rotated controls
 		RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-		RenderManager::Instance()->DrawRect(drawData.GetUnrotatedRect());
+		RenderHelper::Instance()->DrawRect(drawData.GetUnrotatedRect());
 		RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	

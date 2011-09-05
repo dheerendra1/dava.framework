@@ -33,6 +33,7 @@
 #include "Base/BaseTypes.h"
 #include "Base/BaseMath.h"
 #include "Render/VertexBuffer.h"
+#include "Render/RenderDataObject.h"
 
 namespace DAVA
 {	
@@ -60,6 +61,8 @@ public:
 	~PolygonGroup();
 	
 	//! Getters
+    inline int32 GetFormat(); 
+    
 	inline void	GetCoord(int32 i, Vector3 & v);
 	inline void	GetNormal(int32 i, Vector3 & v);
 	inline void	GetTangent(int32 i, Vector3 & v);
@@ -124,6 +127,18 @@ public:
 						 int32 indexCount, 
 						 int32 textureCoordCount);
 	void	ReleaseData();
+    
+    /*
+        If you want you can build tangents for your submesh
+        This function rebuild the polygroup from ground with binormal  
+     */
+    void    BuildTangents();
+    
+    
+    void    BuildVertexBuffer();
+    
+    
+    RenderDataObject * renderDataObject;
 private:
 	
 };
@@ -188,6 +203,11 @@ inline void PolygonGroup::SetJointCount(int32 vIndex, int32 jointCount)
 inline void	PolygonGroup::SetIndex(int32 i, int16 index)
 {
 	indexArray[i] = index;
+}
+    
+inline int32 PolygonGroup::GetFormat()
+{
+    return vertexFormat;
 }
 
 inline void	PolygonGroup::GetCoord(int32 i, Vector3 & _v)

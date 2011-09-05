@@ -193,14 +193,14 @@ void SpriteNode::Draw()
 //	glEnableClientState(GL_COLOR_ARRAY);
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
 
-	
+
     
 //    glDisableClientState(GL_COLOR_ARRAY);
     RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->EnableBlending(false);
     RenderManager::Instance()->EnableDepthTest(true);
     RenderManager::Instance()->EnableDepthWrite(true);
-	
+
     
     
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);

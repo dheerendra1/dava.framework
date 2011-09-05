@@ -30,41 +30,144 @@
 #ifndef __DAVAENGINE_RENDERSTATEBLOCK_H__
 #define __DAVAENGINE_RENDERSTATEBLOCK_H__
 
-#include "RenderBase.h"
+#include "Render/RenderBase.h"
+#include "Core/Core.h"
 
 namespace DAVA
 {
 
-/**
-	\brief Render state management base class
- 
- */	
 
-template<class T>
+class BlendEnable
+{
+public:
+    inline void UpdateVarGL(bool value)
+    {
+#if defined(__DAVAENGINE_OPENGL__)
+        if (value)glEnable(GL_BLEND);
+        else glDisable(GL_BLEND);
+#elif defined(__DAVAENGINE_DIRECTX9__)
+        
+#endif
+    }
+    
+};
+
+class RenderStateBlock;
+    
 class RenderStateVariable
 {
 public:
-    T value;
+    RenderStateVariable(RenderStateBlock * mainBlock);
+    virtual ~RenderStateVariable();
+    
+    
     
 };
+
+template<class IMPL_CLASS, class V>
+class RenderStateVariableImpl : public RenderStateVariable
+{
+public:
+    RenderStateVariableImpl(RenderStateBlock * mainBlock);
+    /*
+    {
+        mainBlock->varArray[mainBlock->varCount++] = this;
+    }*/
     
+    inline void UpdateVarGL() { renderStateImpl.UpdateVarGL(value); };
+    inline void Set(const V & _value) { value = _value; };
+                    
+    V value;
+    IMPL_CLASS renderStateImpl;
+};
+
+/**
+    \brief Render state management base class
+ 
+ */	
+
 class RenderStateBlock
 {
 public:
+    enum 
+    {
+        STATE_TYPE_UINT32 = 0,    
+        STATE_TYPE_COLOR = 1,
+    };
 	enum
 	{
-        STATE_BLEND,        // is blend enabled or not
-		STATE_BLENDFUNC,    // blend func (src, dst state)
-		STATE_COUNT,
-	};
+        STATE_BLEND     = 0,
+		STATE_BLENDFUNC = 1,  
+        //        STATE_CULLFACE  = 1 << 2,     
+        //        STATE_DEPTHTEST = 1 << 3,  
 
+        STATE_ENABLE_TEXTURING = 2,    // Fixed func only
+        STATE_COLOR = 3,  
+	};
+    enum
+    {
+        STATE_COUNT = 4
+    };
+    
+    void Init(Core::eRenderer renderer);
+    void Flush();
+    
+    
+    typedef void (RenderStateBlock::*UpdateVarFunc)(uint32 value, uint32 oldValue);
+    typedef void (RenderStateBlock::*UpdateVarFuncColor)(Color & value, Color & oldValue);
+
+    void UpdateBlendGL(uint32 value, uint32 oldValue);
+    void UpdateBlendDX(uint32 value, uint32 oldValue);
+    
+    void UpdateBlendFuncGL(uint32 func, uint32 oldValue);
+    void UpdateBlendFuncDX(uint32 func, uint32 oldValue);
+
+    void UpdateEnableTexturingGL(uint32 func, uint32 oldValue);
+    void UpdateEnableTexturingDX(uint32 func, uint32 oldValue);
+    
+    void UpdateEnableColorGL(Color & value, Color & oldValue);
+    void UpdateEnableColorDX(Color & value, Color & oldValue);
+
+//    void UpdateCullFaceGL(uint32 value, uint32 oldValue);
+//    void UpdateCullFaceDX(uint32 value, uint32 oldValue);
+
+    void RegisterStateUInt32(uint32 state, UpdateVarFunc func);  
+    void RegisterStateColor(uint32 state, UpdateVarFuncColor func);  
     
     
     
+    inline void SetStateValue(uint32 state, uint32 value);
+    inline uint32 GetStateValue(uint32 state); 
+    
+    
+    
+    uint32 activeStateSet;
+    uint32 currentStateSet;
+    
+    uint32 stateType[STATE_COUNT];
+    uint32 varValue[STATE_COUNT];
+    Color varValueColor[STATE_COUNT];
+    uint32 currentRendererValue[STATE_COUNT];
+    Color currentRendererValueColor[STATE_COUNT];
+    UpdateVarFunc varUpdateFuncArray[STATE_COUNT];
+    UpdateVarFuncColor varUpdateFuncArrayColor[STATE_COUNT];
+    uint32 varCount;
+    
+    
+    bool isDebug;
 };
     
     
-    
+inline void RenderStateBlock::SetStateValue(uint32 state, uint32 value)
+{
+    varValue[state] = value;
+    currentStateSet |= (1 << state); // flag that value was changed
+}
+
+inline uint32 RenderStateBlock::GetStateValue(uint32 state) 
+{
+    return varValue[state];
+}
     
 };
 

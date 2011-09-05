@@ -41,8 +41,8 @@ namespace DAVA
 Scene::Scene()
 	:   SceneNode(0)
     ,   currentCamera(0)
+    ,   clipCamera(0)
 {
-	
 }
 
 Scene::~Scene()
@@ -83,6 +83,7 @@ Scene::~Scene()
 	cameras.clear();
     
     SafeRelease(currentCamera);
+    SafeRelease(clipCamera);
 }
 
 // 
@@ -316,15 +317,18 @@ void Scene::Update(float timeElapsed)
 
 void Scene::Draw()
 {
+    //currentCamera->GetFrustum()->DebugDraw();
+    
+	glCullFace(GL_FRONT);
+	SetupTestLighting();
+
     if (currentCamera)
     {
         currentCamera->Set();
     }
-    
-	glCullFace(GL_FRONT);
-	SetupTestLighting();
 	SceneNode::Draw();
-	glCullFace(GL_FRONT_AND_BACK);
+	
+    glCullFace(GL_FRONT_AND_BACK);
 	
 //	for (int k = 0; k < staticMeshes.size(); ++k)
 //	{
@@ -345,16 +349,29 @@ void Scene::StopAllAnimations(bool recursive )
 }
     
     
-void Scene::SetCamera(Camera * _camera)
+void Scene::SetCurrentCamera(Camera * _camera)
 {
+    SafeRelease(currentCamera);
     currentCamera = SafeRetain(_camera);
+    SafeRelease(clipCamera);
+    clipCamera = SafeRetain(_camera);
 }
 
-Camera * Scene::GetCamera() const
+Camera * Scene::GetCurrentCamera() const
 {
     return currentCamera;
 }
 
+void Scene::SetClipCamera(Camera * _camera)
+{
+    SafeRelease(clipCamera);
+    clipCamera = SafeRetain(_camera);
+}
+
+Camera * Scene::GetClipCamera() const
+{
+    return clipCamera;
+}
 
 };
 

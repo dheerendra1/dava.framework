@@ -42,7 +42,8 @@ namespace DAVA
 	}\
 	command;\
 	GLenum err = glGetError();\
-	if (err != GL_NO_ERROR)Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
+	if (err != GL_NO_ERROR)\
+        Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
 }
 
 };

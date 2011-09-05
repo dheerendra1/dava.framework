@@ -30,6 +30,7 @@
 
 #include "UI/UIScreen.h"
 #include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 #include "Platform/SystemTimer.h"
 
 namespace DAVA 
@@ -124,12 +125,12 @@ void UIScreen::FillScreenBorders(const UIGeometricData &geometricData)
 	Rect drawRect = drawData.GetUnrotatedRect();
 	if (Core::Instance()->GetVirtualScreenXMin() < 0)
 	{
-		RenderManager::Instance()->FillRect(Rect(
+		RenderHelper::Instance()->FillRect(Rect(
 													Core::Instance()->GetVirtualScreenXMin()
 												 ,	0
 												 ,	-Core::Instance()->GetVirtualScreenXMin()
 												 ,	Core::Instance()->GetVirtualScreenHeight()));
-		RenderManager::Instance()->FillRect(Rect(
+		RenderHelper::Instance()->FillRect(Rect(
 												 Core::Instance()->GetVirtualScreenWidth()
 												 ,	0
 												 ,	Core::Instance()->GetVirtualScreenXMax() - Core::Instance()->GetVirtualScreenWidth()
@@ -137,12 +138,12 @@ void UIScreen::FillScreenBorders(const UIGeometricData &geometricData)
 	}
 	else 
 	{
-		RenderManager::Instance()->FillRect(Rect(
+		RenderHelper::Instance()->FillRect(Rect(
 													0
 												 ,	Core::Instance()->GetVirtualScreenYMin()
 												 ,	Core::Instance()->GetVirtualScreenWidth()+1
 												 ,	-Core::Instance()->GetVirtualScreenYMin()));
-		RenderManager::Instance()->FillRect(Rect(
+		RenderHelper::Instance()->FillRect(Rect(
 												 0
 												 ,	Core::Instance()->GetVirtualScreenHeight()
 												 ,	Core::Instance()->GetVirtualScreenWidth()+1

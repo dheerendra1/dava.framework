@@ -51,7 +51,7 @@ Cursor * Cursor::Create(const String & cursorPathname, const Vector2 & hotSpot)
 	cursor->hotSpot = hotSpot;
 
 	//Sprite * cursorSprite = Sprite::Create("~res:/Gfx/upgrade/list");//Sprite::CreateFromTexture(cursorTexture, 0, 0, cursorTexture->GetWidth(), cursorTexture->GetHeight());
-	Sprite * cursorSprite = Sprite::CreateFromTexture(cursorTexture, 0, 0, cursorTexture->GetWidth(), cursorTexture->GetHeight());
+	Sprite * cursorSprite = Sprite::CreateFromTexture(cursorTexture, 0, 0, (float32)cursorTexture->GetWidth(), (float32)cursorTexture->GetHeight());
 	cursor->cursorSprite = cursorSprite;
 	cursorSprite->SetDefaultPivotPoint(hotSpot);
 	cursorSprite->Reset();
@@ -102,13 +102,13 @@ void Cursor::Show(bool _show)
 	device->ShowCursor(show);
 }
 
-Vector2 Cursor::GetPosotion()
+DAVA::Vector2 Cursor::GetPosition()
 {
 	POINT ptCursor;
 	GetCursorPos( &ptCursor );
 	ScreenToClient(RenderManager::Instance()->hWnd, &ptCursor);
 
-	return Vector2(ptCursor.x, ptCursor.y);
+	return Vector2((float32)ptCursor.x, (float32)ptCursor.y);
 }
 
 

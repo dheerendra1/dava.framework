@@ -68,6 +68,16 @@ bool BaseObjectChecker::IsAvailable(BaseObject * obj)
 	}
 	return false;
 }
+
+void BaseObjectChecker::Dump()
+{
+    for (std::set<BaseObject*>::iterator it = baseObjects.begin(); it != baseObjects.end(); ++it)
+    {
+        BaseObject * obj = *it;
+        Logger::Debug("(%s) object not released", typeid(obj).name());
+    }
+}
+
 }
 
 #endif // ENABLE_BASE_OBJECT_CHECKS

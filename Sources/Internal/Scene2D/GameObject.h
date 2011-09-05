@@ -233,9 +233,18 @@ public:
 	 */
 	virtual void	DetachObject(GameObject * gameObject);
 
+    /**
+         \brief Function adds object as child to this object, and insert it into the object manager.
+         \param[in] gameObject object you want to add
+	 */
 	virtual void	AddObject(GameObject * gameObject);
 	
+    /**
+        \brief Function removes object from this gameObject and from it's object manager hierarchy.
+        \param[in] gameObject object you want to remove
+	 */
 	virtual void	RemoveObject(GameObject * gameObject);
+
 	virtual GameObject * GetParent() const;
 	
 	List<GameObject*> & GetChildren();
