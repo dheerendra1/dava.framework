@@ -432,6 +432,20 @@ bool GameObject::IsCollideWith(GameObject * gameObject)
 	}
 	return false;
 }
+
+bool GameObject::IsCollideWith(CollisionObject2 * collision2)
+{
+    if (collision && collision2)
+    {
+        collision->Update(globalDrawState);
+        //collision2->Update(gameObject->globalDrawState);
+        return collision->IsCollideWith(collision2);
+    }
+    return false;
+}
+
+    
+    
 void GameObject::SetCollisionObject(CollisionObject2 * obj)
 {
 	SafeRelease(collision);
