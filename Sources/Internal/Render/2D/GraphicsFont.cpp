@@ -58,6 +58,7 @@ GraphicsFontDefinition::~GraphicsFontDefinition()
 GraphicsFont::GraphicsFont()
 	:fontSprite(0)
 {
+	color = Color::White();
 	fontType = FONT_TYPE_GRAPHICAL;
 	fdef = 0;
 	fontScaleCoeff = 1.0f;

@@ -46,8 +46,7 @@ namespace DAVA
 Map<String,FTInternalFont*> fontMap;
 
 FTFont::FTFont(FTInternalFont* _internalFont)
-:	Font(),
-	r((uint8)(color.r * 255.0f)),  
+:	r((uint8)(color.r * 255.0f)),  
 	g((uint8)(color.g * 255.0f)), 
 	b((uint8)(color.b * 255.0f)), 
 	a((uint8)(color.a * 255.0f)), 
@@ -56,6 +55,7 @@ FTFont::FTFont(FTInternalFont* _internalFont)
 	sb((uint8)(shadowColor.b * 255.0f)), 
 	sa((uint8)(shadowColor.a * 255.0f)) 
 {
+	color = Color(1.f, 0.f, 1.f, 1.f);
 	internalFont = _internalFont;
 	internalFont->Retain();
 	fontType = FONT_TYPE_FT;
