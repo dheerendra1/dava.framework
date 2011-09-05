@@ -175,7 +175,7 @@ public:
 	Animation *		RotateAnimation(float32 newAngle, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
 	Animation *		VisibleAnimation(bool visible, int32 track = 0);
     
-	void			RemoveFromManagerAnimation(int32 track = 0);
+	Animation *			RemoveFromManagerAnimation(int32 track = 0);
 	
 	/**
 		\brief This function is called every frame to let you update objects in hierarchy
