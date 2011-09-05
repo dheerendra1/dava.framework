@@ -1243,7 +1243,8 @@ void Sprite::DrawPoints(Vector2 *verticies)
             tempVertices[(k << 1) + 1] = ny;
         }
     }	
-    
+
+    RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
 	RenderManager::Instance()->SetRenderData(spriteRenderObject);
 	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
