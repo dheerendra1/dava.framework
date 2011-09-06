@@ -36,12 +36,14 @@ namespace DAVA
 
 Animation::Animation(AnimatedObject * _owner, float32 _animationTimeLength, Interpolation::FuncType _interpolationFunc, int _defaultState)
 {
+    tagId = 0;
 	owner = _owner;
 	timeLength = _animationTimeLength;
 	interpolationFunc = Interpolation::GetFunction(_interpolationFunc);
 	state = _defaultState;
 	next = 0;
 	repeatCount = 0;
+	timeMultiplier = 1.f;
 	AnimationManager::Instance()->AddAnimation(this);
 }
 
@@ -107,9 +109,12 @@ void Animation::Update(float32 timeElapsed)
 {
 	if (state & STATE_IN_PROGRESS)
 	{
+	    if (state & STATE_PAUSED)
+	        return;
+	    
 		if (state & STATE_REVERSE)
 		{
-			time += timeElapsed;
+			time += timeElapsed*timeMultiplier;
 			
 			float halfTimeLength = 0.5f * timeLength;
 			if (time <= halfTimeLength)
@@ -135,7 +140,7 @@ void Animation::Update(float32 timeElapsed)
 			}
 		}else // 
 		{
-			time += timeElapsed;
+			time += timeElapsed*timeMultiplier;
 			normalizedTime = interpolationFunc(time / timeLength);
 			if (time >= timeLength)
 			{

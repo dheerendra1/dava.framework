@@ -77,6 +77,9 @@ public:
 	bool IsAnimationLoggerEnabled();
 	
 	Animation * FindPlayingAnimation(AnimatedObject * owner, int32 _groupId);
+	
+	void PauseAnimations(bool isPaused, int tag = 0);
+	void SetAnimationsMultiplier(float32 f, int tag = 0);
 private:
 	Animation * FindLastAnimation(AnimatedObject * owner, int32 _groupId);
 	bool IsAnimating(AnimatedObject * owner, int32 trackId);
