@@ -49,6 +49,7 @@ namespace DAVA
 	
 class Texture;
 class Shader;
+class RenderStateBlock;
 #if defined(__DAVAENGINE_DIRECTX9__)
 //#include "D3DInitialize.h"
 #endif // __DAVAENGINE_DIRECTX9__
@@ -353,7 +354,14 @@ public:
         \brief Restores render manager to the previous effect
 	 */
 	virtual void RestoreRenderEffect();
-
+    
+    
+    /*
+        virtual void PushRenderEffect();
+        virtual void PopRenderEffect();
+     */
+    
+    
 	/** 
 	 \brief Sets the requested framerate. For iPhone can be set to 60, 30, 20, 15
 	 \param[in] newFps requested frames per second
@@ -501,7 +509,7 @@ protected:
 	uint32 fboViewFramebuffer;
 
 	// state information
-	Color oldColor;                 // UNIFORM - can be used or not used by RenderEffect
+	/*Color oldColor;                 // UNIFORM - can be used or not used by RenderEffect
 	Color newColor;                 // UNIFORM - can be used or not used by RenderEffect
     
 	eBlendMode oldSFactor, oldDFactor;  // STATE
@@ -511,12 +519,20 @@ protected:
 	Texture *currentTexture[MAX_TEXTURE_LEVELS];                        // Texture that was set
 	
     int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
+    int oldBlendingEnabled;                         // state
+    int depthWriteEnabled;                          // state
+    int depthTestEnabled;                           // state
+    */
+     
+    //RenderStateBlock stateBuffer[2];    // We have 2 states and we exchange them at every flush
+    RenderStateBlock *previousState;    // 
+    RenderStateBlock *currentState;     // Ptr to current state
+    
+    // todo 
 	int oldVertexArrayEnabled;                      // state
 	int oldTextureCoordArrayEnabled;                // state
 	int oldColorArrayEnabled;                       // state
-	int oldBlendingEnabled;                         // state
-    int depthWriteEnabled;                          // state
-    int depthTestEnabled;                           // state
+	
     
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;

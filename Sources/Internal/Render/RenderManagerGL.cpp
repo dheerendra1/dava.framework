@@ -35,6 +35,7 @@
 #include "Core/Core.h"
 #include "Render/OGLHelpers.h"
 #include "Render/Shader.h"
+#include "Render/RenderStateBlock.h"
 
 #ifdef __DAVAENGINE_OPENGL__
 
@@ -323,54 +324,6 @@ void RenderManager::SetRenderOrientation(int32 orientation)
 
 }
 
-
-
-void RenderManager::SetBlendMode(eBlendMode sfactor, eBlendMode dfactor)
-{
-	newSFactor = sfactor;
-	newDFactor = dfactor;
-}
-	
-eBlendMode RenderManager::GetSrcBlend()
-{
-	return newSFactor;
-}
-
-eBlendMode RenderManager::GetDestBlend()
-{
-	return newDFactor;
-}
-
-static GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
-{
-		0,	// not a valid blend mode
-		GL_ZERO,
-		GL_ONE,
-		GL_DST_COLOR,
-		GL_ONE_MINUS_DST_COLOR,
-		GL_SRC_ALPHA,
-		GL_ONE_MINUS_SRC_ALPHA,
-		GL_DST_ALPHA,
-		GL_ONE_MINUS_DST_ALPHA,
-		GL_SRC_ALPHA_SATURATE,
-};
-
-
-void RenderManager::EnableBlending(bool isEnabled)
-{
-	if(isEnabled != oldBlendingEnabled)
-	{
-		if(isEnabled)
-		{
-			RENDER_VERIFY(glEnable(GL_BLEND));
-		}
-		else
-		{
-			RENDER_VERIFY(glDisable(GL_BLEND));
-		}
-		oldBlendingEnabled = isEnabled;
-	}
-}
 void RenderManager::EnableVertexArray(bool isEnabled)
 {
 	if(isEnabled != oldVertexArrayEnabled)
@@ -418,65 +371,11 @@ void RenderManager::EnableColorArray(bool isEnabled)
 	}
 }
     
-void RenderManager::EnableDepthTest(bool isEnabled)
-{
-	if(isEnabled != depthTestEnabled)
-	{
-		if(isEnabled)
-		{
-            RENDER_VERIFY(glEnable(GL_DEPTH_TEST));
-		}
-		else
-		{
-            RENDER_VERIFY(glDisable(GL_DEPTH_TEST));
-		}
-		depthTestEnabled = isEnabled;
-	}
-}
-
-void RenderManager::EnableDepthWrite(bool isEnabled)
-{
-	if(isEnabled != depthWriteEnabled)
-	{
-		if(isEnabled)
-		{
-            RENDER_VERIFY(glDepthMask(GL_TRUE));
-		}
-		else
-		{
-            RENDER_VERIFY(glDepthMask(GL_TRUE));
-		}
-		depthWriteEnabled = isEnabled;
-	}
-}
-
 
 void RenderManager::FlushState()
 {
-	if(newSFactor != oldSFactor || newDFactor != oldDFactor)
-	{
-		RENDER_VERIFY(glBlendFunc(BLEND_MODE_MAP[newSFactor], BLEND_MODE_MAP[newDFactor]));
-		oldSFactor = newSFactor;
-		oldDFactor = newDFactor;
-	}
-	if(oldColor != newColor)
-	{
-        if (renderer != Core::RENDERER_OPENGL_ES_2_0)
-            RENDER_VERIFY(glColor4f(newColor.r * newColor.a, newColor.g * newColor.a, newColor.b * newColor.a, newColor.a));
-		oldColor = newColor;
-	}   
-	if(newTextureEnabled != oldTextureEnabled)
-	{
-		if(newTextureEnabled)
-		{
-			RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
-		}
-		else
-		{
-			RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
-		}
-		oldTextureEnabled = newTextureEnabled;
-	}
+	currentState->Flush(previousState);
+    *previousState = *currentState; // copy current state to previous after flush
 	
 	PrepareRealMatrix();
 }
@@ -521,7 +420,7 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
+		Logger::Debug("Draw arrays texture: id %d", currentState->currentTexture[0]->id);
 	}
 
     RENDER_VERIFY(glDrawArrays(mode, first, count));
@@ -565,7 +464,7 @@ void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexForma
 	
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
+		Logger::Debug("Draw arrays texture: id %d", currentState->currentTexture[0]->id);
 	}
 #if defined(__DAVAENGINE_IPHONE__)
 #define GL_UNSIGNED_INT 0
