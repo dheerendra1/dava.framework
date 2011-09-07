@@ -106,7 +106,22 @@ enum eBlendMode
 	BLEND_MODE_COUNT,
 };
 
-
+#if defined(__DAVAENGINE_OPENGL__)
+    static const GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
+    {
+        0,	// not a valid blend mode
+        GL_ZERO,
+        GL_ONE,
+        GL_DST_COLOR,
+        GL_ONE_MINUS_DST_COLOR,
+        GL_SRC_ALPHA,
+        GL_ONE_MINUS_SRC_ALPHA,
+        GL_DST_ALPHA,
+        GL_ONE_MINUS_DST_ALPHA,
+        GL_SRC_ALPHA_SATURATE,
+    };
+#endif // 
+    
 enum eVertexDataType
 {
 	TYPE_FLOAT = 0,
