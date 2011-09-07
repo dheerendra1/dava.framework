@@ -36,7 +36,6 @@
 #include "Render/RenderDataObject.h"
 #include "Render/Effects/ColorOnlyEffect.h"
 #include "Render/Effects/TextureMulColorEffect.h"
-#include "Render/RenderStateBlock.h"
 
 
 namespace DAVA
@@ -51,7 +50,7 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	Logger::Debug("[RenderManager] created");
     renderer = _renderer;
     
-	/*oldColor = Color::Clear();
+	oldColor = Color::Clear();
     newColor = Color::Clear();
 
 	oldSFactor = BLEND_NONE;
@@ -64,22 +63,12 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	
     newTextureEnabled = 0;
 	oldTextureEnabled = 0;
-    
-    oldBlendingEnabled = 0;
-    depthWriteEnabled = 0;
-    depthTestEnabled = 0;*/
-
-    
-    currentState = new RenderStateBlock(renderer);
-    previousState = new RenderStateBlock(renderer);
-    previousState->Reset(0);    // reset only variables
-    currentState->Reset(1);     // reset variables and set state to HW
-    
-    
-    
 	oldVertexArrayEnabled = 0;
 	oldTextureCoordArrayEnabled = 0;
 	oldColorArrayEnabled = 0;
+	oldBlendingEnabled = 0;
+    depthWriteEnabled = 0;
+    depthTestEnabled = 0;
     
 	renderOrientation = 0;
 	currentRenderTarget = 0;
@@ -158,7 +147,7 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 
 void RenderManager::Reset()
 {
-/*	oldColor.r = oldColor.g = oldColor.b = oldColor.a = -1.0f;
+	oldColor.r = oldColor.g = oldColor.b = oldColor.a = -1.0f;
 	ResetColor();
 //#if defined(__DAVAENGINE_OPENGL__)
 	oldSFactor = oldDFactor = BLEND_NONE;
@@ -170,22 +159,15 @@ void RenderManager::Reset()
 #if defined(__DAVAENGINE_OPENGL__)
 	oldBlendingEnabled = -1;
 #endif 	
-    //	for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
-    //        currentTexture[idx] = 0;
-*/
-    
-    // Save hardware state in previous state
-    //*previousState = *currentState;
-    currentState->Reset(0);
-	//*previousState = *currentState;
-    
-    currentRenderTarget = NULL;
+	currentRenderTarget = NULL;
 	currentRenderEffect = NULL;
 	currentClip.x = 0;
 	currentClip.y = 0;
 	currentClip.dx = -1;
 	currentClip.dy = -1;
 	
+	for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
+        currentTexture[idx] = 0;
 
 	userDrawOffset = Vector2(0, 0);
 	userDrawScale = Vector2(1, 1);
@@ -212,105 +194,79 @@ int32 RenderManager::GetScreenHeight()
 {
 	return retScreenHeight;
 }
-    
+
 void RenderManager::SetColor(float r, float g, float b, float a)
 {
-    currentState->SetColor(r, g, b, a);
+	newColor.r = r;
+	newColor.g = g;
+	newColor.b = b;
+	newColor.a = a;
 }
-    
-void RenderManager::SetColor(const Color & color)
+	
+void RenderManager::SetColor(const Color & _color)
 {
-    currentState->SetColor(color);
+	newColor = _color;
 }
-
+	
 float RenderManager::GetColorR()
 {
-    return currentState->color.r;
+	return newColor.r;
 }
-
+	
 float RenderManager::GetColorG()
 {
-    return currentState->color.g;
+	return newColor.g;
 }
-
+	
 float RenderManager::GetColorB()
 {
-    return currentState->color.b;
+	return newColor.b;
 }
-
+	
 float RenderManager::GetColorA()
 {
-    return currentState->color.a;
+	return newColor.a;
 }
-
+    
 const Color & RenderManager::GetColor() const
 {
-    return currentState->color;
+    return newColor;
 }
-    
+
 void RenderManager::ResetColor()
 {
-    //currentState.color.r = currentState.color.g = currentState.color.b = currentState.color.a = 1.0f;
-    currentState->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+	newColor.r = newColor.g = newColor.b = newColor.a = 1.0f;
 }
-    
-void RenderManager::SetBlendMode(eBlendMode sourceFactor, eBlendMode destFactor)
-{
-    currentState->SetBlendMode(sourceFactor, destFactor);
-}
-
-eBlendMode RenderManager::GetSrcBlend()
-{
-    return currentState->GetSrcBlend();
-}
-
-eBlendMode RenderManager::GetDestBlend()
-{
-    return currentState->GetDestBlend();
-}
-
-void RenderManager::EnableBlending(bool isEnabled)
-{
-    currentState->EnableBlending(isEnabled);
-}
-    
-void RenderManager::EnableTexturing(bool isEnabled)
-{
-    currentState->EnableTexturing(isEnabled);
-}
-
+	
+	
 void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
 {
-    currentState->SetTexture(texture, textureLevel);
+    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
+	if(texture != currentTexture[textureLevel])
+	{
+		currentTexture[textureLevel] = texture;
+		if(currentTexture[textureLevel])
+		{
+			if(debugEnabled)
+			{
+				Logger::Debug("Bind texture: id %d", texture->id);
+			}
+            
+#if defined(__DAVAENGINE_OPENGL__)
+            RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
+#elif defined(__DAVAENGINE_DIRECTX9__)
+            RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
+#endif 
+		}
+	}
 }
 	
 Texture *RenderManager::GetTexture(uint32 textureLevel)
 {
-    DVASSERT(textureLevel < RenderStateBlock::MAX_TEXTURE_LEVELS);
-    return currentState->GetTexture(textureLevel);
+    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
+	return currentTexture[textureLevel];	
 }
-    
-void RenderManager::EnableDepthTest(bool isEnabled)
-{
-    currentState->EnableDepthTest(isEnabled);
-}
-    
-void RenderManager::EnableDepthWrite(bool isEnabled)
-{
-    currentState->EnableDepthWrite(isEnabled);
-}
-    
-bool RenderManager::IsDepthTestEnabled()
-{
-    return currentState->IsDepthTestEnabled();
-}
-
-bool RenderManager::IsDepthWriteEnabled()
-{
-    return currentState->IsDepthWriteEnabled();
-}
-
-    
 
 void RenderManager::SetRenderData(RenderDataObject * object)
 {
@@ -379,6 +335,10 @@ void RenderManager::AttachRenderData(Shader * shader)
 	RenderManager::Instance()->UnlockNonMain();
 }
 
+void RenderManager::EnableTexturing(bool isEnabled)
+{
+	newTextureEnabled = isEnabled;
+}
 		
 void RenderManager::SetClip(const Rect &rect)
 {
@@ -462,6 +422,16 @@ void RenderManager::RestoreRenderTarget()
 bool RenderManager::IsRenderTarget()
 {
 	return currentRenderTarget != NULL;
+}
+    
+bool RenderManager::IsDepthTestEnabled()
+{
+    return depthTestEnabled > 0;
+}
+
+bool RenderManager::IsDepthWriteEnabled()
+{
+    return depthWriteEnabled > 0;
 }
 
 

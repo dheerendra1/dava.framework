@@ -158,6 +158,7 @@ namespace DAVA
 	
 	// launch framework and setup all preferences
 	FrameworkDidLaunched();
+    RenderManager::Create(Core::RENDERER_OPENGL);
     
 	
 	//Core::Instance()->Creat();
@@ -176,8 +177,6 @@ namespace DAVA
 	[mainWindow setDelegate:self];
 	openGLView = [[OpenGLView alloc]initWithFrame: NSMakeRect(0, 0, width, height)];
 	[mainWindow setContentView: openGLView];
-
-    RenderManager::Create(Core::RENDERER_OPENGL);
 
 	NSRect rect;
 	rect.origin.x = 0;

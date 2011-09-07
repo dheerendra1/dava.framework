@@ -84,9 +84,6 @@ ParticleEmitter * ParticleEmitterObject::GetEmitter()
 void ParticleEmitterObject::Update(float32 timeElapsed)
 {
 	emitter->Update(timeElapsed);
-    //
-    // TODO: 2 flags should work together.
-    //
 	if (removeAfterNRepeats > 0)
 	{
 		if (emitter->GetRepeatCount() >= removeAfterNRepeats)
