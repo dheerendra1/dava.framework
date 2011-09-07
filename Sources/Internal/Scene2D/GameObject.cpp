@@ -172,11 +172,12 @@ void GameObject::RemoveFromManagerAnimation(BaseObject * animation, void * userD
 		manager->RemoveObject(this);
 }
 
-void GameObject::RemoveFromManagerAnimation(int32 track)
+Animation* GameObject::RemoveFromManagerAnimation(int32 track)
 {
 	Animation * animation = new Animation(this, 0.001f, Interpolation::LINEAR);
 	animation->AddEvent(Animation::EVENT_ANIMATION_START, Message(this, &GameObject::RemoveFromManagerAnimation));
 	animation->Start(track);
+    return animation;
 }
 
 /*
@@ -432,6 +433,20 @@ bool GameObject::IsCollideWith(GameObject * gameObject)
 	}
 	return false;
 }
+
+bool GameObject::IsCollideWith(CollisionObject2 * collision2)
+{
+    if (collision && collision2)
+    {
+        collision->Update(globalDrawState);
+        //collision2->Update(gameObject->globalDrawState);
+        return collision->IsCollideWith(collision2);
+    }
+    return false;
+}
+
+    
+    
 void GameObject::SetCollisionObject(CollisionObject2 * obj)
 {
 	SafeRelease(collision);

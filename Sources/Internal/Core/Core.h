@@ -38,8 +38,9 @@
 #include "FileSystem/KeyedArchive.h"
 
 /**
-	\defgroup core SDK Application Basics
-	This is group that describe SDK application core architecture.
+	\defgroup core Core
+	Application entry point and place where you can find all information about platform indepedent and platform dependent initialization and 
+    platform functions you can use later during app execution.  
 */
 namespace DAVA 
 {
@@ -53,7 +54,8 @@ namespace DAVA
 	
 /**
 	\ingroup core
-	\brief	Core SDK class that initialize everything under all of platforms. It's common place where you can get some specific information about your application on every supported platform. 
+	\brief	Core is a main singleton that initialize everything under all of platforms. 
+            It's a place where you can get some specific information about your application on every supported platform.
 			To read about the process of application initialization check documentation for \ref ApplicationCore class. 
 			
  

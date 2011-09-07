@@ -41,7 +41,6 @@ namespace DAVA
 
 class AnimationManager;
 	
-	
 /**
 	\ingroup animationsystem
 	\brief Animation is a base class that helps to handle animation process inside AnimationManager. 
@@ -97,6 +96,12 @@ public:
 	inline void EnableReverse();
 	inline void SetRepeatCount(int k);
 	
+	inline void SetTagId(int tag);
+	inline int GetTagId();
+	inline void SetTimeMultiplier(float32 m);
+	inline float32 GetTimeMultiplier();
+	
+	
 protected:
 	int		state;
 	float32	time;					// [0, animationTimeLength]
@@ -107,7 +112,10 @@ protected:
 	
 	Animation * next;
 	int groupId;					//	animation group id to group animations one after another 
-	int repeatCount;	
+	int repeatCount;
+
+    int tagId; // tag animations with numbers
+    float32 timeMultiplier;	
 	
 	friend class AnimationManager;
 };
@@ -121,7 +129,28 @@ inline void Animation::SetRepeatCount(int _repeatCount)
 {
 	repeatCount = _repeatCount - 1;
 }
-	
+
+inline void Animation::SetTagId(int tag)
+{
+    tagId = tag;
+}
+
+inline int Animation::GetTagId()
+{
+    return tagId;
+}
+
+inline void Animation::SetTimeMultiplier(float32 m)
+{
+    timeMultiplier = m;
+}
+
+inline float32 Animation::GetTimeMultiplier()
+{
+    return timeMultiplier;
+}
+
 };
+
 
 #endif // __DAVAENGINE_ANIMATION_STATE_H__

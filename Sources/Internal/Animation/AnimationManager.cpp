@@ -272,4 +272,31 @@ void AnimationManager::DumpState()
 	Logger::Info("============================================================");
 }
 
+
+void AnimationManager::PauseAnimations(bool isPaused, int tag)
+{
+    for(Vector<Animation*>::iterator i = animations.begin(); i != animations.end(); ++i)
+    {
+        Animation * &a = *i;
+        
+        if (a->GetTagId() == tag)
+        {
+            a->Pause(isPaused);
+        }
+    }
+}
+
+void AnimationManager::SetAnimationsMultiplier(float32 f, int tag)
+{
+    for(Vector<Animation*>::iterator i = animations.begin(); i != animations.end(); ++i)
+    {
+        Animation * &a = *i;
+        
+        if (a->GetTagId() == tag)
+        {
+            a->SetTimeMultiplier(f);
+        }
+    }
+}
+
 };
