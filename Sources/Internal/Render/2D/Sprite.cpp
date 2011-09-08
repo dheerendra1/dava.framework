@@ -517,6 +517,8 @@ void Sprite::PreparePurplePlaceholder()
 	
 int32 Sprite::Release()
 {
+	SafeRelease(spriteRenderObject);
+
 	if(GetRetainCount() == 1)
 	{
 		spriteMap.erase(relativePathname);
@@ -527,8 +529,6 @@ int32 Sprite::Release()
 	
 void Sprite::Clear()
 {
-	SafeRelease(spriteRenderObject);
-
 	SafeDeleteArray(polyIndeces);
 	SafeDeleteArray(polyArray);
 	

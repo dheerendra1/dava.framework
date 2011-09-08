@@ -113,6 +113,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     
     statsFrameCountToShowDebug = 0;
     frameToShowDebugStats = -1;
+    
+    FLAT_COLOR = 0;
+    TEXTURE_MUL_FLAT_COLOR = 0;
 }
 	
 RenderManager::~RenderManager()
@@ -135,13 +138,16 @@ bool RenderManager::IsInsideDraw()
 
 void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 {
-    FLAT_COLOR = ColorOnlyEffect::Create(renderer);
-    TEXTURE_MUL_FLAT_COLOR = TextureMulColorEffect::Create(renderer);
+    if (!FLAT_COLOR)
+        FLAT_COLOR = ColorOnlyEffect::Create(renderer);
+    if (!TEXTURE_MUL_FLAT_COLOR) 
+        TEXTURE_MUL_FLAT_COLOR= TextureMulColorEffect::Create(renderer);
     
     
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
     const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
+    RENDER_VERIFY();
 	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
 }
 
@@ -443,16 +449,16 @@ void RenderManager::SetNewRenderEffect(RenderEffect *renderEffect)
 
 void RenderManager::SetRenderEffect(RenderEffect *renderEffect)
 {
-	renderEffectStack.push(SafeRetain(currentRenderEffect));
+	//renderEffectStack.push(SafeRetain(currentRenderEffect));
 	SetNewRenderEffect(renderEffect);
 }
 
 void RenderManager::RestoreRenderEffect()
 {
-	RenderEffect *renderEffect = renderEffectStack.top();
-	renderEffectStack.pop();
-	SetNewRenderEffect(renderEffect);
-	SafeRelease(renderEffect);
+//	RenderEffect *renderEffect = renderEffectStack.top();
+//	renderEffectStack.pop();
+//	SetNewRenderEffect(renderEffect);
+//	SafeRelease(renderEffect);
 }
 
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
