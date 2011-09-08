@@ -517,10 +517,9 @@ void Sprite::PreparePurplePlaceholder()
 	
 int32 Sprite::Release()
 {
-	SafeRelease(spriteRenderObject);
-
 	if(GetRetainCount() == 1)
 	{
+        SafeRelease(spriteRenderObject);
 		spriteMap.erase(relativePathname);
 	}
 		

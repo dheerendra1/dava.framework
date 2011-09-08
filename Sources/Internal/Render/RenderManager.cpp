@@ -146,10 +146,13 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
     
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
+#if defined (__DAVAENGINE_OPENGL__)
     const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
-    //RENDER_VERIFY();
 	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
-    
+#else 
+	Logger::Debug("[RenderManager::Init] orientation: %d x %d ", frameBufferWidth, frameBufferHeight);
+#endif 
+    // TODO: Rethink of initialization concepts because they changed
     pointerArraysRendererState = pointerArraysCurrentState = 0;
 }
 
@@ -187,7 +190,6 @@ void RenderManager::Reset()
 	currentDrawScale = Vector2(1, 1);
 	
 //	glLoadIdentity();
-    // TODO: Rethink concept because contexts can be changed on the fly
 }
 
 int32 RenderManager::GetRenderOrientation()
