@@ -113,7 +113,7 @@ void CollisionObject2::DebugDraw()
 
 	if (type == TYPE_POLYGON)
 	{
-		RenderHelper::DrawPolygon(polygon, true);
+		RenderHelper::Instance()->DrawPolygon(polygon, true);
 	}
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
