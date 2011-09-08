@@ -179,30 +179,30 @@ bool GraphicsFontDefinition::LoadFontDefinition(const String & fontDefName)
 	}
 	
 	char header[4];
-	file->Read(header, 4);
+	DVASSERT(file->Read(header, 4) == 4);
 	if ((header[0] != 'F') || (header[1] != 'D') || (header[2] != 'E') || (header[3] != 'F'))
 	{
 		SafeRelease(file);
 		return false;
 	}
 	uint32 version = 0;
-	file->Read(&version, 4);
+	DVASSERT(file->Read(&version, 4) == 4);
 	if (version != 1)
 	{
 		SafeRelease(file);
 		return false;
 	}
 	
-	file->Read(&fontAscent, 4);
-	file->Read(&fontDescent, 4);
-	file->Read(&fontLeading, 4);
-	file->Read(&fontXHeight, 4);
-	file->Read(&charLeftRightPadding, 4);
-	file->Read(&charTopBottomPadding, 4);	
+	DVASSERT(file->Read(&fontAscent, 4) == 4);
+	DVASSERT(file->Read(&fontDescent, 4) == 4);
+	DVASSERT(file->Read(&fontLeading, 4) == 4);
+	DVASSERT(file->Read(&fontXHeight, 4) == 4);
+	DVASSERT(file->Read(&charLeftRightPadding, 4) == 4);
+	DVASSERT(file->Read(&charTopBottomPadding, 4) == 4);	
 	
 	fontHeight = (uint32)(fontAscent + fontDescent + fontLeading + 0.5f);
 	
-	file->Read(&tableLenght, 4);
+	DVASSERT(file->Read(&tableLenght, 4) == 4);
 	characterTable = new char16[tableLenght];
 	characterPreShift = new float32[tableLenght];
 	characterWidthTable = new float32[tableLenght];
@@ -213,33 +213,33 @@ bool GraphicsFontDefinition::LoadFontDefinition(const String & fontDefName)
 	{
 		// BORODA: THIS IS FIX BECAUSE CHAR16 isn't char16 on MacOS and iPhone
 		unsigned short c = 0;
-		file->Read(&c, 2);
+		DVASSERT(file->Read(&c, 2) == 2);
 		characterTable[t] = c;
-		file->Read(&characterPreShift[t], 4);
-		file->Read(&characterWidthTable[t], 4);
+		DVASSERT(file->Read(&characterPreShift[t], 4) == 4);
+		DVASSERT(file->Read(&characterWidthTable[t], 4) == 4);
 		//Logger::Debug("char: %c idx: %d",  characterTable[t], t);
 	}
 	
-	file->Read(&defaultShiftValue, 4);
+	DVASSERT(file->Read(&defaultShiftValue, 4) == 4);
 	
 	for (int t = 0; t < tableLenght; ++t)
 	{
-		file->Read(&kerningBaseShift[t], 4);
+		DVASSERT(file->Read(&kerningBaseShift[t], 4) == 4);
 		//Logger::Debug("base: %c baseshift:%f preshift:%f", characterTable[t], kerningBaseShift[t], characterPreShift[t]);
 	}
 	
-	file->Read(&kerningPairCount, 4);
+	DVASSERT(file->Read(&kerningPairCount, 4) == 4);
 	for (int32 k = 0; k < tableLenght; ++k)
 		kerningTable[k] = 0;
 	
 	for (int32 kp = 0; kp < kerningPairCount; ++kp)
 	{
 		unsigned short s1short;
-		file->Read(&s1short, 2); 
+		DVASSERT(file->Read(&s1short, 2) == 2); 
 		unsigned short s2short;
-		file->Read(&s2short, 2); 
+		DVASSERT(file->Read(&s2short, 2) == 2); 
 		float32 shift;
-		file->Read(&shift, 4); 
+		DVASSERT(file->Read(&shift, 4) == 4); 
 		
 		KerningPair * p = new KerningPair();
 		p->ch1Index = s1short;
@@ -249,10 +249,10 @@ bool GraphicsFontDefinition::LoadFontDefinition(const String & fontDefName)
 		//file->Read(&kerningTable[s1][s2], 4, 1, fontFP);
 	}
 	
-	for (int32 t = 0; t < tableLenght; ++t)
-	{
-		//Logger::Debug("char check: %c idx: %d",  characterTable[t], t);
-	}
+//	for (int32 t = 0; t < tableLenght; ++t)
+//	{
+//		//Logger::Debug("char check: %c idx: %d",  characterTable[t], t);
+//	}
 	
 	
 	SafeRelease(file);
