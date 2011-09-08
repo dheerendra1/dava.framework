@@ -193,7 +193,8 @@ void GameObjectManager::SortObjects()
 	
 void GameObjectManager::RecalcObjectsHierarchy()
 {
-	for (List<GameObject*>::iterator currentPos = objects.begin(); currentPos != objects.end(); ++currentPos)
+    List<GameObject*>::iterator currentPos_end = objects.end();
+	for(List<GameObject*>::iterator currentPos = objects.begin(); currentPos != currentPos_end; ++currentPos)
 	{
 		GameObject * object = *currentPos;
 		if (object->dead)continue;

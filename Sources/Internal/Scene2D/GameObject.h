@@ -43,8 +43,6 @@
 
 namespace DAVA
 {
-	
-
 class GameObjectManager;
 class CollisionObject2;
 /**
@@ -74,8 +72,7 @@ protected:
 
 public:
 	// public properties of the object
-	
-	
+    typedef List<GameObject*> GameObjectsList;	
 	
 	static GameObject	* Create(const String & _pathToSprite, int32 frame = 0);
 	static GameObject	* Create(Sprite * sprite, int32 frame = 0);
@@ -260,7 +257,7 @@ protected:
     GameObjectManager * nextManager;    
 	virtual void SetManager(GameObjectManager * _manager);
 
-	List<GameObject*> children;
+	GameObjectsList children;
 	GameObject * parent;
 
 	void * userData;
