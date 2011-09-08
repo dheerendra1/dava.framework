@@ -112,7 +112,8 @@ SoundChannel * SoundSystem::FindChannel(int32 priority)
 void SoundSystem::Update()
 {
 	Deque<SoundChannel*>::iterator it;
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	Deque<SoundChannel*>::iterator iend = channelsPool.end();
+	for(it = channelsPool.begin(); it != iend; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -122,7 +123,8 @@ void SoundSystem::Update()
 	}
 
 	List<SoundInstance*>::iterator sit = soundInstances.begin();
-	while(sit != soundInstances.end())
+	List<SoundInstance*>::iterator send = soundInstances.end();
+	while(sit != send)
 	{
 		if(!(*sit)->Update())
 		{
