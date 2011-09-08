@@ -64,7 +64,7 @@ public:
 	//Internal function that does actual loading
 	void ProcessLoad(UIControl * rootControl, const String & yamlPathname);
 
-	void LoadFromNode(UIControl * rootControl, YamlNode * node);
+	void LoadFromNode(UIControl * rootControl, YamlNode * node, bool needParentCallback);
 	Font * GetFontByName(const String & fontName);
 	
     int32 GetDrawTypeFromNode(YamlNode * drawTypeNode);
