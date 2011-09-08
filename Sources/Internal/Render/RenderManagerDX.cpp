@@ -995,7 +995,7 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
+		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
 	}
 	//if (type == PRIMITIVETYPE_TRIANGLESTRIP || type == PRIMITIVETYPE_TRIANGLEFAN || || type == PRIMITIVETYPE_TRIANGLEFAN))
 	{
