@@ -35,6 +35,8 @@
 #include "Base/BaseMath.h"
 #include "Render/RenderBase.h"
 #include "Scene3D/SceneNode.h"
+#include "Scene3D/Frustum.h"
+
 
 namespace DAVA
 {
@@ -171,6 +173,9 @@ protected:
     List<QuadTreeNode<LandscapeQuad>*> fans;
     
     int32 allocatedMemoryForQuads;
+    
+    Vector3 cameraPos;
+    Frustum *frustum;
 };
 
 	

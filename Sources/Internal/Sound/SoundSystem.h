@@ -64,10 +64,8 @@ public:
 
 protected:
 	int32 maxChannels;
-    typedef Deque<SoundChannel*> SoundChannelsPool;
-	SoundChannelsPool channelsPool;
-    typedef List<SoundInstance*> SoundInstanceList;
-	SoundInstanceList soundInstances;
+	Deque<SoundChannel*> channelsPool;
+	List<SoundInstance*> soundInstances;
 
 	float32			volume;
 

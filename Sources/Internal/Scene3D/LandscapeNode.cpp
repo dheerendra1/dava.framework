@@ -45,6 +45,8 @@ LandscapeNode::LandscapeNode(Scene * _scene)
 {
     for (int32 t = 0; t < TEXTURE_COUNT; ++t)
         textures[t] = 0;
+    
+    frustum = new Frustum();
 }
 
 LandscapeNode::~LandscapeNode()
@@ -71,7 +73,7 @@ int8 LandscapeNode::AllocateRDOQuad(LandscapeQuad * quad)
         {
             landscapeVertices[index].position = GetPoint(x, y, heightmap->GetData()[y * heightmap->GetWidth() + x]);
             landscapeVertices[index].texCoord = Vector2((float32)x / (float32)(heightmap->GetWidth() - 1), (float32)y / (float32)(heightmap->GetHeight() - 1));           
-            landscapeVertices[index].texCoord *= 10.0f;
+//            landscapeVertices[index].texCoord *= 10.0f;
             //Logger::Debug("AllocateRDOQuad: %d pos(%f, %f)", index, landscapeVertices[index].position.x, landscapeVertices[index].position.y);
             index++;
         }
@@ -435,7 +437,7 @@ void LandscapeNode::DrawFans()
     
 void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 {
-    Frustum * frustum = scene->GetClipCamera()->GetFrustum();
+//    Frustum * frustum = clipCamera->GetFrustum();
     if (!frustum->IsInside(currentNode->data.bbox))return;
 
     /*
@@ -468,7 +470,7 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
         Here we use Geomipmaps rendering algorithm. 
         These quads are 129x129.
      */
-    Camera * cam = scene->GetClipCamera();
+//    Camera * cam = clipCamera;
     
     Vector3 corners[8];
     currentNode->data.bbox.GetCorners(corners);
@@ -477,7 +479,7 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
     float32 maxDist = -100000000.0f;
     for (int32 k = 0; k < 8; ++k)
     {
-        Vector3 v = cam->GetPosition() - corners[k];
+        Vector3 v = cameraPos - corners[k];
         float32 dist = v.Length();
         if (dist < minDist)
             minDist = dist;
@@ -576,6 +578,13 @@ void LandscapeNode::Draw()
     RenderManager::Instance()->ResetColor();
     
 
+	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
+	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
+    frustum->Set(meshFinalMatrix * RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION));
+    cameraPos = scene->GetClipCamera()->GetPosition() * worldTransform;
+    
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
+
     fans.clear();
     Draw(&quadTreeHead);
     DrawFans();
@@ -599,6 +608,9 @@ void LandscapeNode::Draw()
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }   
 #endif
+    
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
+
 }
     
     

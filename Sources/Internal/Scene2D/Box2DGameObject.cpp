@@ -39,7 +39,6 @@ Box2DGameObject::Box2DGameObject()
 	, listenPreSolveContact(false)
 	, listenPostSolveContact(false)
 {
-	
 }
 	
 Box2DGameObject::~Box2DGameObject()
@@ -62,8 +61,7 @@ void Box2DGameObject::InitBox2DBody(const b2BodyDef &bodyDef)
 b2Fixture* Box2DGameObject::AddFixture(const b2FixtureDef &fixtureDef)
 {
 	DVASSERT_MSG(box2DBody, "You need to init body first");
-	return box2DBody->CreateFixture(&fixtureDef);
-	
+	return box2DBody->CreateFixture(&fixtureDef);	
 }
 
 b2Fixture* Box2DGameObject::AddFixture(const b2Shape &shape, float32 density/* = 0*/)
@@ -79,7 +77,6 @@ void Box2DGameObject::Box2DWorldDidInit()
 void Box2DGameObject::Box2DWorldWillDeinit()
 {
 }
-
 	
 void Box2DGameObject::SetManager(GameObjectManager * _manager)
 {
@@ -105,8 +102,6 @@ void Box2DGameObject::SetManager(GameObjectManager * _manager)
 	}
 	//TODO: Добваить активацию и деактивацию боди при добавлении и убирании из менежера.
 }
-
-	
 	
 void Box2DGameObject::BeginContact(b2Contact* contact, b2Body *ownerBody, b2Body *oppositeBody)
 {
@@ -119,6 +114,5 @@ void Box2DGameObject::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 }
 void Box2DGameObject::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse, b2Body *ownerBody, b2Body *oppositeBody)
 {
-}
-	
+}	
 };
