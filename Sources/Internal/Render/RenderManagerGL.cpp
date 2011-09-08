@@ -509,6 +509,8 @@ void RenderManager::ClearWithColor(float32 r, float32 g, float32 b, float32 a)
 
 void RenderManager::ClearDepthBuffer(float32 depth)
 {
+    RenderManager::Instance()->EnableDepthWrite(true);
+    RenderManager::Instance()->FlushState();
 #if defined(__DAVAENGINE_IPHONE__)
     RENDER_VERIFY(glClearDepthf(depth));
 #elif defined(__DAVAENGINE_MACOS__)

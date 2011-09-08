@@ -334,6 +334,7 @@ inline void RenderStateBlock::SetTextureLevelInHW(uint32 textureLevel)
         RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
         RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, 0));
     }    
+    RENDER_VERIFY(glActiveTexture(GL_TEXTURE0));
 }
 inline void RenderStateBlock::SetDepthTestInHW()
 {
