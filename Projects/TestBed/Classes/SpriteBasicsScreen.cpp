@@ -133,8 +133,8 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(50.0f, 30.0f);
 	zebraSprite->SetScale(0.5f, 0.5f);
-	zebraSprite->Draw();
-	
+	zebraSprite->Draw();   
+
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(100.0f, 30.0f);
 	zebraSprite->SetScale(1.2f, 1.2f);
@@ -179,7 +179,6 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	zebraSprite->Draw(&drawState);
 
     RenderManager::Instance()->SetColor(0.0f, 0.7f, 0.0f, 0.3f);
-    RenderManager::Instance()->FlushState();
 	drawState.Reset();
 	drawState.SetPosition(250.0f, 130.0f);
 	drawState.SetPivotPoint(zebraSprite->GetWidth() / 2.0f, zebraSprite->GetHeight() / 2.0f);
@@ -188,6 +187,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	
     RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+    
 	/*
 	spriteFont->SetPosition(50, 50);
 	spriteFont->SetFrame(32);
@@ -226,6 +226,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	graphicsFont2->DrawString(10, 300, s);
 	graphicsFont2->DrawString(10, 300 + graphicsFont->GetFontHeight(), L"String number 2");
+     
 #endif 
 	
 	//RenderManager::Instance()->ClipPop();

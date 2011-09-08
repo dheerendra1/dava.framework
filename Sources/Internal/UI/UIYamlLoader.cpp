@@ -250,7 +250,7 @@ void UIYamlLoader::ProcessLoad(UIControl * rootControl, const String & yamlPathn
 		}
 	}
 	
-	LoadFromNode(rootControl, rootNode);
+	LoadFromNode(rootControl, rootNode, false);
 	SafeRelease(parser);
 	
 	for (Map<String, Font *>::iterator t = fontMap.begin(); t != fontMap.end(); ++t)
@@ -263,7 +263,7 @@ void UIYamlLoader::ProcessLoad(UIControl * rootControl, const String & yamlPathn
 	Logger::Debug("Load of %s time: %lld", yamlPathname.c_str(), t2 - t1);
 }
 	
-void UIYamlLoader::LoadFromNode(UIControl * parentControl, YamlNode * rootNode)
+void UIYamlLoader::LoadFromNode(UIControl * parentControl, YamlNode * rootNode, bool needParentCallback)
 {
 	//for (Map<String, YamlNode*>::iterator t = rootNode->AsMap().begin(); t != rootNode->AsMap().end(); ++t)
 	int cnt = rootNode->GetCount();
@@ -287,10 +287,14 @@ void UIYamlLoader::LoadFromNode(UIControl * parentControl, YamlNode * rootNode)
 		}
 		control->LoadFromYamlNode(node, this);
 		parentControl->AddControl(control);
-		LoadFromNode(control, node);
+		LoadFromNode(control, node, true);
 		control->SetName(rootNode->GetItemKeyName(k));
 		SafeRelease(control);
 	}
-	parentControl->LoadFromYamlNodeCompleted();
+    
+    if(needParentCallback)
+	{
+        parentControl->LoadFromYamlNodeCompleted();   
+    }
 }
 }

@@ -87,7 +87,8 @@ SoundSystem::~SoundSystem()
 SoundChannel * SoundSystem::FindChannel(int32 priority)
 {
 	Deque<SoundChannel*>::iterator it;
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_FREE == ch->GetState())
@@ -96,7 +97,7 @@ SoundChannel * SoundSystem::FindChannel(int32 priority)
 		}
 	}
 
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(ch->GetProirity() < priority)
@@ -112,7 +113,8 @@ SoundChannel * SoundSystem::FindChannel(int32 priority)
 void SoundSystem::Update()
 {
 	Deque<SoundChannel*>::iterator it;
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -122,7 +124,8 @@ void SoundSystem::Update()
 	}
 
 	List<SoundInstance*>::iterator sit = soundInstances.begin();
-	while(sit != soundInstances.end())
+	List<SoundInstance*>::iterator sEnd = soundInstances.end();
+	while(sit != sEnd)
 	{
 		if(!(*sit)->Update())
 		{
@@ -146,7 +149,8 @@ void SoundSystem::RemoveSoundInstance(SoundInstance * soundInstance)
 void SoundSystem::Suspend()
 {
 	Deque<SoundChannel*>::iterator it;
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -164,7 +168,8 @@ void SoundSystem::Resume()
 #ifdef __DAVASOUND_AL__
 	alcProcessContext(context);
 	Deque<SoundChannel*>::iterator it;
-	for(it = channelsPool.begin(); it != channelsPool.end(); ++it)
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())

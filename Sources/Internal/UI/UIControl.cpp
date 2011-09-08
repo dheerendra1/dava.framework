@@ -1288,13 +1288,15 @@ namespace DAVA
 			}
 
 			List<UIControl*>::reverse_iterator it = childs.rbegin();
-			for(; it != childs.rend(); it++)
+			List<UIControl*>::reverse_iterator itEnd = childs.rend();
+			for(; it != itEnd; it++)
 			{
 				(*it)->isUpdated = false;
 			}
 			
 			it = childs.rbegin();
-			while(it != childs.rend())
+			itEnd = childs.rend();
+			while(it != itEnd)
 			{
 				isIteratorCorrupted = false;
 				UIControl *current = *it;
