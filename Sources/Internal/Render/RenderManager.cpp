@@ -147,8 +147,10 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
     const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
-    RENDER_VERIFY();
+    //RENDER_VERIFY();
 	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
+    
+    pointerArraysRendererState = pointerArraysCurrentState = 0;
 }
 
 void RenderManager::Reset()
@@ -185,6 +187,7 @@ void RenderManager::Reset()
 	currentDrawScale = Vector2(1, 1);
 	
 //	glLoadIdentity();
+    // TODO: Rethink concept because contexts can be changed on the fly
 }
 
 int32 RenderManager::GetRenderOrientation()

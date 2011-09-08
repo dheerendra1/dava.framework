@@ -126,6 +126,15 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 0.5f);
 	RenderManager::Instance()->FillRect(Rect(100, 100, 40, 40));
 #else
+    
+    RenderManager::Instance()->ClearWithColor(0.0f, 0.4f, 0.0f, 1.0f);
+    
+    RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+    
+    RenderHelper::Instance()->FillRect(Rect(200, 0, 200, 200));
+    
+    RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(0.0f, 30.0f);
 	zebraSprite->Draw();
