@@ -258,12 +258,12 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
  	
 	// Take control of the display where we're about to go FullScreen.
   
-	err = CGDisplayCapture (kCGDirectMainDisplay);
+    err = CGDisplayCapture (kCGDirectMainDisplay);
     if (err != CGDisplayNoErr) 
 	{
         return;
     }
-	
+//	
 //	KeyedArchive * options = DAVA::Core::GetOptions();
 //	int32 width = options->GetInt("fullscreen.width", 800);
 //	int32 height = options->GetInt("fullscreen.height", 600);
@@ -380,8 +380,8 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 	Core::Instance()->SetPhysicalScreenSize(currentMode.width, currentMode.height);
 	
 	
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	RENDER_VERIFY(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+    RENDER_VERIFY(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     [fullScreenContext flushBuffer];
 	
     // Now that we've got the screen, we enter a loop in which we alternately process input events and computer and render the next frame of our animation.  The shift here is from a model in which we passively receive events handed to us by the AppKit to one in which we are actively driving event processing.
@@ -471,7 +471,7 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
     }
     
     // Clear the front and back framebuffers before switching out of FullScreen mode.  (This is not strictly necessary, but avoids an untidy flash of garbage.)
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     [fullScreenContext flushBuffer];
 	

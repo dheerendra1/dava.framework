@@ -2202,8 +2202,8 @@
 				FECFB43412E5904500C71562 /* SkeletonNode.cpp */,
 				FECFB43512E5904500C71562 /* SkeletonNode.h */,
 				FECFB43612E5904500C71562 /* SpriteNode.h */,
-				FECFB43712E5904500C71562 /* StateNode.h */,
 				47F00E7E140FE6C10014D904 /* SpriteNode.cpp */,
+				FECFB43712E5904500C71562 /* StateNode.h */,
 			);
 			path = Scene3D;
 			sourceTree = "<group>";

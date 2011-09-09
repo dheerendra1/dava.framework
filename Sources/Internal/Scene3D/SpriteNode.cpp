@@ -47,6 +47,10 @@ SpriteNode::SpriteNode(Scene * _scene, const String &pathToSprite, int32 _frame
     {
         CreateMeshFromSprite(i);
     }
+    renderData = new RenderDataObject();
+    renderData->SetStream(EVF_VERTEX, TYPE_FLOAT, 3, 0, verts.data());
+    renderData->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, textures.data());
+
 }
 
 SpriteNode::SpriteNode(Scene * _scene, Sprite *spr, int32 _frame
@@ -61,11 +65,15 @@ SpriteNode::SpriteNode(Scene * _scene, Sprite *spr, int32 _frame
     {
         CreateMeshFromSprite(i);
     }
+    renderData = new RenderDataObject();
+    renderData->SetStream(EVF_VERTEX, TYPE_FLOAT, 3, 0, verts.data());
+    renderData->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, textures.data());
 }
 
 SpriteNode::~SpriteNode()
 {
     SafeRelease(sprite);
+    SafeRelease(renderData);
 }
 
 void SpriteNode::SetFrame(int32 newFrame)
@@ -112,15 +120,13 @@ void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
     verts.push_back(0);
     verts.push_back(y1);
 
-    
-        //			tempVertices[0] = x1;
-        //			tempVertices[1] = y1;
-        //			tempVertices[2] = x2;
-        //			tempVertices[3] = y1;
-        //			tempVertices[4] = x1;
-        //			tempVertices[5] = y2;
-        //			tempVertices[6] = x2;
-        //			tempVertices[7] = y2;
+
+    float32 *pT = sprite->GetTextureVerts(frameToGen);
+    for (int i = 0; i < 2*4; i++) 
+    {
+        textures.push_back(*pT);
+        pT++;
+    }
     
     
     
@@ -175,7 +181,8 @@ void SpriteNode::Draw()
  
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
     
-    
+    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+
     
     
     
@@ -187,11 +194,10 @@ void SpriteNode::Draw()
     RenderManager::Instance()->SetTexture(sprite->GetTexture(frame));
 	RenderManager::Instance()->FlushState();
     
-    RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, &verts[frame*4*3]);
-    RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, sprite->GetTextureVerts(frame)); 
-//	glColorPointer(4, GL_FLOAT, 0, colors.data());
-//	glEnableClientState(GL_COLOR_ARRAY);
-    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
+    RenderManager::Instance()->SetRenderData(renderData);
+
+    
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, frame*4, 4);
 
 
     
@@ -201,7 +207,8 @@ void SpriteNode::Draw()
     RenderManager::Instance()->EnableDepthTest(true);
     RenderManager::Instance()->EnableDepthWrite(true);
 
-    
+    RenderManager::Instance()->RestoreRenderEffect();
+
     
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
 }

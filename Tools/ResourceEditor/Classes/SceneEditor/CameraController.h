@@ -1,4 +1,4 @@
-/*==================================================================================
+/*
     Copyright (c) 2008, DAVA Consulting, LLC
     All rights reserved.
 
@@ -9,72 +9,59 @@
     * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
     documentation and/or other materials provided with the distribution.
-    * Neither the name of the DAVA Consulting, LLC nor the
+    * Neither the name of the <organization> nor the
     names of its contributors may be used to endorse or promote products
     derived from this software without specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE DAVA CONSULTING, LLC AND CONTRIBUTORS "AS IS" AND
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL DAVA CONSULTING, LLC BE LIABLE FOR ANY
+    DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
     ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ 
+    * Created by Vitaliy Borodovsky
+*/
 
-    Revision History:
-        * Created by Ivan Petrochenko
-=====================================================================================*/
+#ifndef __DAVAENGINE_CAMERA_CONTROLLER_H__
+#define __DAVAENGINE_CAMERA_CONTROLLER_H__
 
-#ifndef __DAVAENGINE_SOUND_SYSTEM_H__
-#define __DAVAENGINE_SOUND_SYSTEM_H__
+#include "DAVAEngine.h"
 
-#include "Base/Singleton.h"
-#include "Base/BaseTypes.h"
-
-
-
-namespace DAVA
+namespace DAVA 
 {
-
-class SoundChannel;
-class SoundInstance;
-class Sound;
-class SoundGroup;
-class SoundSystem : public Singleton<SoundSystem>
+class CameraController : public BaseObject
 {
 public:
-	SoundSystem(int32 maxChannels);
-	virtual ~SoundSystem();
-
-	void			SetVolume(float32 volume); // [0..1]
-	float32			GetVolume();
-
-	void			AddSoundInstance(SoundInstance * soundInstance);
-	void			RemoveSoundInstance(SoundInstance * soundInstance);
-	SoundChannel	* FindChannel(int32 priority);
-	void			Update();
-	void			Suspend();
-	void			Resume();
-
-	SoundGroup		* GroupFX();
-	SoundGroup		* GroupMusic();
-
+    CameraController();
+    ~CameraController();
+    
+    void SetCamera(Camera * camera);
+    virtual void Input(UIEvent * event);
 protected:
-	int32 maxChannels;
-	Deque<SoundChannel*> channelsPool;
-	List<SoundInstance*> soundInstances;
-
-	float32			volume;
-
-	SoundGroup		* groupFX;
-	SoundGroup		* groupMusic;
+    Camera * camera;
+};
+    
+class WASDCameraController : public CameraController
+{
+public:
+    WASDCameraController(float32 speed);
+    ~WASDCameraController();
+    
+    virtual void Input(UIEvent * event);
+    void SetSpeed(float32 _speed);
+    
+protected:
+    float32 speed;
+    float32 viewXAngle, viewYAngle;
+    Vector2 oldTouchPoint;
 };
 
-
-
 };
 
-#endif //__DAVAENGINE_SOUND_SYSTEM_H__
+#endif // __DAVAENGINE_CAMERA_CONTROLLER_H__

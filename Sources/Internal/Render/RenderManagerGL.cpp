@@ -132,7 +132,7 @@ void RenderManager::BeginFrame()
 	
 	SetRenderOrientation(Core::Instance()->GetScreenOrientation());
 	DVASSERT(!currentRenderTarget);
-	DVASSERT(!currentRenderEffect);
+	//DVASSERT(!currentRenderEffect);
 	DVASSERT(clipStack.empty());
 	DVASSERT(renderTargetStack.empty());
 	DVASSERT(renderEffectStack.empty());

@@ -126,6 +126,15 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 0.5f);
 	RenderManager::Instance()->FillRect(Rect(100, 100, 40, 40));
 #else
+    
+    RenderManager::Instance()->ClearWithColor(0.0f, 0.4f, 0.0f, 1.0f);
+    
+    RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+    
+    RenderHelper::Instance()->FillRect(Rect(200, 0, 200, 200));
+    
+    RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(0.0f, 30.0f);
 	zebraSprite->Draw();
@@ -187,6 +196,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	
     RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+
     
 	/*
 	spriteFont->SetPosition(50, 50);
@@ -227,6 +237,34 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	graphicsFont2->DrawString(10, 300, s);
 	graphicsFont2->DrawString(10, 300 + graphicsFont->GetFontHeight(), L"String number 2");
      
+    
+    
+    
+    Polygon2 p;
+    p.AddPoint(Vector2(10.0f, 10.0f));
+    p.AddPoint(Vector2(100.0f, 10.0f));
+    p.AddPoint(Vector2(100.0f, 100.0f));
+    p.AddPoint(Vector2(10.0f, 100.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p, false);
+    
+    p.Translate(Vector2(200, 0));
+    
+    RenderHelper::Instance()->DrawPolygon(p, true);
+    
+    
+    
+    Polygon3 p2;
+    p2.AddPoint(Vector3(10.0f, 210.0f, 0.0f));
+    p2.AddPoint(Vector3(100.0f, 210.0f, 0.0f));
+    p2.AddPoint(Vector3(100.0f, 300.0f, 0.0f));
+    p2.AddPoint(Vector3(10.0f, 300.0f, 0.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p2, false);
+    
+    p2.Translate(Vector3(200, 0, 0.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p2, true);
 #endif 
 	
 	//RenderManager::Instance()->ClipPop();

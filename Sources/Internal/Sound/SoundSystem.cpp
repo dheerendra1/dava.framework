@@ -34,6 +34,7 @@
 #include "Sound/SoundInstance.h"
 #include "Sound/SoundGroup.h"
 
+
 namespace DAVA
 {
 
@@ -85,9 +86,9 @@ SoundSystem::~SoundSystem()
 
 SoundChannel * SoundSystem::FindChannel(int32 priority)
 {
-	SoundChannelsPool::iterator it;
-    SoundChannelsPool::const_iterator it_end = channelsPool.end();
-	for(it = channelsPool.begin(); it != it_end; ++it)
+	Deque<SoundChannel*>::iterator it;
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_FREE == ch->GetState())
@@ -96,7 +97,7 @@ SoundChannel * SoundSystem::FindChannel(int32 priority)
 		}
 	}
 
-	for(it = channelsPool.begin(); it != it_end; ++it)
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(ch->GetProirity() < priority)
@@ -111,9 +112,9 @@ SoundChannel * SoundSystem::FindChannel(int32 priority)
 
 void SoundSystem::Update()
 {
-	SoundChannelsPool::iterator it;
-    SoundChannelsPool::const_iterator it_end = channelsPool.end();
-	for(it = channelsPool.begin(); it != it_end; ++it)
+	Deque<SoundChannel*>::iterator it;
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -122,10 +123,11 @@ void SoundSystem::Update()
 		}
 	}
 
-	SoundInstanceList::iterator sit = soundInstances.begin();
-	while(sit != soundInstances.end())
+	List<SoundInstance*>::iterator sit = soundInstances.begin();
+	List<SoundInstance*>::iterator sEnd = soundInstances.end();
+	while(sit != sEnd)
 	{
-		if(!(*sit)->Update()) // soundInstances can be changed here
+		if(!(*sit)->Update())
 		{
 			sit = soundInstances.begin();
 			continue;
@@ -146,9 +148,9 @@ void SoundSystem::RemoveSoundInstance(SoundInstance * soundInstance)
 
 void SoundSystem::Suspend()
 {
-	SoundChannelsPool::iterator it;
-    SoundChannelsPool::const_iterator it_end = channelsPool.end();
-	for(it = channelsPool.begin(); it != it_end; ++it)
+	Deque<SoundChannel*>::iterator it;
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -165,9 +167,9 @@ void SoundSystem::Resume()
 {
 #ifdef __DAVASOUND_AL__
 	alcProcessContext(context);
-	SoundChannelsPool::iterator it;
-    SoundChannelsPool::const_iterator it_end = channelsPool.end();
-	for(it = channelsPool.begin(); it != it_end; ++it)
+	Deque<SoundChannel*>::iterator it;
+	Deque<SoundChannel*>::iterator itEnd = channelsPool.end();
+	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
 		if(SoundChannel::STATE_PLAYING == ch->GetState())
@@ -200,4 +202,5 @@ SoundGroup		* SoundSystem::GroupMusic()
 {
 	return groupMusic;
 }
+
 };

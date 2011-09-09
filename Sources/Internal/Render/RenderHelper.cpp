@@ -258,37 +258,24 @@ void RenderHelper::DrawPolygonPoints(Polygon3 & polygon, bool closed)
 	
 void RenderHelper::DrawPolygon(Polygon3 & polygon, bool closed)
 {
-	int ptCount = polygon.pointCount;
-	//if (closed)ptCount++;
-	
-	//	for (int pi = 0; pi < ptCount; ++pi)
-	//	{
-	//		
-	//		
-	//		
-	//	}
+    int ptCount = polygon.pointCount;
 	if (ptCount >= 2)
-	{
-		//RenderManager_setBlendMode(GL_ONE, GL_ZERO);
-		RenderManager::Instance()->EnableTexturing(false);
-		RenderManager::Instance()->FlushState();
-		
-		RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, polygon.GetPoints());
-		RenderManager::Instance()->EnableVertexArray(true);
-	
-		// glEnableClientState(GL_VERTEX_ARRAY);
-		// glDisableClientState(GL_COLOR_ARRAY);
+	{		
+		vertexStream->Set(TYPE_FLOAT, 3, 0, polygon.GetPoints());
+		RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+		RenderManager::Instance()->SetRenderData(renderDataObject);
+		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, ptCount);
 		
 		if (closed)
 		{
-			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, ptCount);
-			Vector3 line[2] = {Vector3(polygon.GetPoints()[0]), Vector3(polygon.GetPoints()[ptCount-1])};
-			RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, 0, line);
-			RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
-		}else RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, ptCount);
+		    Vector3 line[2] = {Vector3(polygon.GetPoints()[0]), Vector3(polygon.GetPoints()[ptCount-1])};
+		    vertexStream->Set(TYPE_FLOAT, 3, 0, line);
+		    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
+		}
 		
-		RenderManager::Instance()->EnableTexturing(true);
+		RenderManager::Instance()->RestoreRenderEffect();		
 	}
+
 	
 }
 
@@ -296,13 +283,6 @@ void RenderHelper::DrawPolygon(Polygon3 & polygon, bool closed)
 void RenderHelper::DrawPolygon(Polygon2 & polygon, bool closed)
 {
 	int ptCount = polygon.pointCount;
-	//if (closed)ptCount++;
-	//	for (int pi = 0; pi < ptCount; ++pi)
-	//	{
-	//		
-	//		
-	//		
-	//	}
 	if (ptCount >= 2)
 	{		
 		vertexStream->Set(TYPE_FLOAT, 2, 0, polygon.GetPoints());
