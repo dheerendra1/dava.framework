@@ -62,7 +62,7 @@ void Box2DDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 	{
 		polygon.AddPoint(Vector3(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y, 0.0f));
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 }
 
@@ -74,7 +74,7 @@ void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount,
 	{
 		polygon.AddPoint(Vector3(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y, 0.0f));
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 	
 	/*glEnable(GL_BLEND);
@@ -112,7 +112,7 @@ void Box2DDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Co
 		polygon.AddPoint(Vector3(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y, 0.0f));
 		theta += k_increment;
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 }
 
@@ -131,7 +131,7 @@ void Box2DDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const
 		polygon.AddPoint(Vector3(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y, 0.0f));
 		theta += k_increment;
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 	/*const float32 k_segments = 16.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;

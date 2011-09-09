@@ -73,7 +73,7 @@ public:
 	// polygon & line helper functions
 	//static 
 	void DrawPolygon(Polygon2 & polygon, bool closed);
-	static void DrawPolygon(Polygon3 & polygon, bool closed);
+    void DrawPolygon(Polygon3 & polygon, bool closed);
 	static void DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform);
 	static void DrawPolygonPoints(Polygon2 & polygon, bool closed);
 	static void DrawPolygonPoints(Polygon3 & polygon, bool closed);
