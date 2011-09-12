@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerformanceTestVS2010", "Pe
 		{A6472D47-5050-406D-89E9-4725192E32F2} = {A6472D47-5050-406D-89E9-4725192E32F2}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32Framework", ".\..\dava.framework\Projects\Win32Framework\Win32Framework.vcxproj", "{A6472D47-5050-406D-89E9-4725192E32F2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32Framework", ".\..\Win32Framework\Win32Framework.vcxproj", "{A6472D47-5050-406D-89E9-4725192E32F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
