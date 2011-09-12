@@ -256,19 +256,24 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _d
 		uint8 * sourceBits = (uint8*)_data;
 		for (uint32 h = 0; h < height * width; ++h)
 		{
-			uint32 r = sourceBits[0];
-			uint32 g = sourceBits[1];
-			uint32 b = sourceBits[2];
-			uint32 a = sourceBits[3];
-			
-		// 		r = ((r * a) >> 8);
-		// 		g = ((g * a) >> 8);
-		// 		b = ((b * a) >> 8);
+// 			uint32 r = sourceBits[0];
+// 			uint32 g = sourceBits[1];
+// 			uint32 b = sourceBits[2];
+// 			uint32 a = sourceBits[3];
+// 			
+// 		// 		r = ((r * a) >> 8);
+// 		// 		g = ((g * a) >> 8);
+// 		// 		b = ((b * a) >> 8);
+// 
+// 			destBits[0] = (uint8)b; //sourceBits[3];
+// 			destBits[1] = (uint8)g; //sourceBits[0];
+// 			destBits[2] = (uint8)r;//sourceBits[1];
+// 			destBits[3] = (uint8)a;
 
-			destBits[0] = (uint8)b; //sourceBits[3];
-			destBits[1] = (uint8)g; //sourceBits[0];
-			destBits[2] = (uint8)r;//sourceBits[1];
-			destBits[3] = (uint8)a;
+            destBits[0] = sourceBits[2];
+            destBits[1] = sourceBits[1];
+            destBits[2] = sourceBits[0];
+            destBits[3] = sourceBits[3];
 
 			destBits += 4;
 			sourceBits += 4;

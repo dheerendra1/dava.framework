@@ -99,7 +99,6 @@ void RenderHelper::DrawLine(const Vector2 &start, const Vector2 &end)
     RenderManager::Instance()->RestoreRenderEffect();
 }
     
-    
 void RenderHelper::DrawLine(const Vector3 & start, const Vector3 & end)
 {
     vertices[0] = start.x;						

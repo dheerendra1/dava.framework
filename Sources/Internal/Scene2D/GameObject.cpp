@@ -260,29 +260,36 @@ void GameObject::SetManager(GameObjectManager * _manager)
 
 void GameObject::Update(float32 timeElapsed)
 {
-	if (collision)
+	if(collision)
 		collision->Update(globalDrawState);
 
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
-	{
-		GameObject* o = *t;
-		o->Update(timeElapsed);
-	}
+    if(!children.empty())
+    {
+        GameObjectsList::iterator it_end = children.end();
+        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+    	{
+	    	GameObject *o = *t;
+		    o->Update(timeElapsed);
+	    }
+    }
 }
 	
 void GameObject::RecalcHierarchy(Sprite::DrawState & parentDrawState)
 {
 	globalDrawState.BuildStateFromParentAndLocal(parentDrawState, localDrawState);
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
-	{
-		GameObject* o = *t;
-		o->RecalcHierarchy(globalDrawState);
-	}
+    if(!children.empty())
+    {
+        GameObjectsList::iterator it_end = children.end();
+        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+        {
+            GameObject *o = *t;
+            o->RecalcHierarchy(globalDrawState);
+        }
+    }
 }
 	
 void GameObject::CollisionPhase()
 {
-
 }
 
 void GameObject::Draw()
@@ -328,7 +335,7 @@ void	GameObject::AttachObject(GameObject * gameObject)
 
 void	GameObject::DetachObject(GameObject * gameObject)
 {
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -356,7 +363,7 @@ void	GameObject::RemoveObject(GameObject * gameObject)
 {
 	//std::remove(animations.begin(), animations.end(), animation);
 	
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -385,7 +392,7 @@ void GameObject::ChangeManager(GameObjectManager * newManager)
 	{
 		newManager->AddObject(this);
 		
-		for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+		for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 		{
 			GameObject * child = *t;
 			child->ChangeManager(newManager);
