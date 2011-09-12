@@ -265,6 +265,20 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
     p2.Translate(Vector3(200, 0, 0.0f));
     
     RenderHelper::Instance()->DrawPolygon(p2, true);
+    RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+    RenderHelper::Instance()->DrawPolygonPoints(p2);
+    RenderHelper::Instance()->DrawCircle(Vector3(100, 100, 0), 100);
+    RenderHelper::Instance()->DrawCircle(Vector2(120, 120), 50);
+
+    RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
+    RenderHelper::Instance()->DrawPoint(Vector3(100, 100, 0));
+    RenderHelper::Instance()->DrawPoint(Vector2(120, 120));
+    
+    RenderManager::Instance()->ResetColor();
+    
+    
+    
+    
 #endif 
 	
 	//RenderManager::Instance()->ClipPop();

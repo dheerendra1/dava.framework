@@ -59,35 +59,33 @@ public:
     void DrawRect(const Rect & rect);
     void FillRect(const Rect & rect);
     
-
-    RenderDataObject * renderDataObject;
-    RenderDataStream * vertexStream; 
-    float32 vertices[32];
-    
 	// point helpers
-	static void DrawPoint(const Vector2 & pt, float32 ptSize = 1.0f);
-	static void DrawPoint(const Vector3 & pt, float32 ptSize = 1.0f);
-	static void DrawCircle(const Vector2 & center, float32 radius);
-	static void DrawCircle(const Vector3 & center, float32 radius);
+	void DrawPoint(const Vector2 & pt, float32 ptSize = 1.0f);
+	void DrawPoint(const Vector3 & pt, float32 ptSize = 1.0f);
+	void DrawCircle(const Vector2 & center, float32 radius);
+	void DrawCircle(const Vector3 & center, float32 radius);
 	
 	// polygon & line helper functions
 	//static 
 	void DrawPolygon(Polygon2 & polygon, bool closed);
     void DrawPolygon(Polygon3 & polygon, bool closed);
-	static void DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform);
-	static void DrawPolygonPoints(Polygon2 & polygon, bool closed);
-	static void DrawPolygonPoints(Polygon3 & polygon, bool closed);
+	void DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform);
+    void DrawPolygonPoints(Polygon2 & polygon);
+	void DrawPolygonPoints(Polygon3 & polygon);
     
 	
-    static void DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2); 
-	static void DrawStrippedLine(Polygon2 & polygon, float lineLen, float spaceLen, float halfWidth, Texture * texture, float initialPos);
-	static void DrawBox(const AABBox2 & box);
-	static void DrawBox(const AABBox3 & box);
+    //static void DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2); 
+	//static void DrawStrippedLine(Polygon2 & polygon, float lineLen, float spaceLen, float halfWidth, Texture * texture, float initialPos);
+	void DrawBox(const AABBox2 & box);
+	void DrawBox(const AABBox3 & box);
 	// 3d helper functions (bboxes and so on)
 	
-	static void DrawBSpline(BezierSpline3 * bSpline, int segments = 20, float ts = 0.0f, float te = 1.0f);
-	static void DrawInterpolationFunc(Interpolation::Func func, const Rect & destRect);
-	
+	void DrawBSpline(BezierSpline3 * bSpline, int segments = 20, float ts = 0.0f, float te = 1.0f);
+	void DrawInterpolationFunc(Interpolation::Func func, const Rect & destRect);
+
+    RenderDataObject * renderDataObject;
+    RenderDataStream * vertexStream; 
+    float32 vertices[32];
 };
 	
 }

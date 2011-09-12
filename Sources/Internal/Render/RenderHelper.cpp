@@ -122,40 +122,38 @@ void RenderHelper::DrawLine(const Vector3 & start, const Vector3 & end)
 
 void RenderHelper::DrawPoint(const Vector2 & pt, float32 ptSize)
 {
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	glPointSize(ptSize);
-	
-	glVertexPointer(2, GL_FLOAT, 0, &pt);
-	
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_POINTS, 0, 1);
-	RenderManager::Instance()->EnableTexturing(true);
-	glPointSize(1.0f);
+#if defined (__DAVAENGINE_OPENGL__)
+    glPointSize(3.0f);
+#endif 
+    vertexStream->Set(TYPE_FLOAT, 2, 0, (void*)&pt);
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_POINTLIST, 0, 1);
+#if defined (__DAVAENGINE_OPENGL__)
+    glPointSize(1.0f);
+#endif
 }
 	
 void RenderHelper::DrawPoint(const Vector3 & pt, float32 ptSize)
 {
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	glPointSize(ptSize);
-	
-	glVertexPointer(3, GL_FLOAT, 0, &pt);
-
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_POINTS, 0, 1);
-	RenderManager::Instance()->EnableTexturing(true);
-	glPointSize(1.0f);
+#if defined (__DAVAENGINE_OPENGL__)
+    glPointSize(3.0f);
+#endif 
+    vertexStream->Set(TYPE_FLOAT, 3, 0, (void*)&pt);
+    RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(renderDataObject);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_POINTLIST, 0, 1);
+#if defined (__DAVAENGINE_OPENGL__)
+    glPointSize(1.0f);
+#endif		
 }
 	
 void RenderHelper::DrawCircle(const Vector2 & center, float32 radius)
 {
-	Vector<Vector2> pts;
-	int ptsCount = 15;
+	Polygon2 pts;
+    float32 seglength = 15.0f;
+    float32 angle = seglength / radius;
+	int ptsCount = (int)(2 * PI / angle) + 1;
 	
 	for (int k = 0; k < ptsCount; ++k)
 	{
@@ -164,23 +162,19 @@ void RenderHelper::DrawCircle(const Vector2 & center, float32 radius)
 		float32 cosA = cosf(angle);
 		Vector2 pos = center - Vector2(sinA * radius, cosA * radius);
 		
-		pts.push_back(pos);
+		pts.AddPoint(pos);
 	}
 	
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	
-	glVertexPointer(2, GL_FLOAT, 0, &pts.front());
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINE_STRIP, 0, ptsCount);
-	RenderManager::Instance()->EnableTexturing(true);	
+    DrawPolygon(pts, false);	
 }
 
 void RenderHelper::DrawCircle(const Vector3 & center, float32 radius)
 {
-	Vector<Vector3> pts;
-	int ptsCount = 15;
+	Polygon3 pts;
+    float32 seglength = 15.0f;
+    float32 angle = seglength / radius;
+	int ptsCount = (int)(2 * PI / angle) + 1;
+
 
 	for (int k = 0; k < ptsCount; ++k)
 	{
@@ -189,70 +183,44 @@ void RenderHelper::DrawCircle(const Vector3 & center, float32 radius)
 		float32 cosA = cosf(angle);
 		Vector3 pos = center - Vector3(sinA * radius, cosA * radius, 0);
 
-		pts.push_back(pos);
+		pts.AddPoint(pos);
 	}
-
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-
-	glVertexPointer(3, GL_FLOAT, 0, &pts.front());
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINE_STRIP, 0, ptsCount);
-	RenderManager::Instance()->EnableTexturing(true);	
-	
+    DrawPolygon(pts, false);
 }
 
-void RenderHelper::DrawPolygonPoints(Polygon2 & polygon, bool closed)
+void RenderHelper::DrawPolygonPoints(Polygon2 & polygon)
 {
 	int ptCount = polygon.pointCount;
-	//if (closed)ptCount++;
-	//	for (int pi = 0; pi < ptCount; ++pi)
-	//	{
-	//		
-	//		
-	//		
-	//	}
 	if (ptCount >= 1)
 	{
-		RenderManager::Instance()->EnableTexturing(false);
-		RenderManager::Instance()->FlushState();
-		
-		glPointSize(3.0f);
-		glVertexPointer(2, GL_FLOAT, 0, polygon.GetPoints());
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDrawArrays(GL_POINTS, 0, ptCount);
-		RenderManager::Instance()->EnableTexturing(true);
+#if defined (__DAVAENGINE_OPENGL__)
+        glPointSize(3.0f);
+#endif 
+		vertexStream->Set(TYPE_FLOAT, 2, 0, polygon.GetPoints());
+		RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+		RenderManager::Instance()->SetRenderData(renderDataObject);
+		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_POINTLIST, 0, ptCount);
+#if defined (__DAVAENGINE_OPENGL__)
 		glPointSize(1.0f);
+#endif		
 	}
-	
 }
 	
-void RenderHelper::DrawPolygonPoints(Polygon3 & polygon, bool closed)
+void RenderHelper::DrawPolygonPoints(Polygon3 & polygon)
 {
 	int ptCount = polygon.pointCount;
-	//if (closed)ptCount++;
-	
-	//	for (int pi = 0; pi < ptCount; ++pi)
-	//	{
-	//		
-	//		
-	//		
-	//	}
 	if (ptCount >= 1)
 	{
-		//RenderManager_setBlendMode(GL_ONE, GL_ZERO);
-		RenderManager::Instance()->EnableTexturing(false);
-		RenderManager::Instance()->FlushState();
-		
-		glPointSize(3.0f);
-		glVertexPointer(3, GL_FLOAT, 0, polygon.GetPoints());
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDrawArrays(GL_POINTS, 0, ptCount);
-		RenderManager::Instance()->EnableTexturing(true);
+#if defined (__DAVAENGINE_OPENGL__)
+        glPointSize(3.0f);
+#endif 
+		vertexStream->Set(TYPE_FLOAT, 3, 0, polygon.GetPoints());
+		RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+		RenderManager::Instance()->SetRenderData(renderDataObject);
+		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_POINTLIST, 0, ptCount);
+#if defined (__DAVAENGINE_OPENGL__)
 		glPointSize(1.0f);
+#endif		
 	}
 	
 }
@@ -311,7 +279,7 @@ void RenderHelper::DrawPolygonTransformed(Polygon2 & polygon, bool closed, const
 	RenderHelper::Instance()->DrawPolygon(copyPoly, closed);
 }
 
-
+#if 0
 void RenderHelper::DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt2)
 {
 	RenderManager::Instance()->EnableTexturing(false);
@@ -410,29 +378,21 @@ void RenderHelper::DrawStrippedLine(Polygon2 & polygon, float lineLen, float spa
 	glDrawArrays(GL_TRIANGLES, 0, polyCount * 6);
 	//RenderManager_enableTexturing();
 }
-	
+#endif 
+    
 void RenderHelper::DrawBSpline(BezierSpline3 * bSpline, int segments, float ts, float te)
 {
-	// 
-	Vector<Vector3> pts;
+	Polygon3 pts;
 	for (int k = 0; k < segments; ++k)
 	{
-		pts.push_back(bSpline->Evaluate(0, ts + (te - ts) * ((float)k / (float)(segments - 1))));
+		pts.AddPoint(bSpline->Evaluate(0, ts + (te - ts) * ((float)k / (float)(segments - 1))));
 	}
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	
-	glVertexPointer(3, GL_FLOAT, 0, &pts.front());
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINE_STRIP, 0, segments);
-	RenderManager::Instance()->EnableTexturing(true);	
+    DrawPolygon(pts, false);
 }
 	
 void RenderHelper::DrawInterpolationFunc(Interpolation::Func func, const Rect & destRect)
 {
-	Vector<Vector3> pts;
-
+	Polygon3 pts;
 	int segmentsCount = 20;
 	for (int k = 0; k < segmentsCount; ++k)
 	{
@@ -440,16 +400,9 @@ void RenderHelper::DrawInterpolationFunc(Interpolation::Func func, const Rect & 
 		v.x = destRect.x + ((float)k / (float)(segmentsCount - 1)) * destRect.dx;
 		v.y = destRect.y + func(((float)k / (float)(segmentsCount - 1))) * destRect.dy;
 		v.z = 0.0f;
-		pts.push_back(v);
+		pts.AddPoint(v);
 	}
-	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->FlushState();
-	
-	glVertexPointer(3, GL_FLOAT, 0, &pts.front());
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDrawArrays(GL_LINE_STRIP, 0, segmentsCount);
-	RenderManager::Instance()->EnableTexturing(true);	
+	DrawPolygon(pts, false);
 }
 	
 void RenderHelper::DrawBox(const AABBox2 & box)
