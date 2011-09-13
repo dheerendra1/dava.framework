@@ -44,7 +44,27 @@ public:
 	virtual void LoadResources();
 	virtual void UnloadResources();
 
-	void Test1(PerfFuncData * data);
+	enum SetDrawType 
+	{
+		SET_POSITION = 1,
+		SET_SCALE = 2,
+		SET_ANGLE = 4,
+		SET_PIVOT_POINT = 8,
+		SET_ALL_DEFAULT_SETTERS = 16,
+	};
+
+	void SpriteRGBA888Draw(PerfFuncData * data);
+	void GameObjectRGBA888Draw(PerfFuncData * data);
+	void SpriteRGBA888DrawStateDraw(PerfFuncData * data);
+
+private:
+	Sprite * redSprite;
+	Sprite::DrawState redSpriteDrawState;
+	GameObject * redGameObject;
+	Sprite * greenSprite;
+	Sprite * blueSprite;
+	Sprite * tranclucentSprite;
+	Sprite * zebraSprite;	
 };
 
 
