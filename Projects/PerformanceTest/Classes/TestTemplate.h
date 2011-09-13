@@ -51,7 +51,7 @@ public:
 		void			* userData;
 	};
 
-	TestTemplate();
+	TestTemplate(const String & screenName);
 
 	virtual void Update(float32 timeElapsed);
 	virtual void Draw(const UIGeometricData &geometricData);
@@ -67,6 +67,10 @@ protected:
 	Vector<PerfFuncData> perfFuncs;
 	int32 funcIndex;
 	int32 runIndex;
+	String screenName;
+
+private:
+	TestTemplate();
 };
 
 template <class T>
@@ -89,8 +93,7 @@ template <class T>
 void TestTemplate<T>::WriteLog(PerfFuncData * data)
 {
 	File * log = GameCore::Instance()->logFile;
-	//log->WriteString(Format("%s %lld %lld %lld", data->name.c_str(), data->totalTime, data->minTime, data->maxTime));
-	log->WriteString("1");
+	log->WriteLine(Format("%s %lld %lld %lld", data->name.c_str(), data->totalTime, data->minTime, data->maxTime));
 }
 
 template <class T>
@@ -113,8 +116,9 @@ void TestTemplate<T>::SubmitTime(PerfFuncData * data, uint64 time)
 }
 
 template <class T>
-TestTemplate<T>::TestTemplate()
+TestTemplate<T>::TestTemplate(const String & _screenName)
 {
+	screenName = _screenName;
 	funcIndex = -1;
 	runIndex = -1;
 }
@@ -124,6 +128,9 @@ void TestTemplate<T>::DidAppear()
 {
 	funcIndex = 0;
 	runIndex = 0;
+
+	File * log = GameCore::Instance()->logFile;
+	log->WriteLine(Format("$%s", screenName.c_str()));
 }
 
 template <class T>

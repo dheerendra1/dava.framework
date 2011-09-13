@@ -39,6 +39,8 @@ using namespace DAVA;
 class SpriteTest : public TestTemplate<SpriteTest>
 {
 public:
+	SpriteTest();
+
 	virtual void LoadResources();
 	virtual void UnloadResources();
 

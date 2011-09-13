@@ -30,6 +30,12 @@
 
 #include "SpriteTest.h"
 
+SpriteTest::SpriteTest()
+: TestTemplate("Sprite")
+{
+
+}
+
 void SpriteTest::LoadResources()
 {
 	RegisterFunction(this, &SpriteTest::Test1, "Test1", 30, 0);
@@ -44,3 +50,5 @@ void SpriteTest::UnloadResources()
 {
 
 }
+
+
