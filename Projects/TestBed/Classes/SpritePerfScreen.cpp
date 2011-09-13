@@ -104,21 +104,21 @@ void SpritePerfScreen::WillDisappear()
 void SpritePerfScreen::SpriteRGBA888Draw(PerfFuncData * data)
 {
 	int32 type = data->type;
-	
+
 	uint64 tm = SystemTimer::Instance()->AbsoluteMS();
 	float x = 0;
 	float y = 0;
 	int vl = 0;
-	
+
 	redSprite->Reset();
-	
+
 	for (int i = 0; i < 10000; i++) 
 	{
 		if (type & SET_POSITION)
 		{
 			redSprite->SetPosition(x, y);
 		}
-		
+
 		if (type & SET_ALL_DEFAULT_SETTERS)
 		{
 			redSprite->SetAngle(0.0f);
@@ -126,7 +126,7 @@ void SpritePerfScreen::SpriteRGBA888Draw(PerfFuncData * data)
 			redSprite->SetPivotPoint(0.0f, 0.0f);
 			redSprite->SetFrame(0);
 		}
-		
+
 		if (type & SET_SCALE)
 		{
 			if (i & 1)
@@ -136,13 +136,13 @@ void SpritePerfScreen::SpriteRGBA888Draw(PerfFuncData * data)
 				redSprite->SetScale(1.11f, 1.11f);
 			}
 		}
-		
+
 		if (type & SET_ANGLE)
 			redSprite->SetAngle((float32)i);
-		
+
 		if (type & SET_PIVOT_POINT)
 			redSprite->SetPivotPoint(10, 10);
-		
+
 		redSprite->Draw();
 		x += 50;
 		if(x >= 420)
@@ -156,8 +156,8 @@ void SpritePerfScreen::SpriteRGBA888Draw(PerfFuncData * data)
 			}
 		}
 	}
-	
-	
+
+
 	tm = SystemTimer::Instance()->AbsoluteMS() - tm;
 	Logger::Info("%s, fill time = %lldms", data->name.c_str(), tm);
 	SubmitTime(data, tm);
@@ -309,7 +309,7 @@ void SpritePerfScreen::SubmitTime(PerfFuncData * data, uint64 tm)
 		data->minTime = tm;
 		data->maxTime = tm;
 	}
-	
+
 	if (tm < data->minTime)
 		data->minTime = tm;
 	if (tm > data->maxTime)

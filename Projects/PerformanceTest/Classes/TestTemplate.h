@@ -47,6 +47,8 @@ public:
 		uint64			totalTime;
 		uint64			minTime;
 		uint64			maxTime;
+		uint64			startTime;
+		uint64			endTime;
 		int32			runCount;
 		void			* userData;
 	};
@@ -93,14 +95,15 @@ template <class T>
 void TestTemplate<T>::WriteLog(PerfFuncData * data)
 {
 	File * log = GameCore::Instance()->logFile;
-	log->WriteLine(Format("%s %lld %lld %lld", data->name.c_str(), data->totalTime, data->minTime, data->maxTime));
+	log->WriteLine(Format("%s", data->name.c_str()));
+	log->WriteLine(Format("%lld %lld %lld %lld", data->endTime-data->startTime, data->totalTime, data->minTime, data->maxTime));
 }
 
 template <class T>
 void TestTemplate<T>::SubmitTime(PerfFuncData * data, uint64 time)
 {
 	data->totalTime += time;
-	if (data->runCount == 1)
+	if (runIndex == 0)
 	{
 		data->minTime = time;
 		data->maxTime = time;
@@ -149,15 +152,25 @@ void TestTemplate<T>::Draw(const UIGeometricData &geometricData)
 		if(runIndex < data->runCount)
 		{
 			uint64 startTime = SystemTimer::Instance()->AbsoluteMS();
+			if(0 == runIndex)
+			{
+				data->startTime = startTime;
+			}
 			(data->screen->*data->func)(data);
-			uint64 elapsed = SystemTimer::Instance()->AbsoluteMS() - startTime;
-			SubmitTime(data, elapsed);
+			uint64 endTime = SystemTimer::Instance()->AbsoluteMS();
+			SubmitTime(data, endTime-startTime);
 
 			runIndex++;
+			if(data->runCount == runIndex)
+			{
+				data->endTime = endTime;
+			}
 		}
 		else
 		{
 			WriteLog(data);
+
+			Logger::Debug("%s %s", screenName.c_str(), data->name.c_str());
 
 			runIndex = 0;
 			funcIndex++;

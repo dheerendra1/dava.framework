@@ -33,7 +33,6 @@
 #include "DAVAEngine.h"
 using namespace DAVA;
 
-class TestScreen;
 class SpriteTest;
 
 class GameCore : public ApplicationCore
@@ -56,7 +55,6 @@ public:
 
 	File * logFile;
 
-	TestScreen * testScreen;
 	SpriteTest * spriteTest;
 };
 

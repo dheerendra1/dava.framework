@@ -10,9 +10,6 @@
     <ClCompile Include="Win32Specific\main.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\TestScreen.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Classes\TestTemplate.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -21,9 +18,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes\TestScreen.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\AppScreens.h">
       <Filter>Common</Filter>
     </ClInclude>
