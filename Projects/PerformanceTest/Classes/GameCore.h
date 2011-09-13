@@ -31,14 +31,21 @@
 #define __GAMECORE_H__
 
 #include "DAVAEngine.h"
+using namespace DAVA;
 
 class TestScreen;
+class SpriteTest;
 
-class GameCore : public DAVA::ApplicationCore
+class GameCore : public ApplicationCore
 {
 public:	
 	GameCore();
 	virtual ~GameCore();
+
+	static GameCore * Instance() 
+	{ 
+		return (GameCore*) DAVA::Core::GetApplicationCore();
+	};
 	
 	virtual void OnAppStarted();
 	virtual void OnAppFinished();
@@ -46,14 +53,11 @@ public:
 	virtual void OnSuspend();
 	virtual void OnResume();
 	virtual void OnBackground();
-	
-	virtual void BeginFrame();
-	virtual void Update(DAVA::float32 update);
-	virtual void Draw();
-	
-private:
-	DAVA::Cursor * cursor;
+
+	File * logFile;
+
 	TestScreen * testScreen;
+	SpriteTest * spriteTest;
 };
 
 

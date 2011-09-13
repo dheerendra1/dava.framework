@@ -33,6 +33,7 @@
 enum
 {
 	SCREEN_TEST = 1,
+	SCREEN_SPRITE
 };
 	
 

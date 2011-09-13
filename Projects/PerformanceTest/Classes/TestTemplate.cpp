@@ -25,60 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Ivan "Dizz" Petrochenko
 =====================================================================================*/
-#include "GameCore.h"
-#include "AppScreens.h"
-#include "TestScreen.h"
-#include "SpriteTest.h"
 
-using namespace DAVA;
+#include "TestTemplate.h"
 
-GameCore::GameCore()
-{
-	
-}
-
-GameCore::~GameCore()
-{
-	
-}
-
-void GameCore::OnAppStarted()
-{
-	RenderManager::Instance()->SetFPS(60);
-
-	time_t logStartTime = time(0);
-	logFile = File::Create(Format("~doc:/%lld.report", logStartTime), File::CREATE | File::WRITE);
-
- 	testScreen = new TestScreen();
-	spriteTest = new SpriteTest();
-	
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE, spriteTest);
-
-    UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE);
-}
-
-void GameCore::OnAppFinished()
-{
-    SafeRelease(testScreen);
-
-	logFile->Release();
-}
-
-void GameCore::OnSuspend()
-{
-	
-	
-}
-
-void GameCore::OnResume()
-{
-
-}
-
-void GameCore::OnBackground()
-{
-	
-}

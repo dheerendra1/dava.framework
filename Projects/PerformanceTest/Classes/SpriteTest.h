@@ -20,65 +20,30 @@
     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTR ACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Ivan "Dizz" Petrochenko
 =====================================================================================*/
-#include "GameCore.h"
-#include "AppScreens.h"
-#include "TestScreen.h"
-#include "SpriteTest.h"
 
+#ifndef __SPRITETEST_H__
+#define __SPRITETEST_H__
+
+#include "DAVAEngine.h"
 using namespace DAVA;
 
-GameCore::GameCore()
+#include "TestTemplate.h"
+
+class SpriteTest : public TestTemplate<SpriteTest>
 {
-	
-}
+public:
+	virtual void LoadResources();
+	virtual void UnloadResources();
 
-GameCore::~GameCore()
-{
-	
-}
+	void Test1(PerfFuncData * data);
+};
 
-void GameCore::OnAppStarted()
-{
-	RenderManager::Instance()->SetFPS(60);
 
-	time_t logStartTime = time(0);
-	logFile = File::Create(Format("~doc:/%lld.report", logStartTime), File::CREATE | File::WRITE);
-
- 	testScreen = new TestScreen();
-	spriteTest = new SpriteTest();
-	
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE, spriteTest);
-
-    UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE);
-}
-
-void GameCore::OnAppFinished()
-{
-    SafeRelease(testScreen);
-
-	logFile->Release();
-}
-
-void GameCore::OnSuspend()
-{
-	
-	
-}
-
-void GameCore::OnResume()
-{
-
-}
-
-void GameCore::OnBackground()
-{
-	
-}
+#endif // __SPRITETEST_H__
