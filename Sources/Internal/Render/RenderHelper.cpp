@@ -267,9 +267,32 @@ void RenderHelper::DrawPolygon(Polygon2 & polygon, bool closed)
 		
 		RenderManager::Instance()->RestoreRenderEffect();		
 	}
-	
+}
+    
+void RenderHelper::FillPolygon(Polygon2 & polygon)
+{
+    int ptCount = polygon.pointCount;
+	if (ptCount >= 3)
+	{		
+		vertexStream->Set(TYPE_FLOAT, 2, 0, polygon.GetPoints());
+		RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+		RenderManager::Instance()->SetRenderData(renderDataObject);
+		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLEFAN, 0, ptCount);
+    }
 }
 
+void RenderHelper::FillPolygon(Polygon3 & polygon)
+{
+    int ptCount = polygon.pointCount;
+	if (ptCount >= 3)
+	{		
+		vertexStream->Set(TYPE_FLOAT, 3, 0, polygon.GetPoints());
+		RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+		RenderManager::Instance()->SetRenderData(renderDataObject);
+		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLEFAN, 0, ptCount);
+    }
+
+}
 
 void RenderHelper::DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform)
 {
@@ -287,7 +310,7 @@ void RenderHelper::DrawLineWithEndPoints(const Vector3 & pt1, const Vector3 & pt
 	Vector3 line[2] = {pt1, pt2};
 
 	glVertexPointer(3, GL_FLOAT, 0, line);
-	glEnableClientState(GL_VERTEX_ARRAY);
+	:(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDrawArrays(GL_LINES, 0, 2);
 	

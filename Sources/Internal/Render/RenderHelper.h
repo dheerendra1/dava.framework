@@ -69,6 +69,9 @@ public:
 	//static 
 	void DrawPolygon(Polygon2 & polygon, bool closed);
     void DrawPolygon(Polygon3 & polygon, bool closed);
+    void FillPolygon(Polygon2 & polygon);
+    void FillPolygon(Polygon3 & polygon);
+    
 	void DrawPolygonTransformed(Polygon2 & polygon, bool closed, const Matrix3 & transform);
     void DrawPolygonPoints(Polygon2 & polygon);
 	void DrawPolygonPoints(Polygon3 & polygon);
