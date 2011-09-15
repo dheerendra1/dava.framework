@@ -39,7 +39,7 @@ namespace DAVA
 File::File()
 {
 	file = NULL;
-};
+}
 
 File::~File()
 {
@@ -238,6 +238,21 @@ bool File::WriteString(const String & strtowrite)
 {
 	const char * str = strtowrite.c_str();
 	return (Write((void*)str, (uint32)(strtowrite.length() + 1)) == strtowrite.length() + 1);
+}
+
+bool File::WriteLine(const String & string)
+{
+	uint32 written = 0;
+	const char * str = string.c_str();
+	char * endLine = "\r\n";
+	uint32 endLength = strlen(endLine);
+	uint32 strLength = string.length();
+
+	written += Write(str, strLength);
+	written += Write(endLine, endLength);
+
+	return (written == strLength+endLength);
+
 }
 
 }

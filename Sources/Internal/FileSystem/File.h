@@ -113,6 +113,14 @@ public:
 		\return true if success otherwise false
 	 */
 	virtual bool WriteString(const String & string);
+
+	/** 
+		\brief Write one line of text
+		Write string and add /r/n in the end.
+		\param[in] string - string to write
+		\return true if success otherwise false
+	 */
+	virtual bool WriteLine(const String & string);
 	
 	/** 
 		\brief Read [dataSize] bytes from this file to [pointerToData] 
