@@ -48,7 +48,7 @@ void GameCore::OnAppStarted()
 	RenderManager::Instance()->SetFPS(60);
 
 	time_t logStartTime = time(0);
-	logFile = File::Create(Format("~doc:/%lld.report", logStartTime), File::CREATE | File::WRITE);
+	logFile = File::Create(Format("./Reports/%lld.report", logStartTime), File::CREATE | File::WRITE);
 
 	spriteTest = new SpriteTest();
 	
