@@ -237,7 +237,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	Size2i size = graphicsFont->GetStringSize(s);
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-	RenderHelper::Instance()->DrawRect(Rect(10, 200, size.dx, size.dy));
+	RenderHelper::Instance()->DrawRect(Rect(10.f, 200.f, size.dx, size.dy));
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 	RenderHelper::Instance()->DrawLine(Vector2(10, 200), 

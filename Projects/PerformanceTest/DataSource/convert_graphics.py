@@ -17,7 +17,7 @@ import sys;
 import platform;
 
 # *************** HERE YOU SHOULD SETUP YOUR OWN PATHS ***************
-framework_path = { "Darwin": "./../../..", "Windows": "./../../.." }
+framework_path = { "Darwin": "./../../../", "Windows": "./../../../" }
 # *************** HERE YOU SHOULD SETUP YOUR OWN PATHS ***************
 
 currentDir = os.getcwd(); 

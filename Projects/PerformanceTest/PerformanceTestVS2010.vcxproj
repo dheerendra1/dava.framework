@@ -95,7 +95,6 @@
     <ClCompile Include="Classes\FrameworkMain.cpp" />
     <ClCompile Include="Classes\GameCore.cpp" />
     <ClCompile Include="Classes\SpriteTest.cpp" />
-    <ClCompile Include="Classes\TestScreen.cpp" />
     <ClCompile Include="Classes\TestTemplate.cpp" />
     <ClCompile Include="Win32Specific\main.cpp" />
   </ItemGroup>
@@ -104,7 +103,6 @@
     <ClInclude Include="Classes\FrameworkMain.h" />
     <ClInclude Include="Classes\GameCore.h" />
     <ClInclude Include="Classes\SpriteTest.h" />
-    <ClInclude Include="Classes\TestScreen.h" />
     <ClInclude Include="Classes\TestTemplate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

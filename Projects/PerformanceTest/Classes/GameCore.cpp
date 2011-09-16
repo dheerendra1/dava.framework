@@ -29,7 +29,6 @@
 =====================================================================================*/
 #include "GameCore.h"
 #include "AppScreens.h"
-#include "TestScreen.h"
 #include "SpriteTest.h"
 
 using namespace DAVA;
@@ -49,12 +48,10 @@ void GameCore::OnAppStarted()
 	RenderManager::Instance()->SetFPS(60);
 
 	time_t logStartTime = time(0);
-	logFile = File::Create(Format("~doc:/%lld.report", logStartTime), File::CREATE | File::WRITE);
+	logFile = File::Create(Format("./Reports/%lld.report", logStartTime), File::CREATE | File::WRITE);
 
- 	testScreen = new TestScreen();
 	spriteTest = new SpriteTest();
 	
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE, spriteTest);
 
     UIScreenManager::Instance()->SetFirst(SCREEN_SPRITE);
@@ -62,7 +59,7 @@ void GameCore::OnAppStarted()
 
 void GameCore::OnAppFinished()
 {
-    SafeRelease(testScreen);
+	spriteTest->Release();
 
 	logFile->Release();
 }
