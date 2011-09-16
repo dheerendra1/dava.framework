@@ -55,6 +55,7 @@ UIHoleTransition::~UIHoleTransition()
 void UIHoleTransition::SetPolygon(const Polygon2 & pts)
 {	
 	clipPoly = pts;
+    realPoly = pts;
 }
 
 void UIHoleTransition::Update(float32 timeElapsed)
@@ -68,10 +69,10 @@ void UIHoleTransition::Update(float32 timeElapsed)
 		
 	for (int k = 0; k < clipPoly.pointCount; ++k)
 	{
-		points[k] = clipPoly.points[k];
-		points[k] -= Vector3(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f, 0);
-		points[k] *= scaleCoef;
-		points[k] += Vector3(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f, 0);
+		realPoly.points[k] = clipPoly.points[k];
+		realPoly.points[k] -= Vector2(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
+		realPoly.points[k] *= scaleCoef;
+		realPoly.points[k] += Vector2(GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f);
 	}
 }
 
@@ -96,7 +97,10 @@ void UIHoleTransition::Draw(const UIGeometricData &geometricData)
 	RenderHelper::Instance()->FillRect(Rect(0.0f, 0.0f, (float32)GetScreenWidth(), (float32)GetScreenHeight()));
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	Texture * tx = renderTargetPrevScreen->GetTexture();
+    renderTargetPrevScreen->SetClipPolygon(&realPoly);
+    renderTargetPrevScreen->Draw();
+    
+	/*Texture * tx = renderTargetPrevScreen->GetTexture();
 	if (normalizedTime > 0.5f)
 		tx = renderTargetNextScreen->GetTexture();
 	
@@ -112,7 +116,7 @@ void UIHoleTransition::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->FlushState();
 	
 	glDrawArrays(GL_TRIANGLE_FAN, 0, clipPoly.pointCount);
-	
+	*/
 	/*
 	float32 startXPos[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	float32 startYPos[4] = {0.0f, 0.0f, 0.0f, 0.0f};

@@ -101,7 +101,7 @@ void MeshInstanceNode::Draw()
 		if (debugFlags & DEBUG_DRAW_AABBOX)
 		{
 			RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-			RenderHelper::DrawBox(bbox);
+			RenderHelper::Instance()->DrawBox(bbox);
 		
 		}
 		if (debugFlags & DEBUG_DRAW_LOCAL_AXIS)

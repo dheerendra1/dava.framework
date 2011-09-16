@@ -441,12 +441,26 @@
 					"_GLIBCXX_DEBUG=1",
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include/,
+					".//..//Collada15//FCollada",
+					".//..//Collada15//FCollada//libXML//include",
+					".//..//..//..//Sources//Internal",
+					".//..//..//..//Sources//External",
+				);
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/opt/local/lib,
 					"\"$(SRCROOT)/../Collada15/FCollada/build/Release\"",
 					/opt/local,
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lglew",
+					"-lIL",
+					"-lILU",
+					"-lFramework",
 				);
 				PRODUCT_NAME = ColladaConverter;
 			};
@@ -462,6 +476,13 @@
 					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/Frameworks/ApplicationServices.framework/Frameworks\"",
 				);
 				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include/,
+					".//..//Collada15//FCollada",
+					".//..//Collada15//FCollada//libXML//include",
+					".//..//..//..//Sources//Internal",
+					".//..//..//..//Sources//External",
+				);
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
