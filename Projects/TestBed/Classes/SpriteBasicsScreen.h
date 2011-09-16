@@ -46,6 +46,8 @@ public:
 	void OnButtonPressed(BaseObject * owner, void * userData, void * callerData);
 	
 private:
+    UIHoleTransition * holeTransition;
+    
 	Sprite * redSprite;
 	Sprite * greenSprite;
 	Sprite * blueSprite;

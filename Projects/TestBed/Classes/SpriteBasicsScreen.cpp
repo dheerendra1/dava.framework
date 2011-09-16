@@ -51,7 +51,26 @@ void SpriteBasicsScreen::LoadResources()
 // 	button->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SpriteBasicsScreen::OnButtonPressed));
 	uint32 fh = graphicsFont->GetFontHeight();
 	Logger::Debug("font height: %d", fh); 
-
+    
+    
+    
+	Polygon2 testPoly;
+	
+	testPoly.AddPoint(Vector2(50, 85));
+	testPoly.AddPoint(Vector2(480 - 50, 50));
+	testPoly.AddPoint(Vector2(480.0f - 25, 320 - 85));
+	testPoly.AddPoint(Vector2(80, 320 - 50));
+    
+	Matrix3 t, invT, r;
+	t.BuildTranslation(Vector2(-240, -160));
+	invT.BuildTranslation(Vector2(240, 160));
+	r.BuildRotation(DegToRad(10));
+	Matrix3 res = t * r * invT;
+	testPoly.Transform(res);
+	testPoly.Scale(Vector2(240, 160), 2.0f);
+    
+    holeTransition = new UIHoleTransition();
+	holeTransition->SetPolygon(testPoly);
 }
 
 void SpriteBasicsScreen::UnloadResources()
@@ -77,11 +96,13 @@ void SpriteBasicsScreen::WillDisappear()
 
 void SpriteBasicsScreen::Input(UIEvent * touch)
 {
-	if ((touch->phase == UIEvent::PHASE_ENDED) && (touch->tid == UIEvent::BUTTON_2))
+	//if ((touch->phase == UIEvent::PHASE_ENDED) /*&& (touch->tid == UIEvent::BUTTON_2)*/)
 	{
-		Core::Instance()->ToggleFullscreen();
-	}
-}
+		//Core::Instance()->ToggleFullscreen();
+        
+        UIScreenManager::Instance()->SetScreen(SCREEN_PARTICLE_TEST, holeTransition);
+    }
+}  
 
 void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 {
@@ -273,6 +294,16 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
     RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
     RenderHelper::Instance()->DrawPoint(Vector3(100, 100, 0));
     RenderHelper::Instance()->DrawPoint(Vector2(120, 120));
+    
+    //p2.Rotate(
+    
+    RenderManager::Instance()->SetColor(0.0f, 1.0f, 1.0f, 1.0f);
+    
+    
+    p.Translate(Vector2(100, 0));
+    p2.Translate(Vector3(100, 0, 0.0f));
+    RenderHelper::Instance()->FillPolygon(p);
+    RenderHelper::Instance()->FillPolygon(p2);
     
     RenderManager::Instance()->ResetColor();
     
