@@ -78,6 +78,7 @@ public:
 	
 	Animation * FindPlayingAnimation(AnimatedObject * owner, int32 _groupId);
 	
+    void StopAnimations();
 	void PauseAnimations(bool isPaused, int tag = 0);
 	void SetAnimationsMultiplier(float32 f, int tag = 0);
 private:
