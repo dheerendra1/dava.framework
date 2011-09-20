@@ -71,6 +71,26 @@ void Camera::SetFOV(float32 _fovy)
 {
     Setup(_fovy, aspect, znear, zfar, ortho);
 }
+    
+float32 Camera::GetFOV()
+{
+    return fovy;
+}
+
+float32 Camera::GetAspect()
+{
+    return aspect;
+}
+
+float32 Camera::GetZNear()
+{
+    return znear;
+}
+
+float32 Camera::GetZFar()
+{
+    return zfar;
+}
 
 void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho)
 {
