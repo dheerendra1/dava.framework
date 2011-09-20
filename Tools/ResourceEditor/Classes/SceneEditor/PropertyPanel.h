@@ -35,6 +35,7 @@
 
 namespace DAVA 
 {
+class UIStaticText;
 class PropertyPanel : public UIControl
 {
 public:
@@ -42,6 +43,12 @@ public:
     ~PropertyPanel();
     
     void AddPropertyControl(UIControl * control);
+    
+    /*
+        You need to retain UIStaticText returned by this function if you want to hold your own reference.
+     */
+    UIStaticText * AddHeader(const WideString & string, float32 fontSize = 14.0f);
+    
 protected:
     UIControl * lastAddedChild;
     

@@ -40,8 +40,8 @@ void SceneEditorScreen::LoadResources()
     
     SceneFile * file = new SceneFile();
 	//file->SetDebugLog(true);
-	file->LoadScene("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce"));
+	file->LoadScene("~res:/Scenes/level1/ex1.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/ex1.sce"));
 	SafeRelease(file);
     
 
@@ -66,7 +66,7 @@ void SceneEditorScreen::LoadResources()
     Camera * cam2 = scene->GetCamera(0);
     scene->SetClipCamera(cam2);
     
-    
+    /*
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 25));
@@ -85,6 +85,7 @@ void SceneEditorScreen::LoadResources()
     node->SetName("landscapeNode");
     scene->AddNode(node);
     
+    */
     
     hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     hierarchy->SetCellHeight(20);
@@ -99,6 +100,43 @@ void SceneEditorScreen::LoadResources()
     
     cameraController = new WASDCameraController(40);
     cameraController->SetCamera(cam);
+    
+    
+    activePropertyPanel = 0;
+    cameraPanel = 0;
+    
+    localMatrixControl = new EditMatrixControl(Rect(0, 0, 300, 100));
+    worldMatrixControl = new EditMatrixControl(Rect(0, 0, 300, 100));
+
+    Font *f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+    f->SetSize(12);
+    f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+    
+    
+    lookAtButton = new UIButton(Rect(0, 0, 300, 30));
+    lookAtButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    lookAtButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    lookAtButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    lookAtButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Button");
+    lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
+    
+    SafeRelease(f);
+    
+    activePropertyPanel = new PropertyPanel(Rect(720, 100, 300, size.y - 120));
+    
+    activePropertyPanel->AddHeader(L"Local Matrix:");
+    activePropertyPanel->AddPropertyControl(localMatrixControl);
+    activePropertyPanel->AddHeader(L"World Matrix:");
+    activePropertyPanel->AddPropertyControl(worldMatrixControl);
+    nodeBoundingBoxMin = SafeRetain(activePropertyPanel->AddHeader(L"-"));
+    nodeBoundingBoxMax = SafeRetain(activePropertyPanel->AddHeader(L"-"));
+    activePropertyPanel->AddPropertyControl(lookAtButton);
+    
+    AddControl(activePropertyPanel);
 }
 
 void SceneEditorScreen::UnloadResources()
@@ -128,7 +166,6 @@ void SceneEditorScreen::WillDisappear()
 void SceneEditorScreen::Input(UIEvent * event)
 {
     cameraController->Input(event);
-    
     
     if (event->phase == UIEvent::PHASE_KEYCHAR)
     {
@@ -279,24 +316,51 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(node);
         if (mesh)
         {
+            AABBox3 bbox = mesh->GetBoundingBox();
+            AABBox3 transformedBox;
+            bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+
             mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
+            nodeBoundingBoxMin->SetText(Format(L"Min: (%0.2f, %0.2f, %0.2f)", 
+                                            transformedBox.min.x, transformedBox.min.y, transformedBox.min.z));
+            nodeBoundingBoxMax->SetText(Format(L"Max: (%0.2f, %0.2f, %0.2f)", 
+                                               transformedBox.max.x, transformedBox.max.y, transformedBox.max.z));
+        }else
+        {
+            nodeBoundingBoxMin->SetText(L"Bounding Box:");
+            nodeBoundingBoxMax->SetText(L"Not available for this node");
         }
         
         Camera * camera = dynamic_cast<Camera*> (node);
         if (camera)
         {
-            //camera->RestoreOriginalSceneTransform();
             scene->SetCurrentCamera(camera);
             Camera * cam2 = scene->GetCamera(0);
             scene->SetClipCamera(cam2);
+            
+            nodeBoundingBoxMin->SetText(Format(L"fov: %f, aspect: %f", camera->GetFOV(), camera->GetAspect()));
+            nodeBoundingBoxMax->SetText(Format(L"znear: %f, zfar: %f", camera->GetZNear(), camera->GetZFar()));
         }
         
 //        MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //        turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //        turretN->SetDebugFlags();
+        localMatrixControl->SetMatrix(&selectedNode->localTransform);
+        worldMatrixControl->SetMatrix(&selectedNode->worldTransform);
+    }
+}
 
-    
+void SceneEditorScreen::OnLookAtButtonPressed(BaseObject * obj, void *, void *)
+{
+    MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(selectedNode);
+    if (mesh)
+    {
+        AABBox3 bbox = mesh->GetBoundingBox();
+        AABBox3 transformedBox;
+        bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+        Vector3 center = transformedBox.GetCenter();
+        scene->GetCurrentCamera()->SetTarget(center);
     }
 }
 

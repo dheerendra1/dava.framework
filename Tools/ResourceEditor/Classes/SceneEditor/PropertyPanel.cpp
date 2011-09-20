@@ -29,30 +29,51 @@
 */
 
 #include "PropertyPanel.h"
+#include "UI/UIStaticText.h"
 
 namespace DAVA 
 {
 
 PropertyPanel::PropertyPanel(const Rect & rect)
-    : lastAddedChild(0)
+    :   UIControl(rect)
+    ,   lastAddedChild(0)
 {
+    GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+    GetBackground()->SetColor(Color(0.8f, 0.8f, 0.8f, 1.0f));
 }
     
 PropertyPanel::~PropertyPanel()
 {
 }
+    
+UIStaticText * PropertyPanel::AddHeader(const WideString & string, float32 fontSize)
+{
+    FTFont * font = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+    font->SetSize(fontSize);
+    font->SetColor(Color(0.2f, 0.2f, 0.2f, 1.0f));
+
+    UIStaticText * text = new UIStaticText(Rect(10, 0, GetRect().dx - 20, 20));
+    text->SetAlign(ALIGN_LEFT | ALIGN_VCENTER);
+    text->SetFont(font);
+    text->SetText(string);
+    SafeRelease(font);
+    AddPropertyControl(text);
+    text->Release();
+    return text;
+}
 
 void PropertyPanel::AddPropertyControl(UIControl * control)
 {   
     Rect rect = control->GetRect();
-    rect.x = rect.y = 0.0f;
+    rect.y = 0.0f;
     if (lastAddedChild != 0)
     {
         rect.y = lastAddedChild->GetRect().y + lastAddedChild->GetRect().dy;
     }
     control->SetRect(rect);
-    if (lastAddedChild == 0)
-        lastAddedChild = control;
+    AddControl(control);
+    //if (lastAddedChild == 0)
+    lastAddedChild = control;
 }
     
 };

@@ -33,6 +33,9 @@
 
 #include "DAVAEngine.h"
 #include "CameraController.h"
+#include "PropertyPanel.h"
+#include "CameraPanel.h"
+#include "EditMatrixControl.h"
 
 using namespace DAVA;
 
@@ -80,6 +83,17 @@ public:
     
     // Node preview information
     SceneNode * selectedNode;
+    PropertyPanel * activePropertyPanel;
+    EditMatrixControl * localMatrixControl;
+    EditMatrixControl * worldMatrixControl;
+    UIStaticText * nodeCenter;
+    UIStaticText * nodeBoundingBoxMin;
+    UIStaticText * nodeBoundingBoxMax;
+    UIButton * lookAtButton;
+    void OnLookAtButtonPressed(BaseObject * obj, void *, void *);
+    
+    
+    CameraPanel * cameraPanel;
     
     WASDCameraController * cameraController;
 };
