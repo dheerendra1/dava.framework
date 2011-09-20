@@ -66,6 +66,12 @@ ColladaTexture::ColladaTexture(FCDImage * _image)
 		wchar_t error_message[256];
 		swprintf(error_message, 256, L"This texture could not be opened: %s\n", (wchar_t*)(image->GetFilename().c_str()));
 		wprintf(error_message);
+        
+        ILenum err = ilGetError();
+        if (IL_NO_ERROR != err)
+        {
+            printf("- ilGetError() = %x", err);
+        }
 		
 		ilDeleteImages(1, &imageId);
 		textureId = -1;
