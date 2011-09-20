@@ -95,6 +95,19 @@ void AnimationManager::RemoveAnimation(Animation * animation)
 	//Logger::Debug("RemoveAnimation: after animations: %d\n", animations.size());
 	
 }
+    
+void AnimationManager::StopAnimations()
+{
+    for (Vector<Animation*>::iterator t = animations.begin(); t != animations.end(); ++t)
+	{
+		Animation * animation = *t;
+		
+        animation->owner = 0;   // zero owner to avoid any issues (it was a problem with DumpState, when animations was deleted before). 
+        animation->state &= ~Animation::STATE_IN_PROGRESS;
+        animation->state &= ~Animation::STATE_FINISHED;
+        animation->state |= Animation::STATE_DELETE_ME;
+	}	
+}
 	
 void AnimationManager::DeleteAnimations(AnimatedObject * _owner, int32 track)
 {
