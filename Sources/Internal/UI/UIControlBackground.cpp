@@ -73,6 +73,7 @@ void UIControlBackground::CopyDataFrom(UIControlBackground *srcBackground)
 	color = srcBackground->color;
 	spriteModification = srcBackground->spriteModification;
 	colorInheritType = srcBackground->colorInheritType;
+	usePerPixelAccuracy = srcBackground->usePerPixelAccuracy;
 }
 
 
