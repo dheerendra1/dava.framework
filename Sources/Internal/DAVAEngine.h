@@ -137,6 +137,7 @@
 #include "UI/UI3DView.h"
 #include "UI/UIHierarchy.h"
 #include "UI/UIHierarchyCell.h"
+#include "UI/UIFileSystemDialog.h"
 
 
 #include "UI/UIYamlLoader.h"
