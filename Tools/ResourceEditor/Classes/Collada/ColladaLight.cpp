@@ -75,7 +75,7 @@ void ColladaLight::ApplyLight(ColladaLightState & state)
 			glDisable(GL_LIGHTING);
 			//glColor3f(light_diffuse[0], light_diffuse[1], light_diffuse[2]);
 			glColor3f(0.984375, 0.078125, 0.64453125);
-			glutWireTorus(0.5,1.0,12,12);
+            // glutWireTorus(0.5,1.0,12,12);
 			glEnable(GL_LIGHTING);
 			glColor3f(1.0f, 1.0f, 1.0f);
 		}
@@ -119,7 +119,7 @@ void ColladaLight::ApplyLight(ColladaLightState & state)
 		{
 			glDisable(GL_LIGHTING);
 			glColor3f(0.984375, 0.078125, 0.64453125);
-			glutWireSphere(1.0f, 12, 12);
+			// glutWireSphere(1.0f, 12, 12);
 			glEnable(GL_LIGHTING);
 			glColor3f(1.0f, 1.0f, 1.0f);
 		}
@@ -159,7 +159,7 @@ void ColladaLight::ApplyLight(ColladaLightState & state)
 			glDisable(GL_LIGHTING);
 			//glColor3f(light_diffuse[0], light_diffuse[1], light_diffuse[2]);
 			glColor3f(0.984375, 0.078125, 0.64453125);
-			glutWireCone(0.5f,1.0f,10,10);
+			// glutWireCone(0.5f,1.0f,10,10);
 			glEnable(GL_LIGHTING);
 			glColor3f(1.0f, 1.0f, 1.0f);
 		}

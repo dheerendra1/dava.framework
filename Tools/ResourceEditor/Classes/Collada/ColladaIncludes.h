@@ -44,7 +44,7 @@
 
 #ifdef COLLADA_GLUT_RENDER
 
-	#include <GL/glew.h>
+	//#include <GL/glew.h>
 
 	#if defined(_WIN32)
 	#	include <GL/glut.h>

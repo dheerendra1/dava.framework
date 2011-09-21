@@ -3,21 +3,21 @@
 #include "Scene3D/SceneFile.h"
 #include "CommandLineParser.h"
 
-/*
- INCLUDE DevIL
- */
-#ifdef _UNICODE
-#undef _UNICODE
-#undef UNICODE
-#define UNICODE_DISABLED
-#endif
-
-#include <IL/il.h>
-#include <IL/ilu.h>
-
-#ifdef UNICODE_DISABLED
-#define _UNICODE
-#endif
+///*
+// INCLUDE DevIL
+// */
+//#ifdef _UNICODE
+//#undef _UNICODE
+//#undef UNICODE
+//#define UNICODE_DISABLED
+//#endif
+//
+//#include <IL/il.h>
+//#include <IL/ilu.h>
+//
+//#ifdef UNICODE_DISABLED
+//#define _UNICODE
+//#endif
 
 namespace DAVA
 {
@@ -44,11 +44,11 @@ bool ColladaDocument::Open( const char * filename )
 		}
 	}
 
-	ilInit();
-	iluInit();
-
-	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
+//	ilInit();
+//	iluInit();
+//
+//	ilEnable(IL_ORIGIN_SET);
+//	ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
 
 	FCDImageLibrary * imageLibrary = document->GetImageLibrary();
 	for (int entityIndex = 0; entityIndex < (int)imageLibrary->GetEntityCount(); ++entityIndex)
@@ -56,7 +56,7 @@ bool ColladaDocument::Open( const char * filename )
 		FCDImage * texture = imageLibrary->GetEntity(entityIndex);
 		colladaScene->colladaTextures.push_back(new ColladaTexture(texture));
 	}
-	ilShutDown();
+//	ilShutDown();
 	
 	FCDLightLibrary * lightLibrary = document->GetLightLibrary();
 

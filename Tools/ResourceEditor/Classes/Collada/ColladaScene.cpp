@@ -125,7 +125,7 @@ void ColladaScene::Render()
 		{
 			glDisable(GL_LIGHTING);
 			glColor3f(0.984375, 0.078125, 0.64453125);
-			glutWireCube(1.0f);
+			//glutWireCube(1.0f);
 			glEnable(GL_LIGHTING);
 			glColor3f(1.0f, 1.0f, 1.0f);
 		}

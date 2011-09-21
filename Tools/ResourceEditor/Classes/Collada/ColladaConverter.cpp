@@ -1,7 +1,7 @@
 // ColladaConverter.cpp : Defines the entry point for the console application.
 //
 
-
+#if 0
 #include "stdafx.h"
 
 #include "FCollada.h"
@@ -257,4 +257,6 @@ int main(int argc, char * argv[])
 
 	return 0;
 }
+
+#endif 
 

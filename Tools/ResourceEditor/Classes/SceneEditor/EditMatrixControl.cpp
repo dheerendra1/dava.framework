@@ -58,8 +58,8 @@ EditMatrixControl::EditMatrixControl(const Rect & _rect, bool _readOnly)
             matrixButtons[i][j]->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
             matrixButtons[i][j]->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
             matrixButtons[i][j]->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
-            matrixButtons[i][j]->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
-            matrixButtons[i][j]->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+            matrixButtons[i][j]->SetStateDrawType(UIControl::STATE_HOVER, UIControlBackground::DRAW_FILL);
+            matrixButtons[i][j]->GetStateBackground(UIControl::STATE_HOVER)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
             matrixButtons[i][j]->SetStateFont(UIControl::STATE_NORMAL, f);
             matrixButtons[i][j]->SetStateText(UIControl::STATE_NORMAL, L"0.000000");
             //matrixButtons[i][j]->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnAddScenePressed));

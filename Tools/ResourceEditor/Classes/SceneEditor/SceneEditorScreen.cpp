@@ -39,9 +39,8 @@ void SceneEditorScreen::LoadResources()
 
     
     SceneFile * file = new SceneFile();
-	//file->SetDebugLog(true);
-	file->LoadScene("~res:/Scenes/level1/ex1.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/ex1.sce"));
+	file->LoadScene("~res:/Scenes/vit/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
 	SafeRelease(file);
     
 
@@ -52,7 +51,7 @@ void SceneEditorScreen::LoadResources()
     
     
 	scene3dView = 0;
-    scene3dView = new UI3DView(Rect(200, 100, 520, 480));
+    scene3dView = new UI3DView(Rect(200, 100, 480, 320));
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
@@ -66,26 +65,24 @@ void SceneEditorScreen::LoadResources()
     Camera * cam2 = scene->GetCamera(0);
     scene->SetClipCamera(cam2);
     
-    /*
+    
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 25));
+    AABBox3 box(Vector3(-206, -203, -50), Vector3(198, 201, 50));
     box.min += cam->GetPosition();
     box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
     
-    node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
+    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2.png", box);
     
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
     SafeRelease(tex);
     
     node->SetName("landscapeNode");
     scene->AddNode(node);
-    
-    */
     
     hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     hierarchy->SetCellHeight(20);
@@ -121,12 +118,14 @@ void SceneEditorScreen::LoadResources()
     lookAtButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
     lookAtButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
     lookAtButton->SetStateFont(UIControl::STATE_NORMAL, f);
-    lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Button");
+    lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Object");
     lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
     
     SafeRelease(f);
     
     activePropertyPanel = new PropertyPanel(Rect(720, 100, 300, size.y - 120));
+    
+    nodeName = SafeRetain(activePropertyPanel->AddHeader(L"Node name:"));
     
     activePropertyPanel->AddHeader(L"Local Matrix:");
     activePropertyPanel->AddPropertyControl(localMatrixControl);
@@ -137,10 +136,87 @@ void SceneEditorScreen::LoadResources()
     activePropertyPanel->AddPropertyControl(lookAtButton);
     
     AddControl(activePropertyPanel);
+    
+    fileSystemDialog = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
+    fileSystemDialog->SetDelegate(this);
+    fileSystemDialog->SetCurrentDir("/Sources/dava.framework/Tools/Bin");
+    CreateTopMenu();
+}
+
+
+
+void SceneEditorScreen::CreateTopMenu()
+{
+    Font *f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+    f->SetSize(12);
+    f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+    
+    openButton = new UIButton(Rect(0, 0, 150, 30));
+    openButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    openButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    openButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    openButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    openButton->SetStateText(UIControl::STATE_NORMAL, L"Open (.sce)");
+    openButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnTopMenuOpenPressed));
+    
+    AddControl(openButton);
+    
+    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 30));
+    convertButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    convertButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    convertButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    convertButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    convertButton->SetStateText(UIControl::STATE_NORMAL, L"Convert (.dae)");
+    convertButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnTopMenuConvertPressed));
+    
+    AddControl(convertButton);
+    SafeRelease(f);
+}  
+
+void SceneEditorScreen::ReleaseTopMenu()
+{
+    SafeRelease(openButton);
+    SafeRelease(convertButton);
+}
+
+void SceneEditorScreen::OnTopMenuOpenPressed(BaseObject * obj, void *, void *)
+{
+    fileSystemDialog->SetExtensionFilter(".sce");
+    fileSystemDialog->Show(this);
+}
+
+void SceneEditorScreen::OnTopMenuConvertPressed(BaseObject * obj, void *, void *)
+{
+    fileSystemDialog->SetExtensionFilter(".dae");
+    fileSystemDialog->Show(this);
+}
+
+void SceneEditorScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile)
+{
+    
+}
+
+void SceneEditorScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
+{
+    
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    ReleaseTopMenu();
+    
+    SafeRelease(nodeName);
+    SafeRelease(nodeBoundingBoxMin);
+    SafeRelease(nodeBoundingBoxMax);
+    SafeRelease(lookAtButton);
+    
+    
     SafeRelease(cameraController);
     
     SafeRelease(scene3dView);
@@ -296,7 +372,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
 	c->openButton->GetStateBackground(UIControl::STATE_NORMAL)->color = color;
 	c->openButton->GetStateBackground(UIControl::STATE_HOVER)->color = color + 0.1;
 	c->openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->color = color + 0.3;
- 
+
     return c;//returns cell
 }
 
@@ -348,6 +424,8 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
 //        turretN->SetDebugFlags();
         localMatrixControl->SetMatrix(&selectedNode->localTransform);
         worldMatrixControl->SetMatrix(&selectedNode->worldTransform);
+        
+        nodeName->SetText(StringToWString(selectedNode->GetFullName()));
     }
 }
 
