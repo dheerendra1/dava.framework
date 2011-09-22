@@ -176,4 +176,23 @@ void SoundInstance::OnVolumeAnimationEnded(BaseObject * caller, void * userData,
 	Release();
 }
 
+void SoundInstance::Pause(bool pause)
+{
+#if defined(__DAVAENGINE_IPHONE__)
+	if(buddyMusic)
+	{
+		buddyChannel->Pause(pause);
+	}
+	else if(buddyChannel)
+	{
+		buddyChannel->Pause(pause);
+	}
+#else
+if(buddyChannel)
+{
+	buddyChannel->Pause(pause);
+}
+#endif
+}
+
 };

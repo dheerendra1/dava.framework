@@ -83,6 +83,12 @@ public:
 	void	Stop();
 
 	/**
+		\brief Pause or resume playback.
+		\param[in] pause pause(true) or resume(false) playback.
+	*/
+	void	Pause(bool pause);
+
+	/**
 		\brief Starts animation of the volume.
 		\param[in] newVolume Volume value at the end of the animation.
 		\param[in] time Animation time.
