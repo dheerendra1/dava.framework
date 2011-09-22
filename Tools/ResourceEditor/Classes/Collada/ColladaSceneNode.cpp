@@ -88,7 +88,7 @@ void ColladaSceneNode::Render(Matrix4 currentMatrix)
 	{
 		glDisable(GL_LIGHTING);
 		glColor3f(0.984375, 0.078125, 0.64453125);
-		glutWireCube(0.5f);
+		//glutWireCube(0.5f);
 		glEnable(GL_LIGHTING);
 		glColor3f(1.0f, 1.0f, 1.0f);
 	}
