@@ -11,6 +11,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		4751F96A12CB9FE800AB961C /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */; };
+		476FFBA41430C2170017CFBF /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 476FFBA31430C2170017CFBF /* libFramework.a */; };
 		47A1101D12CBCAF8003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */; };
 		FE044F5D140EEBAD002A6D27 /* ImageUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */; };
 		FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */; };
@@ -66,6 +67,7 @@
 		32CA4F630368D1EE00C91783 /* TemplateProjectiPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectiPhone_Prefix.pch; sourceTree = "<group>"; };
 		4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontUsageScreen.cpp; sourceTree = "<group>"; };
 		4751F96912CB9FE800AB961C /* FontUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontUsageScreen.h; sourceTree = "<group>"; };
+		476FFBA31430C2170017CFBF /* libFramework.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFramework.a; path = "/Users/Hottych/Documents/dava.framework/Projects/iPhoneFramework/build/Debug-iphonesimulator/libFramework.a"; sourceTree = "<absolute>"; };
 		47A1101B12CBCAF8003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticTextScreen.h; sourceTree = "<group>"; };
 		47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTextScreen.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TemplateProjectiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				FE76D9FF1163F316009E83B6 /* AudioToolbox.framework in Frameworks */,
 				FE76DA041163F32F009E83B6 /* QuartzCore.framework in Frameworks */,
 				FEFB01D311C8F28A00B65B8B /* GameKit.framework in Frameworks */,
+				476FFBA41430C2170017CFBF /* libFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +240,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				476FFBA31430C2170017CFBF /* libFramework.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -390,6 +394,10 @@
 				GCC_PREFIX_HEADER = TemplateProjectiPhone_Prefix.pch;
 				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../iPhoneFramework/build/Debug-iphonesimulator\"",
+				);
 				PRODUCT_NAME = TemplateProjectiPhone;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B40FEC58-A683-48FB-9EC1-CEC9F14F7781";
 			};
@@ -403,6 +411,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TemplateProjectiPhone_Prefix.pch;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../iPhoneFramework/build/Debug-iphonesimulator\"",
+				);
 				PRODUCT_NAME = TemplateProjectiPhone;
 			};
 			name = Release;
@@ -411,7 +423,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vitaliy Borodovsky (MS45DK374J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = DAVA_DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -421,12 +433,9 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				OTHER_LDFLAGS = (
-					"-lFramework",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1806687B-2E4A-46C6-B885-FFE5BB283826";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -447,11 +456,9 @@
 					./../../Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				OTHER_LDFLAGS = (
-					"-lFramework",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv6 armv7";
