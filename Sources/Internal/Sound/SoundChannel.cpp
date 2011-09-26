@@ -114,16 +114,13 @@ void SoundChannel::Play(Sound * sound, bool _looping)
 
 void SoundChannel::Update()
 {
-	if(STATE_PLAYING == state)
+	if(Sound::TYPE_STATIC == buddySound->GetType())
 	{
-		if(Sound::TYPE_STATIC == buddySound->GetType())
-		{
-			UpdateStatic();
-		}
-		else if(Sound::TYPE_STREAMED == buddySound->GetType())
-		{
-			UpdateStreamed();
-		}
+		UpdateStatic();
+	}
+	else if(Sound::TYPE_STREAMED == buddySound->GetType())
+	{
+		UpdateStreamed();
 	}
 }
 
