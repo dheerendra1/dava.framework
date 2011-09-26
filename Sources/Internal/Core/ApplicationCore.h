@@ -150,6 +150,18 @@ public:
 	ApplicationCore();
 	virtual ~ApplicationCore();
 
+	/**
+		\brief Called when application is suspended or minimized.
+		Stops main loop.
+	 */
+	virtual void OnSuspend();
+	
+	/**
+		\brief Called when application is resumed after suspend or minimization.
+		Resumes main loop.
+	 */
+	virtual void OnResume();
+
 protected:
 	/**
 		\brief Called immediatelly after application initialized and all singletons are created. 
@@ -187,15 +199,7 @@ protected:
 		Our recomendation to perform in-game progress saves during the game immediatelly after changes that are important. 
 	 */
 	virtual void OnAppFinished() = 0;
-	
-	/**
-		\brief Called when application is suspended or minimized
-	 */
-	virtual void OnSuspend() = 0;
-	/**
-		\brief Called when application is resumed after suspend or minimization.
-	 */
-	virtual void OnResume() = 0;
+
 	
 #ifdef __DAVAENGINE_IPHONE__
 	/**
@@ -229,7 +233,6 @@ protected:
 	virtual void EndFrame();
 	
 private:
-	bool isActive;
 
 	friend class Core;
 };

@@ -1032,18 +1032,34 @@ namespace DAVA
 			return 0;
 		case WM_ACTIVATE:
 			{
+				ApplicationCore * core = Core::Instance()->GetApplicationCore();
                 WORD loWord = LOWORD(wParam);
                 WORD hiWord = HIWORD(wParam);
                 if(!loWord || hiWord)
                 {
                     Logger::Debug("[PlatformWin32] deactivate application");
                     RenderResource::SaveAllResourcesToSystemMem();
-                    Core::Instance()->Suspend();
+					
+                    if(core)
+					{
+						core->OnSuspend();
+					}
+					else 
+					{
+						Core::Instance()->SetIsActive(false);
+					}
                 }
                 else
                 {
                     Logger::Debug("[PlatformWin32] activate application");
-                    Core::Instance()->Resume();
+					if(core)
+					{
+						core->OnResume();
+					}
+					else 
+					{
+						Core::Instance()->SetIsActive(true);
+					}
                 }
 			};
 			break;

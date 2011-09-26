@@ -294,9 +294,9 @@ public:
 	void SystemAppStarted();
 	void SystemProcessFrame();
 	void SystemAppFinished();
+
+	void SetIsActive(bool isActive);
 	
-	virtual void Suspend();
-	virtual void Resume();
 	virtual void GoBackground();	
 	
 	
