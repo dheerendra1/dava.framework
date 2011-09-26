@@ -1032,23 +1032,19 @@ namespace DAVA
 			return 0;
 		case WM_ACTIVATE:
 			{
-				KeyedArchive* options = DAVA::Core::GetOptions();
-				if(options->GetBool("suspendOnDeactivate",true))
-				{
-					WORD loWord = LOWORD(wParam);
-					WORD hiWord = HIWORD(wParam);
-					if(!loWord || hiWord)
-					{
-						Logger::Debug("[PlatformWin32] deactivate application");
-						RenderResource::SaveAllResourcesToSystemMem();
-						Core::Instance()->Suspend();
-					}
-					else
-					{
-						Logger::Debug("[PlatformWin32] activate application");
-						Core::Instance()->Resume();
-					}
-				}
+                WORD loWord = LOWORD(wParam);
+                WORD hiWord = HIWORD(wParam);
+                if(!loWord || hiWord)
+                {
+                    Logger::Debug("[PlatformWin32] deactivate application");
+                    RenderResource::SaveAllResourcesToSystemMem();
+                    Core::Instance()->Suspend();
+                }
+                else
+                {
+                    Logger::Debug("[PlatformWin32] activate application");
+                    Core::Instance()->Resume();
+                }
 			};
 			break;
 		case WM_SYSCOMMAND:

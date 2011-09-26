@@ -572,10 +572,18 @@ void Core::SystemProcessFrame()
 
 void Core::Suspend()
 {
-	SoundSystem::Instance()->Suspend();
-	if (core)
-		core->OnSuspend();
-	isActive = false;
+    if(options->GetBool("suspendOnDeactivate",true))
+    {
+        SoundSystem::Instance()->Suspend();
+        if (core)
+            core->OnSuspend();
+        isActive = false;
+    }
+    else if(options->GetBool("notifyOnDeactivate",true))
+    {
+        if (core)
+            core->OnSuspend();
+    }
 }
 
 void Core::Resume()
@@ -587,6 +595,11 @@ void Core::Resume()
 			core->OnResume();
 		SoundSystem::Instance()->Resume();
 	}
+    else if(options->GetBool("notifyOnDeactivate",true))
+    {
+        if (core)
+			core->OnResume();
+    }
 }
 	
 void Core::GoBackground()
