@@ -570,37 +570,6 @@ void Core::SystemProcessFrame()
 	globalFrameIndex++;
 }
 
-void Core::Suspend()
-{
-    if(options->GetBool("suspendOnDeactivate",true))
-    {
-        SoundSystem::Instance()->Suspend();
-        if (core)
-            core->OnSuspend();
-        isActive = false;
-    }
-    else if(options->GetBool("notifyOnDeactivate",true))
-    {
-        if (core)
-            core->OnSuspend();
-    }
-}
-
-void Core::Resume()
-{
-	if (!isActive) 
-	{
-		isActive = true;
-		if (core)
-			core->OnResume();
-		SoundSystem::Instance()->Resume();
-	}
-    else if(options->GetBool("notifyOnDeactivate",true))
-    {
-        if (core)
-			core->OnResume();
-    }
-}
 	
 void Core::GoBackground()
 {
@@ -651,11 +620,10 @@ bool Core::NeedToRecalculateMultipliers()
 	return needTorecalculateMultipliers;
 }
 
+void Core::SetIsActive(bool _isActive)
+{
+	isActive = _isActive;
+}
 
 
 };
-
-
-
-
-

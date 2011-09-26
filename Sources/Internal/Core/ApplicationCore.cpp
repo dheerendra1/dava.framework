@@ -72,6 +72,18 @@ void ApplicationCore::EndFrame()
     RenderManager::Instance()->ProcessStats();
 }
 
+void ApplicationCore::OnSuspend()
+{
+	SoundSystem::Instance()->Suspend();
+	Core::Instance()->SetIsActive(false);
+}
+
+void ApplicationCore::OnResume()
+{
+	Core::Instance()->SetIsActive(true);
+	SoundSystem::Instance()->Resume();
+}
+
 
 
 };
