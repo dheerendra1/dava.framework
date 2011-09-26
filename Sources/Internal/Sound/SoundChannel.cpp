@@ -154,7 +154,7 @@ void SoundChannel::UpdateStatic()
 	{
 		state = STATE_PLAYING;
 	}
-	else if(alState = AL_PAUSED)
+	else if(alState == AL_PAUSED)
 	{
 		state = STATE_PAUSED;
 	}
@@ -174,11 +174,12 @@ void SoundChannel::UpdateStreamed()
 #ifdef __DAVASOUND_AL__
 	ALint alState;
 	AL_VERIFY(alGetSourcei(source, AL_SOURCE_STATE, &alState));
+	//TODO: remove state changes here
 	if(alState == AL_PLAYING)
 	{
 		state = STATE_PLAYING;
 	}
-	else if(alState = AL_PAUSED)
+	else if(alState == AL_PAUSED)
 	{
 		state = STATE_PAUSED;
 	}
@@ -210,6 +211,7 @@ void SoundChannel::Pause(bool pause)
 	if(pause)
 	{
 		AL_VERIFY(alSourcePause(source));
+		state = STATE_PAUSED;
 	}
 	else
 	{
@@ -218,6 +220,7 @@ void SoundChannel::Pause(bool pause)
 		if(AL_PAUSED == state)
 		{
 			AL_VERIFY(alSourcePlay(source));
+			state = STATE_PLAYING;
 		}
 
 	}
