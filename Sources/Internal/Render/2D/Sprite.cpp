@@ -320,8 +320,7 @@ Sprite* Sprite::PureCreate(const String & spriteName, Sprite* forPointer)
 		}
 	}
 	
-	//TODO: Не уверен что эта строка вообще нужна. И не совсем уверен что здеся за значение должно быть для обычных спрайтов. Но пусть пока будет.
-	spr->resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+	spr->resourceToPhysicalFactor = Core::Instance()->GetResourceToPhysicalFactor(spr->resourceSizeIndex);
 
 
 	SafeRelease(fp);
@@ -403,6 +402,7 @@ void Sprite::InitFromTexture(Texture *fromTexture, int32 xOffset, int32 yOffset,
 	}
 
 	resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+    resourceSizeIndex = Core::Instance()->GetDesirableResourceIndex();
 	
 	this->type = SPRITE_FROM_TEXTURE;
 	this->textureCount = 1;
@@ -990,8 +990,8 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         clippedVertices.clear();
         clippedTexCoords.clear();
         Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f / t->width;
-		float32 adjHeight = 1.f / t->height;
+		float32 adjWidth = 1.f / t->width * resourceToPhysicalFactor;
+		float32 adjHeight = 1.f / t->height * resourceToPhysicalFactor;
         
 		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
 		{
