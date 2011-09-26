@@ -688,12 +688,26 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification
 {
 	NSLog(@"[CoreMacOSPlatform] Application did become active");
-    Core::Instance()->Resume();
+    if(core)
+    {
+        core->OnResume();
+    }
+    else 
+    {
+        Core::Instance()->SetIsActive(true);
+    }
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification
 {
-    Core::Instance()->Suspend();
+    if(core)
+    {
+        core->OnSuspend();
+    }
+    else 
+    {
+        Core::Instance()->SetIsActive(false);
+    }
 	NSLog(@"[CoreMacOSPlatform] Application did resign active");
 }
 
