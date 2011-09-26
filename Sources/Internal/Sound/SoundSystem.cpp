@@ -172,7 +172,7 @@ void SoundSystem::Resume()
 	for(it = channelsPool.begin(); it != itEnd; ++it)
 	{
 		SoundChannel * ch = *it;
-		if(SoundChannel::STATE_PLAYING == ch->GetState())
+		if(SoundChannel::STATE_PAUSED == ch->GetState())
 		{
 			ch->Pause(false);
 		}
