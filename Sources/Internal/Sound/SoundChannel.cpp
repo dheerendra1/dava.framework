@@ -154,7 +154,7 @@ void SoundChannel::UpdateStatic()
 	{
 		state = STATE_PLAYING;
 	}
-	else if(alState = AL_PAUSED)
+	else if(alState == AL_PAUSED)
 	{
 		state = STATE_PAUSED;
 	}
@@ -178,7 +178,7 @@ void SoundChannel::UpdateStreamed()
 	{
 		state = STATE_PLAYING;
 	}
-	else if(alState = AL_PAUSED)
+	else if(alState == AL_PAUSED)
 	{
 		state = STATE_PAUSED;
 	}
