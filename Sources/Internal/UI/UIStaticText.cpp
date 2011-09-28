@@ -68,7 +68,17 @@ void UIStaticText::CopyDataFrom(UIControl *srcControl)
 	UIControl::CopyDataFrom(srcControl);
 	//UIStaticText *t = (UIStaticText *)srcControl;
 	//TODO: Add TextBlockCloning here
-	DVASSERT(0 && "UIStaticText::CopyDataFrom do nothing -- require implementation");
+//	DVASSERT(0 && "UIStaticText::CopyDataFrom do nothing -- require implementation");
+
+    //VK
+    UIStaticText *t = (UIStaticText *)srcControl;
+    textBlock = t->textBlock->Clone();
+//    SetAlign(t->textBlock->GetAlign());
+//    SetFont(t->GetFont());
+//    SetSize(t->GetSize());
+//    SetMultiline(t->textBlock->GetMultiline());
+//    
+//    SetText(t->GetText());
 }
 	
 UIStaticText *UIStaticText::CloneStaticText()
@@ -153,6 +163,8 @@ void UIStaticText::LoadFromYamlNode(YamlNode * node, UIYamlLoader * loader)
 	YamlNode * fontNode = node->Get("font");
 	YamlNode * textNode = node->Get("text");
 	YamlNode * multilineNode = node->Get("multiline");
+    YamlNode * fittingNode = node->Get("fitting");
+
 	if (fontNode)
 	{
 		const String & fontName = fontNode->AsString();
@@ -163,11 +175,32 @@ void UIStaticText::LoadFromYamlNode(YamlNode * node, UIYamlLoader * loader)
 	bool multiline = loader->GetBoolFromYamlNode(multilineNode, false);
 	SetMultiline(multiline);
 	
+    if(fittingNode)
+    {
+        int32 fittingArray[] = {TextBlock::FITTING_DISABLED, TextBlock::FITTING_ENLARGE, 
+                                TextBlock::FITTING_REDUCE, TextBlock::FITTING_POINTS};
+		String fittingValues[] = {"Disabled", "Enlarge", "Reduce", "Points"};
+
+		const String & fittinOption = fittingNode->AsString();
+        
+        int32 fittingType = 0;
+        for(int32 i = 0 ; i < 4; ++i)
+        {
+            size_t find = fittinOption.find(fittingValues[i]);
+            if(find != fittinOption.npos)
+            {
+                fittingType |= fittingArray[i];
+            }
+        }
+
+        SetFittingOption(fittingType);
+    }
+    
 	if (textNode)
 	{
 		SetText(LocalizedString(textNode->AsWString()));
 	}
-	
+    
 }
 
 };

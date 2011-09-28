@@ -55,6 +55,7 @@ public:
 			FITTING_DISABLED = 0
 		,	FITTING_ENLARGE	= 1
 		,	FITTING_REDUCE = 2
+        ,   FITTING_POINTS = 4
 	};
 	
 	static void ScreenResolutionChanged();
@@ -83,6 +84,8 @@ public:
 
 	void PreDraw();
 
+    TextBlock * Clone();
+    
 protected:
 	TextBlock();
 	~TextBlock();
@@ -108,6 +111,7 @@ protected:
 	Font * font;
 	Font * constFont;
 	WideString text;
+    WideString pointsStr;
 	bool isMultilineEnabled;
 	int32 fittingType;
 	Vector2 rectSize;
