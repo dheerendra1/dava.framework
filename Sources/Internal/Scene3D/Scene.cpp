@@ -47,6 +47,14 @@ Scene::Scene()
 
 Scene::~Scene()
 {
+    
+	for (Map<String, SceneNode*>::iterator t = rootNodes.begin(); t != rootNodes.end(); ++t)
+	{
+		SceneNode * obj = t->second;
+		obj->Release();
+	}
+	rootNodes.clear();
+    
 	for (Vector<Texture*>::iterator t = textures.begin(); t != textures.end(); ++t)
 	{
 		Texture * obj = *t;
