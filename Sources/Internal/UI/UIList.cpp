@@ -161,7 +161,8 @@ void UIList::FullRefresh()
 	
 	int sz = 0;
     int32 elCnt = delegate->ElementsCount(this);
-	for (int index = 0; index < elCnt; index++) 
+    int32 index = 0;
+	for (; index < elCnt; index++) 
 	{
 		int32 curPos = addPos + scrollAdd;
 		int size = 0;
@@ -186,7 +187,20 @@ void UIList::FullRefresh()
 			break;
 		}
 	}
-	
+    
+    index++;
+    for (; index < elCnt; index++) 
+	{
+		if(orientation == ORIENTATION_HORIZONTAL)
+		{
+			sz += delegate->CellWidth(this, index);
+		}
+		else 
+		{
+			sz += delegate->CellHeight(this, index);
+		}
+	}
+    
 	scroll->SetElementSize((float32)sz);
 }
 
@@ -222,7 +236,7 @@ void UIList::Update(float32 timeElapsed)
 	
 	List<UIControl*>::const_iterator it;
 	Rect viewRect = GetRect(TRUE);
-	List<UIControl*> scrollList = scrollContainer->GetChildren();
+	const List<UIControl*> &scrollList = scrollContainer->GetChildren();
 	List<UIControl*> removeList;
 	
 	//removing invisible elements
@@ -249,103 +263,111 @@ void UIList::Update(float32 timeElapsed)
 		scrollContainer->RemoveControl((*it));
 	}
 	
+    if (!scrollList.empty()) 
+    {
+            //adding elements at the list end
+        int32 ind = -1;
+        UIListCell *fc = NULL;
+        for(it = scrollList.begin(); it != scrollList.end(); it++)
+        {
+            UIListCell *lc = (UIListCell *)(*it);
+            int32 i = lc->GetIndex();
+            if(i > ind)
+            {
+                ind = i;
+                fc = lc;
+            }
+        }
+        if(fc)
+        {
+            int32 borderPos;
+            int32 rPos;
+            int size = 0;
+            int32 off;
+            if(orientation == ORIENTATION_HORIZONTAL)
+            {
+                borderPos = (int32)(viewRect.dx + viewRect.dx / 2.0f);
+                off = (int32)scrollContainer->GetRect().x;
+                rPos = (int32)(fc->GetRect().x + fc->GetRect().dx + off);
+            }
+            else 
+            {
+                borderPos = (int32)(viewRect.dy + viewRect.dy / 22.0f);
+                off = (int32)scrollContainer->GetRect().y;
+                rPos = (int32)(fc->GetRect().y + fc->GetRect().dy + off);
+            }
+            while(rPos < borderPos && fc->GetIndex() < delegate->ElementsCount(this) - 1)
+            {
+                int32 i = fc->GetIndex() + 1;
+                fc = delegate->CellAtIndex(this, i);
+                if(orientation == ORIENTATION_HORIZONTAL)
+                {
+                    size = delegate->CellWidth(this, i);
+                }
+                else 
+                {
+                    size = delegate->CellHeight(this, i);
+                }
+                AddCellAtPos(fc, rPos - off, size, i);
+                rPos += size;
+                    //			scroll->SetElementSize((float32)(rPos - off));
+            }
+        }
+        
+            //adding elements at the list begin
+        ind = maximumElementsCount;
+        fc = NULL;
+        for(it = scrollList.begin(); it != scrollList.end(); it++)
+        {
+            UIListCell *lc = (UIListCell *)(*it);
+            int32 i = lc->GetIndex();
+            if(i < ind)
+            {
+                ind = i;
+                fc = lc;
+            }
+        }
+        if(fc)
+        {
+            int32 borderPos;
+            int32 rPos;
+            int size = 0;
+            int32 off;
+            if(orientation == ORIENTATION_HORIZONTAL)
+            {
+                borderPos = (int32)(-viewRect.dx/2.0f);
+                off = (int32)scrollContainer->GetRect().x;
+                rPos = (int32)(fc->GetRect().x + off);
+            }
+            else 
+            {
+                borderPos = (int32)(-viewRect.dy/2.0f);
+                off = (int32)scrollContainer->GetRect().y;
+                rPos = (int32)(fc->GetRect().y + off);
+            }
+            while(rPos > borderPos && fc->GetIndex() > 0)
+            {
+                int32 i = fc->GetIndex() - 1;
+                fc = delegate->CellAtIndex(this, i);
+                if(orientation == ORIENTATION_HORIZONTAL)
+                {
+                    size = delegate->CellWidth(this, i);
+                }
+                else 
+                {
+                    size = delegate->CellHeight(this, i);
+                }
+                rPos -= size;
+                AddCellAtPos(fc, rPos - off, size, i);
+            }
+        }
+    }
+    else 
+    {
+        FullRefresh();
+    }
 
-	//adding elements at the list end
-	int32 ind = -1;
-	UIListCell *fc = NULL;
-	for(it = scrollList.begin(); it != scrollList.end(); it++)
-	{
-		UIListCell *lc = (UIListCell *)(*it);
-		int32 i = lc->GetIndex();
-		if(i > ind)
-		{
-			ind = i;
-			fc = lc;
-		}
-	}
-	if(fc)
-	{
-		int32 borderPos;
-		int32 rPos;
-		int size = 0;
-		int32 off;
-		if(orientation == ORIENTATION_HORIZONTAL)
-		{
-			borderPos = (int32)(viewRect.dx + viewRect.dx / 2.0f);
-			off = (int32)scrollContainer->GetRect().x;
-			rPos = (int32)(fc->GetRect().x + fc->GetRect().dx + off);
-		}
-		else 
-		{
-			borderPos = (int32)(viewRect.dy + viewRect.dy / 22.0f);
-			off = (int32)scrollContainer->GetRect().y;
-			rPos = (int32)(fc->GetRect().y + fc->GetRect().dy + off);
-		}
-		while(rPos < borderPos && fc->GetIndex() < delegate->ElementsCount(this) - 1)
-		{
-			int32 i = fc->GetIndex() + 1;
-			fc = delegate->CellAtIndex(this, i);
-			if(orientation == ORIENTATION_HORIZONTAL)
-			{
-				size = delegate->CellWidth(this, i);
-			}
-			else 
-			{
-				size = delegate->CellHeight(this, i);
-			}
-			AddCellAtPos(fc, rPos - off, size, i);
-			rPos += size;
-			scroll->SetElementSize((float32)(rPos - off));
-		}
-	}
 
-	//adding elements at the list begin
-	ind = maximumElementsCount;
-	fc = NULL;
-	for(it = scrollList.begin(); it != scrollList.end(); it++)
-	{
-		UIListCell *lc = (UIListCell *)(*it);
-		int32 i = lc->GetIndex();
-		if(i < ind)
-		{
-			ind = i;
-			fc = lc;
-		}
-	}
-	if(fc)
-	{
-		int32 borderPos;
-		int32 rPos;
-		int size = 0;
-		int32 off;
-		if(orientation == ORIENTATION_HORIZONTAL)
-		{
-			borderPos = (int32)(-viewRect.dx/2.0f);
-			off = (int32)scrollContainer->GetRect().x;
-			rPos = (int32)(fc->GetRect().x + off);
-		}
-		else 
-		{
-			borderPos = (int32)(-viewRect.dy/2.0f);
-			off = (int32)scrollContainer->GetRect().y;
-			rPos = (int32)(fc->GetRect().y + off);
-		}
-		while(rPos > borderPos && fc->GetIndex() > 0)
-		{
-			int32 i = fc->GetIndex() - 1;
-			fc = delegate->CellAtIndex(this, i);
-			if(orientation == ORIENTATION_HORIZONTAL)
-			{
-				size = delegate->CellWidth(this, i);
-			}
-			else 
-			{
-				size = delegate->CellHeight(this, i);
-			}
-			rPos -= size;
-			AddCellAtPos(fc, rPos - off, size, i);
-		}
-	}
 	
 }
 
@@ -454,6 +476,7 @@ void UIList::AddCellAtPos(UIListCell *cell, int32 pos, int32 size, int32 index)
 {
 	DVASSERT(cell);
 	DVASSERT(cell->cellStore == NULL || cell->cellStore == this);
+    DVASSERT(index >= 0);
 	if(!cell->cellStore)
 	{
 		cell->cellStore = this;
