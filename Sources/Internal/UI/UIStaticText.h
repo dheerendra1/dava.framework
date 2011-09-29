@@ -43,14 +43,6 @@ namespace DAVA
 class UIStaticText : public UIControl 
 {
 public:
-//	enum eFitType 
-//	{
-//			FITTING_DISABLED = 0
-//		,	FITTING_ENLARGE = 1
-//		,	FITTING_REDUCE = 2
-//        ,   FITTING_POINTS = 4
-//        
-//	};
 	
 	UIStaticText(const Rect &rect = Rect(), bool rectInAbsoluteCoordinates = false); 
 	virtual ~UIStaticText();
@@ -96,8 +88,6 @@ public:
 	
 protected:
 	
-//    int32 Fitting
-    
 	TextBlock *textBlock;
 	Vector2 tempSize;
 	

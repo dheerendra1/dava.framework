@@ -66,19 +66,8 @@ UIControl *UIStaticText::Clone()
 void UIStaticText::CopyDataFrom(UIControl *srcControl)
 {
 	UIControl::CopyDataFrom(srcControl);
-	//UIStaticText *t = (UIStaticText *)srcControl;
-	//TODO: Add TextBlockCloning here
-//	DVASSERT(0 && "UIStaticText::CopyDataFrom do nothing -- require implementation");
-
-    //VK
     UIStaticText *t = (UIStaticText *)srcControl;
     textBlock = t->textBlock->Clone();
-//    SetAlign(t->textBlock->GetAlign());
-//    SetFont(t->GetFont());
-//    SetSize(t->GetSize());
-//    SetMultiline(t->textBlock->GetMultiline());
-//    
-//    SetText(t->GetText());
 }
 	
 UIStaticText *UIStaticText::CloneStaticText()

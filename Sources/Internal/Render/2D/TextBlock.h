@@ -72,7 +72,7 @@ public:
 	//if requested size in <0 - rect creates for the all text size	
 	virtual void SetText(const WideString & string, const Vector2 &requestedTextRectSize = Vector2(0,0));	
 	virtual void SetMultiline(bool isMultilineEnabled);
-	virtual void SetFittingOption(int32 fittingType);//may be FITTING_DISABLED, FITTING_ENLARGE, FITTING_REDUCE, FITTING_ENLARGE | FITTING_REDUCE
+	virtual void SetFittingOption(int32 fittingType);//may be FITTING_DISABLED, FITTING_ENLARGE, FITTING_REDUCE, FITTING_ENLARGE | FITTING_REDUCE, FITTING_POINTS
 
 	virtual Font * GetFont();
 	virtual const WideString & GetText();
