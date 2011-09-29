@@ -70,14 +70,14 @@ UIFileSystemDialog::UIFileSystemDialog(const String &_fontPath)
     
     title = new UIStaticText(Rect(border, border/2, size.x - border*2, cellH));
     title->SetFont(f);
-    title->SetFittingOption(UIStaticText::FITTING_REDUCE);
+    title->SetFittingOption(TextBlock::FITTING_REDUCE);
     title->SetText(L"Select file:");
     AddControl(title);
 
     workingPath = new UIStaticText(Rect(border, border/2 + fileListView->size.y + fileListView->relativePosition.y, size.x - border*2, cellH));
     workingPath->SetFont(f);
     workingPath->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
-    workingPath->SetFittingOption(UIStaticText::FITTING_REDUCE);
+    workingPath->SetFittingOption(TextBlock::FITTING_REDUCE);
     workingPath->SetText(L"c:");
     AddControl(workingPath);
     
@@ -405,7 +405,7 @@ UIListCell *UIFileSystemDialog::CellAtIndex(UIList *forList, int32 index)
         UIStaticText *text = new UIStaticText(Rect(0, 0, forList->size.x, cellH));
         c->AddControl(text);
         text->SetName("CellText");
-        text->SetFittingOption(UIStaticText::FITTING_REDUCE);
+        text->SetFittingOption(TextBlock::FITTING_REDUCE);
         text->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
         Font *f = FTFont::Create(fontPath);
         f->SetSize(cellH * 2 / 3);

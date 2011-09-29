@@ -918,7 +918,10 @@ TextBlock * TextBlock::Clone()
     block->SetAlign(GetAlign());
     block->SetFittingOption(fittingType);
     
-    block->SetFont(GetFont());
+    if (GetFont())
+    {
+        block->SetFont(GetFont());
+    }
     block->SetText(GetText(), requestedSize);
     
     return block;
