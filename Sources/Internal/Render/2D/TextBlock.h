@@ -55,6 +55,7 @@ public:
 			FITTING_DISABLED = 0
 		,	FITTING_ENLARGE	= 1
 		,	FITTING_REDUCE = 2
+        ,   FITTING_POINTS = 4
 	};
 	
 	static void ScreenResolutionChanged();
@@ -71,7 +72,7 @@ public:
 	//if requested size in <0 - rect creates for the all text size	
 	virtual void SetText(const WideString & string, const Vector2 &requestedTextRectSize = Vector2(0,0));	
 	virtual void SetMultiline(bool isMultilineEnabled);
-	virtual void SetFittingOption(int32 fittingType);//may be FITTING_DISABLED, FITTING_ENLARGE, FITTING_REDUCE, FITTING_ENLARGE | FITTING_REDUCE
+	virtual void SetFittingOption(int32 fittingType);//may be FITTING_DISABLED, FITTING_ENLARGE, FITTING_REDUCE, FITTING_ENLARGE | FITTING_REDUCE, FITTING_POINTS
 
 	virtual Font * GetFont();
 	virtual const WideString & GetText();
@@ -83,6 +84,8 @@ public:
 
 	void PreDraw();
 
+    TextBlock * Clone();
+    
 protected:
 	TextBlock();
 	~TextBlock();
@@ -108,6 +111,7 @@ protected:
 	Font * font;
 	Font * constFont;
 	WideString text;
+    WideString pointsStr;
 	bool isMultilineEnabled;
 	int32 fittingType;
 	Vector2 rectSize;

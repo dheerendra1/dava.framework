@@ -91,6 +91,8 @@ TextBlock::TextBlock()
 	align = ALIGN_HCENTER|ALIGN_VCENTER;
 	RegisterTextBlock(this);
 	isPredrawed = true;
+    
+    pointsStr = L"";
 }
 
 TextBlock::~TextBlock()
@@ -250,7 +252,29 @@ void TextBlock::Prepare()
 		{
 			textSize = font->GetStringSize(text);
 			textSize.dy += 2;
-			if(fittingType && (requestedSize.dy >= 0 || requestedSize.dx >= 0))
+            if(fittingType & FITTING_POINTS)
+            {
+                pointsStr.clear();
+                if(drawSize.x < textSize.dx)
+                {
+                    Size2i textSizePoints;
+                    
+                    int32 length = text.length();
+                    for(int32 i = length - 1; i > 0; --i)
+                    {
+                        pointsStr.clear();
+                        pointsStr.append(text, 0, i);
+                        pointsStr += L"...";
+                        
+                        textSize = font->GetStringSize(pointsStr);
+                        if(textSize.dx <= drawSize.x)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+			else if(((fittingType & FITTING_REDUCE) || (fittingType & FITTING_ENLARGE)) && (requestedSize.dy >= 0 || requestedSize.dx >= 0))
 			{
 				bool isChanged = false;
 				float prevFontSize = font->GetSize();
@@ -347,7 +371,7 @@ void TextBlock::Prepare()
 				};
 			}
 		}
-		else
+		else //if(!isMultilineEnabled)
 		{
 			if(fittingType && (requestedSize.dy >= 0/* || requestedSize.dx >= 0*/) && text.size() > 3)
 			{
@@ -477,8 +501,6 @@ void TextBlock::Prepare()
 				}
 				
 			}	
-			
-			
 		}
 		
 		if(requestedSize.dx == 0)
@@ -764,15 +786,22 @@ void TextBlock::DrawToBuffer(int16 *buf)
 	Size2i realSize;
 	if(!isMultilineEnabled)
 	{
+        WideString drawText = text;
+        if((fittingType & FITTING_POINTS) && pointsStr.length())
+        {
+            drawText = pointsStr;
+        }
+        
+        
 		if (buf)
 		{
 			if (cacheUseJustify) 
 			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), text, true);
+				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), drawText, true);
 			}
 			else 
 			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, text, true);
+				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, drawText, true);
 			}
 			
 		}
@@ -780,13 +809,12 @@ void TextBlock::DrawToBuffer(int16 *buf)
 		{
 			if (cacheUseJustify) 
 			{
-				realSize = font->DrawString(0, 0, text, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW));
+                realSize = font->DrawString(0, 0, drawText, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW));
 			}
 			else 
 			{
-				realSize = font->DrawString(0, 0, text);
+                realSize = font->DrawString(0, 0, drawText);
 			}
-			
 		}
 	}
 	else
@@ -879,6 +907,21 @@ void TextBlock::PreDraw()
 
 	}
 	
+}
+    
+TextBlock * TextBlock::Clone()
+{
+    TextBlock *block = new TextBlock();
+
+    block->SetRectSize(rectSize);
+    block->SetMultiline(GetMultiline());
+    block->SetAlign(GetAlign());
+    block->SetFittingOption(fittingType);
+    
+    block->SetFont(GetFont());
+    block->SetText(GetText(), requestedSize);
+    
+    return block;
 }
 
 	
