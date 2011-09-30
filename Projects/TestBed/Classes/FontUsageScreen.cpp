@@ -113,7 +113,7 @@ void FontUsageScreen::DrawFTFont(FTFont * ftFont, Vector2 pos, float32 fontSize)
 	int bsz = dx * dy;
 	buf = new int16[bsz];
 	memset(buf, 0, dx * dy * sizeof(int16));
-	ftFont->DrawStringToBuffer(buf, dx, dy, 0, 0, 0, singleLineString, true);
+	ftFont->DrawStringToBuffer(buf, dx, dy, 0, 0, 0, 0, singleLineString, true);
 	Texture *tex = Texture::CreateTextFromData(Texture::FORMAT_RGBA4444, (uint8*)buf, dx, dy, "");
 	delete[] buf;
 	

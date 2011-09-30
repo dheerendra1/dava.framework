@@ -59,11 +59,9 @@ public:
 	FT_Face face;
 	Size2i DrawString(const WideString& str, void * buffer, int32 bufWidth, int32 bufHeight, 
 		uint8 r, uint8 g, uint8 b, uint8 a, 
-		uint8 sr, uint8 sg, uint8 sb, uint8 sa,
-		const Vector2 & shadowOffset, 
 		float32 size, bool realDraw, 
 		int32 offsetX, int32 offsetY,
-		int32 justifyWidth,
+		int32 justifyWidth, int32 spaceAddon,
 		Vector<int32> *charSizes = NULL,
 		bool contentScaleIncluded = false);
 	uint32 GetFontHeight(float32 size);
@@ -89,7 +87,7 @@ private:
 	Vector<Glyph> glyphs;
 
 	void ClearString();
-	void LoadString(const WideString& str);
+	int32 LoadString(const WideString& str);
 	void Prepare(FT_Vector * advances);
 
 	inline FT_Pos Round(FT_Pos val);
@@ -100,11 +98,7 @@ FTFont::FTFont(FTInternalFont* _internalFont)
 	r((uint8)(color.r * 255.0f)),  
 	g((uint8)(color.g * 255.0f)), 
 	b((uint8)(color.b * 255.0f)), 
-	a((uint8)(color.a * 255.0f)), 
-	sr((uint8)(shadowColor.r * 255.0f)), 
-	sg((uint8)(shadowColor.g * 255.0f)), 
-	sb((uint8)(shadowColor.b * 255.0f)), 
-	sa((uint8)(shadowColor.a * 255.0f)) 
+	a((uint8)(color.a * 255.0f))
 {
 	internalFont = _internalFont;
 	internalFont->Retain();
@@ -146,12 +140,6 @@ FTFont *	FTFont::Clone()
 	retFont->b =	b;
 	retFont->a =	a;
 
-	retFont->sr =	sr;
-	retFont->sg =	sg;
-	retFont->sb =	sb;
-	retFont->sa =	sa;
-
-	retFont->shadowOffset =	shadowOffset;
 	retFont->verticalSpacing =	verticalSpacing;
 
 	return retFont;
@@ -180,37 +168,20 @@ void FTFont::SetColor(float32 _r, float32 _g, float32 _b, float32 _a)
 	a = (uint8)(_a*255.0);
 }
 
-void FTFont::SetShadowColor(float32 _r, float32 _g, float32 _b, float32 _a)
-{
-	shadowColor.r = _r;
-	shadowColor.g = _g;
-	shadowColor.b = _b;
-	shadowColor.a = _a;
-	sr = (uint8)(_r*255.0);
-	sg = (uint8)(_g*255.0);
-	sb = (uint8)(_b*255.0);
-	sa = (uint8)(_a*255.0);
-}
 
 void FTFont::SetColor(const Color & color)
 {
 	SetColor(color.r, color.g, color.b, color.a);
 }
-
-void FTFont::SetShadowColor(const Color & color)
-{
-	SetShadowColor(color.r, color.g, color.b, color.a);
-}
-
 	
-Size2i FTFont::DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, const WideString& str, bool contentScaleIncluded )
+Size2i FTFont::DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString& str, bool contentScaleIncluded )
 {
-	return internalFont->DrawString(str, buffer, bufWidth, bufHeight, r, g, b, a, sr, sg, sb, sa, shadowOffset, size, true, offsetX, offsetY, justifyWidth, NULL, contentScaleIncluded );
+	return internalFont->DrawString(str, buffer, bufWidth, bufHeight, r, g, b, a, size, true, offsetX, offsetY, justifyWidth, spaceAddon, NULL, contentScaleIncluded );
 }
 
 Size2i FTFont::GetStringSize(const WideString& str, Vector<int32> *charSizes)
 {
-	return internalFont->DrawString(str, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, shadowOffset, size, false, 0, 0, 0, charSizes);
+	return internalFont->DrawString(str, 0, 0, 0, 0, 0, 0, 0, size, false, 0, 0, 0, 0, charSizes);
 }
 
 uint32 FTFont::GetFontHeight()
@@ -287,44 +258,55 @@ int32 FTInternalFont::Release()
 Mutex FTInternalFont::drawStringMutex;
 
 Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bufWidth, int32 bufHeight, 
-					uint8 r, uint8 g, uint8 b, uint8 a, 
-					uint8 sr, uint8 sg, uint8 sb, uint8 sa, 
-					const Vector2 & shadowOffset, 
+					uint8 r, uint8 g, uint8 b, uint8 a,  
 					float32 size, bool realDraw, 
 					int32 offsetX, int32 offsetY,
-					int32 justifyWidth,
+					int32 justifyWidth, int32 spaceAddon,
 					Vector<int32> *charSizes,
 					bool contentScaleIncluded )
 {
 	drawStringMutex.Lock();
 
-	bool isShadow = (sa != 0);
+	FT_Error error;
+
+	float32 virtualToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
 	
-	if (!contentScaleIncluded) 
+	if(!contentScaleIncluded) 
 	{
-		bufWidth = (int32)(Core::GetVirtualToPhysicalFactor() * bufWidth);
-		bufHeight = (int32)(Core::GetVirtualToPhysicalFactor() * bufHeight);
-		offsetY = (int32)(Core::GetVirtualToPhysicalFactor() * offsetY);
-		offsetX = (int32)(Core::GetVirtualToPhysicalFactor() * offsetX);
+		bufWidth = (int32)(virtualToPhysicalFactor * bufWidth);
+		bufHeight = (int32)(virtualToPhysicalFactor * bufHeight);
+		offsetY = (int32)(virtualToPhysicalFactor * offsetY);
+		offsetX = (int32)(virtualToPhysicalFactor * offsetX);
 	}
 
-	FT_Vector pen;
-	pen.x = offsetX;
-	pen.y = offsetY;
-
-	int32 penX = offsetX;
-	int32 penY = offsetY;
-	int16 * resultBuf = (int16*)buffer;
-	 
 	SetFTCharSize(size);
 
-	LoadString(str);
+	FT_Vector pen;
+	pen.x = offsetX<<6;
+	pen.y = offsetY<<6;
+	pen.y -= face->bbox.yMin;//bring baseline up
+
+	// virtualToPhysicalFactor scaling
+	{
+		FT_Fixed mul = 1<<16;
+		FT_Matrix matrix;
+		matrix.xx = (FT_Fixed)(virtualToPhysicalFactor*mul);
+		matrix.xy = 0;
+		matrix.yx = 0;
+		matrix.yy = (FT_Fixed)(virtualToPhysicalFactor*mul);
+		FT_Set_Transform(face, &matrix, 0);
+	}
+
+	int16 * resultBuf = (int16*)buffer;
+
+	int32 spacesCount = LoadString(str);
 	int32 strLen = str.length();
 	FT_Vector * advances = new FT_Vector[strLen];
 	Prepare(advances);
 
-
-	FT_Error error;
+	int32 lastRight = 0; //charSizes helper
+	int32 justifyOffset = 0;
+	
 	for(int32 i = 0; i < strLen; ++i)
 	{
 		Glyph		& glyph = glyphs[i];
@@ -338,87 +320,89 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 		if(error)
 			continue;
 
-		//if(image->format != FT_GLYPH_FORMAT_BITMAP)
-		//{
-		//	if ( sc->vertical )
-		//		error = FT_Glyph_Transform( image, NULL, &glyph->vvector );
+		if(!error)
+			error = FT_Glyph_Transform(image, 0, &pen);
 
-		//	if ( !error )
-		//		error = FT_Glyph_Transform( image, sc->matrix, &pen );
+		if(error)
+		{
+			FT_Done_Glyph( image );
+			continue;
+		}
 
-		//	if ( error )
-		//	{
-		//		FT_Done_Glyph( image );
-		//		continue;
-		//	}
-		//}
-		//else
-		//{
-		//	DVASSERT(0);
-		//}
-
-		pen.x += (advances[i].x >> 6);
-		pen.y += (advances[i].y >> 6);
+		pen.x += advances[i].x;
+		pen.y += advances[i].y;
 
 		FT_Glyph_Get_CBox(image, FT_GLYPH_BBOX_PIXELS, &bbox);
 
-		/* check bounding box; if it is completely outside the */
-		/* display surface, we don't need to render it         */
-		//if ( bbox.xMax > 0                      &&
-		//	bbox.yMax > 0                      &&
-		//	bbox.xMin < display->bitmap->width &&
-		//	bbox.yMin < display->bitmap->rows  )
+		int32 baseSize = ((int32)((virtualToPhysicalFactor*face->bbox.yMax-virtualToPhysicalFactor*face->bbox.yMin))>>6);
+		int32 multilineOffsetY = baseSize+offsetY*2;
+		if(!realDraw || (bbox.xMax>0 && bbox.yMax>0 && bbox.xMin<bufWidth && bbox.yMin < bufHeight))
 		{
-			error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
+ 			error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
 			if(!error)
 			{
 				FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
 				FT_Bitmap * bitmap = &bit->bitmap;
 
 				int32 left = bit->left;
-				int32 top = bit->top;
-
-				//TODO: optimize
-				int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
-				int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
-				for(int32 h = 0; h < realH; h++)
+				int32 top = multilineOffsetY-bit->top;
+				int32 width = bitmap->width;
+				int32 height = bitmap->rows;
+				if(charSizes)
 				{
-					for(int32 w = 0; w < realW; w++)
+					if(0 == width)
 					{
-						int lowBoundX = pen.x+w;
-						int lowBoundY = pen.y+h;
+						charSizes->push_back(0);
+					}
+					else if(charSizes->empty())
+					{
+						charSizes->push_back(width);
+						lastRight = width;
+					}
+					else
+					{
+						int32 sizesSize = charSizes->size();
+						int32 value = left+width-lastRight;
+						lastRight += value;
+						charSizes->push_back(value);
+					}
+				}
 
-						if(lowBoundX < 0 || lowBoundY < 0)
+				if(realDraw)
+				{
+					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - top));
+					int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - left)); 
+					for(int32 h = 0; h < realH; h++)
+					{
+						for(int32 w = 0; w < realW; w++)
 						{
-							continue;
+							int oldPix = bitmap->buffer[h*bitmap->pitch+w];
+
+							uint8 preAlpha = (oldPix*a)>>8;
+							if(preAlpha)
+							{
+								int32 revAlpha = 256-preAlpha;
+								int32 ind = (h+top)*bufWidth + ((left)+w);
+
+								uint8 prevA = (resultBuf[ind] & 0xf)<<4;
+								uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
+								uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
+								uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
+
+								//		    source		        destination
+								//		    one			        1-srcAlpha
+								uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
+								uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
+								uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
+								uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
+								resultBuf[ind] = (
+									(((tempR)>>4)<<12) |
+									(((tempG)>>4)<<8) | 
+									(((tempB)>>4)<<4) | 
+									((tempA)>>4)); 
+							}
+
 						}
-
-						int oldPix = bitmap->buffer[h*bitmap->width+w];
-
-						uint8 preAlpha = (oldPix*a)>>8;
-						if(preAlpha)
-						{
-							int32 revAlpha = 256-preAlpha;
-							int32 ind = (pen.y+h+top)*bufWidth + (pen.x+w);
-
-							uint8 prevA = (resultBuf[ind] & 0xf)<<4;
-							uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
-							uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
-							uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
-
-							//		    source		        destination
-							//		    one			        1-srcAlpha
-							uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
-							uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
-							uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
-							uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
-							resultBuf[ind] = (
-								(((tempR)>>4)<<12) |
-								(((tempG)>>4)<<8) | 
-								(((tempB)>>4)<<4) | 
-								((tempA)>>4)); 
-						}
-
 					}
 				}
 			}
@@ -427,7 +411,14 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 		FT_Done_Glyph(image);
 	}
 	
-	return Size2i(300, 100);
+	if(contentScaleIncluded) 
+	{
+		return Size2i(advances[strLen-1].x>>6, GetFontHeight(size));
+	}
+	else
+	{
+		return Size2i((int32)ceilf(Core::GetPhysicalToVirtualFactor()*(advances[strLen-1].x>>6)), (int32)ceilf(Core::GetPhysicalToVirtualFactor()*GetFontHeight(size)));
+	}
 
 	//
 	//bool use_kerning = (FT_HAS_KERNING(face) > 0);
@@ -710,7 +701,8 @@ bool FTInternalFont::IsCharAvaliable(char16 ch)
 uint32 FTInternalFont::GetFontHeight(float32 size)
 {
 	SetFTCharSize(size);
-	return (uint32)(Core::GetPhysicalToVirtualFactor() * ((face->size->metrics.ascender >> 6) - (face->size->metrics.descender >> 6)));
+	return ((face->bbox.yMax-face->bbox.yMin)>>6);
+	//return (uint32)(Core::GetPhysicalToVirtualFactor() * ((face->size->metrics.ascender >> 6) - (face->size->metrics.descender >> 6)));
 }
 	
 void FTInternalFont::SetFTCharSize(float32 size)
@@ -720,7 +712,7 @@ void FTInternalFont::SetFTCharSize(float32 size)
 									  0,       /* char_width in 1/64th of points  */
 									  (int32)(size * 64),   /* char_height in 1/64th of points */
 									  0,     /* horizontal device resolution    */
-									  (FT_UInt)(Core::GetVirtualToPhysicalFactor() * Font::GetDPI()));   /* vertical device resolution      */
+									  (FT_UInt)Font::GetDPI()/*(Core::GetVirtualToPhysicalFactor() * Font::GetDPI())*/);   /* vertical device resolution      */
 //	FT_Error error = FT_Set_Pixel_Sizes(face, 0, (int32)size);
 	
 	
@@ -802,6 +794,8 @@ void FTInternalFont::Prepare(FT_Vector * advances)
 		extent.x += prevAdvance->x;
 		extent.y += prevAdvance->y;
 	}
+
+	advances[size-1] = extent;
 }
 
 void FTInternalFont::ClearString()
@@ -818,17 +812,23 @@ void FTInternalFont::ClearString()
 	glyphs.clear();
 }
 
-void FTInternalFont::LoadString(const WideString& str)
+int32 FTInternalFont::LoadString(const WideString& str)
 {
 	ClearString();
 
+	int32 spacesCount = 0;
 	FT_Pos prevRsbDelta = 0;
 	int32 size = str.size();
 	for(int32 i = 0; i < size; ++i)
 	{
+		if( L' ' == str[i])
+		{
+			spacesCount++;
+		}
+
 		Glyph glyph;
 		glyph.index = FT_Get_Char_Index(face, str[i]);
-		if (!FT_Load_Glyph( face, glyph.index, FT_LOAD_DEFAULT)  &&
+		if (!FT_Load_Glyph( face, glyph.index, FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING)  &&
 			!FT_Get_Glyph(face->glyph, &glyph.image))
 		{
 			FT_Glyph_Metrics*  metrics = &face->glyph->metrics;
@@ -843,6 +843,8 @@ void FTInternalFont::LoadString(const WideString& str)
 
 		glyphs.push_back(glyph);
 	}
+
+	return spacesCount;
 }
 
 FT_Pos FTInternalFont::Round(FT_Pos val)

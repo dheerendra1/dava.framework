@@ -33,23 +33,25 @@
 void StaticTextScreen::LoadResources()
 {
 	Font *fnt;
-	fnt = FTFont::Create("~res:/Fonts/korinna.ttf");
+	fnt = FTFont::Create("~res:/Fonts/helios.otf");
 //	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
-	fnt->SetSize(12);
+	fnt->SetSize(16);
 //	fnt->SetSize(12);
 //	fnt->SetVerticalSpacing(-1);
-//	fnt->SetColor(1.0, 1.0, 1.0, 1.0);
+	fnt->SetColor(.82f, .81f, 0.73f, 1.0f);
 	float32 sizeX = 150;
-	float32 sizeY = 50;
+	float32 sizeY = 80;
+
+	int32 ii = fnt->GetFontHeight();
     
 	UIControl *tc = new UIControl(Rect(0, 0, sizeX, sizeY));
 	tc->SetSpriteDrawType(UIControlBackground::DRAW_FILL);
-	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
+	tc->GetBackground()->color = Color(0.f, 0.f, 0.f, 1.0f);
 	UIStaticText *tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
 //	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_LEFT|ALIGN_TOP);
-	tx->SetText(L"Aja broir");
+	tx->SetText(L"gAcademy Исследовать");
 //	tx->SetText(L"This text is aligned by the Left and Top borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
@@ -61,10 +63,10 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-//	tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HCENTER|ALIGN_TOP);
-	tx->SetText(L"abab.");
-//	tx->SetText(L"This text is aligned by the Center and Top borders.");
+//	tx->SetText(L"abab.");
+	tx->SetText(L"This text is aligned byyyi the Center and Top borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -75,10 +77,10 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-//	tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_RIGHT|ALIGN_TOP);
-	tx->SetText(L"apap.");
-//	tx->SetText(L"This text is aligned by the Right and Top borders.");
+//	tx->SetText(L"apap.");
+	tx->SetText(L"This text is aligned by the Right and Top borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -91,10 +93,10 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-//	tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
-	tx->SetText(L"apap.");
-//	tx->SetText(L"This text is aligned by the Left and Center borders.");
+//	tx->SetText(L"apap.");
+	tx->SetText(L"This text is aligned by the Left and Center borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -105,10 +107,10 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-//	tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HCENTER|ALIGN_VCENTER);
-	tx->SetText(L"abpbs");
-//	tx->SetText(L"This text is aligned by the Center and Center borders.");
+//	tx->SetText(L"abpbs");
+	tx->SetText(L"This text is aligned by the Center and Center borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -119,10 +121,10 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-//	tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_RIGHT|ALIGN_VCENTER);
-	tx->SetText(L"aaaa.");
-//	tx->SetText(L"This text is aligned by the Right and Center borders.");
+//	tx->SetText(L"aaaa.");
+	tx->SetText(L"This text is aligned by the Right and Center borders.");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -134,7 +136,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	//tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_LEFT|ALIGN_BOTTOM);
 	tx->SetText(L"This text is aligned by the Left and Bottom borders.");
 	tc->AddControl(tx);
@@ -147,7 +149,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	//tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HCENTER|ALIGN_BOTTOM);
 	tx->SetText(L"This text is aligned by the Center and Bottom borders.");
 	tc->AddControl(tx);
@@ -160,9 +162,9 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	//tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_RIGHT|ALIGN_BOTTOM);
-	tx->SetText(L"This text is aligned by the Right and Bottom borders.");
+	tx->SetText(L"No desc elems.uj");
 	tc->AddControl(tx);
 	AddControl(tc);
 	SafeRelease(tc);
@@ -175,7 +177,7 @@ void StaticTextScreen::LoadResources()
 	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
-	//tx->SetMultiline(true);
+	tx->SetMultiline(true);
 	tx->SetAlign(ALIGN_HJUSTIFY|ALIGN_TOP);
 	tx->SetText(L"This text is Justify and it's looks little better than the others. aja. AVA.");
 	tc->AddControl(tx);

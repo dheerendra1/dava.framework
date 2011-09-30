@@ -249,7 +249,7 @@ void TextBlock::Prepare()
 		if(!isMultilineEnabled)
 		{
 			textSize = font->GetStringSize(text);
-			textSize.dy += 2;
+//			textSize.dy += 2;
 			if(fittingType && (requestedSize.dy >= 0 || requestedSize.dx >= 0))
 			{
 				bool isChanged = false;
@@ -342,7 +342,7 @@ void TextBlock::Prepare()
 					}
 					font->SetSize(finalSize);
 					textSize = font->GetStringSize(text);
-					textSize.dy += 2;
+//					textSize.dy += 2;
 					
 				};
 			}
@@ -766,15 +766,7 @@ void TextBlock::DrawToBuffer(int16 *buf)
 	{
 		if (buf)
 		{
-			if (cacheUseJustify) 
-			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), text, true);
-			}
-			else 
-			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, text, true);
-			}
-			
+			realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, 0, text, true);
 		}
 		else
 		{
@@ -793,7 +785,6 @@ void TextBlock::DrawToBuffer(int16 *buf)
 	{
 		
 		uint32 yOffset = 0;
-			//			uint32 fontHeight = font->GetFontHeight() + yOffset;
 		int32 fontHeight = font->GetFontHeight() + font->GetVerticalSpacing();
 		for (int32 line = 0; line < (int32)multilineStrings.size(); ++line)
 		{
@@ -823,11 +814,13 @@ void TextBlock::DrawToBuffer(int16 *buf)
 			{
 				if (cacheUseJustify) 
 				{
-					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), multilineStrings[line], true);
+					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 
+						(int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), (int32)ceilf(Core::GetVirtualToPhysicalFactor() * stringSizes[line]), multilineStrings[line], true);
 				}
 				else 
 				{
-					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 0, multilineStrings[line], true);
+					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 
+						0, 0, multilineStrings[line], true);
 				}
 				
 			}
@@ -836,12 +829,12 @@ void TextBlock::DrawToBuffer(int16 *buf)
 				if (cacheUseJustify) 
 				{
 					// TODO: Hottych fix warnings please??
-					ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW)); 
+					ds = font->DrawString((Core::GetVirtualToPhysicalFactor() * xo), (Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW)); 
 				}
 				else 
 				{
 					// TODO: Hottych fix warnings please??
-					ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], 0); 
+					ds = font->DrawString((Core::GetVirtualToPhysicalFactor() * xo), (Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], 0); 
 				}
 				
 			}
