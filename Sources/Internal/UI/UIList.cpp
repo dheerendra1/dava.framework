@@ -140,6 +140,11 @@ void UIList::ScrollToElement(int32 index)
     SetScrollPosition(newScrollPos);
 }
     
+float32 UIList::GetScrollPosition()
+{
+    return scroll->GetPosition();
+}
+    
 void UIList::SetScrollPosition(float32 newScrollPos)
 {
     if(needRefresh)

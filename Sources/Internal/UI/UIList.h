@@ -137,6 +137,7 @@ public:
 	
     void ScrollToElement(int32 index);
     
+    float32 GetScrollPosition();
     void SetScrollPosition(float32 newScrollPos);
 	void ResetScrollPosition();
 	void RefreshList();
