@@ -33,9 +33,9 @@
 void StaticTextScreen::LoadResources()
 {
 	Font *fnt;
-	fnt = FTFont::Create("~res:/Fonts/helios.otf");
+	fnt = FTFont::Create("~res:/Fonts/metro.ttf");
 //	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
-	fnt->SetSize(16);
+	fnt->SetSize(12);
 //	fnt->SetSize(12);
 //	fnt->SetVerticalSpacing(-1);
 	fnt->SetColor(.82f, .81f, 0.73f, 1.0f);

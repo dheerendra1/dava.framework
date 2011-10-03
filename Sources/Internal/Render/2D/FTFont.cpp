@@ -270,6 +270,9 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 	FT_Error error;
 
 	float32 virtualToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+
+	int32 faceBboxYMin = FT_MulFix(face->bbox.yMin, face->size->metrics.y_scale);
+	int32 faceBboxYMax = FT_MulFix(face->bbox.yMax, face->size->metrics.y_scale);
 	
 	if(!contentScaleIncluded) 
 	{
@@ -284,7 +287,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 	FT_Vector pen;
 	pen.x = offsetX<<6;
 	pen.y = offsetY<<6;
-	pen.y -= face->bbox.yMin;//bring baseline up
+	pen.y -= faceBboxYMin;//bring baseline up
 
 	// virtualToPhysicalFactor scaling
 	{
@@ -334,7 +337,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 		FT_Glyph_Get_CBox(image, FT_GLYPH_BBOX_PIXELS, &bbox);
 
-		int32 baseSize = ((int32)((virtualToPhysicalFactor*face->bbox.yMax-virtualToPhysicalFactor*face->bbox.yMin))>>6);
+		int32 baseSize = (int32)(((float32)((faceBboxYMax-faceBboxYMin)>>6))*virtualToPhysicalFactor); 
 		int32 multilineOffsetY = baseSize+offsetY*2;
 		if(!realDraw || (bbox.xMax>0 && bbox.yMax>0 && bbox.xMin<bufWidth && bbox.yMin < bufHeight))
 		{
@@ -410,6 +413,8 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 		FT_Done_Glyph(image);
 	}
+
+	drawStringMutex.Unlock();
 	
 	if(contentScaleIncluded) 
 	{
@@ -419,276 +424,6 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 	{
 		return Size2i((int32)ceilf(Core::GetPhysicalToVirtualFactor()*(advances[strLen-1].x>>6)), (int32)ceilf(Core::GetPhysicalToVirtualFactor()*GetFontHeight(size)));
 	}
-
-	//
-	//bool use_kerning = (FT_HAS_KERNING(face) > 0);
-	//int32 previous = 0;
-	//
-	//FT_UInt num_glyphs = 0;
-	//
-	//int32 num_chars = (int32)str.length();
-	//FT_Glyph * glyphs = new FT_Glyph[num_chars];
-	//FT_Vector * pos = new FT_Vector[num_chars];
-	//
-	////calculate string rect
-	//FT_BBox  bbox;
-	//
-	//
-	///* initialize string bbox to "empty" values */
-	//bbox.xMin = bbox.yMin =  32000;
-	//bbox.xMax = bbox.yMax = -32000;
-	//int prevSz = 0;
-	//int spacesCount = 0;
-	//
-	//for(int32 n = 0; n < num_chars; n++)
-	//{
-	//	/* convert character code to glyph index */
-	//	if (str[n] == L' ') 
-	//	{
-	//		spacesCount++;
-	//	}
-	//	int32 glyph_index = FT_Get_Char_Index(face, str[n]);
-	//	
-	//	/* retrieve kerning distance and move pen position */
-	//	if (use_kerning && previous && glyph_index)
-	//	{
-	//		FT_Vector  delta;
-	//		FT_Get_Kerning( face, previous, glyph_index, FT_KERNING_UNFITTED, &delta );
-	//		penX += delta.x >> 6;
-	//	}
-	//	
-	//	/* store current pen position */
-	//	pos[num_glyphs].x = penX;
-	//	
-	//	
-	//	/* load glyph image into the slot without rendering */
-	//	FT_Error error = FT_Load_Glyph( face, glyph_index, FT_LOAD_DEFAULT );
-	//	if ( error )
-	//	{
-	//		if(charSizes)
-	//		{
-	//			(*charSizes).push_back(0);
-	//		}
-	//		continue;  /* ignore errors, jump to next glyph */
-	//	}
-	//	
-	//	/* extract glyph image and store it in our table */
-	//	error = FT_Get_Glyph( face->glyph, &glyphs[num_glyphs] );
-	//	if ( error )
-	//	{
-	//		if(charSizes)
-	//		{
-	//			(*charSizes).push_back(0);
-	//		}
-	//		continue;  /* ignore errors, jump to next glyph */
-	//	}
-	//	
-	//	/* increment pen position */
-	//	//penX += face->glyph->metrics.width >> 6;
-	//	penX += (face->glyph->metrics.horiAdvance + (1<<5)) >> 6;
-	//	//pos[num_glyphs].y = penY - ((face->glyph->metrics.height - face->glyph->metrics.horiBearingY) >>6);
-	//	pos[num_glyphs].y = ((face->glyph->metrics.horiBearingY + (1<<5)) >>6);
-	//	/* record current glyph index */
-	//	previous = glyph_index;
-	//	
-	//	
-	//	
-	//	/* for each glyph image, compute its bounding box, */
-	//	/* translate it, and grow the string bbox          */
-	//	FT_BBox  glyph_bbox;
-	//	
-	//	
-	//	FT_Glyph_Get_CBox(glyphs[num_glyphs], ft_glyph_bbox_pixels, &glyph_bbox );
-	//	
-	//	if(!glyph_bbox.xMin && !glyph_bbox.xMax && !glyph_bbox.yMin && !glyph_bbox.yMax)
-	//	{
-	//		//SPACE symbol
-	//		num_glyphs++;
-	//		if(charSizes)
-	//		{
-	//			(*charSizes).push_back(0);
-	//		}
-	//		continue;
-	//	}
-	//	glyph_bbox.xMin += pos[num_glyphs].x;
-	//	glyph_bbox.xMax += pos[num_glyphs].x;
-	//	
-	//	if(isShadow)
-	//	{
-	//		if(shadowOffset.x > 0) glyph_bbox.xMax += (FT_Pos)shadowOffset.x;
-	//		if(shadowOffset.x < 0) glyph_bbox.xMin += (FT_Pos)shadowOffset.x;
-	//		if(shadowOffset.y > 0) glyph_bbox.yMax += (FT_Pos)shadowOffset.y;
-	//		if(shadowOffset.y < 0) glyph_bbox.yMin += (FT_Pos)shadowOffset.y;
-	//	}
-	//	
-	//	if (glyph_bbox.xMin < bbox.xMin)
-	//		bbox.xMin = glyph_bbox.xMin;
-	//	
-	//	if (glyph_bbox.yMin < bbox.yMin)
-	//		bbox.yMin = glyph_bbox.yMin;
-	//	
-	//	if (glyph_bbox.xMax > bbox.xMax)
-	//		bbox.xMax = glyph_bbox.xMax;
-	//	
-	//	if (glyph_bbox.yMax > bbox.yMax)
-	//		bbox.yMax = glyph_bbox.yMax;
-	//	
-	//	
-	//	if(charSizes)
-	//	{
-	//		int sz = bbox.xMax-bbox.xMin;
-	//		(*charSizes).push_back(sz - prevSz);
-	//		prevSz = sz;
-	//	}
-	//	/* increment number of glyphs */
-	//	num_glyphs++;
-	//}
-
-
-	////if(bbox.yMin > 0) bbox.yMin = 0;
-	//if(bbox.xMin > 0) bbox.xMin = 0;
-
-	///* check that we really grew the string bbox */
-	//if ( bbox.xMin > bbox.xMax )
-	//{
-	//	bbox.xMin = 0;
-	//	bbox.yMin = 0;
-	//	bbox.xMax = 0;
-	//	bbox.yMax = 0;
-	//}
-	//
-	//if(realDraw)
-	//{
-	//	if (justifyWidth > 0 && spacesCount > 0) 
-	//	{
-	//		int oversize = justifyWidth - (bbox.xMax - bbox.xMin);
-	//		int spaceAdd = oversize / spacesCount;
-	//		int totalAdd = 0;
-	//		if (oversize > 0) 
-	//		{
-	//			oversize -= spacesCount * spaceAdd;
-	//			for(int32 n = 0; n < num_chars; n++)
-	//			{
-	//				/* convert character code to glyph index */
-	//				if (str[n] == L' ') 
-	//				{
-	//					if (oversize > 0)
-	//					{
-	//						totalAdd += spaceAdd + 1;
-	//						oversize--;
-	//					}
-	//					else 
-	//					{
-	//						totalAdd += spaceAdd;
-	//					}
-	//					
-	//				}
-	//				pos[n].x = pos[n].x + totalAdd;
-	//			}
-	//		}
-	//	}
-	//	//create bufer
-	//	//uint32 width = 256;//bbox.xMax - bbox.xMin;
-	//	//uint32 height = 256;//bbox.yMax - bbox.yMin;
-	//	//int16 * resultBuf = new int16[bufWidth*bufHeight];
-	//	
-	//	// VB: Please be patient --- please do not clear the buffer here 
-	//	// because it can break multiline text
-	//	// Dizz: I'm patient just as a boa
-	//	
-	//	{
-	//	
-	//		for(uint32 n = 0; n < num_glyphs; n++)
-	//		{
-	//			FT_Glyph   image;
-	//			FT_Vector  pen;
-	//			
-	//			image = glyphs[n];
-	//			
-	//			pen.x = pos[n].x;
-	//			pen.y = penY - pos[n].y + ((face->size->metrics.ascender + (1<<5))>>6);
-	//			
-	//			//DVASSERT(pen.x >= 0 && pen.y >= 0);
-	//			
-	////			if(pen.x > bufWidth || pen.y > bufHeight)
-	////			{
-	////				continue;
-	////			}
-	//			
-	//			FT_Error error = FT_Glyph_To_Bitmap(&image, FT_RENDER_MODE_NORMAL, 0, 0);
-	//			if ( !error )
-	//			{
-	//				FT_BitmapGlyph  bit = (FT_BitmapGlyph)image;
-	//				FT_Bitmap * bitmap = &bit->bitmap;
-
-	//				//TODO: optimize
-	//				int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - pen.y));
-	//				int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - pen.x)); 
-	//				for(int32 h = 0; h < realH; h++)
-	//				{
-	//					for(int32 w = 0; w < realW; w++)
-	//					{
-	//						int lowBoundX = pen.x+w;
-	//						int lowBoundY = pen.y+h;
-	//						
-	//						if(lowBoundX < 0 || lowBoundY < 0)
-	//						{
-	//							continue;
-	//						}
-	//						
-	//						int oldPix = bitmap->buffer[h*bitmap->width+w];
-	//						
-	//						uint8 preAlpha = (oldPix*a)>>8;
-	//						if(preAlpha)
-	//						{
-	//							int32 revAlpha = 256-preAlpha;
-	//							int32 ind = (pen.y+h)*bufWidth + (pen.x+w);
-	//							
-	//							uint8 prevA = (resultBuf[ind] & 0xf)<<4;
-	//							uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
-	//							uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
-	//							uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
-	//							
-	//							//		    source		        destination
-	//							//		    one			        1-srcAlpha
-	//							uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
-	//							uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
-	//							uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
-	//							uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
-	//							resultBuf[ind] = (
-	//											  (((tempR)>>4)<<12) |
-	//											  (((tempG)>>4)<<8) | 
-	//											  (((tempB)>>4)<<4) | 
-	//											  ((tempA)>>4)); 
-	//							
-	//							//							resultBuf[(pen.y+h)*bufWidth + (pen.x+w)] = (
-	//							//							(((preAlpha*r)>>12)<<12) |
-	//							//							(((preAlpha*g)>>12)<<8) | 
-	//							//							(((preAlpha*b)>>12)<<4) | 
-	//							//							((preAlpha)>>4)); 
-	//						}
-	//						
-	//					}
-	//				}
-	//				FT_Done_Glyph( image );
-	//			}
-	//		}
-	//	}
-	//}
-	//
-	//// VB: we must release not only converted glypths but original glypths also
-	//for (int idx = 0; idx < num_chars; idx++)                           
-	//	FT_Done_Glyph( glyphs[idx] );    
-	//
-	//delete[] glyphs;
-	//delete[] pos;
-
-	//drawStringMutex.Unlock();
-	//if (!contentScaleIncluded) 
-	//{
-	//	return Size2i((int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (bbox.xMax-bbox.xMin))), (int32)(ceilf(Core::GetPhysicalToVirtualFactor() * (((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin))));
-	//}
-	//return Size2i( bbox.xMax-bbox.xMin, ((face->size->metrics.ascender+ (1<<5))>>6)-bbox.yMin);
 }
 
 
@@ -701,26 +436,17 @@ bool FTInternalFont::IsCharAvaliable(char16 ch)
 uint32 FTInternalFont::GetFontHeight(float32 size)
 {
 	SetFTCharSize(size);
-	return ((face->bbox.yMax-face->bbox.yMin)>>6);
-	//return (uint32)(Core::GetPhysicalToVirtualFactor() * ((face->size->metrics.ascender >> 6) - (face->size->metrics.descender >> 6)));
+	return (FT_MulFix(face->bbox.yMax-face->bbox.yMin, face->size->metrics.y_scale))>>6;
 }
 	
 void FTInternalFont::SetFTCharSize(float32 size)
 {
-	FT_Error error = FT_Set_Char_Size(
-									  face,    /* handle to face object           */
-									  0,       /* char_width in 1/64th of points  */
-									  (int32)(size * 64),   /* char_height in 1/64th of points */
-									  0,     /* horizontal device resolution    */
-									  (FT_UInt)Font::GetDPI()/*(Core::GetVirtualToPhysicalFactor() * Font::GetDPI())*/);   /* vertical device resolution      */
-//	FT_Error error = FT_Set_Pixel_Sizes(face, 0, (int32)size);
-	
+	FT_Error error = FT_Set_Char_Size(face, 0, (int32)(size * 64), 0, (FT_UInt)Font::GetDPI()); 
 	
 	if(error) 
 	{
 		Logger::Error("FTInternalFont::FT_Set_Char_Size");
 	}
-	
 }
 
 
