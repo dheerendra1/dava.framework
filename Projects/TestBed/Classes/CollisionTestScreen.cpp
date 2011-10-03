@@ -136,8 +136,8 @@ void CollisionTestScreen::DrawAABBoxCollisions(const UIGeometricData &geometricD
 		c = Color(1.0f, 0.0f, 0.0f, 1.0f);
 	}
 	RenderManager::Instance()->SetColor(c);
-	RenderHelper::DrawBox(box[0]);
-	RenderHelper::DrawBox(box[1]);
+	RenderHelper::Instance()->DrawBox(box[0]);
+	RenderHelper::Instance()->DrawBox(box[1]);
 }
 
 void CollisionTestScreen::InputPolygonCollisions(UIEvent * touch)
@@ -181,14 +181,14 @@ void CollisionTestScreen::DrawPolygonCollisions(const UIGeometricData &geometric
 			Collisions::Instance()->FindIntersectionPolygonToPolygon(poly[k1], poly[k2], manifold);
 			for (int m = 0; m < manifold.count; ++m)
 			{
-				RenderHelper::DrawPoint(manifold.contactPoints[m], 3.0f);
+				RenderHelper::Instance()->DrawPoint(manifold.contactPoints[m], 3.0f);
 			}
 		}
 	
 	for (int k = 0; k < POLYGON_COUNT; ++k)
 	{
 		RenderManager::Instance()->SetColor(pColor[k]);
-		RenderHelper::DrawPolygonTransformed(poly[k], true, pMatrix[k]);
+		RenderHelper::Instance()->DrawPolygonTransformed(poly[k], true, pMatrix[k]);
 	}
 	//RenderHelper::DrawPolygon(poly[1], true);
 }

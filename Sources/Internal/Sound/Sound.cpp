@@ -199,7 +199,8 @@ void Sound::SetVolume(float32 _volume)
 {
 	volume = Clamp(_volume, 0.f, 1.f);
 	List<SoundInstance*>::iterator sit;
-	for(sit = soundInstances.begin(); sit != soundInstances.end(); ++sit)
+	List<SoundInstance*>::iterator sitEnd = soundInstances.end();
+	for(sit = soundInstances.begin(); sit != sitEnd; ++sit)
 	{
 		(*sit)->SetVolume(volume);
 	}
@@ -229,7 +230,8 @@ void Sound::SetLooping(bool _looping)
 void Sound::Stop()
 {
 	List<SoundInstance*>::iterator sit;
-	for(sit = soundInstances.begin(); sit != soundInstances.end(); ++sit)
+	List<SoundInstance*>::iterator sitEnd = soundInstances.end();
+	for(sit = soundInstances.begin(); sit != sitEnd; ++sit)
 	{
 		(*sit)->Stop();
 	}
@@ -254,6 +256,16 @@ int32 Sound::Release()
         Stop();
     }
     return BaseObject::Release();
+}
+
+void Sound::Pause(bool pause)
+{
+	List<SoundInstance*>::iterator sit;
+	List<SoundInstance*>::iterator sitEnd = soundInstances.end();
+	for(sit = soundInstances.begin(); sit != sitEnd; ++sit)
+	{
+		(*sit)->Pause(pause);
+	}
 }
 
 };

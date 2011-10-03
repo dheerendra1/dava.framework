@@ -312,7 +312,22 @@ void SceneNode::SetName(const String & _name)
     name = _name;
 }
 
-    
+String SceneNode::GetFullName()
+{
+    return RecursiveBuildFullName(this, scene);
+}
+
+String SceneNode::RecursiveBuildFullName(SceneNode * node, SceneNode * endNode)
+{
+    if (node->GetParent() != endNode)
+    {
+        return RecursiveBuildFullName(node->GetParent(), endNode) + String("->") + node->name; 
+    }else
+    {
+        return node->name;
+    }
+}
+
 };
 
 

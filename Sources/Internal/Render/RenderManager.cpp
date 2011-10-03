@@ -58,8 +58,10 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	newSFactor = BLEND_NONE;
 	newDFactor = BLEND_NONE;
 
-	currentTexture = NULL;
-	newTextureEnabled = 0;
+    for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
+        currentTexture[idx] = 0;
+	
+    newTextureEnabled = 0;
 	oldTextureEnabled = 0;
 	oldVertexArrayEnabled = 0;
 	oldTextureCoordArrayEnabled = 0;
@@ -69,9 +71,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     depthTestEnabled = 0;
     
 	renderOrientation = 0;
-	currentRenderTarget = NULL;
+	currentRenderTarget = 0;
 	
-	currentRenderEffect = NULL;
+	currentRenderEffect = 0;
 
 	frameBufferWidth = 0;
 	frameBufferHeight = 0;
@@ -111,6 +113,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     
     statsFrameCountToShowDebug = 0;
     frameToShowDebugStats = -1;
+    
+    FLAT_COLOR = 0;
+    TEXTURE_MUL_FLAT_COLOR = 0;
 }
 	
 RenderManager::~RenderManager()
@@ -133,14 +138,22 @@ bool RenderManager::IsInsideDraw()
 
 void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 {
-    FLAT_COLOR = ColorOnlyEffect::Create(renderer);
-    TEXTURE_MUL_FLAT_COLOR = TextureMulColorEffect::Create(renderer);
+    if (!FLAT_COLOR)
+        FLAT_COLOR = ColorOnlyEffect::Create(renderer);
+    if (!TEXTURE_MUL_FLAT_COLOR) 
+        TEXTURE_MUL_FLAT_COLOR= TextureMulColorEffect::Create(renderer);
     
     
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
+#if defined (__DAVAENGINE_OPENGL__)
     const char * extensions = (const char*)glGetString(GL_EXTENSIONS);
 	Logger::Debug("[RenderManager::Init] orientation: %d x %d extensions: %s", frameBufferWidth, frameBufferHeight, extensions);
+#else 
+	Logger::Debug("[RenderManager::Init] orientation: %d x %d ", frameBufferWidth, frameBufferHeight);
+#endif 
+    // TODO: Rethink of initialization concepts because they changed
+    pointerArraysRendererState = pointerArraysCurrentState = 0;
 }
 
 void RenderManager::Reset()
@@ -164,7 +177,8 @@ void RenderManager::Reset()
 	currentClip.dx = -1;
 	currentClip.dy = -1;
 	
-	currentTexture = NULL;
+	for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
+        currentTexture[idx] = 0;
 
 	userDrawOffset = Vector2(0, 0);
 	userDrawScale = Vector2(1, 1);
@@ -236,30 +250,33 @@ void RenderManager::ResetColor()
 }
 	
 	
-void RenderManager::SetTexture(Texture *texture)
+void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
 {
-	if(texture != currentTexture)
+    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
+	if(texture != currentTexture[textureLevel])
 	{
-		currentTexture = texture;
-		if(currentTexture)
+		currentTexture[textureLevel] = texture;
+		if(currentTexture[textureLevel])
 		{
 			if(debugEnabled)
 			{
-				Logger::Debug("Bind texture: id %d", currentTexture->id);
+				Logger::Debug("Bind texture: id %d", texture->id);
 			}
             
 #if defined(__DAVAENGINE_OPENGL__)
-            RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, currentTexture->id));
+            RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
 #elif defined(__DAVAENGINE_DIRECTX9__)
-            RENDER_VERIFY(GetD3DDevice()->SetTexture(0, currentTexture->id));
+            RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
 #endif 
 		}
 	}
 }
 	
-Texture *RenderManager::GetTexture()
+Texture *RenderManager::GetTexture(uint32 textureLevel)
 {
-	return currentTexture;	
+    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
+	return currentTexture[textureLevel];	
 }
 
 void RenderManager::SetRenderData(RenderDataObject * object)
@@ -437,16 +454,16 @@ void RenderManager::SetNewRenderEffect(RenderEffect *renderEffect)
 
 void RenderManager::SetRenderEffect(RenderEffect *renderEffect)
 {
-	renderEffectStack.push(SafeRetain(currentRenderEffect));
+	//renderEffectStack.push(SafeRetain(currentRenderEffect));
 	SetNewRenderEffect(renderEffect);
 }
 
 void RenderManager::RestoreRenderEffect()
 {
-	RenderEffect *renderEffect = renderEffectStack.top();
-	renderEffectStack.pop();
-	SetNewRenderEffect(renderEffect);
-	SafeRelease(renderEffect);
+//	RenderEffect *renderEffect = renderEffectStack.top();
+//	renderEffectStack.pop();
+//	SetNewRenderEffect(renderEffect);
+//	SafeRelease(renderEffect);
 }
 
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)

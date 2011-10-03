@@ -95,6 +95,19 @@ void AnimationManager::RemoveAnimation(Animation * animation)
 	//Logger::Debug("RemoveAnimation: after animations: %d\n", animations.size());
 	
 }
+    
+void AnimationManager::StopAnimations()
+{
+    for (Vector<Animation*>::iterator t = animations.begin(); t != animations.end(); ++t)
+	{
+		Animation * animation = *t;
+		
+        animation->owner = 0;   // zero owner to avoid any issues (it was a problem with DumpState, when animations was deleted before). 
+        animation->state &= ~Animation::STATE_IN_PROGRESS;
+        animation->state &= ~Animation::STATE_FINISHED;
+        animation->state |= Animation::STATE_DELETE_ME;
+	}	
+}
 	
 void AnimationManager::DeleteAnimations(AnimatedObject * _owner, int32 track)
 {
@@ -270,6 +283,33 @@ void AnimationManager::DumpState()
 		Logger::Debug("addr:0x%08x state:%d class: %s ownerClass: %s", animation, animation->state, typeid(*animation).name(), ownerName.c_str());
 	}
 	Logger::Info("============================================================");
+}
+
+
+void AnimationManager::PauseAnimations(bool isPaused, int tag)
+{
+    for(Vector<Animation*>::iterator i = animations.begin(); i != animations.end(); ++i)
+    {
+        Animation * &a = *i;
+        
+        if (a->GetTagId() == tag)
+        {
+            a->Pause(isPaused);
+        }
+    }
+}
+
+void AnimationManager::SetAnimationsMultiplier(float32 f, int tag)
+{
+    for(Vector<Animation*>::iterator i = animations.begin(); i != animations.end(); ++i)
+    {
+        Animation * &a = *i;
+        
+        if (a->GetTagId() == tag)
+        {
+            a->SetTimeMultiplier(f);
+        }
+    }
 }
 
 };

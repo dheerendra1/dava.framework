@@ -201,6 +201,8 @@ namespace DAVA
 			fullscreenMode.height = options->GetInt("fullscreen.height", fullscreenMode.height);
 			fullscreenMode.bpp = windowedMode.bpp;
 
+			fullscreenMode = FindBestMode(fullscreenMode);
+
 			isFullscreen = (0 != options->GetInt("fullscreen"));	
 			String title = options->GetString("title", "[set application title using core options property 'title']");
 			WideString titleW = StringToWString(title);
@@ -1030,23 +1032,35 @@ namespace DAVA
 			return 0;
 		case WM_ACTIVATE:
 			{
-				KeyedArchive* options = DAVA::Core::GetOptions();
-				if(options->GetBool("suspendOnDeactivate",true))
-				{
-					WORD loWord = LOWORD(wParam);
-					WORD hiWord = HIWORD(wParam);
-					if(!loWord || hiWord)
+				ApplicationCore * core = Core::Instance()->GetApplicationCore();
+                WORD loWord = LOWORD(wParam);
+                WORD hiWord = HIWORD(wParam);
+                if(!loWord || hiWord)
+                {
+                    Logger::Debug("[PlatformWin32] deactivate application");
+                    RenderResource::SaveAllResourcesToSystemMem();
+					
+                    if(core)
 					{
-						Logger::Debug("[PlatformWin32] deactivate application");
-						RenderResource::SaveAllResourcesToSystemMem();
-						Core::Instance()->Suspend();
+						core->OnSuspend();
 					}
-					else
+					else 
 					{
-						Logger::Debug("[PlatformWin32] activate application");
-						Core::Instance()->Resume();
+						Core::Instance()->SetIsActive(false);
 					}
-				}
+                }
+                else
+                {
+                    Logger::Debug("[PlatformWin32] activate application");
+					if(core)
+					{
+						core->OnResume();
+					}
+					else 
+					{
+						Core::Instance()->SetIsActive(true);
+					}
+                }
 			};
 			break;
 		case WM_SYSCOMMAND:

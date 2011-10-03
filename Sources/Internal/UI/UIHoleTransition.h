@@ -50,9 +50,7 @@ public:
 	virtual void Draw(const UIGeometricData &geometricData);
 private:
 	Polygon2 clipPoly;
-	
-	Vector3 points[50];
-	Vector2 texCoords[50];
+    Polygon2 realPoly;
 };
 
 };

@@ -43,8 +43,6 @@ void Box2DDebugDraw::SetCameraPos(const Vector2 &_cameraPos)
 	cameraPos = _cameraPos;
 }
 
-
-
 void Box2DDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
 	
@@ -57,24 +55,24 @@ void Box2DDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, cons
 	glEnd();*/
 	
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	Polygon3 polygon;
+	Polygon2 polygon;
 	for (int32 i = 0; i < vertexCount; ++i)
 	{
-		polygon.AddPoint(Vector3(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y, 0.0f));
+		polygon.AddPoint(Vector2(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y));
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 }
 
 void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	Polygon3 polygon;
+	Polygon2 polygon;
 	for (int32 i = 0; i < vertexCount; ++i)
 	{
-		polygon.AddPoint(Vector3(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y, 0.0f));
+		polygon.AddPoint(Vector2(vertices[i].x * ptdRatio + cameraPos.x, -vertices[i].y * ptdRatio + cameraPos.y));
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 	
 	/*glEnable(GL_BLEND);
@@ -100,7 +98,7 @@ void Box2DDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount,
 void Box2DDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	Polygon3 polygon;
+	Polygon2 polygon;
 
 	const float32 k_segments = 16.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
@@ -109,17 +107,17 @@ void Box2DDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Co
 	{
 		b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
 		//glVertex2f(v.x, v.y);
-		polygon.AddPoint(Vector3(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y, 0.0f));
+		polygon.AddPoint(Vector2(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y));
 		theta += k_increment;
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 }
 
 void Box2DDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	Polygon3 polygon;
+	Polygon2 polygon;
 	
 	const float32 k_segments = 16.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
@@ -128,10 +126,10 @@ void Box2DDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const
 	{
 		b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
 		//glVertex2f(v.x, v.y);
-		polygon.AddPoint(Vector3(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y, 0.0f));
+		polygon.AddPoint(Vector2(v.x * ptdRatio + cameraPos.x, -v.y * ptdRatio + cameraPos.y));
 		theta += k_increment;
 	}
-	RenderHelper::DrawPolygon(polygon, true);
+	RenderHelper::Instance()->DrawPolygon(polygon, true);
 	RenderManager::Instance()->ResetColor();
 	/*const float32 k_segments = 16.0f;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
@@ -170,7 +168,8 @@ void Box2DDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const
 void Box2DDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	RenderHelper::Instance()->DrawLine(Vector2(p1.x * ptdRatio + cameraPos.x, -p1.y * ptdRatio + cameraPos.y), Vector2(p2.x * ptdRatio, -p2.y * ptdRatio));
+	RenderHelper::Instance()->DrawLine(Vector2(p1.x * ptdRatio + cameraPos.x, -p1.y * ptdRatio + cameraPos.y), 
+        Vector2(p2.x * ptdRatio + cameraPos.x, -p2.y * ptdRatio + cameraPos.y));
 	RenderManager::Instance()->ResetColor();
 	/*glColor3f(color.r, color.g, color.b);
 	glBegin(GL_LINES);
@@ -210,7 +209,7 @@ void Box2DDebugDraw::DrawTransform(const b2Transform& xf)
 void Box2DDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
 	RenderManager::Instance()->SetColor(color.r, color.g, color.b, 1.0f);
-	RenderHelper::DrawPoint(Vector2(p.x * ptdRatio + cameraPos.x, -p.y * ptdRatio + cameraPos.y), size * ptdRatio);
+	RenderHelper::Instance()->DrawPoint(Vector2(p.x * ptdRatio + cameraPos.x, -p.y * ptdRatio + cameraPos.y), size * ptdRatio);
 	RenderManager::Instance()->ResetColor();
 	/*glPointSize(size);
 	glBegin(GL_POINTS);
@@ -263,5 +262,4 @@ void Box2DDebugDraw::DrawAABB(b2AABB* aabb, const b2Color& c)
 	glVertex2f(aabb->lowerBound.x, aabb->upperBound.y);
 	glEnd();*/
 }
-	
 };

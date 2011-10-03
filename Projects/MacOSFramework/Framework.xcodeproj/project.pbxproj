@@ -596,6 +596,8 @@
 		FED0479A13B7B89500A9A859 /* Matrix4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED0479913B7B89500A9A859 /* Matrix4.cpp */; };
 		FED7B06913451C2F0032144E /* MD5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED7B06713451C2F0032144E /* MD5.cpp */; };
 		FED7B06A13451C2F0032144E /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = FED7B06813451C2F0032144E /* MD5.h */; };
+		FEDDC95D1429E5040004BF1A /* UIFileSystemDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC95B1429E5040004BF1A /* UIFileSystemDialog.cpp */; };
+		FEDDC95E1429E5040004BF1A /* UIFileSystemDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDDC95C1429E5040004BF1A /* UIFileSystemDialog.h */; };
 		FEEB6E7C131BC61C00958ACB /* Replay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEEB6E7A131BC61C00958ACB /* Replay.cpp */; };
 		FEEB6E7D131BC61C00958ACB /* Replay.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEB6E7B131BC61C00958ACB /* Replay.h */; };
 		FEF4E23212CD3C1F004B850E /* libBox2D_MacOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEF4E22C12CD3BED004B850E /* libBox2D_MacOS.a */; };
@@ -1246,6 +1248,8 @@
 		FED0479913B7B89500A9A859 /* Matrix4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix4.cpp; sourceTree = "<group>"; };
 		FED7B06713451C2F0032144E /* MD5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MD5.cpp; sourceTree = "<group>"; };
 		FED7B06813451C2F0032144E /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
+		FEDDC95B1429E5040004BF1A /* UIFileSystemDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIFileSystemDialog.cpp; sourceTree = "<group>"; };
+		FEDDC95C1429E5040004BF1A /* UIFileSystemDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFileSystemDialog.h; sourceTree = "<group>"; };
 		FEEB6E7A131BC61C00958ACB /* Replay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Replay.cpp; sourceTree = "<group>"; };
 		FEEB6E7B131BC61C00958ACB /* Replay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
 		FEF4E22712CD3BED004B850E /* Box2D_MacOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Box2D_MacOS.xcodeproj; path = ../../Libs/Box2D/Projects/Box2D_MacOS/Box2D_MacOS.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -2357,6 +2361,8 @@
 				FECFC20312E87E3000C71562 /* UIYamlLoader.h */,
 				FE4E01BB13AA735E0013464E /* UI3DView.cpp */,
 				FE4E01BC13AA735E0013464E /* UI3DView.h */,
+				FEDDC95B1429E5040004BF1A /* UIFileSystemDialog.cpp */,
+				FEDDC95C1429E5040004BF1A /* UIFileSystemDialog.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -2796,6 +2802,7 @@
 				FE044F39140EEA24002A6D27 /* TextureMulColorEffect.h in Headers */,
 				FE044F3D140EEA32002A6D27 /* RenderDataObject.h in Headers */,
 				FE044F43140EEA75002A6D27 /* RenderManagerGL20.h in Headers */,
+				FEDDC95E1429E5040004BF1A /* UIFileSystemDialog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3121,6 +3128,7 @@
 				FE044F3C140EEA32002A6D27 /* RenderDataObject.cpp in Sources */,
 				FE044F3F140EEA53002A6D27 /* RenderManagerFactory.cpp in Sources */,
 				FE044F42140EEA75002A6D27 /* RenderManagerGL20.cpp in Sources */,
+				FEDDC95D1429E5040004BF1A /* UIFileSystemDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

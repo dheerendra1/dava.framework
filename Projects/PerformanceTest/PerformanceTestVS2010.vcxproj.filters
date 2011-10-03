@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Classes\FrameworkMain.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\GameCore.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Specific\main.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\TestTemplate.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\SpriteTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Classes\AppScreens.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\FrameworkMain.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\GameCore.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\TestTemplate.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\SpriteTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{110bfd48-b942-42d6-9f31-c34eafade538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{f6fef41f-da28-4bac-ab91-b3306c6ea79c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

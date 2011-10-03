@@ -44,7 +44,8 @@ public:
 	enum eState
 	{
 		STATE_FREE = 0,
-		STATE_PLAYING
+		STATE_PLAYING,
+		STATE_PAUSED
 	};
 
 	SoundChannel();

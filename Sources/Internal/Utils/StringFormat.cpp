@@ -73,7 +73,7 @@ const char8 * GetIndentString(char8 indentChar, int32 level)
 	{
 		formatString8[formatString8Position + k] = indentChar;
 	}
-	formatString8[level] = 0;
+	formatString8[formatString8Position + level] = 0;
 	formatString8Position += (level + 1);
 	return &formatString8[formatString8Position  - (level + 1)];
 }

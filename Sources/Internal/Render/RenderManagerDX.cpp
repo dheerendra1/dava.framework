@@ -995,7 +995,7 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
+		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
 	}
 	//if (type == PRIMITIVETYPE_TRIANGLESTRIP || type == PRIMITIVETYPE_TRIANGLEFAN || || type == PRIMITIVETYPE_TRIANGLEFAN))
 	{
@@ -1035,9 +1035,10 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 				ptr += stride;
 			}
 		}
+        const uint32 oldColorD3D = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
 		for(int k = 0; k < count; ++k)
 		{
-			dataPtr[k].color = D3DCOLOR_COLORVALUE(oldColor.r * oldColor.a, oldColor.g * oldColor.a, oldColor.b * oldColor.a, oldColor.a);
+			dataPtr[k].color = oldColorD3D;
 			dataPtr[k].u = 0;
 			dataPtr[k].v = 0;
 			// Logger::Debug("v:%f %f %f %f c: #%08x", oldR, oldG, oldB, oldA, dataPtr[k].color);

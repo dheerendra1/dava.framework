@@ -249,8 +249,8 @@ public:
 	void ResetColor();
 
 	// 
-	void SetTexture(Texture *texture);
-	Texture * GetTexture();
+	void SetTexture(Texture *texture, uint32 textureLevel = 0);
+	Texture * GetTexture(uint32 textureLevel = 0);
 	
 	void EnableBlending(bool isEnabled);
 	void EnableTexturing(bool isEnabled);
@@ -507,7 +507,8 @@ protected:
 	eBlendMode oldSFactor, oldDFactor;  // STATE
 	eBlendMode newSFactor, newDFactor;  // STATE
     
-	Texture *currentTexture;                        // Texture that was set
+    static const uint32 MAX_TEXTURE_LEVELS = 4;
+	Texture *currentTexture[MAX_TEXTURE_LEVELS];                        // Texture that was set
 	
     int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
 	int oldVertexArrayEnabled;                      // state

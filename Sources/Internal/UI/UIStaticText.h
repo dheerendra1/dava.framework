@@ -43,12 +43,6 @@ namespace DAVA
 class UIStaticText : public UIControl 
 {
 public:
-	enum eFitType 
-	{
-			FITTING_DISABLED = 0
-		,	FITTING_ENLARGE
-		,	FITTING_REDUCE
-	};
 	
 	UIStaticText(const Rect &rect = Rect(), bool rectInAbsoluteCoordinates = false); 
 	virtual ~UIStaticText();

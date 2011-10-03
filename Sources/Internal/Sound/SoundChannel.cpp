@@ -114,16 +114,13 @@ void SoundChannel::Play(Sound * sound, bool _looping)
 
 void SoundChannel::Update()
 {
-	if(STATE_PLAYING == state)
+	if(Sound::TYPE_STATIC == buddySound->GetType())
 	{
-		if(Sound::TYPE_STATIC == buddySound->GetType())
-		{
-			UpdateStatic();
-		}
-		else if(Sound::TYPE_STREAMED == buddySound->GetType())
-		{
-			UpdateStreamed();
-		}
+		UpdateStatic();
+	}
+	else if(Sound::TYPE_STREAMED == buddySound->GetType())
+	{
+		UpdateStreamed();
 	}
 }
 
@@ -153,7 +150,18 @@ void SoundChannel::UpdateStatic()
 #ifdef __DAVASOUND_AL__
 	ALint alState;
 	AL_VERIFY(alGetSourcei(source, AL_SOURCE_STATE, &alState));
-	state = alState == AL_PLAYING ? STATE_PLAYING : STATE_FREE;
+	if(alState == AL_PLAYING)
+	{
+		state = STATE_PLAYING;
+	}
+	else if(alState == AL_PAUSED)
+	{
+		state = STATE_PAUSED;
+	}
+	else
+	{
+		state = STATE_FREE;
+	}
 	if(STATE_FREE == state)
 	{
 		AL_VERIFY(alSourcei(source, AL_BUFFER, 0));
@@ -166,7 +174,19 @@ void SoundChannel::UpdateStreamed()
 #ifdef __DAVASOUND_AL__
 	ALint alState;
 	AL_VERIFY(alGetSourcei(source, AL_SOURCE_STATE, &alState));
-	state = alState == AL_PLAYING ? STATE_PLAYING : STATE_FREE;
+	//TODO: remove state changes here
+	if(alState == AL_PLAYING)
+	{
+		state = STATE_PLAYING;
+	}
+	else if(alState == AL_PAUSED)
+	{
+		state = STATE_PAUSED;
+	}
+	else
+	{
+		state = STATE_FREE;
+	}
 	if(STATE_FREE == state)
 	{
 		return;
@@ -191,6 +211,7 @@ void SoundChannel::Pause(bool pause)
 	if(pause)
 	{
 		AL_VERIFY(alSourcePause(source));
+		state = STATE_PAUSED;
 	}
 	else
 	{
@@ -199,6 +220,7 @@ void SoundChannel::Pause(bool pause)
 		if(AL_PAUSED == state)
 		{
 			AL_VERIFY(alSourcePlay(source));
+			state = STATE_PLAYING;
 		}
 
 	}

@@ -38,6 +38,9 @@
 
 namespace DAVA
 {
+/**
+    \brief this class is main class to perform camera transformations in our 3D engine.
+ */
 class Camera : public SceneNode
 {
 public:
@@ -56,7 +59,28 @@ public:
 	/** Restore camera transform that was give from file */
 	void RestoreOriginalSceneTransform();
 	
-	void SetPosition(const Vector3 & position);
+    /**
+        \brief return current Field Of View of this camera
+        \returns FOV for this camera
+     */ 
+    float32 GetFOV();
+        
+    /** 
+        \brief return current aspect for this camera
+     */
+    float32 GetAspect();
+
+    /**
+        \brief return znear value for this camera
+     */
+    float32 GetZNear();
+    
+    /**
+        \brief return zfar value for this camera
+     */
+    float32 GetZFar();
+    
+    void SetPosition(const Vector3 & position);
 	void SetDirection(const Vector3 & direction);
 	void SetTarget(const Vector3 & target);
 	void SetUp(const Vector3 & up);

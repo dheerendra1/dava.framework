@@ -320,8 +320,7 @@ Sprite* Sprite::PureCreate(const String & spriteName, Sprite* forPointer)
 		}
 	}
 	
-	//TODO: Не уверен что эта строка вообще нужна. И не совсем уверен что здеся за значение должно быть для обычных спрайтов. Но пусть пока будет.
-	spr->resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+	spr->resourceToPhysicalFactor = Core::Instance()->GetResourceToPhysicalFactor(spr->resourceSizeIndex);
 
 
 	SafeRelease(fp);
@@ -403,6 +402,7 @@ void Sprite::InitFromTexture(Texture *fromTexture, int32 xOffset, int32 yOffset,
 	}
 
 	resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+    resourceSizeIndex = Core::Instance()->GetDesirableResourceIndex();
 	
 	this->type = SPRITE_FROM_TEXTURE;
 	this->textureCount = 1;
@@ -519,6 +519,7 @@ int32 Sprite::Release()
 {
 	if(GetRetainCount() == 1)
 	{
+        SafeRelease(spriteRenderObject);
 		spriteMap.erase(relativePathname);
 	}
 		
@@ -527,8 +528,6 @@ int32 Sprite::Release()
 	
 void Sprite::Clear()
 {
-	SafeRelease(spriteRenderObject);
-
 	SafeDeleteArray(polyIndeces);
 	SafeDeleteArray(polyArray);
 	
@@ -991,8 +990,8 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         clippedVertices.clear();
         clippedTexCoords.clear();
         Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f / t->width;
-		float32 adjHeight = 1.f / t->height;
+		float32 adjWidth = 1.f / t->width * resourceToPhysicalFactor;
+		float32 adjHeight = 1.f / t->height * resourceToPhysicalFactor;
         
 		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
 		{
@@ -1056,8 +1055,8 @@ void Sprite::Draw(DrawState * state)
 
 	PrepareSpriteRenderData(state);
 	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-	RenderManager::Instance()->SetRenderData(spriteRenderObject);
 
+	RenderManager::Instance()->SetRenderData(spriteRenderObject);
 	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
 	RenderManager::Instance()->RestoreRenderEffect();
@@ -1192,7 +1191,6 @@ void Sprite::DrawPoints(Vector2 *verticies)
 				}
 			}
 		}
-		
 	}
 	else 
 	{
@@ -1221,30 +1219,35 @@ void Sprite::DrawPoints(Vector2 *verticies)
 		
 	}
 	
+    vertexStream->Set(TYPE_FLOAT, 2, 0, tempVertices);
+    texCoordStream->Set(TYPE_FLOAT, 2, 0, texCoords[frame]);
+    
+    primitiveToDraw = PRIMITIVETYPE_TRIANGLESTRIP;
+    vertexCount = 4;
 	
-	RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-	RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]);
-	
-	RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-	
-	RenderManager::Instance()->FlushState();
-	
-	if(flags & EST_ROTATE)
+    if(flags & EST_ROTATE)
 	{
-		glPushMatrix();
-		
-		glTranslatef(drawCoord.x, drawCoord.y, 0);
-		glRotatef(rotateAngle, 0.0f, 0.0f, 1.0f);
-		glTranslatef(-drawCoord.x, -drawCoord.y, 0);
-		
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-		
-		glPopMatrix();
-	}
-	else 
-	{
-		RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-	}
+        // Optimized code
+        float32 sinA = sinf(rotateAngle);
+        float32 cosA = cosf(rotateAngle);
+        for(int32 k = 0; k < 4; ++k)
+        {
+            float32 x = tempVertices[(k << 1)] - drawCoord.x;
+            float32 y = tempVertices[(k << 1) + 1] - drawCoord.y;
+            
+            float32 nx = (x) * cosA  - (y) * sinA + drawCoord.x;
+            float32 ny = (x) * sinA  + (y) * cosA + drawCoord.y;
+            
+            tempVertices[(k << 1)] = nx;
+            tempVertices[(k << 1) + 1] = ny;
+        }
+    }	
+
+    RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
+	RenderManager::Instance()->SetRenderData(spriteRenderObject);
+	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
+	RenderManager::Instance()->RestoreRenderEffect();
 }
 
 	

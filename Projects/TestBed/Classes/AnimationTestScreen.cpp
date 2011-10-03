@@ -34,16 +34,26 @@
 
 void AnimationTestScreen::LoadResources()
 {
-    //RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
+    RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
     RenderManager::Instance()->SetFPS(30.0);
 	scene = new Scene();
-	//RotatingCubeNode * cubeNode = new RotatingCubeNode(scene);
-	//scene->AddNode(cubeNode);
+    
+    
+//    cam = new Camera(scene);
+//    scene->AddCamera(cam);
+//    //cam->SetFOV(75.0f);
+//    cam->Setup(60.0f, 320.0f / 480.0f, 1.0f, 3000.0f, false);
+//    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+//    cam->SetDirection(Vector3(1.0f, 0.0f, 0.0f));
+//    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
+//
+//    scene->SetCurrentCamera(cam);
     
 	SceneFile * file = new SceneFile();
-	file->SetDebugLog(true);
-//	file->LoadScene("~res:/Scenes/garage/hungar.sce", scene);
-//    scene->AddNode(scene->GetRootNode("~res:/Scenes/garage/hungar.sce"));
+	//file->SetDebugLog(true);
+	file->LoadScene("~res:/Scenes/level1/objects.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/objects.sce"));
+
 //	file->LoadScene("~res:/Scenes/garage_lit/hungar.sce", scene);
 //  scene->AddNode(scene->GetRootNode("~res:/Scenes/garage_lit/hungar.sce"));
 //    file->LoadScene("~res:/Scenes/level_test/level_test_3.sce", scene);
@@ -51,13 +61,10 @@ void AnimationTestScreen::LoadResources()
     
 	SafeRelease(file);
     
-    
-    cam = new Camera(scene);
-    scene->AddCamera(cam);
-    scene->SetCurrentCamera(cam);
+
     
     
-    LandscapeNode * node = new LandscapeNode(scene);
+    /*LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 0));
     box.min += cam->GetPosition();
     box.max += cam->GetPosition();
@@ -72,7 +79,8 @@ void AnimationTestScreen::LoadResources()
     scene->AddNode(node);
     // TODO: release landscape node
     
-        
+    */
+    
 	currentTankAngle = 0.0f;
 	inTouch = false;
 	startRotationInSec = 0.0f;
@@ -85,13 +93,9 @@ void AnimationTestScreen::LoadResources()
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
     scene3dView->SetInputEnabled(false);
     scene3dView->SetScene(scene);
+    
     cam = scene->GetCamera(0);
-    //cam->SetFOV(75.0f);
-    cam->Setup(60.0f, 320.0f / 480.0f, 1.0f, 3000.0f, false);
-    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-    cam->SetDirection(Vector3(1.0f, 0.0f, 0.0f));
-    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
-
+    //cam->Setup(60.0f, 
     scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
         
@@ -108,7 +112,7 @@ void AnimationTestScreen::LoadResources()
     angleJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
     angleJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
 	AddControl(angleJoypad);
-}
+}  
 
 void AnimationTestScreen::UnloadResources()
 {
@@ -191,7 +195,7 @@ void AnimationTestScreen::Update(float32 timeElapsed)
     Vector2 joypadPos = positionJoypad->GetDigitalPosition();
     
     Vector3 pos = cam->GetPosition();
-    pos += -joypadPos.y * dir * timeElapsed;
+    pos += -joypadPos.y * dir * timeElapsed * 40;
     //pos.y += joypadPos.y * dir.y;
 
     cam->SetPosition(pos);

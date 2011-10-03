@@ -39,9 +39,8 @@ void SceneEditorScreen::LoadResources()
 
     
     SceneFile * file = new SceneFile();
-	//file->SetDebugLog(true);
-	file->LoadScene("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/boxes_and_cameras/boxes_and_cameras.sce"));
+	file->LoadScene("~res:/Scenes/vit/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
 	SafeRelease(file);
     
 
@@ -52,7 +51,7 @@ void SceneEditorScreen::LoadResources()
     
     
 	scene3dView = 0;
-    scene3dView = new UI3DView(Rect(200, 100, 520, 480));
+    scene3dView = new UI3DView(Rect(200, 100, 480, 320));
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
@@ -69,22 +68,21 @@ void SceneEditorScreen::LoadResources()
     
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 25));
+    AABBox3 box(Vector3(-206, -203, -50), Vector3(198, 201, 50));
     box.min += cam->GetPosition();
     box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
     
-    node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
+    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2.png", box);
     
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
     SafeRelease(tex);
     
     node->SetName("landscapeNode");
     scene->AddNode(node);
-    
     
     hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     hierarchy->SetCellHeight(20);
@@ -99,10 +97,126 @@ void SceneEditorScreen::LoadResources()
     
     cameraController = new WASDCameraController(40);
     cameraController->SetCamera(cam);
+    
+    
+    activePropertyPanel = 0;
+    cameraPanel = 0;
+    
+    localMatrixControl = new EditMatrixControl(Rect(0, 0, 300, 100));
+    worldMatrixControl = new EditMatrixControl(Rect(0, 0, 300, 100));
+
+    Font *f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+    f->SetSize(12);
+    f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+    
+    
+    lookAtButton = new UIButton(Rect(0, 0, 300, 30));
+    lookAtButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    lookAtButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    lookAtButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    lookAtButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    lookAtButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Object");
+    lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
+    
+    SafeRelease(f);
+    
+    activePropertyPanel = new PropertyPanel(Rect(720, 100, 300, size.y - 120));
+    
+    nodeName = SafeRetain(activePropertyPanel->AddHeader(L"Node name:"));
+    
+    activePropertyPanel->AddHeader(L"Local Matrix:");
+    activePropertyPanel->AddPropertyControl(localMatrixControl);
+    activePropertyPanel->AddHeader(L"World Matrix:");
+    activePropertyPanel->AddPropertyControl(worldMatrixControl);
+    nodeBoundingBoxMin = SafeRetain(activePropertyPanel->AddHeader(L"-"));
+    nodeBoundingBoxMax = SafeRetain(activePropertyPanel->AddHeader(L"-"));
+    activePropertyPanel->AddPropertyControl(lookAtButton);
+    
+    AddControl(activePropertyPanel);
+    
+    fileSystemDialog = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
+    fileSystemDialog->SetDelegate(this);
+    fileSystemDialog->SetCurrentDir("/Sources/dava.framework/Tools/Bin");
+    CreateTopMenu();
+}
+
+
+
+void SceneEditorScreen::CreateTopMenu()
+{
+    Font *f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+    f->SetSize(12);
+    f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+    
+    openButton = new UIButton(Rect(0, 0, 150, 30));
+    openButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    openButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    openButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    openButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    openButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    openButton->SetStateText(UIControl::STATE_NORMAL, L"Open (.sce)");
+    openButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnTopMenuOpenPressed));
+    
+    AddControl(openButton);
+    
+    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 30));
+    convertButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    convertButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    convertButton->SetStateDrawType(UIControl::STATE_DISABLED, UIControlBackground::DRAW_FILL);
+    convertButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
+    convertButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    convertButton->SetStateText(UIControl::STATE_NORMAL, L"Convert (.dae)");
+    convertButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnTopMenuConvertPressed));
+    
+    AddControl(convertButton);
+    SafeRelease(f);
+}  
+
+void SceneEditorScreen::ReleaseTopMenu()
+{
+    SafeRelease(openButton);
+    SafeRelease(convertButton);
+}
+
+void SceneEditorScreen::OnTopMenuOpenPressed(BaseObject * obj, void *, void *)
+{
+    fileSystemDialog->SetExtensionFilter(".sce");
+    fileSystemDialog->Show(this);
+}
+
+void SceneEditorScreen::OnTopMenuConvertPressed(BaseObject * obj, void *, void *)
+{
+    fileSystemDialog->SetExtensionFilter(".dae");
+    fileSystemDialog->Show(this);
+}
+
+void SceneEditorScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile)
+{
+    
+}
+
+void SceneEditorScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
+{
+    
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    ReleaseTopMenu();
+    
+    SafeRelease(nodeName);
+    SafeRelease(nodeBoundingBoxMin);
+    SafeRelease(nodeBoundingBoxMax);
+    SafeRelease(lookAtButton);
+    
+    
     SafeRelease(cameraController);
     
     SafeRelease(scene3dView);
@@ -128,7 +242,6 @@ void SceneEditorScreen::WillDisappear()
 void SceneEditorScreen::Input(UIEvent * event)
 {
     cameraController->Input(event);
-    
     
     if (event->phase == UIEvent::PHASE_KEYCHAR)
     {
@@ -259,7 +372,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
 	c->openButton->GetStateBackground(UIControl::STATE_NORMAL)->color = color;
 	c->openButton->GetStateBackground(UIControl::STATE_HOVER)->color = color + 0.1;
 	c->openButton->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->color = color + 0.3;
- 
+
     return c;//returns cell
 }
 
@@ -279,24 +392,53 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(node);
         if (mesh)
         {
+            AABBox3 bbox = mesh->GetBoundingBox();
+            AABBox3 transformedBox;
+            bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+
             mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
+            nodeBoundingBoxMin->SetText(Format(L"Min: (%0.2f, %0.2f, %0.2f)", 
+                                            transformedBox.min.x, transformedBox.min.y, transformedBox.min.z));
+            nodeBoundingBoxMax->SetText(Format(L"Max: (%0.2f, %0.2f, %0.2f)", 
+                                               transformedBox.max.x, transformedBox.max.y, transformedBox.max.z));
+        }else
+        {
+            nodeBoundingBoxMin->SetText(L"Bounding Box:");
+            nodeBoundingBoxMax->SetText(L"Not available for this node");
         }
         
         Camera * camera = dynamic_cast<Camera*> (node);
         if (camera)
         {
-            //camera->RestoreOriginalSceneTransform();
             scene->SetCurrentCamera(camera);
             Camera * cam2 = scene->GetCamera(0);
             scene->SetClipCamera(cam2);
+            
+            nodeBoundingBoxMin->SetText(Format(L"fov: %f, aspect: %f", camera->GetFOV(), camera->GetAspect()));
+            nodeBoundingBoxMax->SetText(Format(L"znear: %f, zfar: %f", camera->GetZNear(), camera->GetZFar()));
         }
         
 //        MeshInstanceNode *turretN = (MeshInstanceNode*)scene->FindByName("node-lod0_turret_02")->FindByName("instance_0");
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //        turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //        turretN->SetDebugFlags();
+        localMatrixControl->SetMatrix(&selectedNode->localTransform);
+        worldMatrixControl->SetMatrix(&selectedNode->worldTransform);
+        
+        nodeName->SetText(StringToWString(selectedNode->GetFullName()));
+    }
+}
 
-    
+void SceneEditorScreen::OnLookAtButtonPressed(BaseObject * obj, void *, void *)
+{
+    MeshInstanceNode * mesh = dynamic_cast<MeshInstanceNode*>(selectedNode);
+    if (mesh)
+    {
+        AABBox3 bbox = mesh->GetBoundingBox();
+        AABBox3 transformedBox;
+        bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+        Vector3 center = transformedBox.GetCenter();
+        scene->GetCurrentCamera()->SetTarget(center);
     }
 }
 

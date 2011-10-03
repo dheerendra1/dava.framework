@@ -37,7 +37,6 @@ namespace DAVA
 {
 MeshInstanceNode::MeshInstanceNode(Scene * _scene)
 :	SceneNode3d(_scene)
-,	visible(true)
 {
 	
 }
@@ -102,7 +101,7 @@ void MeshInstanceNode::Draw()
 		if (debugFlags & DEBUG_DRAW_AABBOX)
 		{
 			RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-			RenderHelper::DrawBox(bbox);
+			RenderHelper::Instance()->DrawBox(bbox);
 		
 		}
 		if (debugFlags & DEBUG_DRAW_LOCAL_AXIS)
@@ -136,7 +135,6 @@ SceneNode* MeshInstanceNode::Clone(SceneNode *dstNode)
     nd->meshes = meshes;
     nd->polygonGroupIndexes = polygonGroupIndexes;
     nd->materials = materials;
-    nd->visible = visible;
     nd->bbox = bbox;
     
     return dstNode;

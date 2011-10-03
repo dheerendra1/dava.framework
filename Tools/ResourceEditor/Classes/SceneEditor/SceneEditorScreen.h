@@ -33,10 +33,13 @@
 
 #include "DAVAEngine.h"
 #include "CameraController.h"
+#include "PropertyPanel.h"
+#include "CameraPanel.h"
+#include "EditMatrixControl.h"
 
 using namespace DAVA;
 
-class SceneEditorScreen : public UIScreen, public UIHierarchyDelegate
+class SceneEditorScreen : public UIScreen, public UIHierarchyDelegate, public UIFileSystemDialogDelegate
 {
 public:
 	void ButtonPressed(BaseObject * owner, void * v);
@@ -49,7 +52,16 @@ public:
 	virtual void Update(float32 timeElapsed);
 	virtual void Draw(const UIGeometricData &geometricData);
 	virtual void Input(UIEvent * touch);
-	
+    
+    
+    void CreateTopMenu();
+    void ReleaseTopMenu();
+    
+	UIButton * openButton;
+    UIButton * convertButton;
+    void OnTopMenuOpenPressed(BaseObject * obj, void *, void *);
+    void OnTopMenuConvertPressed(BaseObject * obj, void *, void *);
+    
     
     virtual bool IsNodeExpandable(UIHierarchy *forHierarchy, void *forNode);
     virtual int32 ChildrenCount(UIHierarchy *forHierarchy, void *forParent);
@@ -80,6 +92,22 @@ public:
     
     // Node preview information
     SceneNode * selectedNode;
+    PropertyPanel * activePropertyPanel;
+    EditMatrixControl * localMatrixControl;
+    EditMatrixControl * worldMatrixControl;
+
+    UIStaticText * nodeName;
+    UIStaticText * nodeCenter;
+    UIStaticText * nodeBoundingBoxMin;
+    UIStaticText * nodeBoundingBoxMax;
+    UIButton * lookAtButton;
+    void OnLookAtButtonPressed(BaseObject * obj, void *, void *);
+    
+    UIFileSystemDialog * fileSystemDialog;
+    void OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile);
+    void OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog);
+    
+    CameraPanel * cameraPanel;
     
     WASDCameraController * cameraController;
 };

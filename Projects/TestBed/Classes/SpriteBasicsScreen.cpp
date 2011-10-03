@@ -51,7 +51,26 @@ void SpriteBasicsScreen::LoadResources()
 // 	button->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SpriteBasicsScreen::OnButtonPressed));
 	uint32 fh = graphicsFont->GetFontHeight();
 	Logger::Debug("font height: %d", fh); 
-
+    
+    
+    
+	Polygon2 testPoly;
+	
+	testPoly.AddPoint(Vector2(50, 85));
+	testPoly.AddPoint(Vector2(480 - 50, 50));
+	testPoly.AddPoint(Vector2(480.0f - 25, 320 - 85));
+	testPoly.AddPoint(Vector2(80, 320 - 50));
+    
+	Matrix3 t, invT, r;
+	t.BuildTranslation(Vector2(-240, -160));
+	invT.BuildTranslation(Vector2(240, 160));
+	r.BuildRotation(DegToRad(10));
+	Matrix3 res = t * r * invT;
+	testPoly.Transform(res);
+	testPoly.Scale(Vector2(240, 160), 2.0f);
+    
+    holeTransition = new UIHoleTransition();
+	holeTransition->SetPolygon(testPoly);
 }
 
 void SpriteBasicsScreen::UnloadResources()
@@ -77,11 +96,13 @@ void SpriteBasicsScreen::WillDisappear()
 
 void SpriteBasicsScreen::Input(UIEvent * touch)
 {
-	if ((touch->phase == UIEvent::PHASE_ENDED) && (touch->tid == UIEvent::BUTTON_2))
+	//if ((touch->phase == UIEvent::PHASE_ENDED) /*&& (touch->tid == UIEvent::BUTTON_2)*/)
 	{
-		Core::Instance()->ToggleFullscreen();
-	}
-}
+		//Core::Instance()->ToggleFullscreen();
+        
+        UIScreenManager::Instance()->SetScreen(SCREEN_PARTICLE_TEST, holeTransition);
+    }
+}  
 
 void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 {
@@ -126,6 +147,15 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 0.0f, 1.0f, 0.5f);
 	RenderManager::Instance()->FillRect(Rect(100, 100, 40, 40));
 #else
+    
+    RenderManager::Instance()->ClearWithColor(0.0f, 0.4f, 0.0f, 1.0f);
+    
+    RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+    
+    RenderHelper::Instance()->FillRect(Rect(200, 0, 200, 200));
+    
+    RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(0.0f, 30.0f);
 	zebraSprite->Draw();
@@ -133,8 +163,8 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(50.0f, 30.0f);
 	zebraSprite->SetScale(0.5f, 0.5f);
-	zebraSprite->Draw();
-	
+	zebraSprite->Draw();   
+
 	zebraSprite->Reset();
 	zebraSprite->SetPosition(100.0f, 30.0f);
 	zebraSprite->SetScale(1.2f, 1.2f);
@@ -179,7 +209,6 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	zebraSprite->Draw(&drawState);
 
     RenderManager::Instance()->SetColor(0.0f, 0.7f, 0.0f, 0.3f);
-    RenderManager::Instance()->FlushState();
 	drawState.Reset();
 	drawState.SetPosition(250.0f, 130.0f);
 	drawState.SetPivotPoint(zebraSprite->GetWidth() / 2.0f, zebraSprite->GetHeight() / 2.0f);
@@ -188,6 +217,8 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	
     RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+
+    
 	/*
 	spriteFont->SetPosition(50, 50);
 	spriteFont->SetFrame(32);
@@ -206,7 +237,7 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	Size2i size = graphicsFont->GetStringSize(s);
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-	RenderHelper::Instance()->DrawRect(Rect(10, 200, size.dx, size.dy));
+	RenderHelper::Instance()->DrawRect(Rect(10.f, 200.f, size.dx, size.dy));
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 	RenderHelper::Instance()->DrawLine(Vector2(10, 200), 
@@ -226,6 +257,59 @@ void SpriteBasicsScreen::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	graphicsFont2->DrawString(10, 300, s);
 	graphicsFont2->DrawString(10, 300 + graphicsFont->GetFontHeight(), L"String number 2");
+     
+    
+    
+    
+    Polygon2 p;
+    p.AddPoint(Vector2(10.0f, 10.0f));
+    p.AddPoint(Vector2(100.0f, 10.0f));
+    p.AddPoint(Vector2(100.0f, 100.0f));
+    p.AddPoint(Vector2(10.0f, 100.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p, false);
+    
+    p.Translate(Vector2(200, 0));
+    
+    RenderHelper::Instance()->DrawPolygon(p, true);
+    
+    
+    
+    Polygon3 p2;
+    p2.AddPoint(Vector3(10.0f, 210.0f, 0.0f));
+    p2.AddPoint(Vector3(100.0f, 210.0f, 0.0f));
+    p2.AddPoint(Vector3(100.0f, 300.0f, 0.0f));
+    p2.AddPoint(Vector3(10.0f, 300.0f, 0.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p2, false);
+    
+    p2.Translate(Vector3(200, 0, 0.0f));
+    
+    RenderHelper::Instance()->DrawPolygon(p2, true);
+    RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+    RenderHelper::Instance()->DrawPolygonPoints(p2);
+    RenderHelper::Instance()->DrawCircle(Vector3(100, 100, 0), 100);
+    RenderHelper::Instance()->DrawCircle(Vector2(120, 120), 50);
+
+    RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
+    RenderHelper::Instance()->DrawPoint(Vector3(100, 100, 0));
+    RenderHelper::Instance()->DrawPoint(Vector2(120, 120));
+    
+    //p2.Rotate(
+    
+    RenderManager::Instance()->SetColor(0.0f, 1.0f, 1.0f, 1.0f);
+    
+    
+    p.Translate(Vector2(100, 0));
+    p2.Translate(Vector3(100, 0, 0.0f));
+    RenderHelper::Instance()->FillPolygon(p);
+    RenderHelper::Instance()->FillPolygon(p2);
+    
+    RenderManager::Instance()->ResetColor();
+    
+    
+    
+    
 #endif 
 	
 	//RenderManager::Instance()->ClipPop();

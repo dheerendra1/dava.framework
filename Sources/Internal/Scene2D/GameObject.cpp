@@ -172,11 +172,12 @@ void GameObject::RemoveFromManagerAnimation(BaseObject * animation, void * userD
 		manager->RemoveObject(this);
 }
 
-void GameObject::RemoveFromManagerAnimation(int32 track)
+Animation* GameObject::RemoveFromManagerAnimation(int32 track)
 {
 	Animation * animation = new Animation(this, 0.001f, Interpolation::LINEAR);
 	animation->AddEvent(Animation::EVENT_ANIMATION_START, Message(this, &GameObject::RemoveFromManagerAnimation));
 	animation->Start(track);
+    return animation;
 }
 
 /*
@@ -259,29 +260,36 @@ void GameObject::SetManager(GameObjectManager * _manager)
 
 void GameObject::Update(float32 timeElapsed)
 {
-	if (collision)
+	if(collision)
 		collision->Update(globalDrawState);
 
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
-	{
-		GameObject* o = *t;
-		o->Update(timeElapsed);
-	}
+    if(!children.empty())
+    {
+        GameObjectsList::iterator it_end = children.end();
+        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+    	{
+	    	GameObject *o = *t;
+		    o->Update(timeElapsed);
+	    }
+    }
 }
 	
 void GameObject::RecalcHierarchy(Sprite::DrawState & parentDrawState)
 {
 	globalDrawState.BuildStateFromParentAndLocal(parentDrawState, localDrawState);
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
-	{
-		GameObject* o = *t;
-		o->RecalcHierarchy(globalDrawState);
-	}
+    if(!children.empty())
+    {
+        GameObjectsList::iterator it_end = children.end();
+        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+        {
+            GameObject *o = *t;
+            o->RecalcHierarchy(globalDrawState);
+        }
+    }
 }
 	
 void GameObject::CollisionPhase()
 {
-
 }
 
 void GameObject::Draw()
@@ -327,7 +335,7 @@ void	GameObject::AttachObject(GameObject * gameObject)
 
 void	GameObject::DetachObject(GameObject * gameObject)
 {
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -355,7 +363,7 @@ void	GameObject::RemoveObject(GameObject * gameObject)
 {
 	//std::remove(animations.begin(), animations.end(), animation);
 	
-	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -384,7 +392,7 @@ void GameObject::ChangeManager(GameObjectManager * newManager)
 	{
 		newManager->AddObject(this);
 		
-		for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
+		for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
 		{
 			GameObject * child = *t;
 			child->ChangeManager(newManager);
@@ -432,6 +440,20 @@ bool GameObject::IsCollideWith(GameObject * gameObject)
 	}
 	return false;
 }
+
+bool GameObject::IsCollideWith(CollisionObject2 * collision2)
+{
+    if (collision && collision2)
+    {
+        collision->Update(globalDrawState);
+        //collision2->Update(gameObject->globalDrawState);
+        return collision->IsCollideWith(collision2);
+    }
+    return false;
+}
+
+    
+    
 void GameObject::SetCollisionObject(CollisionObject2 * obj)
 {
 	SafeRelease(collision);

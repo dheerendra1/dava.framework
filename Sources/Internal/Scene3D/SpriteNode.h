@@ -32,6 +32,7 @@
 #define __SPRITE_NODE_H__
 
 #include "Scene3D/SceneNode3d.h"
+#include "Render/RenderDataObject.h"
 
 namespace DAVA 
 {
@@ -58,12 +59,14 @@ protected:
     
     void CreateMeshFromSprite(int32 frameToGen);
     Vector<float32> verts;
-    Vector<float32> colors;
+    Vector<float32> textures;
     
     Sprite *sprite;
     Vector2 sprScale;
     Vector2 sprPivot;
     int32 frame;
+    
+    RenderDataObject *renderData;
 };
 };
 

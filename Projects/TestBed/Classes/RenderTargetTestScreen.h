@@ -39,6 +39,8 @@ public:
 	virtual void WillAppear();
 	virtual void WillDisappear();
 
+    virtual void Update(float32 timeElapsed);
+
 	virtual void Draw(const UIGeometricData &geometricData);
 	
 	virtual void Input(UIEvent * touch);

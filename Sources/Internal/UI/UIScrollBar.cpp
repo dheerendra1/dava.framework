@@ -42,6 +42,7 @@ UIControl *UIScrollBar::GetSlider()
     return slider;
 }
 
+    
 void UIScrollBar::Input(UIEvent *currentInput)
 {
     if (!delegate) 
@@ -65,11 +66,12 @@ void UIScrollBar::Input(UIEvent *currentInput)
         }
         
         newPos = Min(Max(0.0f, newPos), delegate->TotalAreaSize(this) - delegate->VisibleAreaSize(this));
+        
         delegate->OnViewPositionChanged(this, newPos);
     }
 }
 
-
+    
 void UIScrollBar::Draw(const UIGeometricData &geometricData)
 {
     if (delegate) 

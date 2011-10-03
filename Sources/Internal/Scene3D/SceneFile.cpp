@@ -232,8 +232,18 @@ bool SceneFile::ReadTexture()
 	}else
 	{
 		Logger::Debug("*** error reading texture: %s\n", textureDef.name);
+        uint8 * textureData = new uint8[64 * 64 * 4]; 
+        for (int32 k = 0; k < 64 * 64 * 4; k += 4)
+        {
+            textureData[k + 0] = 0xFF; 
+            textureData[k + 1] = 0x00; 
+            textureData[k + 2] = 0xFF; 
+            textureData[k + 3] = 0xFF; 
+        }
+        Texture * tex = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 64, 64);
+        scene->AddTexture(tex);
+        SafeRelease(tex);
 	}
-		
 	
 	if (debugLogEnabled)Logger::Debug("- Texture: %s %d\n", textureDef.name, textureDef.id);
 	return true;

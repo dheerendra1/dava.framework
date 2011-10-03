@@ -70,8 +70,14 @@ public:
 	virtual void			SetVolume(float32 volume); // [0..1]
 	virtual float32			GetVolume();
 	virtual void			SetLooping(bool looping);
+
+	/**
+		\brief Pause or resume playback.
+		\param[in] pause pause(true) or resume(false) playback.
+	*/
+	virtual void			Pause(bool pause);
     
-    virtual int32            Release();
+    virtual int32           Release();
 
 	eType			GetType();
 

@@ -107,18 +107,18 @@ void CollisionObject2::DebugDraw()
 	if (!basePolygon)return;
 	
 	RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-	RenderHelper::DrawPoint(circle.center, 3);
+	RenderHelper::Instance()->DrawPoint(circle.center, 3);
 	
-	RenderHelper::DrawCircle(circle.center, circle.radius);
+	RenderHelper::Instance()->DrawCircle(circle.center, circle.radius);
 
 	if (type == TYPE_POLYGON)
 	{
-		RenderHelper::DrawPolygon(polygon, true);
+		RenderHelper::Instance()->DrawPolygon(polygon, true);
 	}
 	
 	RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 	for (int32 k = 0; k < manifold.count; ++k)
-		RenderHelper::DrawPoint(manifold.contactPoints[k], 3);
+		RenderHelper::Instance()->DrawPoint(manifold.contactPoints[k], 3);
 	
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 }

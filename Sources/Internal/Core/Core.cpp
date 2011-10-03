@@ -570,24 +570,6 @@ void Core::SystemProcessFrame()
 	globalFrameIndex++;
 }
 
-void Core::Suspend()
-{
-	SoundSystem::Instance()->Suspend();
-	if (core)
-		core->OnSuspend();
-	isActive = false;
-}
-
-void Core::Resume()
-{
-	if (!isActive) 
-	{
-		isActive = true;
-		if (core)
-			core->OnResume();
-		SoundSystem::Instance()->Resume();
-	}
-}
 	
 void Core::GoBackground()
 {
@@ -638,11 +620,10 @@ bool Core::NeedToRecalculateMultipliers()
 	return needTorecalculateMultipliers;
 }
 
+void Core::SetIsActive(bool _isActive)
+{
+	isActive = _isActive;
+}
 
 
 };
-
-
-
-
-

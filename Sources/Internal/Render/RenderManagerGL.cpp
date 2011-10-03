@@ -132,7 +132,7 @@ void RenderManager::BeginFrame()
 	
 	SetRenderOrientation(Core::Instance()->GetScreenOrientation());
 	DVASSERT(!currentRenderTarget);
-	DVASSERT(!currentRenderEffect);
+	//DVASSERT(!currentRenderEffect);
 	DVASSERT(clipStack.empty());
 	DVASSERT(renderTargetStack.empty());
 	DVASSERT(renderEffectStack.empty());
@@ -521,7 +521,7 @@ void RenderManager::HWDrawArrays(ePrimitiveType type, int32 first, int32 count)
 
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
+		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
 	}
 
     RENDER_VERIFY(glDrawArrays(mode, first, count));
@@ -565,7 +565,7 @@ void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexForma
 	
 	if(debugEnabled)
 	{
-		Logger::Debug("Draw arrays texture: id %d", currentTexture->id);
+		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
 	}
 #if defined(__DAVAENGINE_IPHONE__)
 #define GL_UNSIGNED_INT 0

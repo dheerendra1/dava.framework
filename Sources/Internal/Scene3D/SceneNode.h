@@ -43,6 +43,10 @@ namespace DAVA
 class Scene;
 class SceneNodeAnimation;
 class SceneNodeAnimationKey;
+/**
+    \brief Root class of 3D scene hierarchy. 
+ 
+ */
 class SceneNode : public BaseObject
 {
 public:	
@@ -55,8 +59,28 @@ public:
 	virtual SceneNode * GetChild(int32 index);
 	virtual int32 GetChildrenCount();
 	virtual void	RemoveAllChilds();
+    
+    /**
+        \brief 
+     */
 	virtual SceneNode *	FindByName(const String & name);
+    /**
+        \brief Set name of this particular node
+        \param[in] new name for this node
+     */
     virtual void SetName(const String & name);
+
+    /**
+        \brief Get name of this particular node
+        \returns name of this node
+     */
+    inline const String & GetName();
+
+    /**
+        \brief Get full name of this node from root. This function is slow because it go up by hierarchy and make full node name.
+        \returns this node full name from root. Example [MaxScene->camera->instance0]
+     */
+    String GetFullName();
 	
 	// virtual updates
 	virtual void	Update(float32 timeElapsed);
@@ -115,6 +139,7 @@ public:
 	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
 	
 protected:
+    String RecursiveBuildFullName(SceneNode * node, SceneNode * endNode);
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
 	void SetParent(SceneNode * node);
@@ -137,7 +162,12 @@ inline SceneNode * SceneNode::GetParent()
 {
 	return parent;
 }
-	
+    
+inline const String & SceneNode::GetName()
+{
+    return name;
+}
+    
 };
 
 #endif // __DAVAENGINE_SCENENODE_H__

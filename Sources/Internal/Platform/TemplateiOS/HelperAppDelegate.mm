@@ -92,15 +92,16 @@ int DAVA::Core::Run(int argc, char * argv[], AppHandle handle)
 	return retVal;		
 }
 
-#include "Core/Core.h"
-#include "Core/ApplicationCore.h"
-#include "Debug/MemoryManager.h"
-#include "UI/UIScreenManager.h"
 
 
 @implementation HelperAppDelegate
 
 @synthesize glController;
+
+#include "Core/Core.h"
+#include "Core/ApplicationCore.h"
+#include "Debug/MemoryManager.h"
+#include "UI/UIScreenManager.h"
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application 
@@ -124,12 +125,28 @@ int DAVA::Core::Run(int argc, char * argv[], AppHandle handle)
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	DAVA::Core::Instance()->Resume();
+    DAVA::ApplicationCore * core = DAVA::Core::Instance()->GetApplicationCore();
+    if(core)
+    {
+        core->OnResume();
+    }
+    else 
+    {
+       DAVA::Core::Instance()->SetIsActive(true);
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-	DAVA::Core::Instance()->Suspend();
+    DAVA::ApplicationCore * core = DAVA::Core::Instance()->GetApplicationCore();
+    if(core)
+    {
+        core->OnSuspend();
+    }
+    else 
+    {
+        DAVA::Core::Instance()->SetIsActive(false);
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -139,7 +156,15 @@ int DAVA::Core::Run(int argc, char * argv[], AppHandle handle)
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-	DAVA::Core::Instance()->Resume();
+    DAVA::ApplicationCore * core = DAVA::Core::Instance()->GetApplicationCore();
+    if(core)
+    {
+        core->OnResume();
+    }
+    else 
+    {
+        DAVA::Core::Instance()->SetIsActive(true);
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

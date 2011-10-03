@@ -67,20 +67,8 @@ protected:
 	std::vector<StaticMesh*> meshes;
 	std::vector<int32> polygonGroupIndexes;
 	std::vector<Material*> materials;
-	bool visible;
 	AABBox3 bbox;
 };
-	
-// inline functions implementation
-inline void MeshInstanceNode::SetVisible(bool isVisible)
-{
-	visible = isVisible;
-}
-
-inline bool MeshInstanceNode::GetVisible()
-{
-	return visible;
-}
 	
 inline AABBox3 & MeshInstanceNode::GetBoundingBox()
 {
