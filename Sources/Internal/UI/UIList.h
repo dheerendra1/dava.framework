@@ -135,7 +135,11 @@ public:
 	
 	void SetDelegate(UIListDelegate *newDelegate);
 	
-	void ResetScrollPos();
+    void ScrollToElement(int32 index);
+    
+    float32 GetScrollPosition();
+    void SetScrollPosition(float32 newScrollPos);
+	void ResetScrollPosition();
 	void RefreshList();
 	
 	void SetSlowDownTime(float newValue);//sets how fast reduce speed (for example 0.25 reduces speed to zero for the 0.25 second ). To remove inertion effect set tihs value to 0

@@ -366,7 +366,7 @@ void UIFileSystemDialog::RefreshList()
             fileUnits.push_back(fu);
         }
     }
-    fileListView->ResetScrollPos();
+    fileListView->ResetScrollPosition();
     fileListView->RefreshList();
 }
 

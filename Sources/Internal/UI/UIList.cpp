@@ -97,7 +97,6 @@ void UIList::ScrollTo(float delta)
 	scroll->Impulse(delta * -4.8f);
 }
 
-
 void UIList::SetRect(const Rect &rect, bool rectInAbsoluteCoordinates/* = FALSE*/)
 {
 	if(delegate)
@@ -119,18 +118,62 @@ void UIList::SetDelegate(UIListDelegate *newDelegate)
 	delegate = newDelegate;
 }
 
-void UIList::ResetScrollPos()
+void UIList::ScrollToElement(int32 index)
 {
-	if(orientation == ORIENTATION_HORIZONTAL)
+    DVASSERT(delegate)
+    DVASSERT(0<=index && index<delegate->ElementsCount(this))
+    float32 newScrollPos = 0.0f;
+    if(orientation == ORIENTATION_HORIZONTAL)
 	{
-		scrollContainer->relativePosition.x = 0;
-        scroll->SetPosition(0);
+        for(int32 i=0; i<index; ++i)
+        {
+            newScrollPos += delegate->CellWidth(this,i);
+        }
 	}
 	else 
 	{
-		scrollContainer->relativePosition.y = 0;
-        scroll->SetPosition(0);
+        for(int32 i=0; i<index; ++i)
+        {
+            newScrollPos += delegate->CellHeight(this,i);
+        }
 	}
+    SetScrollPosition(newScrollPos);
+}
+    
+float32 UIList::GetScrollPosition()
+{
+    return scroll->GetPosition();
+}
+    
+void UIList::SetScrollPosition(float32 newScrollPos)
+{
+    if(needRefresh)
+	{
+		FullRefresh();
+	}
+    
+    if(orientation == ORIENTATION_HORIZONTAL)
+	{
+        scroll->SetPosition(-newScrollPos);
+	}
+	else 
+	{
+        scroll->SetPosition(-newScrollPos);
+	}
+}
+    
+void UIList::ResetScrollPosition()
+{
+    if(orientation == ORIENTATION_HORIZONTAL)
+    {
+        scrollContainer->relativePosition.x = 0;
+        scroll->SetPosition(0);
+    }
+    else 
+    {
+        scrollContainer->relativePosition.y = 0;
+        scroll->SetPosition(0);
+    }
 }
 
 void UIList::FullRefresh()
@@ -605,7 +648,7 @@ float32 UIList::ViewPosition(UIScrollBar *forScrollBar)
 {
     return scroll->GetPosition();
 }
-
+    
 void UIList::OnViewPositionChanged(UIScrollBar *byScrollBar, float32 newPosition)
 {
     scroll->SetPosition(-newPosition);
