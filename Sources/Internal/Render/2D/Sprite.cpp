@@ -73,7 +73,8 @@ Sprite::Sprite()
 
 	clipPolygon = 0;
 	
-	resourceToPhysicalFactor = 1.0f;
+	resourceToVirtualFactor = 1.0f;
+    resourceToPhysicalFactor = 1.0f;
     
     spriteRenderObject = new RenderDataObject();
     vertexStream = spriteRenderObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
@@ -320,6 +321,7 @@ Sprite* Sprite::PureCreate(const String & spriteName, Sprite* forPointer)
 		}
 	}
 	
+	spr->resourceToVirtualFactor = Core::Instance()->GetResourceToVirtualFactor(spr->resourceSizeIndex);
 	spr->resourceToPhysicalFactor = Core::Instance()->GetResourceToPhysicalFactor(spr->resourceSizeIndex);
 
 
@@ -401,7 +403,8 @@ void Sprite::InitFromTexture(Texture *fromTexture, int32 xOffset, int32 yOffset,
 		sprHeight = Core::GetPhysicalToVirtualFactor() * sprHeight;
 	}
 
-	resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+    resourceToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
+	resourceToVirtualFactor = Core::GetPhysicalToVirtualFactor();
     resourceSizeIndex = Core::Instance()->GetDesirableResourceIndex();
 	
 	this->type = SPRITE_FROM_TEXTURE;
@@ -990,8 +993,8 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
         clippedVertices.clear();
         clippedTexCoords.clear();
         Texture * t = GetTexture(frame);
-		float32 adjWidth = 1.f / t->width * resourceToPhysicalFactor;
-		float32 adjHeight = 1.f / t->height * resourceToPhysicalFactor;
+		float32 adjWidth = 1.f / t->width / resourceToVirtualFactor;
+		float32 adjHeight = 1.f / t->height / resourceToVirtualFactor;
         
 		for(int32 i = 0; i < clipPolygon->pointCount; ++i)
 		{
@@ -1313,8 +1316,9 @@ void Sprite::PrepareForNewSize()
 	
 	clipPolygon = 0;
 	
-	resourceToPhysicalFactor = 1.0f;
-	
+	resourceToVirtualFactor = 1.0f;
+    resourceToPhysicalFactor = 1.0f;
+    
 	PureCreate(relativePathname.substr(0, relativePathname.length() - 4), this);
 //TODO: следующая строка кода написада здесь только до тех времен 
 //		пока defaultPivotPoint не начнет задаваться прямо в спрайте,
