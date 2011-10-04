@@ -328,6 +328,7 @@ private:
 	
 	int32 resourceSizeIndex;
 
+	float32 resourceToVirtualFactor;
 	float32 resourceToPhysicalFactor;
 
 	eSpriteType type;
