@@ -406,20 +406,24 @@ void Camera::Draw()
     {
         Camera * prevCamera = scene->GetCurrentCamera();
 
-        //scene->SetCamera(this)
+        // Build this camera matrixes & it's frustum
         this->Set();
         
-        // restore previous camera
+        // Restore original camera
         prevCamera->Set();
         
         RenderManager::Instance()->SetColor(0.0f, 1.0f, 0.0f, 1.0f);
         
+        // If this is clip camera - show it as red camera
         if (this == scene->GetClipCamera())
             RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+
+        // Draw frustum of this camera
         if (currentFrustum)
         {
             currentFrustum->DebugDraw();
         }
+        // reset color
         RenderManager::Instance()->ResetColor();
     }
 }

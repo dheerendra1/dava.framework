@@ -70,7 +70,7 @@ public:
     virtual void OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCell *selectedCell);
 
     
-    UIHierarchy *hierarchy;
+    UIHierarchy * sceneTree;
     
 	// 3d engine scene
 	Scene * scene;
@@ -101,9 +101,17 @@ public:
     UIStaticText * nodeBoundingBoxMin;
     UIStaticText * nodeBoundingBoxMax;
     UIButton * lookAtButton;
+    UIButton * removeNodeButton;
     void OnLookAtButtonPressed(BaseObject * obj, void *, void *);
+    void OnRemoveNodeButtonPressed(BaseObject * obj, void *, void *);
     
     UIFileSystemDialog * fileSystemDialog;
+    enum {
+        DIALOG_OPERATION_CONVERT_DAE = 1,
+        DIALOG_OPERATION_OPEN_SCE,
+    };
+    uint32 fileSystemDialogOpMode;
+    
     void OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile);
     void OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog);
     

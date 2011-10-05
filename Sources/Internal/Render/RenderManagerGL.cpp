@@ -479,6 +479,15 @@ void RenderManager::FlushState()
 	}
 	
 	PrepareRealMatrix();
+    
+    AttachRenderData(shader);
+    if (shader)
+    {
+        shader->Bind();
+    }else
+    {
+        Shader::Unbind();
+    }
 }
 
 void RenderManager::SetTexCoordPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)

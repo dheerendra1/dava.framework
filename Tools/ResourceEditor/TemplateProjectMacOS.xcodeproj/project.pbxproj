@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE1B7D5113DF052300BA032C /* CameraController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1B7D5013DF052300BA032C /* CameraController.cpp */; };
+		FE2246EE142F7AB300BC3B92 /* ColladaConvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE2246EC142F7AB300BC3B92 /* ColladaConvert.cpp */; };
 		FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */; };
 		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
 		FE54EBBB13A1190000912810 /* libpng-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE54EBBA13A1190000912810 /* libpng-static.a */; };
@@ -29,7 +30,6 @@
 		FEDDC9AB142A3DDB0004BF1A /* ColladaAnimatedMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC98D142A3DDB0004BF1A /* ColladaAnimatedMesh.cpp */; };
 		FEDDC9AC142A3DDB0004BF1A /* ColladaAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC98F142A3DDB0004BF1A /* ColladaAnimation.cpp */; };
 		FEDDC9AD142A3DDB0004BF1A /* ColladaCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC991142A3DDB0004BF1A /* ColladaCamera.cpp */; };
-		FEDDC9AE142A3DDB0004BF1A /* ColladaConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC993142A3DDB0004BF1A /* ColladaConverter.cpp */; };
 		FEDDC9AF142A3DDB0004BF1A /* ColladaDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC994142A3DDB0004BF1A /* ColladaDocument.cpp */; };
 		FEDDC9B0142A3DDB0004BF1A /* ColladaLight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC997142A3DDB0004BF1A /* ColladaLight.cpp */; };
 		FEDDC9B1142A3DDB0004BF1A /* ColladaMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEDDC999142A3DDB0004BF1A /* ColladaMaterial.cpp */; };
@@ -115,6 +115,8 @@
 		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1B7D4F13DF04B600BA032C /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
 		FE1B7D5013DF052300BA032C /* CameraController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CameraController.cpp; sourceTree = "<group>"; };
+		FE2246EC142F7AB300BC3B92 /* ColladaConvert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColladaConvert.cpp; path = Classes/Collada/ColladaConvert.cpp; sourceTree = "<group>"; };
+		FE2246ED142F7AB300BC3B92 /* ColladaConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColladaConvert.h; path = Classes/Collada/ColladaConvert.h; sourceTree = "<group>"; };
 		FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE54EBBA13A1190000912810 /* libpng-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-static.a"; path = "../../Libs/ImageMagick-6.6.9-0/delegates/lib/libpng-static.a"; sourceTree = SOURCE_ROOT; };
@@ -147,7 +149,6 @@
 		FEDDC990142A3DDB0004BF1A /* ColladaAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColladaAnimation.h; path = Classes/Collada/ColladaAnimation.h; sourceTree = "<group>"; };
 		FEDDC991142A3DDB0004BF1A /* ColladaCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColladaCamera.cpp; path = Classes/Collada/ColladaCamera.cpp; sourceTree = "<group>"; };
 		FEDDC992142A3DDB0004BF1A /* ColladaCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColladaCamera.h; path = Classes/Collada/ColladaCamera.h; sourceTree = "<group>"; };
-		FEDDC993142A3DDB0004BF1A /* ColladaConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColladaConverter.cpp; path = Classes/Collada/ColladaConverter.cpp; sourceTree = "<group>"; };
 		FEDDC994142A3DDB0004BF1A /* ColladaDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColladaDocument.cpp; path = Classes/Collada/ColladaDocument.cpp; sourceTree = "<group>"; };
 		FEDDC995142A3DDB0004BF1A /* ColladaDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColladaDocument.h; path = Classes/Collada/ColladaDocument.h; sourceTree = "<group>"; };
 		FEDDC996142A3DDB0004BF1A /* ColladaIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColladaIncludes.h; path = Classes/Collada/ColladaIncludes.h; sourceTree = "<group>"; };
@@ -349,13 +350,14 @@
 		FEDDC95F1429FFEB0004BF1A /* ColladaExport */ = {
 			isa = PBXGroup;
 			children = (
+				FE2246EC142F7AB300BC3B92 /* ColladaConvert.cpp */,
+				FE2246ED142F7AB300BC3B92 /* ColladaConvert.h */,
 				FEDDC98D142A3DDB0004BF1A /* ColladaAnimatedMesh.cpp */,
 				FEDDC98E142A3DDB0004BF1A /* ColladaAnimatedMesh.h */,
 				FEDDC98F142A3DDB0004BF1A /* ColladaAnimation.cpp */,
 				FEDDC990142A3DDB0004BF1A /* ColladaAnimation.h */,
 				FEDDC991142A3DDB0004BF1A /* ColladaCamera.cpp */,
 				FEDDC992142A3DDB0004BF1A /* ColladaCamera.h */,
-				FEDDC993142A3DDB0004BF1A /* ColladaConverter.cpp */,
 				FEDDC994142A3DDB0004BF1A /* ColladaDocument.cpp */,
 				FEDDC995142A3DDB0004BF1A /* ColladaDocument.h */,
 				FEDDC996142A3DDB0004BF1A /* ColladaIncludes.h */,
@@ -564,7 +566,6 @@
 				FEDDC9AB142A3DDB0004BF1A /* ColladaAnimatedMesh.cpp in Sources */,
 				FEDDC9AC142A3DDB0004BF1A /* ColladaAnimation.cpp in Sources */,
 				FEDDC9AD142A3DDB0004BF1A /* ColladaCamera.cpp in Sources */,
-				FEDDC9AE142A3DDB0004BF1A /* ColladaConverter.cpp in Sources */,
 				FEDDC9AF142A3DDB0004BF1A /* ColladaDocument.cpp in Sources */,
 				FEDDC9B0142A3DDB0004BF1A /* ColladaLight.cpp in Sources */,
 				FEDDC9B1142A3DDB0004BF1A /* ColladaMaterial.cpp in Sources */,
@@ -576,6 +577,7 @@
 				FEDDC9B7142A3DDB0004BF1A /* ColladaSceneNode.cpp in Sources */,
 				FEDDC9B8142A3DDB0004BF1A /* ColladaSceneNodeAnimation.cpp in Sources */,
 				FEDDC9B9142A3DDB0004BF1A /* ColladaTexture.cpp in Sources */,
+				FE2246EE142F7AB300BC3B92 /* ColladaConvert.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

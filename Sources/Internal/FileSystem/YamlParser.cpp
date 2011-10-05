@@ -276,6 +276,11 @@ bool YamlParser::Parse(const String & pathName)
 	
 
 	File * yamlFile = File::Create(pathName, File::OPEN | File::READ);
+    if (!yamlFile)
+    {
+        return false;
+    }
+    
 	dataHolder.fileSize = yamlFile->GetSize();
 	dataHolder.data = new uint8[dataHolder.fileSize];
 	dataHolder.dataOffset = 0;

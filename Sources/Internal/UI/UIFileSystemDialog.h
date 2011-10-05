@@ -41,10 +41,25 @@ class FileList;
 class UIStaticText;
 class UITextField;
 class UIFileSystemDialog;
+
+/**
+    \ingroup controlsystem
+    \brief Delegate of UIFileSystemDialog
+    It's main purpose to receive events from UIFileSystemDialog
+ */
 class UIFileSystemDialogDelegate
 {
 public:
+    /**
+        \brief This function called when user selected file in UIFileSystemDialog
+        \param[in] forDialog pointer to dialog that initiated the operation
+        \param[in] pathToFile path to selecte file
+     */
     virtual void OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile) = 0;
+    /**
+        \brief This function called when user canceled file selection in UIFileSystemDialog
+        \param[in] forDialog pointer to dialog
+     */
     virtual void OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog) = 0;
 };
 
@@ -107,7 +122,13 @@ public:
     
     
     void SetCurrentDir(const String &newDirPath);
-    const String &GetCurrentDir();
+    
+    /**
+        \brief Function to return last directory path of this dialog
+        You can use this function to get file directory in delegate
+        \returns path to last visited directory 
+     */
+    const String & GetCurrentDir();
     
     /**
         \brief Set extension filter from string variable. Each extension should be separated by semicolon(;).

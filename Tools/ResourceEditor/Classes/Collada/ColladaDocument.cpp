@@ -240,6 +240,7 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
 		strcpy(texture.name, textureRelativePathName.c_str());
 		
 		// HACK for .jpg into .png
+        // work for all extensions
 		std::string texname(texture.name);
 		texname.replace(texname.find("."), 4, ".png");
 		

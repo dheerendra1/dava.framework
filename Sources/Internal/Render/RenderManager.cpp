@@ -110,9 +110,11 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     currentRenderData = 0;
     pointerArraysCurrentState = 0;
     pointerArraysRendererState = 0;
+    enabledAttribCount = 0;
     
     statsFrameCountToShowDebug = 0;
     frameToShowDebugStats = -1;
+    shader = 0;
     
     FLAT_COLOR = 0;
     TEXTURE_MUL_FLAT_COLOR = 0;
@@ -265,11 +267,20 @@ void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
             
 #if defined(__DAVAENGINE_OPENGL__)
             RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            if (textureLevel != 0)
+                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
             RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
 #elif defined(__DAVAENGINE_DIRECTX9__)
             RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
 #endif 
-		}
+		}else
+        {
+#if defined(__DAVAENGINE_OPENGL__)
+            RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            if (textureLevel != 0)
+                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+#endif
+        }
 	}
 }
 	
@@ -278,6 +289,18 @@ Texture *RenderManager::GetTexture(uint32 textureLevel)
     DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
 	return currentTexture[textureLevel];	
 }
+    
+void RenderManager::SetShader(Shader * _shader)
+{
+    SafeRelease(shader);
+    shader = SafeRetain(_shader);
+}
+
+Shader * RenderManager::GetShader()
+{
+    return shader;
+}
+
 
 void RenderManager::SetRenderData(RenderDataObject * object)
 {
@@ -291,7 +314,7 @@ void RenderManager::AttachRenderData(Shader * shader)
     {
         // TODO: should be moved to RenderManagerGL
 #if defined(__DAVAENGINE_OPENGL__)
-	#if defined(__DAVAENGINE_MACOS__)
+	#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
 			RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer));
 	#else
 			RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer));
@@ -329,6 +352,69 @@ void RenderManager::AttachRenderData(Shader * shader)
         {
             EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
         }
+        pointerArraysRendererState = pointerArraysCurrentState;
+        
+        for (int32 p = 0; p < enabledAttribCount; ++p)
+        {
+            glDisableVertexAttribArray(p);
+        }
+    }
+    else
+    {
+        int32 currentEnabledAttribCount = 0;
+        //glDisableVertexAttribArray(0);
+        //glDisableVertexAttribArray(1);
+        
+        pointerArraysCurrentState = 0;
+        
+        //if (currentRenderData->vboBuffer != 0)
+        //{
+#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+#else
+        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+#endif
+        //}
+        
+        int32 size = (int32)currentRenderData->streamArray.size();
+        for (int32 k = 0; k < size; ++k)
+        {
+            RenderDataStream * stream = currentRenderData->streamArray[k];
+            GLboolean normalized = GL_FALSE;
+            
+            int32 attribIndex = shader->GetAttributeIndex(stream->formatMark);
+            if (attribIndex != -1)
+            {
+                glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
+                
+                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
+                {
+                    glEnableVertexAttribArray(attribIndex);
+                }
+                if (attribIndex + 1 > currentEnabledAttribCount)
+                    currentEnabledAttribCount = attribIndex + 1;    // count of enabled attributes
+                
+                pointerArraysCurrentState |= stream->formatMark;
+            }
+        };
+        
+        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
+        {
+            glDisableVertexAttribArray(p);
+        }
+        
+        //        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
+        //        
+        //        if (!(difference & EVF_VERTEX))
+        //        {
+        //            int32 attribIndex = shader->GetAttributeIndex(EVF_VERTEX);
+        //            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
+        //        }
+        //        if (!(difference & EVF_TEXCOORD0))
+        //        {
+        //            int32 attribIndex = shader->GetAttributeIndex(EVF_TEXCOORD0);
+        //            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
+        //        }
         pointerArraysRendererState = pointerArraysCurrentState;
     }
 //    for (uint32 formatFlag = EVF_LOWER_BIT; formatFlag <= EVF_HIGHER_BIT; formatFlag >>= 1)
@@ -456,14 +542,6 @@ void RenderManager::SetRenderEffect(RenderEffect *renderEffect)
 {
 	//renderEffectStack.push(SafeRetain(currentRenderEffect));
 	SetNewRenderEffect(renderEffect);
-}
-
-void RenderManager::RestoreRenderEffect()
-{
-//	RenderEffect *renderEffect = renderEffectStack.top();
-//	renderEffectStack.pop();
-//	SetNewRenderEffect(renderEffect);
-//	SafeRelease(renderEffect);
 }
 
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)

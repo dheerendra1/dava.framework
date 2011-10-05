@@ -34,6 +34,7 @@
 #include "Render/RenderDataObject.h"
 #include "Render/Texture.h"
 #include "Scene3D/Scene.h"
+#include "Render/Shader.h"
 
 namespace DAVA
 {
@@ -46,11 +47,23 @@ LandscapeNode::LandscapeNode(Scene * _scene)
     for (int32 t = 0; t < TEXTURE_COUNT; ++t)
         textures[t] = 0;
     
-    frustum = new Frustum();
+    frustum = 0; //new Frustum();
+    
+    singleTextureShader = new Shader();
+    singleTextureShader->LoadFromYaml("~res:/Shaders/Landscape/single-texture.shader");
+    
+    detailShader = new Shader();
+    detailShader->LoadFromYaml("~res:/Shaders/Landscape/detail-texture.shader");
+    uniformTexture = detailShader->FindUniformLocationByName("texture");
+    uniformDetailTexture = detailShader->FindUniformLocationByName("detailTexture");
+    uniformCameraPosition = detailShader->FindUniformLocationByName("cameraPosition");
 }
 
 LandscapeNode::~LandscapeNode()
 {
+    SafeRelease(singleTextureShader);
+    SafeRelease(detailShader);
+    //SafeRelease(frustum);
     ReleaseAllRDOQuads();
     
     for (int32 t = 0; t < TEXTURE_COUNT; ++t)
@@ -82,8 +95,8 @@ int8 LandscapeNode::AllocateRDOQuad(LandscapeQuad * quad)
     RenderDataObject * landscapeRDO = new RenderDataObject();
     landscapeRDO->SetStream(EVF_VERTEX, TYPE_FLOAT, 3, sizeof(LandscapeVertex), &landscapeVertices[0].position); 
     landscapeRDO->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, sizeof(LandscapeVertex), &landscapeVertices[0].texCoord); 
-//    landscapeRDO->BuildVertexBuffer((quad->size + 1) * (quad->size + 1));
-//    SafeDeleteArray(landscapeVertices);
+    landscapeRDO->BuildVertexBuffer((quad->size + 1) * (quad->size + 1));
+    SafeDeleteArray(landscapeVertices);
     
     landscapeVerticesArray.push_back(landscapeVertices);
     
@@ -385,7 +398,8 @@ void LandscapeNode::DrawQuad(QuadTreeNode<LandscapeQuad> * currentNode, int8 lod
             cnt += 6;
         }
     RenderManager::Instance()->SetRenderData(landscapeRDOArray[currentNode->data.rdoQuad]);
-    RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, cnt, EIF_16, indices); 
+    RenderManager::Instance()->FlushState();
+    RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, cnt, EIF_16, indices); 
 }
     
 void LandscapeNode::DrawFans()
@@ -431,13 +445,14 @@ void LandscapeNode::DrawFans()
         drawIndices[count++] = (xbuf) + (ybuf) * width;
         
         //RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-        RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLEFAN, count, EIF_16, indices); 
+        RenderManager::Instance()->FlushState();
+        RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLEFAN, count, EIF_16, indices); 
     }
 }
     
 void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 {
-//    Frustum * frustum = clipCamera->GetFrustum();
+    //Frustum * frustum = scene->GetClipCamera()->GetFrustum();
     if (!frustum->IsInside(currentNode->data.bbox))return;
 
     /*
@@ -571,45 +586,78 @@ void LandscapeNode::Draw()
 {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
-    if (textures[TEXTURE_BASE])
-        RenderManager::Instance()->SetTexture(textures[TEXTURE_BASE]);
-    
-    RenderManager::Instance()->ResetColor();
-    
-
-	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
-	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
-    frustum->Set(meshFinalMatrix * RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION));
-    cameraPos = scene->GetClipCamera()->GetPosition() * worldTransform;
-    
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
-
-    fans.clear();
-    Draw(&quadTreeHead);
-    DrawFans();
-    
-    RenderManager::Instance()->RestoreRenderEffect();
-    
-    glDisable(GL_CULL_FACE);
-    
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glEnable(GL_POLYGON_OFFSET_LINE);
-        glPolygonOffset(0.0f, 1.0f);
-        RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
-        fans.clear();
-        Draw(&quadTreeHead);
-        DrawFans();
-        RenderManager::Instance()->RestoreRenderEffect();
-        glDisable(GL_POLYGON_OFFSET_LINE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }   
+    }
 #endif
     
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
+    RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+    if (textures[TEXTURE_BASE])
+        RenderManager::Instance()->SetTexture(textures[TEXTURE_BASE]);
+    if (textures[TEXTURE_DETAIL])
+        RenderManager::Instance()->SetTexture(textures[TEXTURE_DETAIL], 1);
+    
+    RenderManager::Instance()->ResetColor();
+    
+/*
+    Boroda: I do not understand why, but this code breaks frustrum culling on landscape.
+    I've spent an hour, trying to understand what's going on, without luck. 
+ */
+    
+//	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
+//	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
+//    //frustum->Set(meshFinalMatrix * RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION));
+//    cameraPos = scene->GetClipCamera()->GetPosition() * worldTransform;
+//
+//    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
+//    frustum->Set();
+
+    frustum = scene->GetClipCamera()->GetFrustum();
+    cameraPos = scene->GetClipCamera()->GetPosition();
+    
+    fans.clear();
+    
+    RenderManager::Instance()->SetShader(detailShader);
+    RenderManager::Instance()->FlushState();
+    detailShader->SetUniformValue(uniformTexture, 0);
+    detailShader->SetUniformValue(uniformDetailTexture, 1);
+    Vector3 lightPos = Vector3(0.0f, 0.0f, 100.0f);
+    //lightPos.Normalize();
+    detailShader->SetUniformValue(uniformCameraPosition, lightPos);
+
+    Draw(&quadTreeHead);
+    DrawFans();
+    
+    
+    glDisable(GL_CULL_FACE);
+#if defined(__DAVAENGINE_MACOS__)
+    if (debugFlags & DEBUG_DRAW_ALL)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }   
+#endif 
+    
+    if (textures[TEXTURE_DETAIL])
+        RenderManager::Instance()->SetTexture(0, 1);
+
+//#if defined(__DAVAENGINE_MACOS__)
+//    if (debugFlags & DEBUG_DRAW_ALL)
+//    {
+//        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//        glEnable(GL_POLYGON_OFFSET_LINE);
+//        glPolygonOffset(0.0f, 1.0f);
+//        RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
+//        fans.clear();
+//        Draw(&quadTreeHead);
+//        DrawFans();
+//        glDisable(GL_POLYGON_OFFSET_LINE);
+//        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//    }   
+//#endif
+    
+    //RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
 
 }
     

@@ -237,6 +237,24 @@ Shader::~Shader()
     DeleteShaders();
 }
     
+void Shader::SetUniformValue(int32 uniformLocation, int32 value)
+{
+    glUniform1i(uniformLocation, value);
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, const Vector3 & vector)
+{
+    glUniform3fv(uniformLocation, 1, &vector.x);
+}
+void Shader::SetUniformValue(int32 uniformLocation, const Vector4 & vector)
+{
+    glUniform4fv(uniformLocation, 1, &vector.x);
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, const Matrix4 & matrix)
+{
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, matrix.data);
+}
     
 int32 Shader::GetAttributeIndex(eVertexFormat vertexFormat)
 {
@@ -307,7 +325,16 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     return status;
 }
     
-void Shader::Set()
+void Shader::Unbind()
+{
+    if (activeProgram != 0)
+    {
+        glUseProgram(0);
+        activeProgram = 0;
+    }
+}
+    
+void Shader::Bind()
 {
     if (activeProgram != program)
     {
@@ -330,7 +357,7 @@ void Shader::Set()
                 const Color & c = RenderManager::Instance()->GetColor();
                 glUniform4fv(uniformLocations[k], 1, &c.r);
                 break;
-            }       
+            }  
         default:
             
             break;

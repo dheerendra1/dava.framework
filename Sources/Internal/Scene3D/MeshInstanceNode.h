@@ -45,6 +45,7 @@ public:
 	
 	void AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupIndex, Material* material);
 	
+    virtual void Update(float32 timeElapsed);
 	virtual void Draw();
 	
 	inline void SetVisible(bool isVisible);
@@ -68,6 +69,7 @@ protected:
 	std::vector<int32> polygonGroupIndexes;
 	std::vector<Material*> materials;
 	AABBox3 bbox;
+    AABBox3 transformedBox;
 };
 	
 inline AABBox3 & MeshInstanceNode::GetBoundingBox()

@@ -115,7 +115,7 @@ uint32 RenderDataObject::GetResultFormat()
     
 void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
 {
-#if !defined(__DAVAENGINE_MACOS__)
+//#if !defined(__DAVAENGINE_MACOS__)
     
 #if defined (__DAVAENGINE_OPENGL__)
     uint32 size = streamArray.size();
@@ -137,7 +137,7 @@ void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
     
     int32 stride = streamArray[0]->stride;
     
-#if defined(__DAVAENGINE_MACOS__)
+#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
     RENDER_VERIFY(glGenBuffersARB(1, &vboBuffer));
     RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, vboBuffer));
     RENDER_VERIFY(glBufferDataARB(GL_ARRAY_BUFFER_ARB, vertexCount * stride, streamArray[0]->pointer, GL_STATIC_DRAW_ARB));
@@ -153,7 +153,7 @@ void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
         //Logger::Debug("vbo offset: %d", (uint32)streamArray[k]->pointer);
     }
     
-#if defined(__DAVAENGINE_MACOS__)
+#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
     RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0));
 #else
     RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, 0));
@@ -161,7 +161,7 @@ void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
 
 #endif // #if defined (__DAVAENGINE_OPENGL__)
     
-#endif // #if !defined(__DAVAENGINE_MACOS__)
+//#endif // #if !defined(__DAVAENGINE_MACOS__)
     
 } 
 

@@ -55,38 +55,50 @@ void MeshInstanceNode::AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupInde
 	PolygonGroup * group = mesh->GetPolygonGroup(polygonGroupIndex);
 	bbox.AddAABBox(group->GetBoundingBox());
 }
-
+    
+void MeshInstanceNode::Update(float32 timeElapsed)
+{
+    bool needUpdateTransformBox = false;
+    if (!(flags & NODE_WORLD_MATRIX_ACTUAL)) 
+    {
+        needUpdateTransformBox = true;
+    }
+    SceneNode::Update(timeElapsed);
+    
+    if (needUpdateTransformBox)
+        bbox.GetTransformedBox(worldTransform, transformedBox);
+}
+    
 void MeshInstanceNode::Draw()
 {
 	if (!visible)return;
     
-    
-    AABBox3 transformedBox;
-    bbox.GetTransformedBox(worldTransform, transformedBox);
+
     if (!scene->GetClipCamera()->GetFrustum()->IsInside(transformedBox))return;
     
 		
 	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
 	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
-    
-    /* float32 proj[16];
-    glGetFloatv(GL_MODELVIEW_MATRIX, proj);
-    
-    for (int32 k = 0; k < 16; ++k)
-    {
-        if (proj[k] != prevMatrix.data[k])
-        {
-            printf("k:%d - %0.3f = %0.3f\n", k, proj[k], prevMatrix.data[k]);
-        }
-    } */
-    
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
+
+//    /* float32 proj[16];
+//    glGetFloatv(GL_MODELVIEW_MATRIX, proj);
+//    
+//    for (int32 k = 0; k < 16; ++k)
+//    {
+//        if (proj[k] != prevMatrix.data[k])
+//        {
+//            printf("k:%d - %0.3f = %0.3f\n", k, proj[k], prevMatrix.data[k]);
+//        }
+//    } */
+//    
     
     //glMatrixMode(GL_MODELVIEW);
     //glPushMatrix();
     //glMultMatrixf(worldTransform.data);
-
-	for (uint32 k = 0; k < meshes.size(); ++k)
+    
+    uint32 meshesSize = meshes.size();
+	for (uint32 k = 0; k < meshesSize; ++k)
 	{
 		meshes[k]->DrawPolygonGroup(polygonGroupIndexes[k], materials[k]);
 	}
@@ -122,6 +134,7 @@ void MeshInstanceNode::Draw()
 	//glPopMatrix();
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
 }
+
 
 SceneNode* MeshInstanceNode::Clone(SceneNode *dstNode)
 {

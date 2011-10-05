@@ -72,8 +72,6 @@ class RenderManagerGL20 : public RenderManager
 public:
     RenderManagerGL20(Core::eRenderer renderer);
         
-    void AttachRenderData(Shader * shader);
-
     RenderVertexAttributesState attributesState;
     
     int32 enabledAttribCount;

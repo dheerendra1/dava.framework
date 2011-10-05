@@ -56,7 +56,7 @@ RenderEffect * MultiTextureEffect::Create(Core::eRenderer renderer)
 void MultiTextureEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
     RenderManager::Instance()->EnableTexturing(true);
-    RenderManager::Instance()->AttachRenderData(0);
+    RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
@@ -74,9 +74,8 @@ MultiTextureEffectGL20::~MultiTextureEffectGL20()
 
 void MultiTextureEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
+    RenderManager::Instance()->SetShader(shader);
     RenderManager::Instance()->FlushState();
-    RenderManager::Instance()->AttachRenderData(shader);
-    shader->Set();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 
 }
@@ -87,7 +86,6 @@ void MultiTextureEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 
 void MultiTextureEffectDX9::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
 	RenderManager::Instance()->EnableTexturing(true);
-	RenderManager::Instance()->AttachRenderData(0);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
@@ -95,7 +93,6 @@ void MultiTextureEffectDX9::DrawArrays(ePrimitiveType mode, int32 first, int32 c
 void MultiTextureEffectDX9::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
 	RenderManager::Instance()->EnableTexturing(true);
-	RenderManager::Instance()->AttachRenderData(0);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }

@@ -200,6 +200,9 @@ bool SceneFile::SaveScene(const char * filename)
 	
 bool SceneFile::ReadTexture()
 {
+    bool mipMapsEnabled = Texture::IsMipmapGenerationEnabled();
+    Texture::EnableMipmapGeneration();
+    
 	SceneFile::TextureDef textureDef;
 	sceneFP->Read(&textureDef.id, sizeof(textureDef.id));
 	sceneFP->ReadString(textureDef.name, 512);
@@ -242,10 +245,15 @@ bool SceneFile::ReadTexture()
         }
         Texture * tex = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 64, 64);
         scene->AddTexture(tex);
+        tex->GenerateMipmaps();
         SafeRelease(tex);
 	}
 	
 	if (debugLogEnabled)Logger::Debug("- Texture: %s %d\n", textureDef.name, textureDef.id);
+    
+    if (!mipMapsEnabled)
+        Texture::DisableMipmapGeneration();
+    
 	return true;
 }
 	
@@ -582,7 +590,7 @@ bool SceneFile::ReadCamera()
 	CameraDef cd;
 	sceneFP->Read(&cd, sizeof(CameraDef));
 	
-	cam->Setup(cd.fovy, 320.0f/480.0f, cd.znear, cd.zfar, cd.ortho);
+	cam->Setup(cd.fovy, 480.0f / 320.0f, cd.znear, cd.zfar, cd.ortho);
 	SafeRelease(cam);
 	return true;
 }

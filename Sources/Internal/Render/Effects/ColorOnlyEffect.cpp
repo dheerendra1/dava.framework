@@ -55,7 +55,7 @@ RenderEffect * ColorOnlyEffect::Create(Core::eRenderer renderer)
 void ColorOnlyEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
     RenderManager::Instance()->EnableTexturing(false);
-    RenderManager::Instance()->AttachRenderData(0);
+    RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
@@ -63,7 +63,7 @@ void ColorOnlyEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count
 void ColorOnlyEffectGL::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
     RenderManager::Instance()->EnableTexturing(false);
-    RenderManager::Instance()->AttachRenderData(0);
+    RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }
@@ -81,17 +81,15 @@ ColorOnlyEffectGL20::~ColorOnlyEffectGL20()
     
 void ColorOnlyEffectGL20::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
-    RenderManager::Instance()->AttachRenderData(shader);
+    RenderManager::Instance()->SetShader(shader);
     RenderManager::Instance()->FlushState();
-    shader->Set();  // must be after FlushState because we recalc final transform matrix for virtual screen
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
     
 void ColorOnlyEffectGL20::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
-    RenderManager::Instance()->AttachRenderData(shader);
+    RenderManager::Instance()->SetShader(shader);
     RenderManager::Instance()->FlushState();
-    shader->Set(); // must be after FlushState because we recalc final transform matrix for virtual screen
     RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }
     
@@ -103,7 +101,6 @@ void ColorOnlyEffectGL20::DrawElements(ePrimitiveType type, int32 count, eIndexF
 void ColorOnlyEffectDX9::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
 	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->AttachRenderData(0);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawArrays(mode, first, count);
 }
@@ -111,7 +108,6 @@ void ColorOnlyEffectDX9::DrawArrays(ePrimitiveType mode, int32 first, int32 coun
 void ColorOnlyEffectDX9::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
 	RenderManager::Instance()->EnableTexturing(false);
-	RenderManager::Instance()->AttachRenderData(0);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
 }

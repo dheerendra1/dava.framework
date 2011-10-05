@@ -33,6 +33,7 @@
 
 #include "Base/BaseTypes.h"
 #include "UI/UIButton.h"
+#include "UI/UITextField.h"
 
 namespace DAVA 
 {
@@ -44,9 +45,13 @@ public:
     
 
     void SetMatrix(Matrix4 * _matrix);
+    void OnEditButtonPressed(BaseObject * obj, void *, void *);
+    void OnEditClosePressed(BaseObject * obj, void *, void *);
 
 protected:
     Matrix4 * matrix;
+    UITextField * textField;
+    UIControl * textFieldBackground;
     UIButton * matrixButtons[4][4]; 
     bool readOnly;
 };

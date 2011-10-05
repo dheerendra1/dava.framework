@@ -207,8 +207,6 @@ void SpriteNode::Draw()
     RenderManager::Instance()->EnableDepthTest(true);
     RenderManager::Instance()->EnableDepthWrite(true);
 
-    RenderManager::Instance()->RestoreRenderEffect();
-
     
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
 }

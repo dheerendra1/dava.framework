@@ -34,17 +34,19 @@
 namespace DAVA
 {
 
-#define RENDER_VERIFY(command) \
-{ \
-	if(!Thread::IsMainThread() && RenderManager::Instance()->GetNonMainLockCount() == 0)\
-	{\
-		DVASSERT(0 && "Application tried to call GL or DX in separate thread without lock");\
-	}\
-	command;\
-	GLenum err = glGetError();\
-	if (err != GL_NO_ERROR)\
-        Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
-}
+//#define RENDER_VERIFY(command) \
+//{ \
+//	if(!Thread::IsMainThread() && RenderManager::Instance()->GetNonMainLockCount() == 0)\
+//	{\
+//		DVASSERT(0 && "Application tried to call GL or DX in separate thread without lock");\
+//	}\
+//	command;\
+//	GLenum err = glGetError();\
+//	if (err != GL_NO_ERROR)\
+//        Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
+//}
+    
+#define RENDER_VERIFY(command) command;  
 
 };
 #endif // #if defined(__DAVAENGINE_OPENGL__)
