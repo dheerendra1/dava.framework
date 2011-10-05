@@ -32,10 +32,12 @@
 
 void StaticTextScreen::LoadResources()
 {
+	Font::SetDPI(160);
+
 	Font *fnt;
-	fnt = FTFont::Create("~res:/Fonts/metro.ttf");
+	fnt = FTFont::Create("~res:/Fonts/korinna.ttf");
 //	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
-	fnt->SetSize(12);
+	fnt->SetSize(7.5f);
 //	fnt->SetSize(12);
 //	fnt->SetVerticalSpacing(-1);
 	fnt->SetColor(.82f, .81f, 0.73f, 1.0f);
@@ -46,12 +48,12 @@ void StaticTextScreen::LoadResources()
     
 	UIControl *tc = new UIControl(Rect(0, 0, sizeX, sizeY));
 	tc->SetSpriteDrawType(UIControlBackground::DRAW_FILL);
-	tc->GetBackground()->color = Color(0.f, 0.f, 0.f, 1.0f);
+	tc->GetBackground()->color = Color(0,0,0.4f,1.0f);
 	UIStaticText *tx = new UIStaticText(Rect(0, 0, sizeX, sizeY));
 	tx->SetFont(fnt);
 //	tx->SetMultiline(true);
-	tx->SetAlign(ALIGN_LEFT|ALIGN_TOP);
-	tx->SetText(L"gAcademy Исследовать");
+//	tx->SetAlign(ALIGN_LEFT|ALIGN_TOP);
+	tx->SetText(L"Management");
 //	tx->SetText(L"This text is aligned by the Left and Top borders.");
 	tc->AddControl(tx);
 	AddControl(tc);

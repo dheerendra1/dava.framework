@@ -271,6 +271,17 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 	float32 virtualToPhysicalFactor = Core::GetVirtualToPhysicalFactor();
 
+	// virtualToPhysicalFactor scaling
+	{
+		FT_Fixed mul = 1<<16;
+		FT_Matrix matrix;
+		matrix.xx = (FT_Fixed)(virtualToPhysicalFactor*mul);
+		matrix.xy = 0;
+		matrix.yx = 0;
+		matrix.yy = (FT_Fixed)(virtualToPhysicalFactor*mul);
+		FT_Set_Transform(face, &matrix, 0);
+	}
+
 	int32 faceBboxYMin = FT_MulFix(face->bbox.yMin, face->size->metrics.y_scale);
 	int32 faceBboxYMax = FT_MulFix(face->bbox.yMax, face->size->metrics.y_scale);
 	
@@ -287,18 +298,9 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 	FT_Vector pen;
 	pen.x = offsetX<<6;
 	pen.y = offsetY<<6;
-	pen.y -= faceBboxYMin;//bring baseline up
+	pen.y -= (FT_Pos)(virtualToPhysicalFactor*faceBboxYMin);//bring baseline up
 
-	// virtualToPhysicalFactor scaling
-	{
-		FT_Fixed mul = 1<<16;
-		FT_Matrix matrix;
-		matrix.xx = (FT_Fixed)(virtualToPhysicalFactor*mul);
-		matrix.xy = 0;
-		matrix.yx = 0;
-		matrix.yy = (FT_Fixed)(virtualToPhysicalFactor*mul);
-		FT_Set_Transform(face, &matrix, 0);
-	}
+
 
 	int16 * resultBuf = (int16*)buffer;
 
@@ -309,6 +311,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 	int32 lastRight = 0; //charSizes helper
 	int32 justifyOffset = 0;
+	int32 maxWidth = 0;
 	
 	for(int32 i = 0; i < strLen; ++i)
 	{
@@ -371,6 +374,8 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 					}
 				}
 
+				maxWidth = left+width;
+
 				if(realDraw)
 				{
 					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - top));
@@ -418,11 +423,11 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 	
 	if(contentScaleIncluded) 
 	{
-		return Size2i(advances[strLen-1].x>>6, GetFontHeight(size));
+		return Size2i(maxWidth, GetFontHeight(size));
 	}
 	else
 	{
-		return Size2i((int32)ceilf(Core::GetPhysicalToVirtualFactor()*(advances[strLen-1].x>>6)), (int32)ceilf(Core::GetPhysicalToVirtualFactor()*GetFontHeight(size)));
+		return Size2i((int32)ceilf(Core::GetPhysicalToVirtualFactor()*(maxWidth)), GetFontHeight(size));
 	}
 }
 
@@ -436,7 +441,7 @@ bool FTInternalFont::IsCharAvaliable(char16 ch)
 uint32 FTInternalFont::GetFontHeight(float32 size)
 {
 	SetFTCharSize(size);
-	return (FT_MulFix(face->bbox.yMax-face->bbox.yMin, face->size->metrics.y_scale))>>6;
+	return ((FT_MulFix(face->bbox.yMax-face->bbox.yMin, face->size->metrics.y_scale))>>6);
 }
 	
 void FTInternalFont::SetFTCharSize(float32 size)

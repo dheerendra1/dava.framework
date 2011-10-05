@@ -243,7 +243,6 @@ void TextBlock::Prepare()
 		
 		int32 w = (int32)drawSize.x;
 		int32 h = (int32)drawSize.y;
-//		Logger::Info("Inital size: %dx%d", w, h);
 		
 		Size2i textSize;
 		stringSizes.clear();
@@ -251,7 +250,6 @@ void TextBlock::Prepare()
 		if(!isMultilineEnabled)
 		{
 			textSize = font->GetStringSize(text);
-//			textSize.dy += 2;
             if(fittingType & FITTING_POINTS)
             {
                 pointsStr.clear();
@@ -366,8 +364,6 @@ void TextBlock::Prepare()
 					}
 					font->SetSize(finalSize);
 					textSize = font->GetStringSize(text);
-//					textSize.dy += 2;
-					
 				};
 			}
 		}
@@ -535,7 +531,6 @@ void TextBlock::Prepare()
 		int32 i;
 		int32 dx = (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w);
 		float32 finalW = (float32)dx / Core::GetVirtualToPhysicalFactor();
-//		Logger::Info("Crreating text buffer width: %d", dx);
 		if((dx != 1) && (dx & (dx - 1))) 
 		{
 			i = 1;
@@ -545,7 +540,6 @@ void TextBlock::Prepare()
 		}
 		int32 dy = (int32)ceilf(Core::GetVirtualToPhysicalFactor() * h);
 		float32 finalH = (float32)dy / Core::GetVirtualToPhysicalFactor();
-//		Logger::Info("Crreating text buffer height: %d", dy);
 		if((dy != 1) && (dy & (dy - 1))) 
 		{
 			i = 1;
