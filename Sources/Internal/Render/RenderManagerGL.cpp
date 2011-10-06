@@ -742,6 +742,8 @@ void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
     
 void RenderManager::AttachRenderData(Shader * shader)
 {
+    if (!currentRenderData)return;
+
     RenderManager::Instance()->LockNonMain();
     if (!shader)
     {
