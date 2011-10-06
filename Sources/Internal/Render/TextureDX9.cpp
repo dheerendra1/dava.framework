@@ -66,23 +66,22 @@ void Texture::SaveToSystemMemory()
 		HRESULT hr = RenderManager::Instance()->GetD3DDevice()->TestCooperativeLevel(); 
 		if (hr == D3DERR_DEVICELOST)
 		{
-			if (!saveTexture)
-				Logger::Debug("Trying to save to system memory rendertarget that was not saved before");
+			//if (!saveTexture)
+				//Logger::Debug("Trying to save to system memory rendertarget that was not saved before");
 			return;
 		}
-		D3DSafeRelease(saveTexture);
 
-		/*
-			Render manager set this flag  when you set sprite as render target.
-		*/
+		//	Render manager set this flag  when you set sprite as render target.
 		if (!renderTargetModified)
 			return;
+		// Release should be after check that renderTargetModified.
+		D3DSafeRelease(saveTexture);
 
-		//Logger::Debug("Saving render target to system memory: %s size: %d x %d", relativePathname.c_str(), width, height);
 		LPDIRECT3DDEVICE9 device = RenderManager::Instance()->GetD3DDevice();
 		
 		D3DSURFACE_DESC desc;
 		id->GetLevelDesc(0, &desc);
+		//Logger::Debug("Saving render target to system memory: %s size: %d x %d format:%d", relativePathname.c_str(), width, height, desc.Format);
 		/*
 		HRESULT hr = device->CreateOffscreenPlainSurface(width, height, desc.Format, D3DPOOL_SYSTEMMEM, &saveSurface, NULL);
 		DX_VERIFY(hr);
@@ -166,23 +165,26 @@ void Texture::Invalidate()
 {
 	if (isRenderTarget)
 	{		
-		//Logger::Debug("Restoring lost render target with path: %s size: %d x %d", relativePathname.c_str(), width, height);
-
 		LPDIRECT3DDEVICE9 device = RenderManager::Instance()->GetD3DDevice();
 
 		id = CreateTextureNative(Vector2((float32)width, (float32)height), format, isRenderTarget, 0);
 		if (saveTexture)
 		{
+			//Logger::Debug("Restoring lost render target with path: %s size: %d x %d", relativePathname.c_str(), width, height);
+			/*
+				We add dirty rect because without it UpdateTexture updates texture only once.
+			*/
+			RENDER_VERIFY(saveTexture->AddDirtyRect(0));
 			RENDER_VERIFY(device->UpdateTexture(saveTexture, id));
-			D3DSafeRelease(saveTexture);
+
+			// Here we do not release texture because after update we still should have it for future restores in case of fail of render device
+			//D3DSafeRelease(saveTexture);
 		}
-
-
 	}
 }
 
 
-LPDIRECT3DTEXTURE9 Texture::CreateTextureNative(Vector2 & size, PixelFormat & format, bool isRenderTarget, int32 flags)
+LPDIRECT3DTEXTURE9 Texture::CreateTextureNative(Vector2 & size, PixelFormat & format, bool isRenderTarget, int32 /*flags unused*/)
 {
 	LPDIRECT3DDEVICE9 device = RenderManager::Instance()->GetD3DDevice();
 
