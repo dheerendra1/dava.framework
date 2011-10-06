@@ -511,8 +511,8 @@ void RenderManager::IdentityTotalMatrix()
 	realDrawOffset = Vector2(0, 0);
 	realDrawScale = Vector2(1, 1);
 	
-	currentDrawOffset = Vector2(0, 0);
-	currentDrawScale = Vector2(1, 1);
+// 	currentDrawOffset = Vector2(0, 0);
+// 	currentDrawScale = Vector2(1, 1);
 }
 	
 	
