@@ -55,7 +55,7 @@ void SceneEditorScreen::LoadResources()
 
     Camera * cam = new Camera(scene);
     scene->AddCamera(cam);
-    cam->Setup(83.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
+    cam->Setup(70.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
     scene->SetCurrentCamera(cam);
     cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
     cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
@@ -79,14 +79,17 @@ void SceneEditorScreen::LoadResources()
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
     node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
-    
+
+    Texture::EnableMipmapGeneration();
     Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
     SafeRelease(tex);
     
-    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail.png");
+    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail_gravel.png");
     node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
+
     SafeRelease(detailTex);
+    Texture::DisableMipmapGeneration();
     
     node->SetName("landscapeNode");
     scene->AddNode(node);

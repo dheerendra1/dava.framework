@@ -45,17 +45,17 @@ void GameCore::OnAppFinished()
 
 void GameCore::OnSuspend()
 {
-	
+    ApplicationCore::OnSuspend();
 }
 
 void GameCore::OnResume()
 {
-
+    ApplicationCore::OnResume();
 }
 
 void GameCore::OnBackground()
 {
-	
+	//ApplicationCore::OnBackground();
 }
 
 void GameCore::BeginFrame()

@@ -701,6 +701,16 @@ void RenderManager::FlushState()
 	}
 
 	PrepareRealMatrix();
+
+    // TODO: when will be added shader support on DX
+    AttachRenderData(0);
+//    if (shader)
+//    {
+//        shader->Bind();
+//    }else
+//    {
+//        Shader::Unbind();
+//    }
 }
 
 void RenderManager::EnableVertexArray(bool isEnabled)
