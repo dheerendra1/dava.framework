@@ -26,10 +26,11 @@
   */
 
 #include "SceneEditorScreen.h"
+#include "./../Collada/ColladaConvert.h"
 
 void SceneEditorScreen::LoadResources()
 {
-    RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
+    //RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
 
     GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     GetBackground()->SetColor(Color(0.7f, 0.7f, 0.7f, 1.0f));
@@ -38,60 +39,70 @@ void SceneEditorScreen::LoadResources()
     scene = new Scene();
 
     
-    SceneFile * file = new SceneFile();
-	file->LoadScene("~res:/Scenes/vit/scene.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
-	SafeRelease(file);
-    
-
-	currentTankAngle = 0.0f;
-	inTouch = false;
-	startRotationInSec = 0.0f;
-	rotationSpeed = 8.0f;
-    
+//    SceneFile * file = new SceneFile();
+//	file->LoadScene("~res:/Scenes/vit/scene.sce", scene);
+//    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
+//	SafeRelease(file);
+        
     
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(200, 100, 480, 320));
     scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
-    
-    Camera * cam = scene->GetCamera(0);
-    scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
-    //cam->SetFOV(90.0f);
+
+
+    Camera * cam = new Camera(scene);
+    scene->AddCamera(cam);
+    cam->Setup(70.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
+    scene->SetCurrentCamera(cam);
     cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
+    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
     
-    Camera * cam2 = scene->GetCamera(0);
-    scene->SetClipCamera(cam2);
-    
+//    Camera * cam = scene->GetCamera(0);
+//    cam->Setup(83.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
+//    scene->SetCurrentCamera(cam);
+//    //cam->SetFOV(90.0f);
+//    cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
+//    
+//    Camera * cam2 = scene->GetCamera(0);
+//    scene->SetClipCamera(cam2);
     
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(-206, -203, -50), Vector3(198, 201, 50));
-    box.min += cam->GetPosition();
-    box.max += cam->GetPosition();
+    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
+    //box.min += cam->GetPosition();
+    //box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2.png", box);
-    
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
+
+    Texture::EnableMipmapGeneration();
     Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
     SafeRelease(tex);
     
+    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail_gravel.png");
+    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
+
+    SafeRelease(detailTex);
+    Texture::DisableMipmapGeneration();
+    
     node->SetName("landscapeNode");
     scene->AddNode(node);
     
-    hierarchy = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
-    hierarchy->SetCellHeight(20);
-    hierarchy->SetDelegate(this);
-    hierarchy->SetClipContents(true);
-    AddControl(hierarchy);
     
-    hierarchy->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
-    hierarchy->GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
+    sceneTree = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
+    sceneTree->SetCellHeight(20);
+    sceneTree->SetDelegate(this);
+    sceneTree->SetClipContents(true);
+    AddControl(sceneTree);
+    
+    sceneTree->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+    sceneTree->GetBackground()->SetColor(Color(0.92f, 0.92f, 0.92f, 1.0f));
     
     selectedNode = 0;
     
@@ -119,9 +130,15 @@ void SceneEditorScreen::LoadResources()
     lookAtButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
     lookAtButton->SetStateFont(UIControl::STATE_NORMAL, f);
     lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Object");
-    lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
     
+    removeNodeButton = dynamic_cast<UIButton*>(lookAtButton->Clone());
+    removeNodeButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    removeNodeButton->SetStateText(UIControl::STATE_NORMAL, L"Remove Object");
     SafeRelease(f);
+    
+    lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
+    removeNodeButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnRemoveNodeButtonPressed));
+
     
     activePropertyPanel = new PropertyPanel(Rect(720, 100, 300, size.y - 120));
     
@@ -134,16 +151,34 @@ void SceneEditorScreen::LoadResources()
     nodeBoundingBoxMin = SafeRetain(activePropertyPanel->AddHeader(L"-"));
     nodeBoundingBoxMax = SafeRetain(activePropertyPanel->AddHeader(L"-"));
     activePropertyPanel->AddPropertyControl(lookAtButton);
+    activePropertyPanel->AddPropertyControl(removeNodeButton);
     
     AddControl(activePropertyPanel);
     
     fileSystemDialog = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
     fileSystemDialog->SetDelegate(this);
     fileSystemDialog->SetCurrentDir("/Sources/dava.framework/Tools/Bin");
+    
     CreateTopMenu();
 }
 
-
+void SceneEditorScreen::UnloadResources()
+{
+    ReleaseTopMenu();
+    
+    SafeRelease(nodeName);
+    SafeRelease(nodeBoundingBoxMin);
+    SafeRelease(nodeBoundingBoxMax);
+    SafeRelease(lookAtButton);
+    SafeRelease(removeNodeButton);
+    
+    
+    SafeRelease(cameraController);
+    
+    SafeRelease(scene3dView);
+    SafeRelease(sceneTree);
+	SafeRelease(scene);
+}
 
 void SceneEditorScreen::CreateTopMenu()
 {
@@ -189,39 +224,49 @@ void SceneEditorScreen::OnTopMenuOpenPressed(BaseObject * obj, void *, void *)
 {
     fileSystemDialog->SetExtensionFilter(".sce");
     fileSystemDialog->Show(this);
+    fileSystemDialogOpMode = DIALOG_OPERATION_OPEN_SCE;
 }
 
 void SceneEditorScreen::OnTopMenuConvertPressed(BaseObject * obj, void *, void *)
 {
     fileSystemDialog->SetExtensionFilter(".dae");
     fileSystemDialog->Show(this);
+    fileSystemDialogOpMode = DIALOG_OPERATION_CONVERT_DAE;
 }
 
 void SceneEditorScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile)
 {
-    
+    switch (fileSystemDialogOpMode) {
+        case DIALOG_OPERATION_CONVERT_DAE:
+        {
+            ConvertDaeToSce(pathToFile);
+        }
+        break;
+        case DIALOG_OPERATION_OPEN_SCE:
+        {
+            SceneFile * file = new SceneFile();
+            file->SetDebugLog(true);
+            file->LoadScene(pathToFile.c_str(), scene);
+            scene->AddNode(scene->GetRootNode(pathToFile));
+            SafeRelease(file);
+            
+            if (scene->GetCamera(0))
+            {
+                scene->SetCurrentCamera(scene->GetCamera(0));
+                cameraController->SetCamera(scene->GetCamera(0));
+                
+            }
+            sceneTree->Refresh();
+        }
+        break;
+        default:
+            break;
+    }
 }
 
 void SceneEditorScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
 {
     
-}
-
-void SceneEditorScreen::UnloadResources()
-{
-    ReleaseTopMenu();
-    
-    SafeRelease(nodeName);
-    SafeRelease(nodeBoundingBoxMin);
-    SafeRelease(nodeBoundingBoxMax);
-    SafeRelease(lookAtButton);
-    
-    
-    SafeRelease(cameraController);
-    
-    SafeRelease(scene3dView);
-    SafeRelease(hierarchy);
-	SafeRelease(scene);
 }
 
 void SceneEditorScreen::WillAppear()
@@ -237,8 +282,6 @@ void SceneEditorScreen::WillDisappear()
 	
 }
 
-
-
 void SceneEditorScreen::Input(UIEvent * event)
 {
     cameraController->Input(event);
@@ -253,8 +296,19 @@ void SceneEditorScreen::Input(UIEvent * event)
             cameraController->SetSpeed(160);
         if (event->keyChar == '4')
             cameraController->SetSpeed(320);
-        
-    }
+            
+        Camera * newCamera = 0;
+        if (event->keyChar == 'z')newCamera = scene->GetCamera(0);
+        if (event->keyChar == 'x')newCamera = scene->GetCamera(1);
+        if (event->keyChar == 'c')newCamera = scene->GetCamera(2);
+        if (event->keyChar == 'v')newCamera = scene->GetCamera(3);
+        if (event->keyChar == 'b')newCamera = scene->GetCamera(4);
+        if (newCamera)
+        {
+            scene->SetCurrentCamera(newCamera);
+            scene->SetClipCamera(scene->GetCamera(0));
+        }
+    }   
     
 	if (event->phase == UIEvent::PHASE_BEGAN)
 	{
@@ -413,6 +467,7 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
             scene->SetCurrentCamera(camera);
             Camera * cam2 = scene->GetCamera(0);
             scene->SetClipCamera(cam2);
+            //cameraController->SetCamera(camera);
             
             nodeBoundingBoxMin->SetText(Format(L"fov: %f, aspect: %f", camera->GetFOV(), camera->GetAspect()));
             nodeBoundingBoxMax->SetText(Format(L"znear: %f, zfar: %f", camera->GetZNear(), camera->GetZFar()));
@@ -442,4 +497,16 @@ void SceneEditorScreen::OnLookAtButtonPressed(BaseObject * obj, void *, void *)
     }
 }
 
-
+void SceneEditorScreen::OnRemoveNodeButtonPressed(BaseObject * obj, void *, void *)
+{
+    if (selectedNode)
+    {
+        SceneNode * parentNode = selectedNode->GetParent();
+        if (parentNode)
+        {
+            parentNode->RemoveNode(selectedNode);
+            selectedNode = 0;
+            sceneTree->Refresh();
+        }
+    }
+}

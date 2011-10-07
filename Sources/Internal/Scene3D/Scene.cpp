@@ -35,6 +35,7 @@
 #include "Render/3D/AnimatedMesh.h"
 #include "Scene3D/SceneNodeAnimationList.h"
 #include "Scene3D/SceneFile.h"
+#include "Platform/SystemTimer.h"
 
 namespace DAVA 
 {
@@ -306,6 +307,8 @@ void Scene::SetupTestLighting()
 
 void Scene::Update(float timeElapsed)
 {
+    uint64 time = SystemTimer::Instance()->AbsoluteMS();
+    
 	int32 size = (int32)animations.size();
 	for (int32 animationIndex = 0; animationIndex < size; ++animationIndex)
 	{
@@ -321,13 +324,18 @@ void Scene::Update(float timeElapsed)
 		AnimatedMesh * mesh = animatedMeshes[animatedMeshIndex];
 		mesh->Update(timeElapsed);
 	}
+    
+    updateTime = SystemTimer::Instance()->AbsoluteMS() - time;
 }		
 
 void Scene::Draw()
 {
-    //currentCamera->GetFrustum()->DebugDraw();
+   //currentCamera->GetFrustum()->DebugDraw();
+    nodeCounter = 0;
+    uint64 time = SystemTimer::Instance()->AbsoluteMS();
     
-	glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	SetupTestLighting();
 
     if (currentCamera)
@@ -337,6 +345,10 @@ void Scene::Draw()
 	SceneNode::Draw();
 	
     glCullFace(GL_FRONT_AND_BACK);
+    glDisable(GL_CULL_FACE);
+
+    drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
+//  Logger::Debug("upt: %lld drawt: %lld, %ld", updateTime, drawTime, nodeCounter);
 	
 //	for (int k = 0; k < staticMeshes.size(); ++k)
 //	{

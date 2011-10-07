@@ -30,7 +30,7 @@
 #include "FileSystem/FileList.h"
 #include "Utils/Utils.h"
 
-#if defined(__DAVAENGINE_MACOS__)
+#if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__)
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,7 +86,7 @@ FileList::FileList(const String & filepath)
 	//entry.Name = "E:\\";
 	//entry.isDirectory = true;
 	//Files.push_back(entry);
-#elif defined(__DAVAENGINE_MACOS__)
+#elif defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__)
 	struct dirent **namelist;
 	FileEntry entry;
 

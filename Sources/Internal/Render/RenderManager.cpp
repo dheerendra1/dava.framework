@@ -110,9 +110,11 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     currentRenderData = 0;
     pointerArraysCurrentState = 0;
     pointerArraysRendererState = 0;
+    enabledAttribCount = 0;
     
     statsFrameCountToShowDebug = 0;
     frameToShowDebugStats = -1;
+    shader = 0;
     
     FLAT_COLOR = 0;
     TEXTURE_MUL_FLAT_COLOR = 0;
@@ -265,11 +267,20 @@ void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
             
 #if defined(__DAVAENGINE_OPENGL__)
             RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            if (textureLevel != 0)
+                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
             RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
 #elif defined(__DAVAENGINE_DIRECTX9__)
             RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
 #endif 
-		}
+		}else
+        {
+#if defined(__DAVAENGINE_OPENGL__)
+            RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+            if (textureLevel != 0)
+                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+#endif
+        }
 	}
 }
 	
@@ -278,72 +289,22 @@ Texture *RenderManager::GetTexture(uint32 textureLevel)
     DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
 	return currentTexture[textureLevel];	
 }
+    
+void RenderManager::SetShader(Shader * _shader)
+{
+    SafeRelease(shader);
+    shader = SafeRetain(_shader);
+}
+
+Shader * RenderManager::GetShader()
+{
+    return shader;
+}
+
 
 void RenderManager::SetRenderData(RenderDataObject * object)
 {
     currentRenderData = object;
-}
-    
-void RenderManager::AttachRenderData(Shader * shader)
-{
-	RenderManager::Instance()->LockNonMain();
-    if (!shader)
-    {
-        // TODO: should be moved to RenderManagerGL
-#if defined(__DAVAENGINE_OPENGL__)
-	#if defined(__DAVAENGINE_MACOS__)
-			RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer));
-	#else
-			RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer));
-	#endif
-#elif defined(__DAVAENGINE_DIRECTX9__)
-	DVASSERT(currentRenderData->vboBuffer == 0);
-#endif
-        pointerArraysCurrentState = 0;
-        int32 size = (int32)currentRenderData->streamArray.size();
-        for (int32 k = 0; k < size; ++k)
-        {
-            RenderDataStream * stream = currentRenderData->streamArray[k];
-            switch(stream->formatMark)
-            {
-                case EVF_VERTEX:
-                    SetVertexPointer(stream->size, stream->type, stream->stride, stream->pointer);
-                    pointerArraysCurrentState |= EVF_VERTEX;
-                    break;
-                case EVF_TEXCOORD0:
-                    SetTexCoordPointer(stream->size, stream->type, stream->stride, stream->pointer);
-                    pointerArraysCurrentState |= EVF_TEXCOORD0;
-                    break;
-                default:
-                    break;
-            };
-        };
-        
-        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
-
-        if (difference & EVF_VERTEX)
-        {
-            EnableVertexArray(pointerArraysCurrentState & EVF_VERTEX);
-        }
-        if (difference & EVF_TEXCOORD0)
-        {
-            EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
-        }
-        pointerArraysRendererState = pointerArraysCurrentState;
-    }
-//    for (uint32 formatFlag = EVF_LOWER_BIT; formatFlag <= EVF_HIGHER_BIT; formatFlag >>= 1)
-//    {
-//        if (formatFlag & EVF_VERTEX)
-//        {
-//            
-//        }
-//        if (formatFlag & EVF_TEXCOORD0)
-//        {
-//            
-//        }
-//    }
-//    pointerArraysRendererState = pointerArraysCurrentState;
-	RenderManager::Instance()->UnlockNonMain();
 }
 
 void RenderManager::EnableTexturing(bool isEnabled)
@@ -458,14 +419,6 @@ void RenderManager::SetRenderEffect(RenderEffect *renderEffect)
 	SetNewRenderEffect(renderEffect);
 }
 
-void RenderManager::RestoreRenderEffect()
-{
-//	RenderEffect *renderEffect = renderEffectStack.top();
-//	renderEffectStack.pop();
-//	SetNewRenderEffect(renderEffect);
-//	SafeRelease(renderEffect);
-}
-
 void RenderManager::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
 	if (currentRenderEffect)
@@ -558,8 +511,8 @@ void RenderManager::IdentityTotalMatrix()
 	realDrawOffset = Vector2(0, 0);
 	realDrawScale = Vector2(1, 1);
 	
-	currentDrawOffset = Vector2(0, 0);
-	currentDrawScale = Vector2(1, 1);
+// 	currentDrawOffset = Vector2(0, 0);
+// 	currentDrawScale = Vector2(1, 1);
 }
 	
 	

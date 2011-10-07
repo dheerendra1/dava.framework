@@ -165,8 +165,6 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	//RenderManager::Instance()->DrawArrays(GL_TRIANGLES, );
 	//RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
-    RenderManager::Instance()->RestoreRenderEffect();
-    
 #endif
 }
 

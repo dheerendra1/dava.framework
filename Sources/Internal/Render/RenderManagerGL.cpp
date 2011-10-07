@@ -479,6 +479,15 @@ void RenderManager::FlushState()
 	}
 	
 	PrepareRealMatrix();
+    
+    AttachRenderData(shader);
+    if (shader)
+    {
+        shader->Bind();
+    }else
+    {
+        Shader::Unbind();
+    }
 }
 
 void RenderManager::SetTexCoordPointer(int size, eVertexDataType _typeIndex, int stride, const void *pointer)
@@ -729,6 +738,135 @@ void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
         RENDER_VERIFY(glLoadMatrixf(matrix.data));
     }
 }
+    
+    
+void RenderManager::AttachRenderData(Shader * shader)
+{
+    if (!currentRenderData)return;
+
+    RenderManager::Instance()->LockNonMain();
+    if (!shader)
+    {
+        // TODO: should be moved to RenderManagerGL
+#if defined(__DAVAENGINE_OPENGL__)
+#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
+        RENDER_VERIFY(glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer));
+#else
+        RENDER_VERIFY(glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer));
+#endif
+#elif defined(__DAVAENGINE_DIRECTX9__)
+        DVASSERT(currentRenderData->vboBuffer == 0);
+#endif
+        pointerArraysCurrentState = 0;
+        int32 size = (int32)currentRenderData->streamArray.size();
+        for (int32 k = 0; k < size; ++k)
+        {
+            RenderDataStream * stream = currentRenderData->streamArray[k];
+            switch(stream->formatMark)
+            {
+                case EVF_VERTEX:
+                    SetVertexPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_VERTEX;
+                    break;
+                case EVF_TEXCOORD0:
+                    SetTexCoordPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_TEXCOORD0;
+                    break;
+                default:
+                    break;
+            };
+        };
+        
+        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
+        
+        if (difference & EVF_VERTEX)
+        {
+            EnableVertexArray(pointerArraysCurrentState & EVF_VERTEX);
+        }
+        if (difference & EVF_TEXCOORD0)
+        {
+            EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
+        }
+        pointerArraysRendererState = pointerArraysCurrentState;
+        
+        for (int32 p = 0; p < enabledAttribCount; ++p)
+        {
+            glDisableVertexAttribArray(p);
+        }
+    }
+    else
+    {
+        int32 currentEnabledAttribCount = 0;
+        //glDisableVertexAttribArray(0);
+        //glDisableVertexAttribArray(1);
+        
+        pointerArraysCurrentState = 0;
+        
+        //if (currentRenderData->vboBuffer != 0)
+        //{
+#if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
+#else
+        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
+#endif
+        //}
+        
+        int32 size = (int32)currentRenderData->streamArray.size();
+        for (int32 k = 0; k < size; ++k)
+        {
+            RenderDataStream * stream = currentRenderData->streamArray[k];
+            GLboolean normalized = GL_FALSE;
+            
+            int32 attribIndex = shader->GetAttributeIndex(stream->formatMark);
+            if (attribIndex != -1)
+            {
+                glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
+                
+                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
+                {
+                    glEnableVertexAttribArray(attribIndex);
+                }
+                if (attribIndex + 1 > currentEnabledAttribCount)
+                    currentEnabledAttribCount = attribIndex + 1;    // count of enabled attributes
+                
+                pointerArraysCurrentState |= stream->formatMark;
+            }
+        };
+        
+        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
+        {
+            glDisableVertexAttribArray(p);
+        }
+        
+        //        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
+        //        
+        //        if (!(difference & EVF_VERTEX))
+        //        {
+        //            int32 attribIndex = shader->GetAttributeIndex(EVF_VERTEX);
+        //            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
+        //        }
+        //        if (!(difference & EVF_TEXCOORD0))
+        //        {
+        //            int32 attribIndex = shader->GetAttributeIndex(EVF_TEXCOORD0);
+        //            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
+        //        }
+        pointerArraysRendererState = pointerArraysCurrentState;
+    }
+    //    for (uint32 formatFlag = EVF_LOWER_BIT; formatFlag <= EVF_HIGHER_BIT; formatFlag >>= 1)
+    //    {
+    //        if (formatFlag & EVF_VERTEX)
+    //        {
+    //            
+    //        }
+    //        if (formatFlag & EVF_TEXCOORD0)
+    //        {
+    //            
+    //        }
+    //    }
+    //    pointerArraysRendererState = pointerArraysCurrentState;
+    RenderManager::Instance()->UnlockNonMain();
+}
+
 
 //void RenderManager::InitGL20()
 //{

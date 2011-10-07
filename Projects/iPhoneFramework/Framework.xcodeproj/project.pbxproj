@@ -64,6 +64,8 @@
 		FE578B5413278D730081BDE9 /* SoundSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE578B4113278D730081BDE9 /* SoundSystem.h */; };
 		FE578B5513278D730081BDE9 /* SoundWVProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE578B4213278D730081BDE9 /* SoundWVProvider.cpp */; };
 		FE578B5613278D730081BDE9 /* SoundWVProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE578B4313278D730081BDE9 /* SoundWVProvider.h */; };
+		FE57C487142BD33600060A75 /* NeonMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE57C485142BD33600060A75 /* NeonMath.cpp */; };
+		FE57C488142BD33600060A75 /* NeonMath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57C486142BD33600060A75 /* NeonMath.h */; };
 		FE5DB8A313B8D62400C00F98 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE5DB89F13B8D62400C00F98 /* Shader.cpp */; };
 		FE5DB8A413B8D62400C00F98 /* Shader.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5DB8A013B8D62400C00F98 /* Shader.h */; };
 		FE5DB8A513B8D62400C00F98 /* ShaderDX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE5DB8A113B8D62400C00F98 /* ShaderDX.cpp */; };
@@ -689,6 +691,8 @@
 		FE578B4113278D730081BDE9 /* SoundSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundSystem.h; sourceTree = "<group>"; };
 		FE578B4213278D730081BDE9 /* SoundWVProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundWVProvider.cpp; sourceTree = "<group>"; };
 		FE578B4313278D730081BDE9 /* SoundWVProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundWVProvider.h; sourceTree = "<group>"; };
+		FE57C485142BD33600060A75 /* NeonMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeonMath.cpp; sourceTree = "<group>"; };
+		FE57C486142BD33600060A75 /* NeonMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeonMath.h; sourceTree = "<group>"; };
 		FE5DB89F13B8D62400C00F98 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		FE5DB8A013B8D62400C00F98 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		FE5DB8A113B8D62400C00F98 /* ShaderDX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderDX.cpp; sourceTree = "<group>"; };
@@ -1310,6 +1314,15 @@
 				FE578B4313278D730081BDE9 /* SoundWVProvider.h */,
 			);
 			path = Sound;
+			sourceTree = "<group>";
+		};
+		FE57C484142BD33600060A75 /* Neon */ = {
+			isa = PBXGroup;
+			children = (
+				FE57C485142BD33600060A75 /* NeonMath.cpp */,
+				FE57C486142BD33600060A75 /* NeonMath.h */,
+			);
+			path = Neon;
 			sourceTree = "<group>";
 		};
 		FECFB1D912E5904400C71562 /* External */ = {
@@ -1956,6 +1969,7 @@
 		FECFB38C12E5904400C71562 /* Math */ = {
 			isa = PBXGroup;
 			children = (
+				FE57C484142BD33600060A75 /* Neon */,
 				FE9C216612E9A254005C397A /* Circle.h */,
 				FE9C216712E9A254005C397A /* Sphere.h */,
 				FECFB38D12E5904400C71562 /* AABBox2.cpp */,
@@ -2176,8 +2190,6 @@
 				FE044F56140EEB7F002A6D27 /* LandscapeNode.h */,
 				FE4E01E313AAA9D00013464E /* Camera.cpp */,
 				FE4E01E413AAA9D00013464E /* Camera.h */,
-				FECFB41D12E5904400C71562 /* MeshInstanceNode.cpp */,
-				FECFB41E12E5904400C71562 /* MeshInstanceNode.h */,
 				FECFB41F12E5904400C71562 /* PathManip.cpp */,
 				FECFB42012E5904400C71562 /* PathManip.h */,
 				FECFB42112E5904400C71562 /* RotatingCubeNode.cpp */,
@@ -2190,6 +2202,8 @@
 				FECFB42812E5904400C71562 /* SceneFile.h */,
 				FECFB42912E5904400C71562 /* SceneNode.cpp */,
 				FECFB42A12E5904400C71562 /* SceneNode.h */,
+				FECFB41D12E5904400C71562 /* MeshInstanceNode.cpp */,
+				FECFB41E12E5904400C71562 /* MeshInstanceNode.h */,
 				FECFB42B12E5904500C71562 /* SceneNode2d.h */,
 				FECFB42C12E5904500C71562 /* SceneNode3d.cpp */,
 				FECFB42D12E5904500C71562 /* SceneNode3d.h */,
@@ -2709,6 +2723,7 @@
 				FE044F18140EE8F1002A6D27 /* MusicIos.h in Headers */,
 				FE044F58140EEB7F002A6D27 /* Frustum.h in Headers */,
 				FE044F5A140EEB7F002A6D27 /* LandscapeNode.h in Headers */,
+				FE57C488142BD33600060A75 /* NeonMath.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3024,6 +3039,7 @@
 				FE044F57140EEB7F002A6D27 /* Frustum.cpp in Sources */,
 				FE044F59140EEB7F002A6D27 /* LandscapeNode.cpp in Sources */,
 				47F00E7F140FE6C10014D904 /* SpriteNode.cpp in Sources */,
+				FE57C487142BD33600060A75 /* NeonMath.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3042,7 +3058,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -3072,7 +3087,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
@@ -3097,7 +3111,6 @@
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3105,7 +3118,8 @@
 					FT2_BUILD_LIBRARY,
 					DAVA_DEBUG,
 				);
-				GCC_THUMB_SUPPORT = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -3139,14 +3153,14 @@
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DDARWIN_NO_CARBON,
 					FT2_BUILD_LIBRARY,
 				);
-				GCC_THUMB_SUPPORT = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -3180,13 +3194,13 @@
 		785662DF109B65FE00DAF688 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DDARWIN_NO_CARBON,
 					FT2_BUILD_LIBRARY,
 				);
-				GCC_THUMB_SUPPORT = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -3221,7 +3235,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
@@ -3246,13 +3259,13 @@
 		FEFB031611CA5F1B00B65B8B /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DDARWIN_NO_CARBON,
 					FT2_BUILD_LIBRARY,
 				);
-				GCC_THUMB_SUPPORT = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -3287,7 +3300,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;

@@ -59,75 +59,7 @@ void RenderVertexAttributesState::EnableVertexAttributes(uint32 attributesToEnab
 RenderManagerGL20::RenderManagerGL20(Core::eRenderer renderer)
     : RenderManager(renderer)
 {
-    enabledAttribCount = 0;
 }
-    
-void RenderManagerGL20::AttachRenderData(Shader * shader)
-{
-    DVASSERT(shader);
-    if (shader)
-    {
-        int32 currentEnabledAttribCount = 0;
-        //glDisableVertexAttribArray(0);
-        //glDisableVertexAttribArray(1);
-                                   
-        pointerArraysCurrentState = 0;
-        
-        
-        //if (currentRenderData->vboBuffer != 0)
-        //{
-#if defined(__DAVAENGINE_MACOS__)
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
-#else
-        glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
-#endif
-        //}
-        
-        
-        int32 size = (int32)currentRenderData->streamArray.size();
-        for (int32 k = 0; k < size; ++k)
-        {
-            RenderDataStream * stream = currentRenderData->streamArray[k];
-            GLboolean normalized = GL_FALSE;
-            
-            int32 attribIndex = shader->GetAttributeIndex(stream->formatMark);
-            if (attribIndex != -1)
-            {
-                glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
-                
-                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
-                {
-                    glEnableVertexAttribArray(attribIndex);
-                }
-                if (attribIndex + 1 > currentEnabledAttribCount)
-                    currentEnabledAttribCount = attribIndex + 1;    // count of enabled attributes
-
-                pointerArraysCurrentState |= stream->formatMark;
-            }
-        };
-        
-        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
-        {
-            glDisableVertexAttribArray(p);
-        }
-        
-//        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
-//        
-//        if (!(difference & EVF_VERTEX))
-//        {
-//            int32 attribIndex = shader->GetAttributeIndex(EVF_VERTEX);
-//            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
-//        }
-//        if (!(difference & EVF_TEXCOORD0))
-//        {
-//            int32 attribIndex = shader->GetAttributeIndex(EVF_TEXCOORD0);
-//            RENDER_VERIFY(glDisableVertexAttribArray(attribIndex));
-//        }
-        pointerArraysRendererState = pointerArraysCurrentState;
-    }
-    
-    // RENDER_VERIFY("RenderManagerGL20::AttachRenderData");
-}  
 
     
 };

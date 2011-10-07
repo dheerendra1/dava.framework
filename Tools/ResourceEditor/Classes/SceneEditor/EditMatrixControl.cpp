@@ -62,14 +62,47 @@ EditMatrixControl::EditMatrixControl(const Rect & _rect, bool _readOnly)
             matrixButtons[i][j]->GetStateBackground(UIControl::STATE_HOVER)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
             matrixButtons[i][j]->SetStateFont(UIControl::STATE_NORMAL, f);
             matrixButtons[i][j]->SetStateText(UIControl::STATE_NORMAL, L"0.000000");
-            //matrixButtons[i][j]->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnAddScenePressed));
+            matrixButtons[i][j]->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &EditMatrixControl::OnEditButtonPressed));
             AddControl(matrixButtons[i][j]);
         }
+    
+    textFieldBackground = new UIControl(_rect);
+    textFieldBackground->GetBackground()->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    textFieldBackground->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &EditMatrixControl::OnEditClosePressed));
+    //textFieldBackground->SetInputEnabled(false);
+    
+    textField = new UITextField(Rect(spacing, spacing, buttonWidth * 4.0f, buttonHeight));
+    textField->SetFont(f);
+
     SafeRelease(f);
 }
         
+
 EditMatrixControl::~EditMatrixControl()
 {
+    for (int32 i = 0; i < 4; ++i)
+        for (int32 j = 0; j < 4; ++j)
+        {
+            SafeRelease(matrixButtons[i][j]);
+        }
+}
+         
+void EditMatrixControl::OnEditButtonPressed(BaseObject * obj, void *, void *)
+{
+    if (!readOnly)
+    {
+        AddControl(textFieldBackground);
+        AddControl(textField);
+    }
+}
+                                  
+void EditMatrixControl::OnEditClosePressed(BaseObject * obj, void *, void *)
+{
+    if (textFieldBackground->GetParent())
+    {
+        RemoveControl(textFieldBackground);
+        RemoveControl(textField);
+    }
 }
 
 void EditMatrixControl::SetMatrix(Matrix4 * _matrix)

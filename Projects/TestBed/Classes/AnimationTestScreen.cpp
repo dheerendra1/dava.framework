@@ -48,11 +48,11 @@ void AnimationTestScreen::LoadResources()
 //    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
 //
 //    scene->SetCurrentCamera(cam);
-    
+
 	SceneFile * file = new SceneFile();
 	//file->SetDebugLog(true);
-	file->LoadScene("~res:/Scenes/level1/objects.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/objects.sce"));
+	file->LoadScene("~res:/Scenes/vit/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
 
 //	file->LoadScene("~res:/Scenes/garage_lit/hungar.sce", scene);
 //  scene->AddNode(scene->GetRootNode("~res:/Scenes/garage_lit/hungar.sce"));
@@ -60,49 +60,51 @@ void AnimationTestScreen::LoadResources()
 //    scene->AddNode(scene->GetRootNode("~res:/Scenes/level_test/level_test_3.sce"));
     
 	SafeRelease(file);
-    
 
-    
-    
-    /*LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(-1024, -1024, -50), Vector3(1024, 1024, 0));
-    box.min += cam->GetPosition();
-    box.max += cam->GetPosition();
+    LandscapeNode * node = new LandscapeNode(scene);
+    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
+    //box.min += cam->GetPosition();
+    //box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/terrain1025.png", box);
     
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/diffuse.png");
+    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
+    
+    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
     node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
-    SafeRelease(tex);
 
+    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail.png");
+    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
+
+    SafeRelease(detailTex);
+    SafeRelease(tex);
+    
+    node->SetName("landscapeNode");
     scene->AddNode(node);
-    // TODO: release landscape node
-    
-    */
-    
+
+
 	currentTankAngle = 0.0f;
 	inTouch = false;
 	startRotationInSec = 0.0f;
 	rotationSpeed = 8.0f;   
     
-    
 
-    
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
     scene3dView->SetInputEnabled(false);
     scene3dView->SetScene(scene);
     
     cam = scene->GetCamera(0);
+    cam->Setup(83.0f, 320.0f / 480.0f, 1.0f, 5000.0f); 
+
     //cam->Setup(60.0f, 
     scene->SetCurrentCamera(cam);
     AddControl(scene3dView);
-        
+    
     viewXAngle = 0;
-    viewYAngle = 0;
-
-
+    viewYAngle = 0; 
+    
 	positionJoypad = new UIJoypad(Rect(0, 320 - 80, 80, 80));
     positionJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
     positionJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
@@ -195,13 +197,11 @@ void AnimationTestScreen::Update(float32 timeElapsed)
     Vector2 joypadPos = positionJoypad->GetDigitalPosition();
     
     Vector3 pos = cam->GetPosition();
-    pos += -joypadPos.y * dir * timeElapsed * 40;
+    pos += -joypadPos.y * dir * timeElapsed * 4;
     //pos.y += joypadPos.y * dir.y;
 
     cam->SetPosition(pos);
     cam->SetDirection(dir);
-
-
     
     
 //    Camera * cam = scene->GetCamera(0);
