@@ -82,8 +82,16 @@ public:
      */
     String GetFullName();
     
+    /**
+        \brief Set tag for this object
+        Tag can be used to identify object, or find it. You can mark objects with same properies by tag, and later find them using tag criteria. 
+     */
     inline void SetTag(int32 _tag);
     
+    /**
+        \brief Return tag for this object
+     
+     */
     inline const int32 GetTag(); 
 
 	
@@ -151,12 +159,6 @@ protected:
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
 	void SetParent(SceneNode * node);
 	
-	Matrix4 worldTransform;
-    
-
-	String	name;
-	int32	tag;
-
 	Scene * scene;
 	SceneNode * parent;
 	std::vector<SceneNode*> childs;
@@ -164,9 +166,13 @@ protected:
 	bool visible;
     bool inUpdate;
 
+	String	name;
+	int32	tag;
+
     uint32 flags;
     uint32 debugFlags;
 
+	Matrix4 worldTransform;
 private:
     Matrix4 localTransform;
     Matrix4 defaultLocalTransform;

@@ -279,7 +279,7 @@ UIHierarchyCell *AnimationTestScreen::CellForNode(UIHierarchy *forHierarchy, voi
     SceneNode *n = (SceneNode *)node;
     
     c->text->SetFont(fnt);
-    c->text->SetText(StringToWString(n->name));
+    c->text->SetText(StringToWString(n->GetName()));
     c->text->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
     SafeRelease(fnt);
     

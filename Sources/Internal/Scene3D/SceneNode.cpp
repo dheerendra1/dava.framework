@@ -40,6 +40,7 @@ SceneNode::SceneNode(Scene * _scene)
 	, parent(0)
     , visible(true)
     , inUpdate(false)
+    , tag(0)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
