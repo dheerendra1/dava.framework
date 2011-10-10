@@ -54,6 +54,11 @@ UI3DView::~UI3DView()
 void UI3DView::SetScene(Scene * _scene)
 {
     scene = SafeRetain(_scene);
+    //
+    for (int32 k = 0; k < scene->GetCameraCount(); ++k)
+    {
+        scene->GetCamera(k)->SetAspect(size.dx / size.dy);
+    }
 }
 
 Scene * UI3DView::GetScene() const

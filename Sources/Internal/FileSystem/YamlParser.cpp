@@ -355,7 +355,7 @@ bool YamlParser::Parse(const String & pathName)
 							node->mapIndex = topContainer->mapCount ++;
 							topContainer->objectMap[mapKey->nwStringValue] = node;
 							topContainer->objectArray.push_back(SafeRetain(node)); // duplicate in array
-							SafeDelete(mapKey);
+							SafeRelease(mapKey);
 						}
 					}else if (topContainer->type == YamlNode::TYPE_ARRAY)
 					{
@@ -412,7 +412,7 @@ bool YamlParser::Parse(const String & pathName)
 							node->mapIndex = topContainer->mapCount ++;
 							topContainer->objectMap[mapKey->nwStringValue] = node;
 							topContainer->objectArray.push_back(SafeRetain(node));
-							SafeDelete(mapKey);
+							SafeRelease(mapKey);
 						}
 					}else if (topContainer->type == YamlNode::TYPE_ARRAY)
 					{
@@ -459,7 +459,7 @@ bool YamlParser::Parse(const String & pathName)
 							node->stringValue = mapKey->stringValue;
 							node->nwStringValue = mapKey->nwStringValue;
 							topContainer->objectArray.push_back(SafeRetain(node));
-							SafeDelete(mapKey);
+							SafeRelease(mapKey);
 						}
 					}else if (topContainer->type == YamlNode::TYPE_ARRAY)
 					{
@@ -494,6 +494,8 @@ bool YamlParser::Parse(const String & pathName)
 	yaml_parser_delete(&parser);
 //	fclose(input);
 	SafeDeleteArray(dataHolder.data);
+    
+    DVASSERT(objectStack.size() == 0);
 	
 	return true;
 }
