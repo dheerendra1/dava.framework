@@ -71,6 +71,11 @@ void Camera::SetFOV(float32 _fovy)
     Setup(_fovy, aspect, znear, zfar, ortho);
 }
     
+void Camera::SetAspect(float32 _aspect)
+{
+    Setup(fovy, _aspect, znear, zfar, ortho);
+}
+    
 float32 Camera::GetFOV()
 {
     return fovy;
@@ -94,8 +99,16 @@ float32 Camera::GetZFar()
 void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho)
 {
     flags |= REQUIRE_REBUILD_PROJECTION;
-	this->fovy = fovy;
-	this->aspect = aspect;
+
+    if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT))
+    {
+        this->fovy = 1.0f / fovy;
+	}else
+    {
+        this->fovy = fovy;
+    }
+    
+    this->aspect = aspect;
 	this->znear = znear;
 	this->zfar = zfar;
 	this->ortho = ortho;

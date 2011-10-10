@@ -90,7 +90,7 @@ public:
     
     /**
         \brief Return tag for this object
-     
+        \returns tag for this object
      */
     inline const int32 GetTag(); 
 
