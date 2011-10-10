@@ -38,7 +38,6 @@ namespace DAVA
 
 Camera::Camera(Scene * scene) : SceneNode(scene)
 {
-	localTransform.Identity();
 	Setup(35.0f, 1.0f, 1.0f, 2500.f, false);
 	up = Vector3(0.0f, 1.0f, 0.0f);
 	left = Vector3(1.0f, 0.0f, 0.0f);
@@ -55,7 +54,7 @@ Camera::~Camera()
 	
 void Camera::RestoreOriginalSceneTransform()
 {
-	cameraTransform = localTransform;
+	cameraTransform = GetLocalTransform();
 	SceneNode * node = GetParent();
 	while(node)
 	{

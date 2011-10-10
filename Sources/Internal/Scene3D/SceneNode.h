@@ -100,6 +100,7 @@ public:
 	
     inline const Matrix4 & GetLocalTransform(); 
     inline const Matrix4 & GetWorldTransform();
+    inline const Matrix4 & GetDefaultLocalTransform(); 
     
     void SetLocalTransform(const Matrix4 & newMatrix);
     void SetDefaultLocalTransform(const Matrix4 & newMatrix);
@@ -150,9 +151,7 @@ protected:
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
 	void SetParent(SceneNode * node);
 	
-    Matrix4 localTransform;
 	Matrix4 worldTransform;
-    Matrix4 originalLocalTransform; // TODO: rename to defaultLocalTransform
     
 
 	String	name;
@@ -167,6 +166,10 @@ protected:
 
     uint32 flags;
     uint32 debugFlags;
+
+private:
+    Matrix4 localTransform;
+    Matrix4 defaultLocalTransform;
     
 };
 
@@ -199,6 +202,12 @@ inline const Matrix4 & SceneNode::GetWorldTransform()
 { 
     return worldTransform; 
 };
+    
+inline const Matrix4 & SceneNode::GetDefaultLocalTransform()
+{
+    return defaultLocalTransform;
+}
+
 
 inline void SceneNode::SetTag(int32 _tag)
 {

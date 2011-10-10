@@ -174,7 +174,7 @@ void SceneNode::StopAllAnimations(bool recursive)
 
 void SceneNode::RestoreOriginalTransforms()
 {
-	localTransform = originalLocalTransform;
+    SetLocalTransform(GetDefaultLocalTransform());
 	
 	uint32 size = (uint32)childs.size();
 	for (uint32 c = 0; c < size; ++c)
@@ -290,7 +290,7 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
         dstNode = new SceneNode(scene);
     }
     dstNode->visible = visible;
-    dstNode->originalLocalTransform = originalLocalTransform;
+    dstNode->defaultLocalTransform = defaultLocalTransform;
     
     dstNode->localTransform = localTransform;
     dstNode->worldTransform = worldTransform;
@@ -362,7 +362,7 @@ void SceneNode::SetLocalTransform(const Matrix4 & newMatrix)
 
 void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
 {
-    originalLocalTransform = newMatrix;
+    defaultLocalTransform = newMatrix;
 }
 
 
