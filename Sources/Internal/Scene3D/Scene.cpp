@@ -253,6 +253,32 @@ SceneNode *Scene::GetRootNode(const String &rootNodePath)
     return rootNodes[rootNodePath];
 }
 
+void Scene::ReleaseRootNode(const String &rootNodePath)
+{
+	Map<String, SceneNode*>::iterator it;
+	it = rootNodes.find(rootNodePath);
+	if (it != rootNodes.end())
+	{
+        it->second->Release();
+        rootNodes.erase(it);
+	}
+}
+    
+void Scene::ReleaseRootNode(SceneNode *nodeToRelease)
+{
+	for (Map<String, SceneNode*>::iterator it = rootNodes.begin(); it != rootNodes.end(); ++it)
+	{
+        if (nodeToRelease == it->second) 
+        {
+            SceneNode * obj = it->second;
+            obj->Release();
+            rootNodes.erase(it);
+            return;
+        }
+	}
+}
+
+    
 void Scene::SetupTestLighting()
 {
 #ifdef __DAVAENGINE_IPHONE__

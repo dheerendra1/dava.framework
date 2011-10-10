@@ -495,7 +495,7 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		int32 camIndex = -1;
 		sceneFP->Read(&camIndex, sizeof(int32));
 		
-		Camera * cam = scene->GetCamera(camIndex + cameraIndexOffset);
+		Camera * cam = SafeRetain(scene->GetCamera(camIndex + cameraIndexOffset));
 		node = cam;//new Camera(scene);
 		node->localTransform = node->originalLocalTransform = def.localTransform;
 		node->name = name;

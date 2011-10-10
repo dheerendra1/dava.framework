@@ -49,7 +49,12 @@ SceneNode::SceneNode(Scene * _scene)
 
 SceneNode::~SceneNode()
 {
-
+	for (std::deque<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
+	{
+        SceneNode *node = *t;
+        node->SetParent(0);
+        node->Release();
+	}
 }
 
 void SceneNode::SetParent(SceneNode * node)
@@ -59,14 +64,20 @@ void SceneNode::SetParent(SceneNode * node)
 
 void SceneNode::AddNode(SceneNode * node)
 {
-	if (node)node->Retain();
-	
-	childs.push_back(node);
-	node->SetParent(this);
+	if (node)
+    {
+        node->Retain();
+        childs.push_back(node);
+        node->SetParent(this);
+    }
 }
 
 void SceneNode::RemoveNode(SceneNode * node)
 {
+    if (!node) 
+    {
+        return;
+    }
     if (inUpdate) 
     {
         removedCache.push_back(node);
@@ -77,15 +88,12 @@ void SceneNode::RemoveNode(SceneNode * node)
 		if (*t == node)
 		{
 			childs.erase(t);
+            node->SetParent(0);
+            node->Release();
 			break;
 		}
 	}
 	
-	if (node)
-	{
-		node->SetParent(0);
-		node->Release();
-	}
 }
 	
 SceneNode * SceneNode::GetChild(int32 index)
