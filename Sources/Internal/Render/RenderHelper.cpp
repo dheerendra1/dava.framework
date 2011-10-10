@@ -60,7 +60,6 @@ void RenderHelper::FillRect(const Rect & rect)
     RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
     RenderManager::Instance()->SetRenderData(renderDataObject);
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-    RenderManager::Instance()->RestoreRenderEffect();
 }
 
 void RenderHelper::DrawRect(const Rect & rect)
@@ -81,7 +80,6 @@ void RenderHelper::DrawRect(const Rect & rect)
     RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
     RenderManager::Instance()->SetRenderData(renderDataObject);
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 5);
-    RenderManager::Instance()->RestoreRenderEffect();
 }
 
 void RenderHelper::DrawLine(const Vector2 &start, const Vector2 &end)
@@ -96,7 +94,6 @@ void RenderHelper::DrawLine(const Vector2 &start, const Vector2 &end)
     RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
     RenderManager::Instance()->SetRenderData(renderDataObject);
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
-    RenderManager::Instance()->RestoreRenderEffect();
 }
     
     
@@ -116,7 +113,6 @@ void RenderHelper::DrawLine(const Vector3 & start, const Vector3 & end)
     RenderManager::Instance()->SetRenderEffect(RenderManager::FLAT_COLOR);
     RenderManager::Instance()->SetRenderData(renderDataObject);
     RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
-    RenderManager::Instance()->RestoreRenderEffect();
 }
 
 
@@ -241,9 +237,7 @@ void RenderHelper::DrawPolygon(Polygon3 & polygon, bool closed)
 		    vertexStream->Set(TYPE_FLOAT, 3, 0, line);
 		    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
 		}
-		
-		RenderManager::Instance()->RestoreRenderEffect();		
-	}
+    }
 
 	
 }
@@ -265,8 +259,6 @@ void RenderHelper::DrawPolygon(Polygon2 & polygon, bool closed)
 		    vertexStream->Set(TYPE_FLOAT, 2, 0, line);
 		    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_LINESTRIP, 0, 2);
 		}
-		
-		RenderManager::Instance()->RestoreRenderEffect();		
 	}
 }
     

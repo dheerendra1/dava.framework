@@ -24,38 +24,38 @@ namespace DAVA
 ColladaTexture::ColladaTexture(FCDImage * _image)
 {
 	image = _image;
-
+//
 //	// Create an image container in DevIL.
 //	ILuint imageId;
 //
 //	ilGenImages(1, &imageId);
 //	ilBindImage(imageId);
-//
-//	// do it square
-//	// reduce it if it is necessaryt
-//	// test this
-//	//GL_MAX_TEXTURE_SIZE.
-//
-//	// initializate some variables
-//	hasAlphaChannel = false;
-//
-//	wchar_t orig[512];
-//	const size_t newsize = 256;
-//	char nstring[newsize];
-//#ifdef _WIN32
-//	// convert fstring to char*, amazing code based on http://msdn2.microsoft.com/en-us/library/ms235631(vs.80).aspx
-//	size_t convertedChars = 0;
-//	
-//	swprintf(orig, 512,L"%s", image->GetFilename().c_str() );
-//	size_t origsize = wcslen(orig) + 1;
-//	
-//	wcstombs_s(&convertedChars, nstring, origsize, orig, _TRUNCATE);
-//#else
-//	swprintf(orig, 512,L"%s", image->GetFilename().c_str() );
-//	const wchar_t * origTmp = &orig[0];
-//	wcsnrtombs( nstring, &origTmp, 512, 256, NULL);
-//#endif
-//	texturePathName =  nstring;
+
+	// do it square
+	// reduce it if it is necessaryt
+	// test this
+	//GL_MAX_TEXTURE_SIZE.
+
+	// initializate some variables
+	hasAlphaChannel = false;
+
+	wchar_t orig[512];
+	const size_t newsize = 256;
+	char nstring[newsize];
+#ifdef _WIN32
+	// convert fstring to char*, amazing code based on http://msdn2.microsoft.com/en-us/library/ms235631(vs.80).aspx
+	size_t convertedChars = 0;
+	
+	swprintf(orig, 512,L"%s", image->GetFilename().c_str() );
+	size_t origsize = wcslen(orig) + 1;
+	
+	wcstombs_s(&convertedChars, nstring, origsize, orig, _TRUNCATE);
+#else
+	swprintf(orig, 512,L"%s", image->GetFilename().c_str() );
+	const wchar_t * origTmp = &orig[0];
+	wcsnrtombs( nstring, &origTmp, 512, 256, NULL);
+#endif
+	texturePathName =  nstring;
 //	
 //	wprintf(L"* added texture: %s", (wchar_t*)(image->GetFilename().c_str()));
 //	printf(" name: %s\n", image->GetDaeId().c_str());

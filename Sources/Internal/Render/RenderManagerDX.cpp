@@ -701,6 +701,16 @@ void RenderManager::FlushState()
 	}
 
 	PrepareRealMatrix();
+
+    // TODO: when will be added shader support on DX
+    AttachRenderData(0);
+//    if (shader)
+//    {
+//        shader->Bind();
+//    }else
+//    {
+//        Shader::Unbind();
+//    }
 }
 
 void RenderManager::EnableVertexArray(bool isEnabled)
@@ -1316,6 +1326,52 @@ void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)
 	matrices[type] = matrix;
 }
 
+    
+void RenderManager::AttachRenderData(Shader * shader)
+{
+    if (!currentRenderData)return;
+        
+    RenderManager::Instance()->LockNonMain();
+    if (!shader)
+    {
+        pointerArraysCurrentState = 0;
+        int32 size = (int32)currentRenderData->streamArray.size();
+        for (int32 k = 0; k < size; ++k)
+        {
+            RenderDataStream * stream = currentRenderData->streamArray[k];
+            switch(stream->formatMark)
+            {
+                case EVF_VERTEX:
+                    SetVertexPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_VERTEX;
+                    break;
+                case EVF_TEXCOORD0:
+                    SetTexCoordPointer(stream->size, stream->type, stream->stride, stream->pointer);
+                    pointerArraysCurrentState |= EVF_TEXCOORD0;
+                    break;
+                default:
+                    break;
+            };
+        };
+        
+        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
+        
+        if (difference & EVF_VERTEX)
+        {
+            EnableVertexArray(pointerArraysCurrentState & EVF_VERTEX);
+        }
+        if (difference & EVF_TEXCOORD0)
+        {
+            EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
+        }
+        pointerArraysRendererState = pointerArraysCurrentState;
+        
+    }
+    else
+    {
+    }
+    RenderManager::Instance()->UnlockNonMain();
+}
 };
 
 #endif // __DAVAENGINE_DIRECTX9__

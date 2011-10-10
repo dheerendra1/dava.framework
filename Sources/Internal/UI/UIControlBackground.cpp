@@ -666,7 +666,6 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 	RenderManager::Instance()->FlushState();
 	
 	RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
-	RenderManager::Instance()->RestoreRenderEffect();
 	/*GLenum glErr = glGetError();
 	if (glErr != GL_NO_ERROR)
 	{

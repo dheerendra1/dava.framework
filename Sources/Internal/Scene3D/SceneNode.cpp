@@ -45,11 +45,12 @@ SceneNode::SceneNode(Scene * _scene)
 	worldTransform.Identity();
 	//animation = 0;
     debugFlags = DEBUG_DRAW_NONE;
+    flags = 0;
 }
 
 SceneNode::~SceneNode()
 {
-	for (std::deque<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
+	for (std::vector<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
 	{
         SceneNode *node = *t;
         node->SetParent(0);
@@ -83,13 +84,17 @@ void SceneNode::RemoveNode(SceneNode * node)
         removedCache.push_back(node);
         return;
     }
-	for (std::deque<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
+    std::vector<SceneNode*>::iterator childsEnd = childs.end();
+	for (std::vector<SceneNode*>::iterator t = childs.begin(); t != childsEnd; ++t)
 	{
 		if (*t == node)
 		{
 			childs.erase(t);
-            node->SetParent(0);
-            node->Release();
+            if (node)
+            {
+                node->SetParent(0);
+                node->Release();
+            }
 			break;
 		}
 	}
@@ -235,11 +240,19 @@ void SceneNode::Update(float32 timeElapsed)
 //		}
 	}
 	
+    // update world transform only in case if 
+    if (!(flags & NODE_WORLD_MATRIX_ACTUAL))  
 	{
 		if (parent)
-			worldTransform = localTransform * parent->worldTransform;
-		else 
-			worldTransform = localTransform;
+        {
+            worldTransform = localTransform * parent->worldTransform;
+        }else 
+		{
+            worldTransform = localTransform;
+        }
+        
+        // need propagate changes to child nodes
+        flags |= NODE_WORLD_MATRIX_ACTUAL;
 	}
 	//printf("- node: %s tr: %f %f %f\n", name.c_str(), localTransform.data[12], localTransform.data[13], localTransform.data[14]); 
 	
@@ -257,14 +270,16 @@ void SceneNode::Update(float32 timeElapsed)
         }
         removedCache.clear();
     }
-        
 }
 
 void SceneNode::Draw()
 {
-	uint32 size = (uint32)childs.size();
-	for (uint32 c = 0; c < size; ++c)
-		childs[c]->Draw();
+	//uint32 size = (uint32)childs.size();
+    Vector<SceneNode*>::iterator itEnd = childs.end();
+	for (Vector<SceneNode*>::iterator it = childs.begin(); it != itEnd; ++it)
+		(*it)->Draw();
+    if (scene)
+        scene->nodeCounter++;
 }
 
     
@@ -289,8 +304,10 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
     
     
 //    Logger::Debug("Children +++++++++++++++++++++++++++++++");
-    std::deque<SceneNode*>::iterator it = childs.begin();
-    for(; it != childs.end(); it++)
+    std::vector<SceneNode*>::iterator it = childs.begin();
+    
+    std::vector<SceneNode*>::iterator childsEnd = childs.end();
+    for(; it != childsEnd; it++)
     {
         SceneNode *n = (*it)->Clone();
         dstNode->AddNode(n);
@@ -306,8 +323,9 @@ void SceneNode::SetDebugFlags(uint32 _debugFlags, bool isRecursive)
     debugFlags = _debugFlags;
     if (isRecursive)
     {
-        std::deque<SceneNode*>::iterator it = childs.begin();
-        for(; it != childs.end(); it++)
+        std::vector<SceneNode*>::iterator it = childs.begin();
+        std::vector<SceneNode*>::iterator childsEnd = childs.end();
+        for(; it != childsEnd; it++)
         {
             SceneNode *n = (*it);
             n->SetDebugFlags(_debugFlags, isRecursive);

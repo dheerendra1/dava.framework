@@ -175,9 +175,7 @@ uint32 File::ReadLine(void * pointerToData, uint32 bufferSize)
 
 		if(nextChar == '\r')
 		{
-			
-			Read(&nextChar, 1);
-			if(nextChar != '\n')
+			if(Read(&nextChar, 1) && nextChar != '\n')
 			{
 				Seek(-1, File::SEEK_FROM_CURRENT);
 			}

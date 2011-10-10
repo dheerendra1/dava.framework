@@ -1024,7 +1024,6 @@ void Sprite::Draw()
     RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
         
     RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
-    RenderManager::Instance()->RestoreRenderEffect();
 
     /* if (RenderManager::Instance()->GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
     {
@@ -1062,8 +1061,6 @@ void Sprite::Draw(DrawState * state)
 	RenderManager::Instance()->SetRenderData(spriteRenderObject);
 	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
-	RenderManager::Instance()->RestoreRenderEffect();
-
 
 	if (state->usePerPixelAccuracy) 
 		RenderManager::Instance()->PopMappingMatrix();
@@ -1250,7 +1247,6 @@ void Sprite::DrawPoints(Vector2 *verticies)
 	RenderManager::Instance()->SetRenderData(spriteRenderObject);
 	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 	RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
-	RenderManager::Instance()->RestoreRenderEffect();
 }
 
 	

@@ -66,8 +66,8 @@ public:
 //	Helper functions for parameters convertation
 	inline float32 GetMetersInPixelRatio();
 	inline float32 GetPixelsInMeterRatio();
-	inline Vector2 VectorBox2DToGameManager(const b2Vec2 &box2DVector);
-	inline b2Vec2 VectorGameManagerToBox2D(const Vector2 &objectManagerVector);
+	inline Vector2 VectorBox2DToGameManager(const b2Vec2 &box2DVector) const;
+	inline b2Vec2 VectorGameManagerToBox2D(const Vector2 &objectManagerVector) const;
 	inline Vector2 SizeBox2DToGameManager(const b2Vec2 &box2DVector);
 	inline b2Vec2 SizeGameManagerToBox2D(const Vector2 &objectManagerVector);
 	inline float32 AngleBox2DToGameManager(float32 angle);
@@ -138,12 +138,12 @@ float32 Box2DGameObjectManager::GetMetersInPixelRatio()
 	return metersInPixelRatio;
 }
 	
-Vector2 Box2DGameObjectManager::VectorBox2DToGameManager(const b2Vec2 &box2DVector)
+Vector2 Box2DGameObjectManager::VectorBox2DToGameManager(const b2Vec2 &box2DVector) const
 {
 	return 	Vector2(box2DVector.x * pixelsInMeterRatio, -box2DVector.y * pixelsInMeterRatio);
 }
 
-b2Vec2 Box2DGameObjectManager::VectorGameManagerToBox2D(const Vector2 &objectManagerVector)
+b2Vec2 Box2DGameObjectManager::VectorGameManagerToBox2D(const Vector2 &objectManagerVector) const
 {
 	return b2Vec2(objectManagerVector.x * metersInPixelRatio, -objectManagerVector.y * metersInPixelRatio);
 }

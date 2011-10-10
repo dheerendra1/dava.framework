@@ -251,6 +251,8 @@ public:
 	// 
 	void SetTexture(Texture *texture, uint32 textureLevel = 0);
 	Texture * GetTexture(uint32 textureLevel = 0);
+    void SetShader(Shader * shader);
+    Shader * GetShader();
 	
 	void EnableBlending(bool isEnabled);
 	void EnableTexturing(bool isEnabled);
@@ -344,15 +346,10 @@ public:
 	virtual bool IsRenderTarget();
 	
 	/** 
-        \brief Sets the effect for the rendering. Call RestoreRenderEffect when you finish using your effect.
-        \param[in] renderEffect - if NULL, sets the effect to none
+        \brief Sets the effect for the rendering. 
+        \param[in] renderEffect - if 0, sets the effect to none
 	 */
 	virtual void SetRenderEffect(RenderEffect *renderEffect);
-
-	/** 
-        \brief Restores render manager to the previous effect
-	 */
-	virtual void RestoreRenderEffect();
 
 	/** 
 	 \brief Sets the requested framerate. For iPhone can be set to 60, 30, 20, 15
@@ -509,6 +506,7 @@ protected:
     
     static const uint32 MAX_TEXTURE_LEVELS = 4;
 	Texture *currentTexture[MAX_TEXTURE_LEVELS];                        // Texture that was set
+    Shader * shader;
 	
     int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
 	int oldVertexArrayEnabled;                      // state
@@ -520,6 +518,8 @@ protected:
     
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;
+    uint32 enabledAttribCount;
+
     
     
     int32 renderOrientation;

@@ -105,6 +105,7 @@ public:
 	
 	static void EnableMipmapGeneration();
 	static void DisableMipmapGeneration();
+    static bool IsMipmapGenerationEnabled() { return isMipmapGenerationEnabled; };
 	void GenerateMipmaps();
 	
 	void TexImage(int32 level, uint32 width, uint32 height, const void * _data);

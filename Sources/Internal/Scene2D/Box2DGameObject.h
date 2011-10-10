@@ -69,7 +69,7 @@ namespace DAVA
 			return box2DBody;
 		}
 		
-		inline Box2DGameObjectManager *B2Manager()///just a helper function for fast pointer cast
+		inline Box2DGameObjectManager *B2Manager() const ///just a helper function for fast pointer cast
 		{
 			return (Box2DGameObjectManager *)manager;
 		}

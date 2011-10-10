@@ -92,14 +92,17 @@ public:
 	
 	// extract data from current node to use it in animations
 	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
-
 	
 	Matrix4 localTransform;
 	Matrix4 worldTransform;
 	String	name;
 	int32	tag;
-	
-	
+	enum
+    {
+        NODE_STATIC = 0x1,  // this flag means that node is always static and we do not need to update it's worldTransform
+        NODE_DYNAMIC = 0x2, // node automatically become dynamic when we update it's local matrix
+        NODE_WORLD_MATRIX_ACTUAL = 0x4, // if this flag set this means we do not need to rebuild worldMatrix
+    };
 	
 	// animations 
 	void ExecuteAnimation(SceneNodeAnimation * animation);	
@@ -108,16 +111,12 @@ public:
 	void RestoreOriginalTransforms();
 
 	
-	std::deque<SceneNodeAnimation *> nodeAnimations;
-	
-	
-	Matrix4 originalLocalTransform;
-    
     virtual SceneNode* Clone(SceneNode *dstNode = NULL);
-//    virtual SceneNode* Clone();
-
 	
-    
+    // Do not use variables 
+    std::deque<SceneNodeAnimation *> nodeAnimations;
+	Matrix4 originalLocalTransform;
+
 	enum
 	{
 		DEBUG_DRAW_NONE = 0,
@@ -139,6 +138,7 @@ public:
 	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
 	
 protected:
+    
     String RecursiveBuildFullName(SceneNode * node, SceneNode * endNode);
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
@@ -146,11 +146,14 @@ protected:
 	
 	Scene * scene;
 	SceneNode * parent;
-	std::deque<SceneNode*> childs;
+	std::vector<SceneNode*> childs;
 	std::deque<SceneNode*> removedCache;
 	bool visible;
     bool inUpdate;
+
+    uint32 flags;
     uint32 debugFlags;
+    
 };
 
 inline void SceneNode::SetVisible(bool isVisible)

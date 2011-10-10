@@ -33,6 +33,7 @@
 #include "Render/RenderBase.h"
 #include "Render/RenderResource.h"
 #include "Render/VertexBuffer.h"
+#include "Base/BaseMath.h"
 
 namespace DAVA
 {
@@ -64,9 +65,17 @@ public:
     
     // virtual void SetActiveShader(const String & string);
     virtual bool LoadFromYaml(const String & pathname);
-    virtual void Set();
+    virtual void Bind();
+    static void Unbind();
     virtual int32 FindUniformLocationByName(const String & name);
     int32 GetAttributeIndex(eVertexFormat vertexFormat);
+    
+    
+    void SetUniformValue(int32 uniformLocation, int32 value);
+    void SetUniformValue(int32 uniformLocation, const Vector3 & vector);
+    void SetUniformValue(int32 uniformLocation, const Vector4 & vector);
+    void SetUniformValue(int32 uniformLocation, const Matrix4 & matrix);
+
 
     /**
         This function return vertex format required by shader

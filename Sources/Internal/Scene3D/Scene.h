@@ -110,6 +110,11 @@ public:
     Camera * GetClipCamera() const;
     
 private:	
+    uint64 updateTime;
+    uint64 drawTime;
+    uint32 nodeCounter;
+
+    
 	Vector<Texture*> textures;
 	Vector<StaticMesh*> staticMeshes;
 	Vector<AnimatedMesh*> animatedMeshes;
@@ -120,6 +125,8 @@ private:
     
     Camera * currentCamera;
     Camera * clipCamera;
+
+    friend class SceneNode;
 };
 
 // Inline implementation

@@ -45,7 +45,7 @@ class Scene;
 class Image;
 class Texture;
 class RenderDataObject;
-
+class Shader;
 
 /**    
     \brief Implementation of cdlod algorithm to render landscapes
@@ -176,6 +176,13 @@ protected:
     
     Vector3 cameraPos;
     Frustum *frustum;
+    
+    
+    Shader * detailShader;
+    int32 uniformTexture;
+    int32 uniformDetailTexture;
+    int32 uniformCameraPosition;
+    Shader * singleTextureShader;
 };
 
 	
