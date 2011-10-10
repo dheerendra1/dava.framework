@@ -59,7 +59,7 @@ void Camera::RestoreOriginalSceneTransform()
 	SceneNode * node = GetParent();
 	while(node)
 	{
-		cameraTransform = node->localTransform * cameraTransform;
+		cameraTransform = node->GetLocalTransform() * cameraTransform;
 		node = node->GetParent();
 	}
 	worldTransform = cameraTransform;

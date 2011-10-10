@@ -415,7 +415,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
     SceneNode *n = (SceneNode *)node;
     
     c->text->SetFont(fnt);
-    c->text->SetText(StringToWString(n->name));
+    c->text->SetText(StringToWString(n->GetName()));
     c->text->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
     SafeRelease(fnt);
     
@@ -448,7 +448,7 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         {
             AABBox3 bbox = mesh->GetBoundingBox();
             AABBox3 transformedBox;
-            bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+            bbox.GetTransformedBox(mesh->GetWorldTransform(), transformedBox);
 
             mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
             nodeBoundingBoxMin->SetText(Format(L"Min: (%0.2f, %0.2f, %0.2f)", 
@@ -477,8 +477,9 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //        turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //        turretN->SetDebugFlags();
-        localMatrixControl->SetMatrix(&selectedNode->localTransform);
-        worldMatrixControl->SetMatrix(&selectedNode->worldTransform);
+        
+        //localMatrixControl->SetMatrix(&selectedNode->GetLocalTransform());
+        //worldMatrixControl->SetMatrix(&selectedNode->GetWorldTransform());
         
         nodeName->SetText(StringToWString(selectedNode->GetFullName()));
     }
@@ -491,7 +492,7 @@ void SceneEditorScreen::OnLookAtButtonPressed(BaseObject * obj, void *, void *)
     {
         AABBox3 bbox = mesh->GetBoundingBox();
         AABBox3 transformedBox;
-        bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+        bbox.GetTransformedBox(mesh->GetWorldTransform(), transformedBox);
         Vector3 center = transformedBox.GetCenter();
         scene->GetCurrentCamera()->SetTarget(center);
     }
