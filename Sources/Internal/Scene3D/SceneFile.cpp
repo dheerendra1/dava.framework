@@ -601,7 +601,7 @@ bool SceneFile::ReadCamera()
 	CameraDef cd;
 	sceneFP->Read(&cd, sizeof(CameraDef));
 	
-	cam->Setup(cd.fovy, 480.0f / 320.0f, cd.znear, cd.zfar, cd.ortho);
+	cam->Setup(cd.fovy, 320.0f / 480.0f, cd.znear, cd.zfar, cd.ortho);
 	SafeRelease(cam);
 	return true;
 }

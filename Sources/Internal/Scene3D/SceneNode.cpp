@@ -254,12 +254,25 @@ void SceneNode::Update(float32 timeElapsed)
         
         // need propagate changes to child nodes
         flags |= NODE_WORLD_MATRIX_ACTUAL;
+        uint32 size = (uint32)childs.size();
+        for (uint32 c = 0; c < size; ++c)
+        {
+            childs[c]->InvalidateLocalTransform();
+            childs[c]->Update(timeElapsed);
+        }
+        
 	}
+    else 
+    {
+        uint32 size = (uint32)childs.size();
+        for (uint32 c = 0; c < size; ++c)
+        {
+            childs[c]->Update(timeElapsed);
+        }
+    }
+
 	//printf("- node: %s tr: %f %f %f\n", name.c_str(), localTransform.data[12], localTransform.data[13], localTransform.data[14]); 
 	
-	uint32 size = (uint32)childs.size();
-	for (uint32 c = 0; c < size; ++c)
-		childs[c]->Update(timeElapsed);
 	
 	inUpdate = false;
 
@@ -355,16 +368,6 @@ String SceneNode::RecursiveBuildFullName(SceneNode * node, SceneNode * endNode)
     }
 }
     
-void SceneNode::SetLocalTransform(const Matrix4 & newMatrix)
-{
-    localTransform = newMatrix;
-    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
-}
-
-void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
-{
-    defaultLocalTransform = newMatrix;
-}
 
 
 };
