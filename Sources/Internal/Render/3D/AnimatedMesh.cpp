@@ -145,7 +145,7 @@ void AnimatedMesh::Update(float32 timeElapsed)
 	int32 boneCount = (int32)bones.size();
 	for (int b = 0; b < boneCount; ++b)
 	{
-		bones[b]->finalMatrix = bindShapeMatrix * bones[b]->inverse0Matrix * bones[b]->worldTransform;
+		bones[b]->finalMatrix = bindShapeMatrix * bones[b]->inverse0Matrix * bones[b]->GetWorldTransform();
 	}
 	
 	int32 polygroupCount = (int32)polygroups.size();

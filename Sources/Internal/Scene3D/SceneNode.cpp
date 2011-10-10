@@ -345,6 +345,18 @@ String SceneNode::RecursiveBuildFullName(SceneNode * node, SceneNode * endNode)
         return node->name;
     }
 }
+    
+void SceneNode::SetLocalTransform(const Matrix4 & newMatrix)
+{
+    localTransform = newMatrix;
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+}
+
+void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
+{
+    originalLocalTransform = newMatrix;
+}
+
 
 };
 

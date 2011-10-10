@@ -120,6 +120,8 @@ private:
 	Vector<Camera*> cameras;
 	Vector<SceneNodeAnimationList*> animations;
     Map<String, SceneNode*> rootNodes;
+
+    // Vector<SceneNode*> deferredNodeQueue;
     
     Camera * currentCamera;
     Camera * clipCamera;

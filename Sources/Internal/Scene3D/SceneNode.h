@@ -81,6 +81,11 @@ public:
         \returns this node full name from root. Example [MaxScene->camera->instance0]
      */
     String GetFullName();
+    
+    inline void SetTag(int32 _tag);
+    
+    inline const int32 GetTag(); 
+
 	
 	// virtual updates
 	virtual void	Update(float32 timeElapsed);
@@ -93,14 +98,16 @@ public:
 	// extract data from current node to use it in animations
 	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
 	
-	Matrix4 localTransform;
-	Matrix4 worldTransform;
-	String	name;
-	int32	tag;
+    inline const Matrix4 & GetLocalTransform(); 
+    inline const Matrix4 & GetWorldTransform();
+    
+    void SetLocalTransform(const Matrix4 & newMatrix);
+    void SetDefaultLocalTransform(const Matrix4 & newMatrix);
+    
 	enum
     {
-        NODE_STATIC = 0x1,  // this flag means that node is always static and we do not need to update it's worldTransform
-        NODE_DYNAMIC = 0x2, // node automatically become dynamic when we update it's local matrix
+        // NODE_STATIC = 0x1,  // this flag means that node is always static and we do not need to update it's worldTransform
+        // NODE_DYNAMIC = 0x2, // node automatically become dynamic when we update it's local matrix
         NODE_WORLD_MATRIX_ACTUAL = 0x4, // if this flag set this means we do not need to rebuild worldMatrix
     };
 	
@@ -115,7 +122,6 @@ public:
 	
     // Do not use variables 
     std::deque<SceneNodeAnimation *> nodeAnimations;
-	Matrix4 originalLocalTransform;
 
 	enum
 	{
@@ -138,12 +144,20 @@ public:
 	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
 	
 protected:
-    
+
     String RecursiveBuildFullName(SceneNode * node, SceneNode * endNode);
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
 	void SetParent(SceneNode * node);
 	
+    Matrix4 localTransform;
+	Matrix4 worldTransform;
+    Matrix4 originalLocalTransform; // TODO: rename to defaultLocalTransform
+    
+
+	String	name;
+	int32	tag;
+
 	Scene * scene;
 	SceneNode * parent;
 	std::vector<SceneNode*> childs;
@@ -169,6 +183,26 @@ inline SceneNode * SceneNode::GetParent()
 inline const String & SceneNode::GetName()
 {
     return name;
+}
+
+inline const int32 SceneNode::GetTag() 
+{ 
+    return tag; 
+}
+    
+inline const Matrix4 & SceneNode::GetLocalTransform() 
+{ 
+    return localTransform; 
+}; 
+
+inline const Matrix4 & SceneNode::GetWorldTransform() 
+{ 
+    return worldTransform; 
+};
+
+inline void SceneNode::SetTag(int32 _tag)
+{
+    tag = _tag;
 }
     
 };

@@ -42,7 +42,8 @@
 
 namespace DAVA
 {
-	
+
+void ReadString(FILE * fp, char * res, int maxSize);  // XCode 4 fix
 void ReadString(FILE * fp, char * res, int maxSize)
 {
 	int pos = 0;
@@ -174,7 +175,7 @@ bool SceneFile::LoadScene( const char * filename, Scene * _scene, bool relToBund
 			SceneNodeAnimation * anim = aList->animations[k];
 			if (!anim)
 			{
-				if (debugLogEnabled)Logger::Debug("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->name.c_str());
+				if (debugLogEnabled)Logger::Debug("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->GetName().c_str());
 				continue;
 			}
 			String & name = anim->bindName;
@@ -281,7 +282,7 @@ bool SceneFile::ReadMaterial()
 	mat->ambient = materialDef.ambient;
 	mat->diffuse = materialDef.diffuse;
 	
-	if ( (materialDef.diffuseTextureId >= 0) && (materialDef.diffuseTextureId < scene->GetTextureCount()))
+	if (materialDef.diffuseTextureId < scene->GetTextureCount())
 	{	
 		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 
@@ -293,7 +294,7 @@ bool SceneFile::ReadMaterial()
 
 	mat->emission = materialDef.emission;
 	mat->indexOfRefraction = materialDef.indexOfRefraction;
-	mat->name = materialDef.name;
+	mat->SetName(materialDef.name);
 	mat->reflective = materialDef.reflective;
 	// TODO for reflective texture
 	//mat->reflectiveTexture = materialDef.r
@@ -461,8 +462,9 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 	if (def.nodeType == SceneNodeDef::SCENE_NODE_BASE)
 	{
 		node = new SceneNode3d(scene);
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -476,9 +478,10 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		
 		currentSkeletonNode = new SkeletonNode(scene);
 		node = currentSkeletonNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
 		currentSkeletonNode->inverse0Matrix = inverse0;
-		node->name = name;
+		node->SetName(name);
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -491,9 +494,11 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 
 		BoneNode * boneNode = new BoneNode(scene, currentSkeletonNode);
 		node = boneNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		boneNode->inverse0Matrix = inverse0;
-		node->name = name;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+
+		boneNode->inverse0Matrix = inverse0;    // TODO: make inverse0Matrix protected
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -506,8 +511,11 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		
 		Camera * cam = scene->GetCamera(camIndex + cameraIndexOffset);
 		node = cam;//new Camera(scene);
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
+        
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+        
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -522,9 +530,11 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		
 		MeshInstanceNode* meshNode = new MeshInstanceNode(scene);
 		node = meshNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
-
+        
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+        
 		int pgInstancesCount = 0;
 		sceneFP->Read(&pgInstancesCount, sizeof(int));
 
@@ -602,7 +612,7 @@ bool SceneFile::ReadAnimation()
 	
 	char name[512];
 	sceneFP->ReadString(name, 512);
-	animationList->name = name;
+	animationList->SetName(name);
 
 	
 	int nodeCount;

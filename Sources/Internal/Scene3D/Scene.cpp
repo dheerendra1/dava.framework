@@ -202,7 +202,7 @@ SceneNodeAnimationList * Scene::GetAnimation(const String & name)
 	for (int32 k = 0; k < size; ++k)
 	{
 		SceneNodeAnimationList * node = animations[k];
-		if (node->name == name)
+		if (node->GetName() == name)
 			return node;
 	}
 	return 0;
