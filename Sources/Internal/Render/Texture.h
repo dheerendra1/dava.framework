@@ -113,6 +113,14 @@ public:
 	void SetWrapMode(TextureWrap wrapS, TextureWrap wrapT);
 	
 	void UsePvrMipmaps();
+    
+    /**
+        \brief This function can enable / disable autosave for render targets.
+        It's actual only for DX9 and for other systems is does nothing
+        If you refreshing your rendertargets every frame you can disable autosave for them for performance on DX9
+        By default autosave is enabled for all DX9 textures. 
+     */
+    inline void EnableRenderTargetAutosave(bool isEnabled);
 
 public:							// properties for fast access
 
@@ -124,6 +132,7 @@ public:							// properties for fast access
 	LPDIRECT3DTEXTURE9 id;
 	LPDIRECT3DTEXTURE9 saveTexture;
 	bool		 renderTargetModified;
+    bool         renderTargetAutosave;
 
 	virtual void SaveToSystemMemory();
 	virtual void Lost();
@@ -160,5 +169,14 @@ private:
 	Texture();
 	virtual ~Texture();
 };
+    
+// Implementation of inline functions
+inline void Texture::EnableRenderTargetAutosave(bool isEnabled)
+{
+#if defined(__DAVAENGINE_DIRECTX9__)
+    renderTargetAutosave = isEnabled;
+#endif 
+}
+    
 };
 #endif // __DAVAENGINE_TEXTUREGLES_H__
