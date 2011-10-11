@@ -30,6 +30,7 @@
 #include "Platform/TemplateWin32/CorePlatformWin32.h"
 #include "Platform/TemplateWin32/WindowsSpecifics.h"
 #include "Platform/Thread.h"
+#include "Utils/Utils.h"
 
 #if defined(__DAVAENGINE_WIN32__)
 
@@ -44,15 +45,20 @@ namespace DAVA
 	{
 		CoreWin32Platform * core = new CoreWin32Platform();
 		core->CreateSingletons();
-		core->CreateWin32Window(handle);
-		core->Run();
-		core->ReleaseSingletons();
-#ifdef ENABLE_MEMORY_MANAGER
-		if (DAVA::MemoryManager::Instance() != 0)
+		bool windowCreated = core->CreateWin32Window(handle);
+		if(windowCreated)
 		{
-			DAVA::MemoryManager::Instance()->FinalLog();
-		}
+			core->Run();
+			core->ReleaseSingletons();
+#ifdef ENABLE_MEMORY_MANAGER
+			if (DAVA::MemoryManager::Instance() != 0)
+			{
+				DAVA::MemoryManager::Instance()->FinalLog();
+			}
 #endif
+		}
+
+		CloseHandle(core->hMutex);
 		return 0;
 	
 	}
@@ -113,8 +119,18 @@ namespace DAVA
 	
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void CoreWin32Platform::CreateWin32Window(HINSTANCE hInstance)
+	bool CoreWin32Platform::CreateWin32Window(HINSTANCE hInstance)
 	{	
+		FrameworkDidLaunched();
+		KeyedArchive * options = Core::GetOptions();
+
+		//single instance check
+		hMutex = CreateMutex(NULL, FALSE, StringToWString(options->GetString("title", "dava.instance")).c_str());
+		if(ERROR_ALREADY_EXISTS == GetLastError())
+		{
+			return false;
+		}
+
 		windowedMode = DisplayMode(800, 600, 16, 0);
 		fullscreenMode = DisplayMode(800, 600, 16, 0);
 		currentMode = windowedMode;
@@ -185,8 +201,7 @@ namespace DAVA
 		RenderManager::Create(Core::RENDERER_DIRECTX9);
 		RenderManager::Instance()->Create(hInstance, hWindow);
 
-		FrameworkDidLaunched();
-		KeyedArchive * options = Core::GetOptions();
+		
 
 		//fullscreenMode = GetCurrentDisplayMode();
 		fullscreenMode = GetCurrentDisplayMode();//FindBestMode(fullscreenMode);
@@ -236,6 +251,8 @@ namespace DAVA
 		RenderManager::Instance()->Init(currentMode.width, currentMode.height);
 		UIControlSystem::Instance()->SetInputScreenAreaSize(currentMode.width, currentMode.height);
 		Core::Instance()->SetPhysicalScreenSize(currentMode.width, currentMode.height);
+
+		return true;
 	}
 
 	void CoreWin32Platform::Run()

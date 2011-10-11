@@ -48,7 +48,7 @@ public:
 
 	virtual void Quit();
 
-	virtual void CreateWin32Window(HINSTANCE hInstance);
+	virtual bool CreateWin32Window(HINSTANCE hInstance); //true if window created, if false, need to quit the app
 	virtual void Run();
 
 	virtual void ToggleFullscreen();
@@ -61,6 +61,7 @@ public:
 	HWND hWindow;
 	HDC hDC;
 	HGLRC hRC;
+	HANDLE hMutex;
 #if defined(__DAVAENGINE_DIRECTX9__)
 	LPDIRECT3D9 d3d9;
 #endif 
