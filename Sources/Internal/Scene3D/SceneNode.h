@@ -107,11 +107,18 @@ public:
 	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
 	
     inline const Matrix4 & GetLocalTransform(); 
+    /**
+     \brief This method means that you always modify geted matrix. 
+        If you dont want to modify matrix call GetLocalTransform().
+     */
+    inline Matrix4 & ModifyLocalTransform(); 
     inline const Matrix4 & GetWorldTransform();
     inline const Matrix4 & GetDefaultLocalTransform(); 
     
-    void SetLocalTransform(const Matrix4 & newMatrix);
-    void SetDefaultLocalTransform(const Matrix4 & newMatrix);
+    inline void SetLocalTransform(const Matrix4 & newMatrix);
+    inline void SetDefaultLocalTransform(const Matrix4 & newMatrix);
+    inline void InvalidateLocalTransform();
+    
     
 	enum
     {
@@ -213,6 +220,30 @@ inline const Matrix4 & SceneNode::GetDefaultLocalTransform()
 {
     return defaultLocalTransform;
 }
+    
+inline Matrix4 & SceneNode::ModifyLocalTransform()
+{
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+    return localTransform;
+}
+
+inline void SceneNode::SetLocalTransform(const Matrix4 & newMatrix)
+{
+    localTransform = newMatrix;
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+}
+    
+inline void SceneNode::InvalidateLocalTransform()
+{
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+}
+
+    
+inline void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
+{
+    defaultLocalTransform = newMatrix;
+}
+    
 
 
 inline void SceneNode::SetTag(int32 _tag)
