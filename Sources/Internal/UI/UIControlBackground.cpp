@@ -663,7 +663,9 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 
 	RenderManager::Instance()->SetTexture(texture);
 	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(rdoObject);
 	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
+
 	/*GLenum glErr = glGetError();
 	if (glErr != GL_NO_ERROR)
 	{
