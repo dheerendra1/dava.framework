@@ -102,13 +102,13 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 
     if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT))
     {
-        this->fovy = 1.0f / fovy;
+        this->aspect = 1.0f / aspect;
 	}else
     {
-        this->fovy = fovy;
+        this->aspect = aspect;
     }
     
-    this->aspect = aspect;
+    this->fovy = fovy;
 	this->znear = znear;
 	this->zfar = zfar;
 	this->ortho = ortho;
