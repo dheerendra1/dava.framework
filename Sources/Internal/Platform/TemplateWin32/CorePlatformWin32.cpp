@@ -185,8 +185,8 @@ namespace DAVA
 		int32 realWidth = clientSize.right - clientSize.left;
 		int32 realHeight = clientSize.bottom - clientSize.top;
 
-		int32 windowLeft = (GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
-		int32 windowTop = (GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
+		int32 windowLeft = -10000;//(GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
+		int32 windowTop = -10000;//(GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
 
 		if (isFullscreen)
 		{
