@@ -53,7 +53,7 @@ UIControlBackground::UIControlBackground()
 ,	lastDrawPos(0, 0)
 {
 	rdoObject = new RenderDataObject();
-    vertexStream = rdoObject->SetStream(EVF_COLOR, TYPE_FLOAT, 2, 0, 0);
+    vertexStream = rdoObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
     texCoordStream = rdoObject->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, 0);
 	//rdoObject->SetStream()
 }
