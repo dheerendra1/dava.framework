@@ -536,6 +536,8 @@ namespace DAVA
 				return DRAW_STATE_UNPRESSED;
 			}
 				break;
+            default:
+                break;
 		}
 		return DRAW_STATE_UNPRESSED;
 	}
@@ -585,6 +587,8 @@ namespace DAVA
 				return DRAW_STATE_UNPRESSED;
 			}
 				break;
+            default:
+                break;
 		}
 		return DRAW_STATE_UNPRESSED;
 	}

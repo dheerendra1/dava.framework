@@ -96,6 +96,7 @@ int32 YamlNode::GetCount()
 	{
 		case TYPE_MAP: return (int32)objectMap.size();
 		case TYPE_ARRAY: return (int32)objectArray.size();
+        default: break;
 	}
 	return 1;
 }
@@ -476,6 +477,8 @@ bool YamlParser::Parse(const String & pathName)
 				objectStack.pop();
 			}
 			break;
+        default:
+            break;
 		};
 
 		/* Are we finished? */

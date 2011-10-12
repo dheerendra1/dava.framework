@@ -174,13 +174,13 @@ const String & KeyedArchive::GetString(const String & key, const String & defaul
 {
 	if (IsKeyExists(key))
 		return objectMap[key].AsString();
-	return defaultValue;
+	return String(defaultValue); // return new object instead of returning reference to defaultValue, because it's unsafe
 }
 const WideString & KeyedArchive::GetWideString(const String & key, const WideString & defaultValue)
 {
 	if (IsKeyExists(key))
 		return objectMap[key].AsWideString();
-	return defaultValue;
+	return WideString(defaultValue); // return new object instead of returning reference to defaultValue, because it's unsafe
 }
 	
 const uint8 *KeyedArchive::GetByteArray(const String & key, const uint8 *defaultValue)
