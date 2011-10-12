@@ -42,6 +42,7 @@
 #include "StaticTextScreen.h"
 #include "CollisionTestScreen.h"
 #include "ImageUsageScreen.h"
+#include "LandscapeTestScreen.h"
 
 using namespace DAVA;
 
@@ -58,7 +59,6 @@ GameCore::~GameCore()
 void GameCore::OnAppStarted()
 {
 //	RenderManager::Instance()->SetFPS(60);
-
 
 	Logger::Debug("long %d", sizeof(long));
 	Logger::Debug("long long %d", sizeof(long long));
@@ -78,6 +78,7 @@ void GameCore::OnAppStarted()
  	stScreen = new StaticTextScreen();
 // 	collisionTestScreen = new CollisionTestScreen();
 	imageUsageScreen = new ImageUsageScreen();
+    landscapeTestScreen = new LandscapeTestScreen();
     
 //	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
@@ -92,8 +93,9 @@ void GameCore::OnAppStarted()
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
+    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_ANIM_3D);
+	UIScreenManager::Instance()->SetFirst(SCREEN_LANDSCAPE_TEST);
 	cursor = 0;
 }
 
@@ -101,6 +103,7 @@ void GameCore::OnAppFinished()
 {
 	SafeRelease(cursor);
 
+    SafeRelease(landscapeTestScreen);
 //	SafeRelease(collisionTestScreen);
 // 	SafeRelease(stScreen);
 // 	SafeRelease(box2dGameObjectTestScreen);

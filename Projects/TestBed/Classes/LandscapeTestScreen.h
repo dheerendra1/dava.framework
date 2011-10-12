@@ -27,54 +27,40 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
+#ifndef __LANDSCAPE_TEST_SCREEN_H__
+#define __LANDSCAPE_TEST_SCREEN_H__
+
 #include "DAVAEngine.h"
-#include "GameCore.h"
- 
+
 using namespace DAVA;
 
-
-void FrameworkDidLaunched()
-{   
-#if defined(__DAVAENGINE_IPHONE__)
-	KeyedArchive * appOptions = new KeyedArchive();
-	appOptions->SetInt("orientation", Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT);
-    appOptions->SetBool("iPhone_autodetectScreenScaleFactor", true);
-    appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);
-    
-	DAVA::Core::Instance()->SetVirtualScreenSize(480, 320);
-	DAVA::Core::Instance()->RegisterAvailableResourceSize(480, 320, "Gfx");
-#else
-	KeyedArchive * appOptions = new KeyedArchive();
-//	appOptions->SetInt("width",	920);
-//	appOptions->SetInt("height", 690);
-
-	appOptions->SetInt("width",	920);
-	appOptions->SetInt("height", 690);
-//	appOptions->SetInt("width",	1280);
-//	appOptions->SetInt("height", 800);
-    
-	appOptions->SetInt("fullscreen.width",	1280);
-	appOptions->SetInt("fullscreen.height", 800);
-//	appOptions->SetInt("fullscreen.width",	1024);
-//	appOptions->SetInt("fullscreen.height", 768);
-
-    
-	appOptions->SetInt("fullscreen", 0);
-	appOptions->SetInt("bpp", 32); 
-
-	DAVA::Core::Instance()->SetVirtualScreenSize(920, 690);
-//	DAVA::Core::Instance()->SetVirtualScreenSize(1280, 800);
-	DAVA::Core::Instance()->RegisterAvailableResourceSize(920, 690, "Gfx");
-	DAVA::Core::Instance()->RegisterAvailableResourceSize(1280, 800, "Gfx2");
-#endif 
-
-	GameCore * core = new GameCore();
-	DAVA::Core::SetApplicationCore(core);
-	DAVA::Core::SetOptions(appOptions);
-}
-
-
-void FrameworkWillTerminate()
+class LandscapeTestScreen : public UIScreen
 {
+public:
+	virtual void LoadResources();
+	virtual void UnloadResources();
+	
+	virtual void Update(float32 timeElapsed);
+	virtual void Draw(const UIGeometricData &geometricData);
+	virtual void Input(UIEvent * touch);
+	
+	Scene * scene;
+	Camera * camera;
+    
+	bool inTouch;
+	Vector2 touchStart;
+	Vector2 touchCurrent;
+    Vector2 oldTouchPoint;
+	
+	Vector3 originalCameraPosition;
 
-}
+	UIJoypad * positionJoypad;
+    UIJoypad * angleJoypad;
+    UI3DView * scene3dView;
+    
+    Matrix4 aimUser;
+    float32 viewXAngle, viewYAngle;
+    Vector3 targetPosition;
+};
+
+#endif // __ANIMATION_TEST_SCREEN_H__

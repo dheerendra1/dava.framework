@@ -61,27 +61,27 @@ void AnimationTestScreen::LoadResources()
     
 	SafeRelease(file);
 
-    LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
+//    LandscapeNode * node = new LandscapeNode(scene);
+//    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
     //box.min += cam->GetPosition();
     //box.max += cam->GetPosition();
     //box.min -= Vector3(512, 512, 0);
     //box.max = Vector3(512, 512, 0);
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
-    
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
-    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
-
-    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail.png");
-    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
-
-    SafeRelease(detailTex);
-    SafeRelease(tex);
-    
-    node->SetName("landscapeNode");
-    scene->AddNode(node);
+//    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
+//    
+//    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
+//
+//    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
+//
+//    SafeRelease(detailTex);
+//    SafeRelease(tex);
+//    
+//    node->SetName("landscapeNode");
+//    scene->AddNode(node);
 
 
 	currentTankAngle = 0.0f;
