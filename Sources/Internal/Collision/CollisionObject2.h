@@ -77,6 +77,7 @@ public:
 	Circle circle;			// circle in case if it's circle collision object
 	//float32 basePolygonRadius;	//	Square radius of the rotated object
 	Vector2 basePolygonCenter;	// real center of the collision polygon
+
 	//Vector2 updatedCenter;		// real center of the collision polygon
 	ContactManifold2 manifold;
 	
@@ -86,6 +87,8 @@ public:
 	
 	uint32 updateFrameIndex;
 	bool collisionOnLastFrame;
+    
+    bool forceUpdate;
 	
 /*	int pointsCount;
 	float *points;
@@ -108,6 +111,8 @@ public:
 	void CalcCollisionPoints();
 	bool IsCollideWith(CollisionObject2 * collObject);
 	void DrawCollision(); */
+    
+    void UpdatePosition(Vector2 newPos);
 };
 
 
