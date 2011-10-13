@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		47106C1213CF6DA200EDEBA4 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		4730931113A7E08200C28765 /* UIHierarchyNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4730930F13A7E08200C28765 /* UIHierarchyNode.h */; };
 		4730931213A7E08200C28765 /* UIHierarchyNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4730931013A7E08200C28765 /* UIHierarchyNode.cpp */; };
 		473DB5B0139E87C3007F2498 /* UIScrollBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 473DB5AE139E87C3007F2498 /* UIScrollBar.h */; };
@@ -3217,6 +3216,7 @@
 					./../../Libs/oggvorbis/include,
 				);
 				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -3250,6 +3250,7 @@
 					./../../Libs/oggvorbis/include,
 				);
 				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fvisibility=hidden",
