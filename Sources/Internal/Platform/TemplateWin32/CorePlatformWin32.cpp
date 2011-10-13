@@ -124,6 +124,7 @@ namespace DAVA
 		//single instance check
 		TCHAR fileName[MAX_PATH];
 		GetModuleFileName(NULL, fileName, MAX_PATH);
+		fileName[MAX_PATH-1] = 0; //string can be not null-terminated on winXP
 		for(int32 i = 0; i < MAX_PATH; ++i)
 		{
 			if(fileName[i] == L'\\') //symbol \ is not allowed in CreateMutex mutex name
