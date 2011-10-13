@@ -175,7 +175,7 @@ int32 ResourceArchive::GetFileCount() const
 //! \return pathName or String("") if any error occurred
 String ResourceArchive::GetResourcePathname(const uint32 resourceIndex) const
 {
-	if ( (resourceIndex < 0) && (resourceIndex >= header.fileCount))
+	if (resourceIndex >= header.fileCount)
 		return "";
 
 	return nodeArray[resourceIndex].pathName;
@@ -338,7 +338,7 @@ bool ResourceArchive::UnpackResource(int32 resourceIndex, uint8 * data)
 int32 ResourceArchive::LoadResource(const uint32 resourceIndex, void * data)
 {
 	if (!archiveFile)return -1;
-	if ( (resourceIndex < 0) || (resourceIndex >= header.fileCount) )return -1;
+	if (resourceIndex >= header.fileCount)return -1;
 	if (data == 0)return nodeArray[resourceIndex].fileSize;
 	
 	

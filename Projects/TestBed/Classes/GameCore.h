@@ -45,6 +45,7 @@ class FontUsageScreen;
 class StaticTextScreen;
 class CollisionTestScreen;
 class ImageUsageScreen;
+class LandscapeTestScreen;
 
 class GameCore : public DAVA::ApplicationCore
 {
@@ -78,6 +79,7 @@ private:
 	StaticTextScreen * stScreen;
 	CollisionTestScreen * collisionTestScreen;
 	ImageUsageScreen * imageUsageScreen;
+    LandscapeTestScreen * landscapeTestScreen;
 };
 
 

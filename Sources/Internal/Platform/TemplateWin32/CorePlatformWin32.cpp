@@ -121,11 +121,18 @@ namespace DAVA
 
 	bool CoreWin32Platform::CreateWin32Window(HINSTANCE hInstance)
 	{	
-		FrameworkDidLaunched();
-		KeyedArchive * options = Core::GetOptions();
-
 		//single instance check
-		hMutex = CreateMutex(NULL, FALSE, StringToWString(options->GetString("title", "dava.instance")).c_str());
+		TCHAR fileName[MAX_PATH];
+		GetModuleFileName(NULL, fileName, MAX_PATH);
+		fileName[MAX_PATH-1] = 0; //string can be not null-terminated on winXP
+		for(int32 i = 0; i < MAX_PATH; ++i)
+		{
+			if(fileName[i] == L'\\') //symbol \ is not allowed in CreateMutex mutex name
+			{
+				fileName[i] = ' ';
+			}
+		}
+		hMutex = CreateMutex(NULL, FALSE, fileName);
 		if(ERROR_ALREADY_EXISTS == GetLastError())
 		{
 			return false;
@@ -179,8 +186,8 @@ namespace DAVA
 		int32 realWidth = clientSize.right - clientSize.left;
 		int32 realHeight = clientSize.bottom - clientSize.top;
 
-		int32 windowLeft = (GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
-		int32 windowTop = (GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
+		int32 windowLeft = -10000;//(GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
+		int32 windowTop = -10000;//(GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
 
 		if (isFullscreen)
 		{
@@ -201,7 +208,8 @@ namespace DAVA
 		RenderManager::Create(Core::RENDERER_DIRECTX9);
 		RenderManager::Instance()->Create(hInstance, hWindow);
 
-		
+		FrameworkDidLaunched();
+		KeyedArchive * options = Core::GetOptions();
 
 		//fullscreenMode = GetCurrentDisplayMode();
 		fullscreenMode = GetCurrentDisplayMode();//FindBestMode(fullscreenMode);

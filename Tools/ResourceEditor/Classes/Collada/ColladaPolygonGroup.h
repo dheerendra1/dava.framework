@@ -21,6 +21,8 @@ struct ColladaVertex
 			weight[i] = 0.0f;
 		}
 	}
+        
+    static bool IsEqual(const ColladaVertex & v1, const ColladaVertex & c2, int32 vertexFormat);
 
 	Vector3 position;	
 	Vector3 normal;

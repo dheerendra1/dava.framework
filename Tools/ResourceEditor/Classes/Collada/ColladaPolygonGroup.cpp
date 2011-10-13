@@ -1,10 +1,69 @@
 #include "stdafx.h"
 #include "ColladaPolygonGroup.h"
 #include <time.h>
+#include "DAVAEngine.h"
 
 namespace DAVA
 {
 
+    
+bool ColladaVertex::IsEqual(const ColladaVertex & v1, const ColladaVertex & v2, int32 vertexFormat)
+{
+    if (vertexFormat & DAVA::EVF_VERTEX)
+    {
+        if (!FLOAT_EQUAL(v1.position.x, v2.position.x))return false;
+        if (!FLOAT_EQUAL(v1.position.y, v2.position.y))return false;
+        if (!FLOAT_EQUAL(v1.position.z, v2.position.z))return false;
+    }
+    
+    if (vertexFormat & EVF_NORMAL)
+    {
+        if (!FLOAT_EQUAL(v1.normal.x, v2.normal.x))return false;
+        if (!FLOAT_EQUAL(v1.normal.y, v2.normal.y))return false;
+        if (!FLOAT_EQUAL(v1.normal.z, v2.normal.z))return false;
+    }
+    
+    if (vertexFormat & EVF_TANGENT)
+    {
+        if (!FLOAT_EQUAL(v1.tangent.x, v2.tangent.x))return false;
+        if (!FLOAT_EQUAL(v1.tangent.y, v2.tangent.y))return false;
+        if (!FLOAT_EQUAL(v1.tangent.z, v2.tangent.z))return false;
+    }
+
+    if (vertexFormat & EVF_BINORMAL)
+    {
+        if (!FLOAT_EQUAL(v1.binormal.x, v2.binormal.x))return false;
+        if (!FLOAT_EQUAL(v1.binormal.y, v2.binormal.y))return false;
+        if (!FLOAT_EQUAL(v1.binormal.z, v2.binormal.z))return false;
+    }
+    
+    if (vertexFormat & EVF_TEXCOORD0)
+    {
+        if (!FLOAT_EQUAL(v1.texCoords[0].x, v2.texCoords[0].x))return false;
+        if (!FLOAT_EQUAL(v1.texCoords[0].y, v2.texCoords[0].y))return false;
+    }
+    
+    if (vertexFormat & EVF_TEXCOORD1)
+    {
+        if (!FLOAT_EQUAL(v1.texCoords[1].x, v2.texCoords[1].x))return false;
+        if (!FLOAT_EQUAL(v1.texCoords[1].y, v2.texCoords[1].y))return false;
+    }
+
+    if (vertexFormat & EVF_TEXCOORD2)
+    {
+        if (!FLOAT_EQUAL(v1.texCoords[2].x, v2.texCoords[2].x))return false;
+        if (!FLOAT_EQUAL(v1.texCoords[2].y, v2.texCoords[2].y))return false;
+    }
+
+    if (vertexFormat & EVF_TEXCOORD3)
+    {
+        if (!FLOAT_EQUAL(v1.texCoords[3].x, v2.texCoords[3].x))return false;
+        if (!FLOAT_EQUAL(v1.texCoords[3].y, v2.texCoords[3].y))return false;
+    }
+    return true;
+}
+
+    
 #define MAX_BONES_PER_VERTEX 4
 	
 void ColladaVertexWeight::AddWeight(int32 jindex, float32 weight)
