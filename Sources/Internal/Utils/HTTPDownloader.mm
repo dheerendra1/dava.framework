@@ -113,15 +113,14 @@ void HTTPDownloader::DownloadFile(const String &address, HTTPDownloaderDelegate 
 bool DownloadFileFromURLToDocuments(const String & url, const String & documentsPathname)
 {
 	NSString * localizedPath = [NSString stringWithUTF8String:url.c_str()];
-	//NSString * fileContents = [NSString stringWithContentsOfURL:[NSURL URLWithString:localizedPath] encoding:NSASCIIStringEncoding error:nil];
 //	NSError *error = nil;
 //TODO: На маке эта хрень возвращает страницу с информацией о том, что такой файл не найден. Никаких ошибок при этом не генерится. Нужно найти решение.
-	NSString * fileContents = [NSString stringWithContentsOfURL:[NSURL URLWithString:localizedPath] encoding:NSUTF8StringEncoding error:nil];
-	if(fileContents)
-	{
-		[fileContents writeToFile: [NSString stringWithCString: FileSystem::Instance()->SystemPathForFrameworkPath(documentsPathname).c_str() encoding:NSASCIIStringEncoding] atomically:true encoding:NSASCIIStringEncoding error:nil];
-		return true;
-	}
-	return false;
+    NSData * fileContents = [NSData dataWithContentsOfURL:[NSURL URLWithString:localizedPath]];
+    if (fileContents) 
+    {
+        [fileContents writeToFile:[NSString stringWithCString: FileSystem::Instance()->SystemPathForFrameworkPath(documentsPathname).c_str() encoding:NSUTF8StringEncoding] atomically:true];
+        return true;
+    }
+    return false;
 }
 };
