@@ -59,7 +59,7 @@ void FrameworkDidLaunched()
 //	appOptions->SetInt("fullscreen.height", 768);
 
     
-	appOptions->SetInt("fullscreen", 1);
+	appOptions->SetInt("fullscreen", 0);
 	appOptions->SetInt("bpp", 32); 
 
 	DAVA::Core::Instance()->SetVirtualScreenSize(920, 690);

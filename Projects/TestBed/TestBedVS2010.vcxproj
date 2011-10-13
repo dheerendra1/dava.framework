@@ -102,6 +102,7 @@
     <ClCompile Include="Classes\GameCore.cpp" />
     <ClCompile Include="Classes\GameObjectTestScreen.cpp" />
     <ClCompile Include="Classes\ImageUsageScreen.cpp" />
+    <ClCompile Include="Classes\LandscapeTestScreen.cpp" />
     <ClCompile Include="Classes\MainMenuScreen.cpp" />
     <ClCompile Include="Classes\ParticleTestScreen.cpp" />
     <ClCompile Include="Classes\PropertyLineEditControl.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="Classes\GameObjectTestScreen.h" />
     <ClInclude Include="Classes\ImageUsageScreen.h" />
     <ClInclude Include="Classes\iPhoneProjectDelegate.h" />
+    <ClInclude Include="Classes\LandscapeTestScreen.h" />
     <ClInclude Include="Classes\MainMenuScreen.h" />
     <ClInclude Include="Classes\ParticleTestScreen.h" />
     <ClInclude Include="Classes\PropertyLineEditControl.h" />
