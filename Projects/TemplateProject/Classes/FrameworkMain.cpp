@@ -38,7 +38,7 @@ void FrameworkDidLaunched()
 #if defined(__DAVAENGINE_IPHONE__)
 	KeyedArchive * appOptions = new KeyedArchive();
 	appOptions->SetInt("orientation", Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT);
-    //appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);
+    appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);
 	
 	DAVA::Core::Instance()->SetVirtualScreenSize(480, 320);
 	DAVA::Core::Instance()->RegisterAvailableResourceSize(480, 320, "Gfx");
@@ -65,7 +65,7 @@ void FrameworkDidLaunched()
 }
 
 
-void FrameworkWillTerminate()
+void FrameworkWillTerminate() 
 {
 
 }

@@ -42,7 +42,7 @@ void Logger::Logv(eLogLevel ll, const char8* text, va_list li)
 	if (ll < logLevel)return; 
 	//NSString * string = [NSString stringWithCString: GetLogLevelString(ll)];
 	//NSString * stringOut = [string stringByAppendingString:[NSString stringWithCString:text]];
-	NSString * string = [NSString stringWithFormat:@"[%s] %@", GetLogLevelString(ll), [NSString stringWithCString:text]];
+	NSString * string = [NSString stringWithFormat:@"[%s] %@", GetLogLevelString(ll), [NSString stringWithUTF8String:text]];
 	NSLogv(string, li);
 }
 	

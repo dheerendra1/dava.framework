@@ -53,6 +53,8 @@ UIControlBackground::UIControlBackground()
 ,	lastDrawPos(0, 0)
 {
 	rdoObject = new RenderDataObject();
+    vertexStream = rdoObject->SetStream(EVF_VERTEX, TYPE_FLOAT, 2, 0, 0);
+    texCoordStream = rdoObject->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, 0);
 	//rdoObject->SetStream()
 }
 	
@@ -656,16 +658,14 @@ void UIControlBackground::DrawStretched(const Rect &drawRect)
 		11, 15, 14
 	};
 
-	/*
-		TODO: fix that to use RenderDataObject instead of direct access to HWDrawElements 
-	*/
-	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
-	RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, vertices);
-	RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords);
+	vertexStream->Set(TYPE_FLOAT, 2, 0, vertices);
+	texCoordStream->Set(TYPE_FLOAT, 2, 0, texCoords);
+
 	RenderManager::Instance()->SetTexture(texture);
-	RenderManager::Instance()->FlushState();
-	
-	RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
+	RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+    RenderManager::Instance()->SetRenderData(rdoObject);
+	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, vertInTriCount, EIF_16, indeces);
+
 	/*GLenum glErr = glGetError();
 	if (glErr != GL_NO_ERROR)
 	{

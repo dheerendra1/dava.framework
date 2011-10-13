@@ -44,7 +44,11 @@ StaticMesh::StaticMesh(Scene * _scene)
 	
 StaticMesh::~StaticMesh()
 {
-	
+	for (int32 p = 0; p < (int32)polygroupCount; ++p)
+	{
+        SafeRelease(polygroups[p]);
+    }
+    polygroups.clear();
 }
 	
 void StaticMesh::Create(uint32 _polygroupCount)

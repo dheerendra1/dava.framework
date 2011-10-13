@@ -72,24 +72,24 @@ void SceneEditorScreen::LoadResources()
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
-    //box.min += cam->GetPosition();
-    //box.max += cam->GetPosition();
-    //box.min -= Vector3(512, 512, 0);
-    //box.max = Vector3(512, 512, 0);
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
+#if 0
+    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
 
     Texture::EnableMipmapGeneration();
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
-    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
-    SafeRelease(tex);
-    
-    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail_gravel.png");
-    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
-
-    SafeRelease(detailTex);
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
+    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
     Texture::DisableMipmapGeneration();
+#else
+    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
+    
+    Texture::EnableMipmapGeneration();
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
+    Texture::DisableMipmapGeneration();
+#endif
     
     node->SetName("landscapeNode");
     scene->AddNode(node);
@@ -415,7 +415,7 @@ UIHierarchyCell *SceneEditorScreen::CellForNode(UIHierarchy *forHierarchy, void 
     SceneNode *n = (SceneNode *)node;
     
     c->text->SetFont(fnt);
-    c->text->SetText(StringToWString(n->name));
+    c->text->SetText(StringToWString(n->GetName()));
     c->text->SetAlign(ALIGN_LEFT|ALIGN_VCENTER);
     SafeRelease(fnt);
     
@@ -448,7 +448,7 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
         {
             AABBox3 bbox = mesh->GetBoundingBox();
             AABBox3 transformedBox;
-            bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+            bbox.GetTransformedBox(mesh->GetWorldTransform(), transformedBox);
 
             mesh->SetDebugFlags(SceneNode::DEBUG_DRAW_AABBOX | SceneNode::DEBUG_DRAW_LOCAL_AXIS);
             nodeBoundingBoxMin->SetText(Format(L"Min: (%0.2f, %0.2f, %0.2f)", 
@@ -477,8 +477,9 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //        turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //        turretN->SetDebugFlags();
-        localMatrixControl->SetMatrix(&selectedNode->localTransform);
-        worldMatrixControl->SetMatrix(&selectedNode->worldTransform);
+        
+        //localMatrixControl->SetMatrix(&selectedNode->GetLocalTransform());
+        //worldMatrixControl->SetMatrix(&selectedNode->GetWorldTransform());
         
         nodeName->SetText(StringToWString(selectedNode->GetFullName()));
     }
@@ -491,7 +492,7 @@ void SceneEditorScreen::OnLookAtButtonPressed(BaseObject * obj, void *, void *)
     {
         AABBox3 bbox = mesh->GetBoundingBox();
         AABBox3 transformedBox;
-        bbox.GetTransformedBox(mesh->worldTransform, transformedBox);
+        bbox.GetTransformedBox(mesh->GetWorldTransform(), transformedBox);
         Vector3 center = transformedBox.GetCenter();
         scene->GetCurrentCamera()->SetTarget(center);
     }

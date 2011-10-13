@@ -81,6 +81,19 @@ public:
         \returns this node full name from root. Example [MaxScene->camera->instance0]
      */
     String GetFullName();
+    
+    /**
+        \brief Set tag for this object
+        Tag can be used to identify object, or find it. You can mark objects with same properies by tag, and later find them using tag criteria. 
+     */
+    inline void SetTag(int32 _tag);
+    
+    /**
+        \brief Return tag for this object
+        \returns tag for this object
+     */
+    inline const int32 GetTag(); 
+
 	
 	// virtual updates
 	virtual void	Update(float32 timeElapsed);
@@ -93,14 +106,24 @@ public:
 	// extract data from current node to use it in animations
 	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
 	
-	Matrix4 localTransform;
-	Matrix4 worldTransform;
-	String	name;
-	int32	tag;
+    inline const Matrix4 & GetLocalTransform(); 
+    /**
+     \brief This method means that you always modify geted matrix. 
+        If you dont want to modify matrix call GetLocalTransform().
+     */
+    inline Matrix4 & ModifyLocalTransform(); 
+    inline const Matrix4 & GetWorldTransform();
+    inline const Matrix4 & GetDefaultLocalTransform(); 
+    
+    inline void SetLocalTransform(const Matrix4 & newMatrix);
+    inline void SetDefaultLocalTransform(const Matrix4 & newMatrix);
+    inline void InvalidateLocalTransform();
+    
+    
 	enum
     {
-        NODE_STATIC = 0x1,  // this flag means that node is always static and we do not need to update it's worldTransform
-        NODE_DYNAMIC = 0x2, // node automatically become dynamic when we update it's local matrix
+        // NODE_STATIC = 0x1,  // this flag means that node is always static and we do not need to update it's worldTransform
+        // NODE_DYNAMIC = 0x2, // node automatically become dynamic when we update it's local matrix
         NODE_WORLD_MATRIX_ACTUAL = 0x4, // if this flag set this means we do not need to rebuild worldMatrix
     };
 	
@@ -115,7 +138,6 @@ public:
 	
     // Do not use variables 
     std::deque<SceneNodeAnimation *> nodeAnimations;
-	Matrix4 originalLocalTransform;
 
 	enum
 	{
@@ -138,7 +160,7 @@ public:
 	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
 	
 protected:
-    
+
     String RecursiveBuildFullName(SceneNode * node, SceneNode * endNode);
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
@@ -151,8 +173,16 @@ protected:
 	bool visible;
     bool inUpdate;
 
+	String	name;
+	int32	tag;
+
     uint32 flags;
     uint32 debugFlags;
+
+	Matrix4 worldTransform;
+private:
+    Matrix4 localTransform;
+    Matrix4 defaultLocalTransform;
     
 };
 
@@ -169,6 +199,56 @@ inline SceneNode * SceneNode::GetParent()
 inline const String & SceneNode::GetName()
 {
     return name;
+}
+
+inline const int32 SceneNode::GetTag() 
+{ 
+    return tag; 
+}
+    
+inline const Matrix4 & SceneNode::GetLocalTransform() 
+{ 
+    return localTransform; 
+}; 
+
+inline const Matrix4 & SceneNode::GetWorldTransform() 
+{ 
+    return worldTransform; 
+};
+    
+inline const Matrix4 & SceneNode::GetDefaultLocalTransform()
+{
+    return defaultLocalTransform;
+}
+    
+inline Matrix4 & SceneNode::ModifyLocalTransform()
+{
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+    return localTransform;
+}
+
+inline void SceneNode::SetLocalTransform(const Matrix4 & newMatrix)
+{
+    localTransform = newMatrix;
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+}
+    
+inline void SceneNode::InvalidateLocalTransform()
+{
+    flags &= ~NODE_WORLD_MATRIX_ACTUAL;
+}
+
+    
+inline void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
+{
+    defaultLocalTransform = newMatrix;
+}
+    
+
+
+inline void SceneNode::SetTag(int32 _tag)
+{
+    tag = _tag;
 }
     
 };

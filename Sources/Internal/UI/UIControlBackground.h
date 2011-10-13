@@ -233,6 +233,8 @@ protected:
 	
 	Vector2 lastDrawPos;
 	RenderDataObject * rdoObject;
+    RenderDataStream * vertexStream;
+    RenderDataStream * texCoordStream;
 protected:
 	~UIControlBackground();
 	Color drawColor;

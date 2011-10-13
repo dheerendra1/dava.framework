@@ -152,6 +152,7 @@ Texture::Texture()
 #ifdef __DAVAENGINE_DIRECTX9__
 	saveTexture = 0;
 	renderTargetModified = false;
+    renderTargetAutosave = true;
 #endif 
 
 #ifdef __DAVAENGINE_OPENGL__

@@ -38,6 +38,7 @@
 namespace DAVA
 {
 
+// TODO: move Material to Scene3D
 class Material : public SceneNode
 {
 public:
