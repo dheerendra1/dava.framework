@@ -176,6 +176,8 @@ LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const Stri
 			{
 			}
 			break;
+                default:
+                break;
 		};
 		
 		/* Are we finished? */

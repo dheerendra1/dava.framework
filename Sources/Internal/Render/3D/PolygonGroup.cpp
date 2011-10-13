@@ -176,23 +176,10 @@ void PolygonGroup::ReleaseData()
 {
     SafeRelease(renderDataObject);
     
-	if (jointCountArray)
-	{
-		delete [] jointCountArray;
-		jointCountArray = 0;
-	}
-	if (meshData)
-	{
-		delete [] meshData;
-	}
-	if (indexArray)
-	{
-		delete [] indexArray;
-	}
-	if (textureCoordArray)
-	{
-		delete [] textureCoordArray;
-	}
+    SafeDeleteArray(jointCountArray);
+    SafeDeleteArray(meshData);
+    SafeDeleteArray(indexArray);
+    SafeDeleteArray(textureCoordArray);
 }
 	
 void PolygonGroup::BuildVertexBuffer()
