@@ -64,8 +64,71 @@ void CollisionObject2::SetPolygon(Polygon2 * _basePolygon)
 	basePolygon->CalculateCenterPoint(basePolygonCenter);
 	circle.center = basePolygonCenter;
 	circle.radius = sqrtf(basePolygon->CalculateSquareRadius(basePolygonCenter));
+    
+    forceUpdate = true;
 }
+    
+
+#if 0
+void CollisionObject2::Update(const Sprite::DrawState & state/*const Vector2 & _position, const Vector2 & _pivot, const Vector2 & _scale, float32 _angle*/)
+{
+    if (!basePolygon)return;
+    uint32 globalFrameIndex = Core::Instance()->GetGlobalFrameIndex();
+    if (globalFrameIndex == updateFrameIndex)return;
+    updateFrameIndex = globalFrameIndex;
+    
+    position = state.position;
+    pivot = state.pivotPoint;
+    scale = state.scale;
+    angle = state.angle;
+    
+    bbox.Empty();
+    
+    if (type == TYPE_POLYGON)
+    {
+        float32 sinA = sinf(angle);
+        float32 cosA = cosf(angle);
+        for (int k = 0; k < basePolygon->pointCount; ++k)
+        {
+            Vector2 * v = &polygon.points[k];
+            *v = basePolygon->points[k] - pivot;
+            v->x *= scale.x;
+            v->y *= scale.y;
+            float32 nx = (v->x) * cosA  - (v->y) * sinA + position.x;
+            float32 ny = (v->x) * sinA  + (v->y) * cosA + position.y;
+            v->x = nx;
+            v->y = ny;
+            bbox.AddPoint(*v);
+        }
+    }
+    circle.center = basePolygonCenter;
+    circle.center -= pivot;
+    circle.center += position;
+}
+#endif
 	
+
+void CollisionObject2::UpdatePosition(Vector2 newPos)
+{
+    Vector2 diff = newPos - position;
+    position = newPos;
+    
+    circle.center += diff;
+    
+    if (type != TYPE_POLYGON)
+        return;
+    
+	
+    for (int k = 0; k < polygon.pointCount; ++k)
+    {
+        Vector2 & v = polygon.points[k];
+        v += diff;
+    }
+    
+    bbox.min += diff;
+    bbox.max += diff;
+}
+
 void CollisionObject2::Update(const Sprite::DrawState & state/*const Vector2 & _position, const Vector2 & _pivot, const Vector2 & _scale, float32 _angle*/)
 {
 	if (!basePolygon)return;
@@ -73,17 +136,40 @@ void CollisionObject2::Update(const Sprite::DrawState & state/*const Vector2 & _
 	if (globalFrameIndex == updateFrameIndex)return;
 	updateFrameIndex = globalFrameIndex;
 	
-	position = state.position;
+
+    if (!forceUpdate)
+    {
+        if ((scale == state.scale) && (angle == state.angle))
+        {
+            if ((position == state.position) && (pivot == state.pivotPoint))
+                return;
+            
+            if (state.pivotPoint == pivot)
+            {
+                UpdatePosition(state.position);
+                return;
+            }
+        }
+    }
+    
+    position = state.position;
 	pivot = state.pivotPoint;
+    
 	scale = state.scale;
 	angle = state.angle;
 	
+    
+    forceUpdate = false;
+    
+    // TODO do not recalc if angle and scale did not change
+    
 	bbox.Empty();
+
+    float32 sinA = sinf(angle);
+    float32 cosA = cosf(angle);
 	
 	if (type == TYPE_POLYGON)
 	{
-		float32 sinA = sinf(angle);
-		float32 cosA = cosf(angle);
 		for (int k = 0; k < basePolygon->pointCount; ++k)
 		{
 			Vector2 * v = &polygon.points[k];
@@ -96,10 +182,18 @@ void CollisionObject2::Update(const Sprite::DrawState & state/*const Vector2 & _
 			v->y = ny;
 			bbox.AddPoint(*v);
 		}
+        
+        Vector2 c;
+        polygon.CalculateCenterPoint(c);
+        circle.radius = sqrtf(polygon.CalculateSquareRadius(c));
+        circle.center = c;
 	}
-	circle.center = basePolygonCenter;
-	circle.center -= pivot;
-	circle.center += position;
+    else
+    {
+        circle.center = basePolygonCenter;
+        circle.center -= pivot;
+        circle.center += position;
+    }
 }
 
 void CollisionObject2::DebugDraw()
@@ -136,6 +230,7 @@ bool CollisionObject2::IsCollideWith(CollisionObject2 * collObject)
 	float32 ocx = collObject->circle.center.x;
 	float32 ocy = collObject->circle.center.y;
 	
+    // no square radius here
 	float32 radii = this->circle.radius + collObject->circle.radius;
 	if ( (cx - ocx) * (cx - ocx) + (cy - ocy) * (cy - ocy) > radii * radii)
 	{

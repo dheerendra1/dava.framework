@@ -47,11 +47,6 @@ class Texture;
 class RenderDataObject;
 class Shader;
 
-/**    
-    \brief Implementation of cdlod algorithm to render landscapes
-    This class is base of the landscape code on all platforms
-    Landscape node is always axial aligned for simplicity of frustum culling calculations
- */ 
     
 template<class T>
 class QuadTreeNode
@@ -90,6 +85,13 @@ public:
 
 };
     
+/**    
+    \brief Implementation of cdlod algorithm to render landscapes
+    This class is base of the landscape code on all platforms
+    Landscape node is always axial aligned for simplicity of frustum culling calculations
+    Keep in mind that landscape orientation cannot be changed using localTransform and worldTransform matrices. 
+ */ 
+
 class LandscapeNode : public SceneNode
 {
 public:	
@@ -101,24 +103,70 @@ public:
         BOTTOM = 3,
     };
     
-    enum eTextureType
-    {
-        TEXTURE_BASE = 0,
-        TEXTURE_DETAIL,
-        TEXTURE_BUMP,
-        TEXTURE_COUNT,
-    };
-    
-    
 	LandscapeNode(Scene * scene);
 	virtual ~LandscapeNode();
     
-    void BuildLandscapeFromHeightmapImage(const String & heightmapPathname, const AABBox3 & landscapeBox);
-    void SetTexture(eTextureType type, Texture * texture);
+    /**
+        \brief Set lod coefficients for dynamic roam landscape
+        Default values: (60, 120, 240, 480)
+        Every next value should be almost twice higher than previous to avoid gaps between levels
+     */
+    void SetLods(const Vector4 & lods);
     
+
+    enum eRenderingMode
+    {
+        RENDERING_MODE_TEXTURE = 0,
+        RENDERING_MODE_DETAIL_SHADER, 
+        RENDERING_MODE_BLENDED_SHADER, 
+    };
+    
+    /**
+        \brief Builds landscape from heightmap image and bounding box of this landscape block
+        \param[in] renderingMode rendering mode of landscape/
+        \param[in] landscapeBox axial-aligned bounding box of the landscape block
+     */
+    void BuildLandscapeFromHeightmapImage(eRenderingMode renderingMode, const String & heightmapPathname, const AABBox3 & landscapeBox);
+    
+    enum eTextureLevel
+    {
+        TEXTURE_TEXTURE0 = 0,
+        TEXTURE_TEXTURE1,
+        TEXTURE_DETAIL = TEXTURE_TEXTURE1,
+        TEXTURE_BUMP,
+        TEXTURE_TEXTUREMASK, 
+        TEXTURE_COUNT,
+    };
+    
+    /**
+        \brief Set texture for the specific texture level
+        To render landscape you need to set textures. 
+            
+        For RENDERING_MODE_TEXTURE you need to set only TEXTURE_TEXTURE0.
+        For RENDERING_MODE_DETAIL_SHADER you have to set TEXTURE_TEXTURE0 and TEXTURE_DETAIL
+        For RENDERING_MODE_BLENDED_SHADER you have to set TEXTURE_TEXTURE0, TEXTURE_TEXTURE1, TEXTURE_TEXTUREMASK
+     
+        \param[in] level level of texture you want to set
+        \param[in] texture pointer to Texture object you want to set
+     */
+    void SetTexture(eTextureLevel level, Texture * texture);
+    
+    /**
+        \brief Set texture for the specific texture level
+        To render landscape you need to set textures.  
+          
+        \param[in] level level of texture you want to set
+        \param[in] textureName name of texture you want to open and set to specific level
+     */
+    void SetTexture(eTextureLevel level, const String & textureName);
+    
+    /**
+        \brief Overloaded draw function to draw landscape
+     */
 	virtual void Draw();
     
 protected:	
+    
     class LandscapeQuad
     {
     public:
@@ -140,6 +188,7 @@ protected:
     
     
     static const int32 RENDER_QUAD_WIDTH = 129;
+    static const int32 RENDER_QUAD_AND = RENDER_QUAD_WIDTH - 2;
     
 
     void RecursiveBuild(QuadTreeNode<LandscapeQuad> * currentNode, int32 level, int32 maxLevels);
@@ -177,12 +226,22 @@ protected:
     Vector3 cameraPos;
     Frustum *frustum;
     
+    eRenderingMode renderingMode;
+    void InitShaders();
+    void ReleaseShaders();
     
-    Shader * detailShader;
     int32 uniformTexture;
     int32 uniformDetailTexture;
     int32 uniformCameraPosition;
+    
+    Shader * activeShader;
     Shader * singleTextureShader;
+    Shader * detailShader;
+    Shader * blendedShader;
+    
+    int32 uniformTexture0;
+    int32 uniformTexture1;
+    int32 uniformTextureMask;
 };
 
 	

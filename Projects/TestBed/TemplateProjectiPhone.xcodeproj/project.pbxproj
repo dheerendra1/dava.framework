@@ -10,6 +10,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		FE0740391445E5AF00CCCE66 /* LandscapeTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */; };
 		FE1276CA144320BF0082901E /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1276C9144320BF0082901E /* main.mm */; };
 		FE1276F2144320D50082901E /* AnimationTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276CB144320D50082901E /* AnimationTestScreen.cpp */; };
 		FE1276F3144320D50082901E /* Box2DGameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276CE144320D50082901E /* Box2DGameObjectTestScreen.cpp */; };
@@ -64,6 +65,8 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* TemplateProjectiPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectiPhone_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TemplateProjectiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandscapeTestScreen.cpp; sourceTree = "<group>"; };
+		FE0740381445E5AE00CCCE66 /* LandscapeTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeTestScreen.h; sourceTree = "<group>"; };
 		FE1276C9144320BF0082901E /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = iOSSpecific/main.mm; sourceTree = "<group>"; };
 		FE1276CB144320D50082901E /* AnimationTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationTestScreen.cpp; sourceTree = "<group>"; };
 		FE1276CC144320D50082901E /* AnimationTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationTestScreen.h; sourceTree = "<group>"; };
@@ -139,6 +142,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */,
+				FE0740381445E5AE00CCCE66 /* LandscapeTestScreen.h */,
 				FE1276CB144320D50082901E /* AnimationTestScreen.cpp */,
 				FE1276CC144320D50082901E /* AnimationTestScreen.h */,
 				FE1276CD144320D50082901E /* AppScreens.h */,
@@ -360,6 +365,7 @@
 				FE127702144320D50082901E /* StaticTextScreen.cpp in Sources */,
 				FE127703144320D50082901E /* TestScreen.cpp in Sources */,
 				FE127704144320D50082901E /* TouchEffectsControl.cpp in Sources */,
+				FE0740391445E5AF00CCCE66 /* LandscapeTestScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

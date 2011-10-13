@@ -72,24 +72,24 @@ void SceneEditorScreen::LoadResources()
     // 483, -2000, 119
     LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
-    //box.min += cam->GetPosition();
-    //box.max += cam->GetPosition();
-    //box.min -= Vector3(512, 512, 0);
-    //box.max = Vector3(512, 512, 0);
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-    node->BuildLandscapeFromHeightmapImage("~res:/Landscape/hmp2_1.png", box);
+#if 0
+    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
 
     Texture::EnableMipmapGeneration();
-    Texture * tex = Texture::CreateFromFile("~res:/Landscape/tex3.png");
-    node->SetTexture(LandscapeNode::TEXTURE_BASE, tex);
-    SafeRelease(tex);
-    
-    Texture * detailTex = Texture::CreateFromFile("~res:/Landscape/detail_gravel.png");
-    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, detailTex);
-
-    SafeRelease(detailTex);
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
+    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
     Texture::DisableMipmapGeneration();
+#else
+    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
+    
+    Texture::EnableMipmapGeneration();
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
+    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
+    Texture::DisableMipmapGeneration();
+#endif
     
     node->SetName("landscapeNode");
     scene->AddNode(node);

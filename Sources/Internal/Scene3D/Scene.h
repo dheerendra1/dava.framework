@@ -123,7 +123,7 @@ private:
 	Vector<SceneNodeAnimationList*> animations;
     Map<String, SceneNode*> rootNodes;
 
-    // Vector<SceneNode*> deferredNodeQueue;
+    // Vector<SceneNode*> alphaObjectQueue;
     
     Camera * currentCamera;
     Camera * clipCamera;
