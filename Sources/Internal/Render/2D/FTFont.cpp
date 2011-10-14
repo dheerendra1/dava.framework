@@ -374,7 +374,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 					}
 				}
 
-				maxWidth = left+width;
+				maxWidth = Max(maxWidth, left+width);
 
 				if(realDraw)
 				{
