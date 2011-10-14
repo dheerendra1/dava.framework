@@ -309,18 +309,18 @@ void UIHierarchy::Update(float32 timeElapsed)
         
         UIControl *lastCell = NULL;
         UIControl *firstCell = NULL;
-        int32 maxPos = -999999;
+        int32 maxPos = -999999; 
         int32 minPos = 999999;
         for(it = scrollList.begin(); it != scrollList.end(); it++)
         {
             if ((*it)->relativePosition.y > maxPos) 
             {
-                maxPos = (*it)->relativePosition.y;
+                maxPos = (int32)(*it)->relativePosition.y;
                 lastCell = (*it);
             }
             if ((*it)->relativePosition.y < minPos)
             {
-                minPos = (*it)->relativePosition.y;
+                minPos = (int32)(*it)->relativePosition.y;
                 firstCell = (*it);
             }
         }
@@ -328,7 +328,7 @@ void UIHierarchy::Update(float32 timeElapsed)
             //adding elements to the list bottom
         if (lastCell) 
         {
-            addPos = lastCell->relativePosition.y + cellHeight;
+            addPos = (int32)lastCell->relativePosition.y + cellHeight;
             if(addPos + (int32)scrollContainer->relativePosition.y <= size.y * 2)
             {
                 AddCellsAfter(((UIHierarchyCell *)lastCell)->node);
@@ -338,7 +338,7 @@ void UIHierarchy::Update(float32 timeElapsed)
             //adding elements to the list top
         if (firstCell) 
         {
-            addPos = firstCell->relativePosition.y - cellHeight;
+            addPos = (int32)firstCell->relativePosition.y - cellHeight;
             if(addPos + (int32)scrollContainer->relativePosition.y + cellHeight > -size.y)
             {
                 AddCellsBefore(((UIHierarchyCell *)firstCell)->node);
@@ -477,7 +477,7 @@ void UIHierarchy::AddCellAtPos(UIHierarchyCell *cell, int32 pos, int32 size, UIH
     }
     cell->size.y = (float32)size;
     cell->relativePosition.y = (float32)pos;
-    cell->relativePosition.x = cell->node->nodeLevel * shiftWidth;
+    cell->relativePosition.x = (float32)cell->node->nodeLevel * shiftWidth;
     scrollContainer->AddControl(cell);
     
 }

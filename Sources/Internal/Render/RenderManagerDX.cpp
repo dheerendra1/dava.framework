@@ -611,7 +611,7 @@ eBlendMode RenderManager::GetDestBlend()
 
 void RenderManager::EnableBlending(bool isEnabled)
 {
-	if(isEnabled != oldBlendingEnabled)
+	if((int32)isEnabled != oldBlendingEnabled)
 	{
 		RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, isEnabled));
 		oldBlendingEnabled = isEnabled;
@@ -716,7 +716,7 @@ void RenderManager::FlushState()
 
 void RenderManager::EnableVertexArray(bool isEnabled)
 {
-	if(isEnabled != oldVertexArrayEnabled)
+	if((int32)isEnabled != oldVertexArrayEnabled)
 	{
 		buffers[BUFFER_VERTEX].isEnabled = isEnabled;
 		oldVertexArrayEnabled = isEnabled;
@@ -724,7 +724,7 @@ void RenderManager::EnableVertexArray(bool isEnabled)
 }
 void RenderManager::EnableTextureCoordArray(bool isEnabled)
 {
-	if(isEnabled != oldTextureCoordArrayEnabled)
+	if((int32)isEnabled != oldTextureCoordArrayEnabled)
 	{
 		buffers[BUFFER_TEXCOORD0].isEnabled = isEnabled;
 		oldTextureCoordArrayEnabled = isEnabled;
@@ -733,7 +733,7 @@ void RenderManager::EnableTextureCoordArray(bool isEnabled)
 	
 void RenderManager::EnableColorArray(bool isEnabled)
 {
-	if(isEnabled != oldColorArrayEnabled)
+	if((int32)isEnabled != oldColorArrayEnabled)
 	{
 		buffers[BUFFER_COLOR].isEnabled = isEnabled;
 		oldTextureCoordArrayEnabled = isEnabled;
@@ -1363,7 +1363,7 @@ void RenderManager::AttachRenderData(Shader * shader)
         }
         if (difference & EVF_TEXCOORD0)
         {
-            EnableTextureCoordArray(pointerArraysCurrentState & EVF_TEXCOORD0);
+            EnableTextureCoordArray(0 != (pointerArraysCurrentState & EVF_TEXCOORD0));
         }
         pointerArraysRendererState = pointerArraysCurrentState;
         

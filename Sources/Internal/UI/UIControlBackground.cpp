@@ -358,8 +358,8 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 			if(geometricData.angle != 0)
 			{
 				float32 tmpX = drawState.position.x;
-				drawState.position.x = (int32)((tmpX - geometricData.position.x) * geometricData.cosA  + (geometricData.position.y - drawState.position.y) * geometricData.sinA + geometricData.position.x);
-				drawState.position.y = (int32)((tmpX - geometricData.position.x) * geometricData.sinA  + (drawState.position.y - geometricData.position.y) * geometricData.cosA + geometricData.position.y);
+				drawState.position.x = ((tmpX - geometricData.position.x) * geometricData.cosA  + (geometricData.position.y - drawState.position.y) * geometricData.sinA + geometricData.position.x);
+				drawState.position.y = ((tmpX - geometricData.position.x) * geometricData.sinA  + (drawState.position.y - geometricData.position.y) * geometricData.cosA + geometricData.position.y);
 				drawState.angle = geometricData.angle;
 //				spr->SetAngle(geometricData.angle);
 			}
