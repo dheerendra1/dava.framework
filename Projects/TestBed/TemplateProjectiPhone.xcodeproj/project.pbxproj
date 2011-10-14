@@ -388,6 +388,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dizz Err (JTJF5T2XFF)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -396,6 +397,7 @@
 				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
 				PRODUCT_NAME = TemplateProjectiPhone;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "39F4825F-EFA3-478B-B2FE-05D32EE5A8D8";
 			};
 			name = Debug;
 		};

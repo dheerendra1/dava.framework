@@ -15,6 +15,8 @@
 		475D595B1300236500A18EC7 /* Box2DTileCollider.h in Headers */ = {isa = PBXBuildFile; fileRef = 475D59551300236500A18EC7 /* Box2DTileCollider.h */; };
 		47F00E7F140FE6C10014D904 /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47F00E7E140FE6C10014D904 /* SpriteNode.cpp */; };
 		AA747D9F0F9514B9006C5449 /* Framework_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */; };
+		EA7DEDDA144854E900D9E652 /* libfreetype_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7DEDD9144854E900D9E652 /* libfreetype_ios.a */; };
+		EA7DEDDD1448550100D9E652 /* libfreetype_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7DEDDC1448550100D9E652 /* libfreetype_ios.a */; };
 		FE044EFF140EE86D002A6D27 /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044EFD140EE86D002A6D27 /* ResourceArchive.cpp */; };
 		FE044F00140EE86D002A6D27 /* ResourceArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = FE044EFE140EE86D002A6D27 /* ResourceArchive.h */; };
 		FE044F08140EE88D002A6D27 /* ColorOnlyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F01140EE88D002A6D27 /* ColorOnlyEffect.cpp */; };
@@ -441,6 +443,8 @@
 		47F00E7E140FE6C10014D904 /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framework_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA7DEDD9144854E900D9E652 /* libfreetype_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_ios.a; path = ../../Libs/freetype/lib/libfreetype_ios.a; sourceTree = "<group>"; };
+		EA7DEDDC1448550100D9E652 /* libfreetype_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_ios.a; path = ../../Libs/freetype/lib/libfreetype_ios.a; sourceTree = "<group>"; };
 		FE044EFD140EE86D002A6D27 /* ResourceArchive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceArchive.cpp; sourceTree = "<group>"; };
 		FE044EFE140EE86D002A6D27 /* ResourceArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceArchive.h; sourceTree = "<group>"; };
 		FE044F01140EE88D002A6D27 /* ColorOnlyEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorOnlyEffect.cpp; sourceTree = "<group>"; };
@@ -846,6 +850,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEF4D44812C92F57004B850E /* libBox2D_iPhone.a in Frameworks */,
+				EA7DEDDA144854E900D9E652 /* libfreetype_ios.a in Frameworks */,
+				EA7DEDDD1448550100D9E652 /* libfreetype_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -876,6 +882,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA7DEDDC1448550100D9E652 /* libfreetype_ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -883,6 +890,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EA7DEDD9144854E900D9E652 /* libfreetype_ios.a */,
 				AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */,
 			);
 			name = "Other Sources";
@@ -2034,6 +2042,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Framework;
@@ -2060,6 +2069,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Framework;
@@ -2209,6 +2219,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Framework;
@@ -2275,6 +2286,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Framework;
