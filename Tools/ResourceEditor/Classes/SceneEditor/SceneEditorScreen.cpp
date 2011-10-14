@@ -52,7 +52,7 @@ void SceneEditorScreen::LoadResources()
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
 
-
+/*
     Camera * cam = new Camera(scene);
     scene->AddCamera(cam);
     cam->Setup(70.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
@@ -93,7 +93,7 @@ void SceneEditorScreen::LoadResources()
     
     node->SetName("landscapeNode");
     scene->AddNode(node);
-    
+    */
     
     sceneTree = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     sceneTree->SetCellHeight(20);
@@ -107,7 +107,7 @@ void SceneEditorScreen::LoadResources()
     selectedNode = 0;
     
     cameraController = new WASDCameraController(40);
-    cameraController->SetCamera(cam);
+    // cameraController->SetCamera(cam);
     
     
     activePropertyPanel = 0;

@@ -167,7 +167,7 @@ void ColladaMaterial::SetDefaultMaterial()
 
 bool ColladaMaterial::IsTransparent()
 {
-	if ((hasDiffuseTexture) && (diffuseTexture->hasAlphaChannel)) 
+	if ((hasDiffuseTexture) && (diffuseTexture->hasOpacity)) 
 		return true;
 
 //	if transparent, return true

@@ -210,11 +210,13 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
 	sceneFP = fopen(scenePathName.c_str(), "wb");
 	if (sceneFP == 0)return;
 	
-	SceneFile::Header header;
+    
+    
 	// write empty header and later write data.
 	// at the end of not collection we will rewrite header again.
 	fwrite(&header, sizeof(SceneFile::Header), 1, sceneFP);
 
+    //header.version = 
 	header.textureCount = (uint32)colladaScene->colladaTextures.size();
 	header.materialCount = (uint32)colladaScene->colladaMaterials.size();
 	header.staticMeshCount = (uint32)colladaScene->colladaMeshes.size();
@@ -245,6 +247,7 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
 		texname.replace(texname.find("."), 4, ".png");
 		
 		strcpy(texture.name, texname.c_str());
+        texture.hasOpacity = colladaScene->colladaTextures[textureIndex]->hasOpacity;
 		////
 		
 		printf("- texture: %s %d\n", texture.name, texture.id);
@@ -279,13 +282,18 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
 		material.specular.w = colladaMaterial->diffuse.w;
 		
 		material.diffuseTextureId = -1;
+
+        material.hasOpacity = false;
 		
 		for (uint32 textureIndex = 0; textureIndex < header.textureCount; ++textureIndex)
 			if (colladaMaterial->diffuseTexture == colladaScene->colladaTextures[textureIndex])
 			{
 				material.diffuseTextureId = textureIndex;
-				break;
+                material.hasOpacity = colladaMaterial->diffuseTexture->hasOpacity;
+                break;
 			}
+        
+        
 		printf("- material: %s diffuse texture: %d idx:%d\n", material.name, material.diffuseTextureId, materialIndex); 
 		WriteMaterial(&material);
 	}
@@ -345,6 +353,10 @@ void ColladaDocument::WriteTexture(SceneFile::TextureDef * texture)
 {
 	fwrite(&texture->id, sizeof(texture->id), 1, sceneFP);
 	fwrite(texture->name, strlen(texture->name) + 1, 1, sceneFP);
+    if (header.version == 101)
+    {
+        fwrite(&texture->hasOpacity, sizeof(texture->hasOpacity), 1, sceneFP);
+    }
 }
 	
 void ColladaDocument::WriteMaterial(SceneFile::MaterialDef * material)
@@ -364,6 +376,10 @@ void ColladaDocument::WriteMaterial(SceneFile::MaterialDef * material)
 	fwrite(&material->transparency, sizeof(material->transparency), 1, sceneFP);
 	fwrite(&material->transparent, sizeof(material->transparent), 1, sceneFP);
 	
+    if (header.version == 101)
+        fwrite(&material->hasOpacity, sizeof(material->hasOpacity), 1, sceneFP);
+    
+    
 	// TODO diffuseTexture ? refl texture?
 
 	//fwrite(material, sizeof(material), 1, sceneFP);
@@ -371,9 +387,9 @@ void ColladaDocument::WriteMaterial(SceneFile::MaterialDef * material)
 
 
 static void FlipTexCoords(Vector2 & v)
-	{
-		v.y = 1.0f - v.y;
-	}
+{
+    v.y = 1.0f - v.y;
+}
 	
 void ColladaDocument::WriteStaticMesh(ColladaMesh * mesh, int meshIndex)
 {
