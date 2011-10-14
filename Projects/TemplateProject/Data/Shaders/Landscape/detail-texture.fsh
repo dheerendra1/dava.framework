@@ -6,8 +6,8 @@ precision highp float;
 uniform sampler2D texture;
 uniform sampler2D detailTexture;
 
-varying vec2 varTexCoord;
-varying vec2 varDetailCoord;
+varying mediump vec2 varTexCoord;
+varying mediump vec2 varDetailCoord;
 
 void main()
 {
