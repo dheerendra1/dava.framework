@@ -44,7 +44,6 @@ void StaticTextScreen::LoadResources()
 	float32 sizeX = 150;
 	float32 sizeY = 80;
 
-	int32 ii = fnt->GetFontHeight();
     
 	UIControl *tc = new UIControl(Rect(0, 0, sizeX, sizeY));
 	tc->SetSpriteDrawType(UIControlBackground::DRAW_FILL);

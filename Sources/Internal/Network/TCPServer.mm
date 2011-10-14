@@ -44,6 +44,8 @@ APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
+#if 0
+
 #include "BaseTypes.h"
 
 #if defined(__DAVAENGINE_IPHONE__)
@@ -250,4 +252,6 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 @end
 
 #endif // #if defined(__DAVAENGINE_IPHONE__)
+
+#endif //0
 

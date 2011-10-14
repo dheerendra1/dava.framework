@@ -304,13 +304,13 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 	int16 * resultBuf = (int16*)buffer;
 
-	int32 spacesCount = LoadString(str);
+	LoadString(str);
 	int32 strLen = str.length();
 	FT_Vector * advances = new FT_Vector[strLen];
 	Prepare(advances);
 
 	int32 lastRight = 0; //charSizes helper
-	int32 justifyOffset = 0;
+	//int32 justifyOffset = 0;
 	int32 maxWidth = 0;
 	
 	for(int32 i = 0; i < strLen; ++i)
@@ -353,7 +353,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 				int32 left = bit->left;
 				int32 top = multilineOffsetY-bit->top;
 				int32 width = bitmap->width;
-				int32 height = bitmap->rows;
+				//int32 height = bitmap->rows;
 				if(charSizes)
 				{
 					if(0 == width)
@@ -367,7 +367,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 					}
 					else
 					{
-						int32 sizesSize = charSizes->size();
+						//int32 sizesSize = charSizes->size();
 						int32 value = left+width-lastRight;
 						lastRight += value;
 						charSizes->push_back(value);
@@ -562,7 +562,7 @@ int32 FTInternalFont::LoadString(const WideString& str)
 		if (!FT_Load_Glyph( face, glyph.index, FT_LOAD_DEFAULT | FT_LOAD_NO_HINTING)  &&
 			!FT_Get_Glyph(face->glyph, &glyph.image))
 		{
-			FT_Glyph_Metrics*  metrics = &face->glyph->metrics;
+			//FT_Glyph_Metrics*  metrics = &face->glyph->metrics;
 
 			if(prevRsbDelta - face->glyph->lsb_delta >= 32 )
 				glyph.delta = -1 << 6;

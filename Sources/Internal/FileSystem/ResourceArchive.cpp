@@ -220,7 +220,7 @@ bool ResourceArchive::WriteDictionary()
 	{
 		nodeArray[node].pathName = fileArray[node];
 		String::size_type pos = nodeArray[node].pathName.find(extrudePart);
-		if (pos != -1)
+		if (pos != String::npos)
 		{
 			nodeArray[node].pathName = nodeArray[node].pathName.substr(extrudePart.length());
 		}
@@ -300,11 +300,11 @@ bool ResourceArchive::PackResource(const String & resourceToPack, int32 * resour
 
 		uint8 * data = new uint8[packFileSize];
 			
-		if (packFileSize != packFile->Read(data, packFileSize))return false;
+		if (packFileSize != (int32)packFile->Read(data, packFileSize))return false;
 
 		dictNode.packedFileSize = packFileSize;
 		*resourcePackedSize = packFileSize;
-		if (packFileSize != archiveFile->Write(data, packFileSize))return false;
+		if (packFileSize != (int32)archiveFile->Write(data, packFileSize))return false;
 		
 		//printf("data:");
 		//for (int pi = 0; pi < dictNode.packedFileSize; ++pi)
