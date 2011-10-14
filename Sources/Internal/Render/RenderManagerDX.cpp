@@ -508,14 +508,15 @@ void RenderManager::EndFrame()
 		IsDeviceLost();
 	}
 
+	if(renderQuery)
+	{
+		RENDER_VERIFY(renderQuery->Issue(D3DISSUE_END));
 
-	RENDER_VERIFY(renderQuery->Issue(D3DISSUE_END));
-
-	// Force the driver to execute the commands from the command buffer.
-	// Empty the command buffer and wait until the GPU is idle.
-	//DWORD numberOfPixelsDrawn;
-	while(S_FALSE == renderQuery->GetData( NULL, 0, D3DGETDATA_FLUSH ));
-
+		// Force the driver to execute the commands from the command buffer.
+		// Empty the command buffer and wait until the GPU is idle.
+		//DWORD numberOfPixelsDrawn;
+		while(S_FALSE == renderQuery->GetData( NULL, 0, D3DGETDATA_FLUSH ));
+	}
 	/*while(1)
 	{
 		HRESULT queryResult = renderQuery->GetData( &numberOfPixelsDrawn, sizeof(DWORD), D3DGETDATA_FLUSH ));
