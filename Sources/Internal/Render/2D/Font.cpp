@@ -48,9 +48,7 @@ int32 Font::GetDPI()
 Font::Font()
 :	size(14.0f)
 ,	color(1.0f, 0.0f, 1.0f, 1.0f)
-,	shadowColor(0.0f, 0.0f, 0.0f, 0.0f)
-,	shadowOffset(0.0f, 0.0f)
-,	verticalSpacing(1)
+,	verticalSpacing(0)
 {
 }
 
@@ -68,46 +66,14 @@ void Font::SetColor(float32 r, float32 g, float32 b, float32 a)
 	color.a = a;
 }
 
-void Font::SetShadowColor(float32 r, float32 g, float32 b, float32 a)
-{
-	shadowColor.r = r; 
-	shadowColor.g = g; 
-	shadowColor.b = b; 
-	shadowColor.a = a;
-}
-
 void Font::SetColor(const Color & _color)
 {
 	color = _color;
 }
 
-void Font::SetShadowColor(const Color & _color)
-{
-	shadowColor = _color;
-}
-	
 const Color & Font::GetColor() const
 {
 	return color;
-}
-const Color & Font::GetShadowColor() const
-{
-	return shadowColor;
-}
-
-void Font::SetShadowOffset(const Vector2 & offset)
-{
-	shadowOffset = offset;
-}
-
-void Font::SetShadowOffset(float32 x, float32 y)
-{
-	shadowOffset.x = x;
-	shadowOffset.y = y;
-}
-const Vector2 & Font::GetShadowOffset() const
-{
-	return shadowOffset;
 }
 
 bool Font::IsEqual(Font *font)

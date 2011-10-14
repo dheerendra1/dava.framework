@@ -289,7 +289,7 @@ bool SceneFile::ReadMaterial()
 	mat->ambient = materialDef.ambient;
 	mat->diffuse = materialDef.diffuse;
 	
-	if (materialDef.diffuseTextureId < scene->GetTextureCount())
+	if ((int32)materialDef.diffuseTextureId < scene->GetTextureCount())
 	{	
 		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 

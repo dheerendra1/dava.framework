@@ -63,7 +63,10 @@ yaml_strdup(const yaml_char_t *str)
     if (!str)
         return NULL;
 
+#pragma warning(push)
+#pragma warning(disable : 4996)
     return (yaml_char_t *)strdup((char *)str);
+#pragma warning(pop)
 }
 
 /*

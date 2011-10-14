@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>./../../Sources/Internal;./../../Sources/External;./../../Sources/External/Freetype;./../../Sources/External/Yaml;./../../Libs/libpng/include;./../../Libs/glew/include;$(DXSDK_DIR)/include;C:\Program Files\OpenAL 1.1 SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./../../Sources/Internal;./../../Sources/External;./../../Sources/External/Freetype;./../../Sources/External/Yaml;./../../Libs/libpng/include;./../../Libs/glew/include;$(DXSDK_DIR)/include;C:\Program Files\OpenAL 1.1 SDK\include;./../../Libs/freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;DAVA_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -64,14 +64,14 @@
     </ClCompile>
     <Lib>
       <AdditionalOptions>/VERBOSE:LIB   %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>freetype2312MT_D.lib;libpngd.lib;zlibd.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static_d.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype246MT_D.lib;libpngd.lib;zlibd.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static_d.lib;libvorbis_static_d.lib;libvorbisfile_static_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(ProjectDir)\$(Configuration)\$(ProjectName).lib</OutputFile>
       <AdditionalLibraryDirectories>./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;$(DXSDK_DIR)/lib/x86;./../../Libs/oggvorbis/lib/;C:\Program Files\OpenAL 1.1 SDK\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>./../../Sources/Internal;./../../Sources/External;./../../Sources/External/Freetype;./../../Sources/External/Yaml;./../../Libs/libpng/include;./../../Libs/glew/include;$(DXSDK_DIR)/include;C:\Program Files\OpenAL 1.1 SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./../../Sources/Internal;./../../Sources/External;./../../Sources/External/Freetype;./../../Sources/External/Yaml;./../../Libs/libpng/include;./../../Libs/glew/include;$(DXSDK_DIR)/include;C:\Program Files\OpenAL 1.1 SDK\include;./../../Libs/freetype/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;FT_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -81,7 +81,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>freetype2312MT.lib;libpng.lib;zlib.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype246MT.lib;libpng.lib;zlib.lib;opengl32.lib;glew32.lib;d3d9.lib;dxerr.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;openal32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(ProjectDir)\$(Configuration)\$(ProjectName).lib</OutputFile>
       <AdditionalLibraryDirectories>./../../Libs/freetype/lib;./../../Libs/libpng/lib;./../../Libs/glew/lib;$(DXSDK_DIR)/lib/x86;./../../Libs/oggvorbis/lib/;C:\Program Files\OpenAL 1.1 SDK\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
@@ -288,6 +288,7 @@
     <ClInclude Include="..\..\Sources\Internal\Scene3D\BoneNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\Camera.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\Frustum.h" />
+    <ClInclude Include="..\..\Sources\Internal\Scene3D\LandscapeNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\MeshInstanceNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\PathManip.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\RotatingCubeNode.h" />
@@ -510,6 +511,7 @@
     <ClCompile Include="..\..\Sources\Internal\Scene3D\BoneNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\Camera.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\Frustum.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Scene3D\LandscapeNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\MeshInstanceNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\PathManip.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\RotatingCubeNode.cpp" />

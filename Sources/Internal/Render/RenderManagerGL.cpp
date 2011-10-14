@@ -577,7 +577,9 @@ void RenderManager::HWDrawElements(ePrimitiveType type, int32 count, eIndexForma
 		Logger::Debug("Draw arrays texture: id %d", currentTexture[0]->id);
 	}
 #if defined(__DAVAENGINE_IPHONE__)
+#if not defined(GL_UNSIGNED_INT)
 #define GL_UNSIGNED_INT 0
+#endif //not defined(GL_UNSIGNED_INT)
 #endif // __DAVAENGINE_IPHONE__
 
 	const int32 indexTypes[2] = 
@@ -789,7 +791,7 @@ void RenderManager::AttachRenderData(Shader * shader)
         }
         pointerArraysRendererState = pointerArraysCurrentState;
         
-        for (int32 p = 0; p < enabledAttribCount; ++p)
+        for (int32 p = 0; p < (int32)enabledAttribCount; ++p)
         {
             glDisableVertexAttribArray(p);
         }
@@ -822,7 +824,7 @@ void RenderManager::AttachRenderData(Shader * shader)
             {
                 glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
                 
-                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
+                if (attribIndex >= (int32)enabledAttribCount)  // enable only if it was not enabled on previous step
                 {
                     glEnableVertexAttribArray(attribIndex);
                 }
@@ -833,7 +835,7 @@ void RenderManager::AttachRenderData(Shader * shader)
             }
         };
         
-        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
+        for (int32 p = currentEnabledAttribCount; p < (int32)enabledAttribCount; ++p)
         {
             glDisableVertexAttribArray(p);
         }

@@ -39,7 +39,7 @@ void FrameworkDidLaunched()
 	KeyedArchive * appOptions = new KeyedArchive();
 	appOptions->SetInt("orientation", Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT);
     appOptions->SetBool("iPhone_autodetectScreenScaleFactor", true);
-    appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);
+//    appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);
     
 	DAVA::Core::Instance()->SetVirtualScreenSize(480, 320);
 	DAVA::Core::Instance()->RegisterAvailableResourceSize(480, 320, "Gfx");
@@ -53,8 +53,8 @@ void FrameworkDidLaunched()
 //	appOptions->SetInt("width",	1280);
 //	appOptions->SetInt("height", 800);
     
-	appOptions->SetInt("fullscreen.width",	1280);
-	appOptions->SetInt("fullscreen.height", 800);
+//	appOptions->SetInt("fullscreen.width",	1280);
+//	appOptions->SetInt("fullscreen.height", 800);
 //	appOptions->SetInt("fullscreen.width",	1024);
 //	appOptions->SetInt("fullscreen.height", 768);
 
@@ -65,7 +65,7 @@ void FrameworkDidLaunched()
 	DAVA::Core::Instance()->SetVirtualScreenSize(920, 690);
 //	DAVA::Core::Instance()->SetVirtualScreenSize(1280, 800);
 	DAVA::Core::Instance()->RegisterAvailableResourceSize(920, 690, "Gfx");
-	DAVA::Core::Instance()->RegisterAvailableResourceSize(1280, 800, "Gfx2");
+//	DAVA::Core::Instance()->RegisterAvailableResourceSize(1280, 800, "Gfx2");
 #endif 
 
 	GameCore * core = new GameCore();

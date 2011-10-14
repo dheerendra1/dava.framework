@@ -119,7 +119,6 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
 //	glPopMatrix();
     
     
-    RenderManager::Instance()->Reset();
 
     RenderManager::Instance()->EnableDepthTest(false);
     RenderManager::Instance()->EnableDepthWrite(false);
@@ -131,6 +130,8 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
      */
     RenderManager::Instance()->SetViewport(Rect(0.0f, 0.0f, -1.0f, -1.0f));
     RenderManager::Instance()->SetRenderOrientation(Core::Instance()->GetScreenOrientation());
+
+    RenderManager::Instance()->Reset();
 
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelViewSave);
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, projectionSave);

@@ -27,3 +27,66 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
+#include "Render/Shader.h"
+
+namespace DAVA 
+{
+#if defined(__DAVAENGINE_DIRECTX9__)
+
+Shader::Shader()
+{
+
+}
+
+Shader::~Shader()
+{
+
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, int32 value)
+{
+
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, const Vector3 & vector)
+{
+
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, const Vector4 & vector)
+{
+
+}
+
+void Shader::SetUniformValue(int32 uniformLocation, const Matrix4 & matrix)
+{
+
+}
+
+bool Shader::LoadFromYaml(const String & pathname)
+{
+	return false;
+}
+
+void Shader::Bind()
+{
+
+}
+
+void Shader::Unbind()
+{
+
+}
+
+int32 Shader::FindUniformLocationByName(const String & name)
+{
+	return 0;
+}
+
+int32 Shader::GetAttributeIndex(eVertexFormat vertexFormat)
+{
+	return 0;
+}
+
+#endif 
+}

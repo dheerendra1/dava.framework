@@ -28,6 +28,8 @@
         * Created by Alexey 'Hottych' Prosin
 =====================================================================================*/
 
+#if 0
+
 #include "BaseTypes.h"
 #if defined(__DAVAENGINE_IPHONE__)
 
@@ -353,3 +355,5 @@
 
 @end
 #endif // #if defined(__DAVAENGINE_IPHONE__)
+
+#endif //0
