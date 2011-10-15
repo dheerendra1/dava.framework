@@ -83,6 +83,8 @@ public:
     
     void AddRootNode(SceneNode *node, const String &rootNodePath);
 	SceneNode *GetRootNode(const String &rootNodePath);
+    void ReleaseRootNode(const String &rootNodePath);
+    void ReleaseRootNode(SceneNode *nodeToRelease);
 
 	
 	virtual void StopAllAnimations(bool recursive = true);
@@ -120,6 +122,8 @@ private:
 	Vector<Camera*> cameras;
 	Vector<SceneNodeAnimationList*> animations;
     Map<String, SceneNode*> rootNodes;
+
+    // Vector<SceneNode*> alphaObjectQueue;
     
     Camera * currentCamera;
     Camera * clipCamera;

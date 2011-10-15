@@ -10,34 +10,34 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		4751F96A12CB9FE800AB961C /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */; };
-		476FFBA41430C2170017CFBF /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 476FFBA31430C2170017CFBF /* libFramework.a */; };
-		47A1101D12CBCAF8003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */; };
-		FE044F5D140EEBAD002A6D27 /* ImageUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */; };
-		FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */; };
+		EAA3DF501447364A009132AA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAA3DF4F1447364A009132AA /* MainWindow.xib */; };
+		FE0740391445E5AF00CCCE66 /* LandscapeTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */; };
+		FE1276CA144320BF0082901E /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1276C9144320BF0082901E /* main.mm */; };
+		FE1276F2144320D50082901E /* AnimationTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276CB144320D50082901E /* AnimationTestScreen.cpp */; };
+		FE1276F3144320D50082901E /* Box2DGameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276CE144320D50082901E /* Box2DGameObjectTestScreen.cpp */; };
+		FE1276F4144320D50082901E /* ClipTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276D0144320D50082901E /* ClipTestScreen.cpp */; };
+		FE1276F5144320D50082901E /* CollisionTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276D2144320D50082901E /* CollisionTestScreen.cpp */; };
+		FE1276F6144320D50082901E /* FontUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276D4144320D50082901E /* FontUsageScreen.cpp */; };
+		FE1276F7144320D50082901E /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276D6144320D50082901E /* FrameworkMain.cpp */; };
+		FE1276F8144320D50082901E /* GameCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276D8144320D50082901E /* GameCore.cpp */; };
+		FE1276F9144320D50082901E /* GameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276DA144320D50082901E /* GameObjectTestScreen.cpp */; };
+		FE1276FA144320D50082901E /* ImageUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276DC144320D50082901E /* ImageUsageScreen.cpp */; };
+		FE1276FB144320D50082901E /* iPhoneProjectDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1276DF144320D50082901E /* iPhoneProjectDelegate.mm */; };
+		FE1276FC144320D50082901E /* MainMenuScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276E0144320D50082901E /* MainMenuScreen.cpp */; };
+		FE1276FD144320D50082901E /* ParticleTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276E2144320D50082901E /* ParticleTestScreen.cpp */; };
+		FE1276FE144320D50082901E /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276E4144320D50082901E /* PropertyLineEditControl.cpp */; };
+		FE1276FF144320D50082901E /* RenderTargetTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276E6144320D50082901E /* RenderTargetTestScreen.cpp */; };
+		FE127700144320D50082901E /* SpriteBasicsScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276E8144320D50082901E /* SpriteBasicsScreen.cpp */; };
+		FE127701144320D50082901E /* SpritePerfScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276EA144320D50082901E /* SpritePerfScreen.cpp */; };
+		FE127702144320D50082901E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276EC144320D50082901E /* StaticTextScreen.cpp */; };
+		FE127703144320D50082901E /* TestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276EE144320D50082901E /* TestScreen.cpp */; };
+		FE127704144320D50082901E /* TouchEffectsControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE1276F0144320D50082901E /* TouchEffectsControl.cpp */; };
 		FE76D9EE1163F2F0009E83B6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */; };
 		FE76D9EF1163F2F0009E83B6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9ED1163F2F0009E83B6 /* OpenGLES.framework */; };
 		FE76D9F71163F304009E83B6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9F51163F304009E83B6 /* AVFoundation.framework */; };
 		FE76D9F81163F304009E83B6 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9F61163F304009E83B6 /* CoreAudio.framework */; };
 		FE76D9FF1163F316009E83B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9FE1163F316009E83B6 /* AudioToolbox.framework */; };
 		FE76DA041163F32F009E83B6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76DA031163F32F009E83B6 /* QuartzCore.framework */; };
-		FE9894FB1163CFA100500198 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE9894FA1163CFA100500198 /* MainWindow.xib */; };
-		FEA0293612E392F800935314 /* CollisionTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA0293412E392F800935314 /* CollisionTestScreen.cpp */; };
-		FEC3CBD71284374A00541220 /* AnimationTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBC01284374A00541220 /* AnimationTestScreen.cpp */; };
-		FEC3CBD81284374A00541220 /* ClipTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBC31284374A00541220 /* ClipTestScreen.cpp */; };
-		FEC3CBD91284374A00541220 /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBC51284374A00541220 /* FrameworkMain.cpp */; };
-		FEC3CBDA1284374A00541220 /* GameCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBC71284374A00541220 /* GameCore.cpp */; };
-		FEC3CBDB1284374A00541220 /* iPhoneProjectDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBCA1284374A00541220 /* iPhoneProjectDelegate.mm */; };
-		FEC3CBDC1284374A00541220 /* MainMenuScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBCB1284374A00541220 /* MainMenuScreen.cpp */; };
-		FEC3CBDD1284374A00541220 /* ParticleTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBCD1284374A00541220 /* ParticleTestScreen.cpp */; };
-		FEC3CBDE1284374A00541220 /* RenderTargetTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBCF1284374A00541220 /* RenderTargetTestScreen.cpp */; };
-		FEC3CBDF1284374A00541220 /* SpriteBasicsScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBD11284374A00541220 /* SpriteBasicsScreen.cpp */; };
-		FEC3CBE01284374A00541220 /* TestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBD31284374A00541220 /* TestScreen.cpp */; };
-		FEC3CBE11284374A00541220 /* TouchEffectsControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CBD51284374A00541220 /* TouchEffectsControl.cpp */; };
-		FEC3CCAB1284905700541220 /* SpritePerfScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CCA91284905700541220 /* SpritePerfScreen.cpp */; };
-		FECFB8A912E597B100C71562 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FECFB8A812E597B100C71562 /* main.mm */; };
-		FED26095128981F1004E9733 /* GameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED26093128981F1004E9733 /* GameObjectTestScreen.cpp */; };
-		FEF4E03512CD07DD004B850E /* Box2DGameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF4E03312CD07DD004B850E /* Box2DGameObjectTestScreen.cpp */; };
 		FEFB01D311C8F28A00B65B8B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEFB01D211C8F28A00B65B8B /* GameKit.framework */; };
 		FEFCD63412AE78D90060A1A1 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = FEFCD63312AE78D90060A1A1 /* Data */; };
 /* End PBXBuildFile section */
@@ -65,56 +65,57 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* TemplateProjectiPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectiPhone_Prefix.pch; sourceTree = "<group>"; };
-		4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontUsageScreen.cpp; sourceTree = "<group>"; };
-		4751F96912CB9FE800AB961C /* FontUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontUsageScreen.h; sourceTree = "<group>"; };
-		476FFBA31430C2170017CFBF /* libFramework.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFramework.a; path = "/Users/Hottych/Documents/dava.framework/Projects/iPhoneFramework/build/Debug-iphonesimulator/libFramework.a"; sourceTree = "<absolute>"; };
-		47A1101B12CBCAF8003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticTextScreen.h; sourceTree = "<group>"; };
-		47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTextScreen.cpp; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TemplateProjectiPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageUsageScreen.cpp; sourceTree = "<group>"; };
-		FE044F5C140EEBAD002A6D27 /* ImageUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUsageScreen.h; sourceTree = "<group>"; };
-		FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyLineEditControl.cpp; sourceTree = "<group>"; };
-		FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyLineEditControl.h; sourceTree = "<group>"; };
+		EAA3DF4F1447364A009132AA /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = iOSSpecific/MainWindow.xib; sourceTree = "<group>"; };
+		FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandscapeTestScreen.cpp; sourceTree = "<group>"; };
+		FE0740381445E5AE00CCCE66 /* LandscapeTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeTestScreen.h; sourceTree = "<group>"; };
+		FE1276C9144320BF0082901E /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = iOSSpecific/main.mm; sourceTree = "<group>"; };
+		FE1276CB144320D50082901E /* AnimationTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276CC144320D50082901E /* AnimationTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationTestScreen.h; sourceTree = "<group>"; };
+		FE1276CD144320D50082901E /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppScreens.h; sourceTree = "<group>"; };
+		FE1276CE144320D50082901E /* Box2DGameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DGameObjectTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276CF144320D50082901E /* Box2DGameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DGameObjectTestScreen.h; sourceTree = "<group>"; };
+		FE1276D0144320D50082901E /* ClipTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClipTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276D1144320D50082901E /* ClipTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipTestScreen.h; sourceTree = "<group>"; };
+		FE1276D2144320D50082901E /* CollisionTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276D3144320D50082901E /* CollisionTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionTestScreen.h; sourceTree = "<group>"; };
+		FE1276D4144320D50082901E /* FontUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontUsageScreen.cpp; sourceTree = "<group>"; };
+		FE1276D5144320D50082901E /* FontUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontUsageScreen.h; sourceTree = "<group>"; };
+		FE1276D6144320D50082901E /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameworkMain.cpp; sourceTree = "<group>"; };
+		FE1276D7144320D50082901E /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameworkMain.h; sourceTree = "<group>"; };
+		FE1276D8144320D50082901E /* GameCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameCore.cpp; sourceTree = "<group>"; };
+		FE1276D9144320D50082901E /* GameCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCore.h; sourceTree = "<group>"; };
+		FE1276DA144320D50082901E /* GameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276DB144320D50082901E /* GameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectTestScreen.h; sourceTree = "<group>"; };
+		FE1276DC144320D50082901E /* ImageUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageUsageScreen.cpp; sourceTree = "<group>"; };
+		FE1276DD144320D50082901E /* ImageUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUsageScreen.h; sourceTree = "<group>"; };
+		FE1276DE144320D50082901E /* iPhoneProjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneProjectDelegate.h; sourceTree = "<group>"; };
+		FE1276DF144320D50082901E /* iPhoneProjectDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iPhoneProjectDelegate.mm; sourceTree = "<group>"; };
+		FE1276E0144320D50082901E /* MainMenuScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScreen.cpp; sourceTree = "<group>"; };
+		FE1276E1144320D50082901E /* MainMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScreen.h; sourceTree = "<group>"; };
+		FE1276E2144320D50082901E /* ParticleTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276E3144320D50082901E /* ParticleTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleTestScreen.h; sourceTree = "<group>"; };
+		FE1276E4144320D50082901E /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyLineEditControl.cpp; sourceTree = "<group>"; };
+		FE1276E5144320D50082901E /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyLineEditControl.h; sourceTree = "<group>"; };
+		FE1276E6144320D50082901E /* RenderTargetTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderTargetTestScreen.cpp; sourceTree = "<group>"; };
+		FE1276E7144320D50082901E /* RenderTargetTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderTargetTestScreen.h; sourceTree = "<group>"; };
+		FE1276E8144320D50082901E /* SpriteBasicsScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBasicsScreen.cpp; sourceTree = "<group>"; };
+		FE1276E9144320D50082901E /* SpriteBasicsScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBasicsScreen.h; sourceTree = "<group>"; };
+		FE1276EA144320D50082901E /* SpritePerfScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpritePerfScreen.cpp; sourceTree = "<group>"; };
+		FE1276EB144320D50082901E /* SpritePerfScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpritePerfScreen.h; sourceTree = "<group>"; };
+		FE1276EC144320D50082901E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticTextScreen.cpp; sourceTree = "<group>"; };
+		FE1276ED144320D50082901E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticTextScreen.h; sourceTree = "<group>"; };
+		FE1276EE144320D50082901E /* TestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScreen.cpp; sourceTree = "<group>"; };
+		FE1276EF144320D50082901E /* TestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScreen.h; sourceTree = "<group>"; };
+		FE1276F0144320D50082901E /* TouchEffectsControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchEffectsControl.cpp; sourceTree = "<group>"; };
+		FE1276F1144320D50082901E /* TouchEffectsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchEffectsControl.h; sourceTree = "<group>"; };
 		FE76D9EC1163F2F0009E83B6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE76D9ED1163F2F0009E83B6 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		FE76D9F51163F304009E83B6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FE76D9F61163F304009E83B6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		FE76D9FE1163F316009E83B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		FE76DA031163F32F009E83B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		FE9894FA1163CFA100500198 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = iPhoneSpecific/MainWindow.xib; sourceTree = "<group>"; };
 		FE9895531163F13500500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../iPhoneFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FEA0293412E392F800935314 /* CollisionTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionTestScreen.cpp; sourceTree = "<group>"; };
-		FEA0293512E392F800935314 /* CollisionTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionTestScreen.h; sourceTree = "<group>"; };
-		FEC3CBC01284374A00541220 /* AnimationTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationTestScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBC11284374A00541220 /* AnimationTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationTestScreen.h; sourceTree = "<group>"; };
-		FEC3CBC21284374A00541220 /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppScreens.h; sourceTree = "<group>"; };
-		FEC3CBC31284374A00541220 /* ClipTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClipTestScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBC41284374A00541220 /* ClipTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipTestScreen.h; sourceTree = "<group>"; };
-		FEC3CBC51284374A00541220 /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameworkMain.cpp; sourceTree = "<group>"; };
-		FEC3CBC61284374A00541220 /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameworkMain.h; sourceTree = "<group>"; };
-		FEC3CBC71284374A00541220 /* GameCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameCore.cpp; sourceTree = "<group>"; };
-		FEC3CBC81284374A00541220 /* GameCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCore.h; sourceTree = "<group>"; };
-		FEC3CBC91284374A00541220 /* iPhoneProjectDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iPhoneProjectDelegate.h; path = Classes/iPhoneProjectDelegate.h; sourceTree = "<group>"; };
-		FEC3CBCA1284374A00541220 /* iPhoneProjectDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = iPhoneProjectDelegate.mm; path = Classes/iPhoneProjectDelegate.mm; sourceTree = "<group>"; };
-		FEC3CBCB1284374A00541220 /* MainMenuScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBCC1284374A00541220 /* MainMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScreen.h; sourceTree = "<group>"; };
-		FEC3CBCD1284374A00541220 /* ParticleTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleTestScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBCE1284374A00541220 /* ParticleTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleTestScreen.h; sourceTree = "<group>"; };
-		FEC3CBCF1284374A00541220 /* RenderTargetTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderTargetTestScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBD01284374A00541220 /* RenderTargetTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderTargetTestScreen.h; sourceTree = "<group>"; };
-		FEC3CBD11284374A00541220 /* SpriteBasicsScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBasicsScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBD21284374A00541220 /* SpriteBasicsScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBasicsScreen.h; sourceTree = "<group>"; };
-		FEC3CBD31284374A00541220 /* TestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScreen.cpp; sourceTree = "<group>"; };
-		FEC3CBD41284374A00541220 /* TestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestScreen.h; sourceTree = "<group>"; };
-		FEC3CBD51284374A00541220 /* TouchEffectsControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchEffectsControl.cpp; sourceTree = "<group>"; };
-		FEC3CBD61284374A00541220 /* TouchEffectsControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchEffectsControl.h; sourceTree = "<group>"; };
-		FEC3CCA91284905700541220 /* SpritePerfScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpritePerfScreen.cpp; sourceTree = "<group>"; };
-		FEC3CCAA1284905700541220 /* SpritePerfScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpritePerfScreen.h; sourceTree = "<group>"; };
-		FECFB8A812E597B100C71562 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = iPhoneSpecific/main.mm; sourceTree = "<group>"; };
-		FED26093128981F1004E9733 /* GameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectTestScreen.cpp; sourceTree = "<group>"; };
-		FED26094128981F1004E9733 /* GameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectTestScreen.h; sourceTree = "<group>"; };
-		FEF4E03312CD07DD004B850E /* Box2DGameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DGameObjectTestScreen.cpp; sourceTree = "<group>"; };
-		FEF4E03412CD07DD004B850E /* Box2DGameObjectTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DGameObjectTestScreen.h; sourceTree = "<group>"; };
 		FEFB01D211C8F28A00B65B8B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		FEFCD63312AE78D90060A1A1 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -134,7 +135,6 @@
 				FE76D9FF1163F316009E83B6 /* AudioToolbox.framework in Frameworks */,
 				FE76DA041163F32F009E83B6 /* QuartzCore.framework in Frameworks */,
 				FEFB01D311C8F28A00B65B8B /* GameKit.framework in Frameworks */,
-				476FFBA41430C2170017CFBF /* libFramework.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,43 +144,47 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FEA0293512E392F800935314 /* CollisionTestScreen.h */,
-				FEA0293412E392F800935314 /* CollisionTestScreen.cpp */,
-				47A1101B12CBCAF8003E267E /* StaticTextScreen.h */,
-				47A1101C12CBCAF8003E267E /* StaticTextScreen.cpp */,
-				4751F96912CB9FE800AB961C /* FontUsageScreen.h */,
-				4751F96812CB9FE800AB961C /* FontUsageScreen.cpp */,
-				FEC3CBC11284374A00541220 /* AnimationTestScreen.h */,
-				FEC3CBC01284374A00541220 /* AnimationTestScreen.cpp */,
-				FEC3CBC21284374A00541220 /* AppScreens.h */,
-				FEC3CBC31284374A00541220 /* ClipTestScreen.cpp */,
-				FEC3CBC41284374A00541220 /* ClipTestScreen.h */,
-				FEC3CBC51284374A00541220 /* FrameworkMain.cpp */,
-				FEC3CBC61284374A00541220 /* FrameworkMain.h */,
-				FEC3CBC71284374A00541220 /* GameCore.cpp */,
-				FEC3CBC81284374A00541220 /* GameCore.h */,
-				FEC3CBCB1284374A00541220 /* MainMenuScreen.cpp */,
-				FEC3CBCC1284374A00541220 /* MainMenuScreen.h */,
-				FEC3CBCD1284374A00541220 /* ParticleTestScreen.cpp */,
-				FEC3CBCE1284374A00541220 /* ParticleTestScreen.h */,
-				FEC3CBCF1284374A00541220 /* RenderTargetTestScreen.cpp */,
-				FEC3CBD01284374A00541220 /* RenderTargetTestScreen.h */,
-				FEC3CBD11284374A00541220 /* SpriteBasicsScreen.cpp */,
-				FEC3CBD21284374A00541220 /* SpriteBasicsScreen.h */,
-				FEC3CCA91284905700541220 /* SpritePerfScreen.cpp */,
-				FEC3CCAA1284905700541220 /* SpritePerfScreen.h */,
-				FEC3CBD31284374A00541220 /* TestScreen.cpp */,
-				FEC3CBD41284374A00541220 /* TestScreen.h */,
-				FEC3CBD51284374A00541220 /* TouchEffectsControl.cpp */,
-				FEC3CBD61284374A00541220 /* TouchEffectsControl.h */,
-				FED26093128981F1004E9733 /* GameObjectTestScreen.cpp */,
-				FED26094128981F1004E9733 /* GameObjectTestScreen.h */,
-				FEF4E03312CD07DD004B850E /* Box2DGameObjectTestScreen.cpp */,
-				FEF4E03412CD07DD004B850E /* Box2DGameObjectTestScreen.h */,
-				FE203F4113BDE91500350E9A /* PropertyLineEditControl.cpp */,
-				FE203F4213BDE91500350E9A /* PropertyLineEditControl.h */,
-				FE044F5B140EEBAD002A6D27 /* ImageUsageScreen.cpp */,
-				FE044F5C140EEBAD002A6D27 /* ImageUsageScreen.h */,
+				FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */,
+				FE0740381445E5AE00CCCE66 /* LandscapeTestScreen.h */,
+				FE1276CB144320D50082901E /* AnimationTestScreen.cpp */,
+				FE1276CC144320D50082901E /* AnimationTestScreen.h */,
+				FE1276CD144320D50082901E /* AppScreens.h */,
+				FE1276CE144320D50082901E /* Box2DGameObjectTestScreen.cpp */,
+				FE1276CF144320D50082901E /* Box2DGameObjectTestScreen.h */,
+				FE1276D0144320D50082901E /* ClipTestScreen.cpp */,
+				FE1276D1144320D50082901E /* ClipTestScreen.h */,
+				FE1276D2144320D50082901E /* CollisionTestScreen.cpp */,
+				FE1276D3144320D50082901E /* CollisionTestScreen.h */,
+				FE1276D4144320D50082901E /* FontUsageScreen.cpp */,
+				FE1276D5144320D50082901E /* FontUsageScreen.h */,
+				FE1276D6144320D50082901E /* FrameworkMain.cpp */,
+				FE1276D7144320D50082901E /* FrameworkMain.h */,
+				FE1276D8144320D50082901E /* GameCore.cpp */,
+				FE1276D9144320D50082901E /* GameCore.h */,
+				FE1276DA144320D50082901E /* GameObjectTestScreen.cpp */,
+				FE1276DB144320D50082901E /* GameObjectTestScreen.h */,
+				FE1276DC144320D50082901E /* ImageUsageScreen.cpp */,
+				FE1276DD144320D50082901E /* ImageUsageScreen.h */,
+				FE1276DE144320D50082901E /* iPhoneProjectDelegate.h */,
+				FE1276DF144320D50082901E /* iPhoneProjectDelegate.mm */,
+				FE1276E0144320D50082901E /* MainMenuScreen.cpp */,
+				FE1276E1144320D50082901E /* MainMenuScreen.h */,
+				FE1276E2144320D50082901E /* ParticleTestScreen.cpp */,
+				FE1276E3144320D50082901E /* ParticleTestScreen.h */,
+				FE1276E4144320D50082901E /* PropertyLineEditControl.cpp */,
+				FE1276E5144320D50082901E /* PropertyLineEditControl.h */,
+				FE1276E6144320D50082901E /* RenderTargetTestScreen.cpp */,
+				FE1276E7144320D50082901E /* RenderTargetTestScreen.h */,
+				FE1276E8144320D50082901E /* SpriteBasicsScreen.cpp */,
+				FE1276E9144320D50082901E /* SpriteBasicsScreen.h */,
+				FE1276EA144320D50082901E /* SpritePerfScreen.cpp */,
+				FE1276EB144320D50082901E /* SpritePerfScreen.h */,
+				FE1276EC144320D50082901E /* StaticTextScreen.cpp */,
+				FE1276ED144320D50082901E /* StaticTextScreen.h */,
+				FE1276EE144320D50082901E /* TestScreen.cpp */,
+				FE1276EF144320D50082901E /* TestScreen.h */,
+				FE1276F0144320D50082901E /* TouchEffectsControl.cpp */,
+				FE1276F1144320D50082901E /* TouchEffectsControl.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -218,10 +222,8 @@
 		29B97317FDCFA39411CA2CEA /* Platform Dependant */ = {
 			isa = PBXGroup;
 			children = (
-				FEC3CBC91284374A00541220 /* iPhoneProjectDelegate.h */,
-				FEC3CBCA1284374A00541220 /* iPhoneProjectDelegate.mm */,
-				FECFB8A812E597B100C71562 /* main.mm */,
-				FE9894FA1163CFA100500198 /* MainWindow.xib */,
+				EAA3DF4F1447364A009132AA /* MainWindow.xib */,
+				FE1276C9144320BF0082901E /* main.mm */,
 				8D1107310486CEB800E47090 /* TemplateProjectiPhone-Info.plist */,
 			);
 			name = "Platform Dependant";
@@ -240,7 +242,6 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
-				476FFBA31430C2170017CFBF /* libFramework.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -320,8 +321,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE9894FB1163CFA100500198 /* MainWindow.xib in Resources */,
 				FEFCD63412AE78D90060A1A1 /* Data in Resources */,
+				EAA3DF501447364A009132AA /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,26 +349,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEC3CBD71284374A00541220 /* AnimationTestScreen.cpp in Sources */,
-				FEC3CBD81284374A00541220 /* ClipTestScreen.cpp in Sources */,
-				FEC3CBD91284374A00541220 /* FrameworkMain.cpp in Sources */,
-				FEC3CBDA1284374A00541220 /* GameCore.cpp in Sources */,
-				FEC3CBDB1284374A00541220 /* iPhoneProjectDelegate.mm in Sources */,
-				FEC3CBDC1284374A00541220 /* MainMenuScreen.cpp in Sources */,
-				FEC3CBDD1284374A00541220 /* ParticleTestScreen.cpp in Sources */,
-				FEC3CBDE1284374A00541220 /* RenderTargetTestScreen.cpp in Sources */,
-				FEC3CBDF1284374A00541220 /* SpriteBasicsScreen.cpp in Sources */,
-				FEC3CBE01284374A00541220 /* TestScreen.cpp in Sources */,
-				FEC3CBE11284374A00541220 /* TouchEffectsControl.cpp in Sources */,
-				FEC3CCAB1284905700541220 /* SpritePerfScreen.cpp in Sources */,
-				FED26095128981F1004E9733 /* GameObjectTestScreen.cpp in Sources */,
-				4751F96A12CB9FE800AB961C /* FontUsageScreen.cpp in Sources */,
-				47A1101D12CBCAF8003E267E /* StaticTextScreen.cpp in Sources */,
-				FEF4E03512CD07DD004B850E /* Box2DGameObjectTestScreen.cpp in Sources */,
-				FEA0293612E392F800935314 /* CollisionTestScreen.cpp in Sources */,
-				FECFB8A912E597B100C71562 /* main.mm in Sources */,
-				FE203F4313BDE91500350E9A /* PropertyLineEditControl.cpp in Sources */,
-				FE044F5D140EEBAD002A6D27 /* ImageUsageScreen.cpp in Sources */,
+				FE1276CA144320BF0082901E /* main.mm in Sources */,
+				FE1276F2144320D50082901E /* AnimationTestScreen.cpp in Sources */,
+				FE1276F3144320D50082901E /* Box2DGameObjectTestScreen.cpp in Sources */,
+				FE1276F4144320D50082901E /* ClipTestScreen.cpp in Sources */,
+				FE1276F5144320D50082901E /* CollisionTestScreen.cpp in Sources */,
+				FE1276F6144320D50082901E /* FontUsageScreen.cpp in Sources */,
+				FE1276F7144320D50082901E /* FrameworkMain.cpp in Sources */,
+				FE1276F8144320D50082901E /* GameCore.cpp in Sources */,
+				FE1276F9144320D50082901E /* GameObjectTestScreen.cpp in Sources */,
+				FE1276FA144320D50082901E /* ImageUsageScreen.cpp in Sources */,
+				FE1276FB144320D50082901E /* iPhoneProjectDelegate.mm in Sources */,
+				FE1276FC144320D50082901E /* MainMenuScreen.cpp in Sources */,
+				FE1276FD144320D50082901E /* ParticleTestScreen.cpp in Sources */,
+				FE1276FE144320D50082901E /* PropertyLineEditControl.cpp in Sources */,
+				FE1276FF144320D50082901E /* RenderTargetTestScreen.cpp in Sources */,
+				FE127700144320D50082901E /* SpriteBasicsScreen.cpp in Sources */,
+				FE127701144320D50082901E /* SpritePerfScreen.cpp in Sources */,
+				FE127702144320D50082901E /* StaticTextScreen.cpp in Sources */,
+				FE127703144320D50082901E /* TestScreen.cpp in Sources */,
+				FE127704144320D50082901E /* TouchEffectsControl.cpp in Sources */,
+				FE0740391445E5AF00CCCE66 /* LandscapeTestScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,19 +388,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vitaliy Borodovsky (MS45DK374J)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dizz Err (JTJF5T2XFF)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TemplateProjectiPhone_Prefix.pch;
+				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../iPhoneFramework/build/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = TemplateProjectiPhone;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B40FEC58-A683-48FB-9EC1-CEC9F14F7781";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "39F4825F-EFA3-478B-B2FE-05D32EE5A8D8";
 			};
 			name = Debug;
 		};
@@ -410,10 +409,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TemplateProjectiPhone_Prefix.pch;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../iPhoneFramework/build/Debug-iphonesimulator\"",
-				);
 				PRODUCT_NAME = TemplateProjectiPhone;
 			};
 			name = Release;
@@ -421,68 +416,44 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-<<<<<<< Updated upstream
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-=======
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vitaliy Borodovsky (MS45DK374J)";
->>>>>>> Stashed changes
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = DAVA_DEBUG;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/internal,
+					./../../Sources/Internal,
 					./../../Sources/External,
+					./../dava.framework/Sources/Internal,
+					./../dava.framework/Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-lFramework",
+					"-ObjC",
+				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1806687B-2E4A-46C6-B885-FFE5BB283826";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
+				GCC_THUMB_SUPPORT = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/internal,
+					./../../Sources/Internal,
 					./../../Sources/External,
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				OTHER_LDFLAGS = "-ObjC";
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		FE57C489142C8FE900060A75 /* AdHoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					./../../Sources/internal,
-					./../../Sources/External,
+					./../dava.framework/Sources/Internal,
+					./../dava.framework/Sources/External,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = (
@@ -491,21 +462,9 @@
 				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
 			};
-			name = AdHoc;
-		};
-		FE57C48A142C8FE900060A75 /* AdHoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = TemplateProjectiPhone_Prefix.pch;
-				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
-				PRODUCT_NAME = TemplateProjectiPhone;
-			};
-			name = AdHoc;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -515,7 +474,6 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				FE57C48A142C8FE900060A75 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -525,7 +483,6 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				FE57C489142C8FE900060A75 /* AdHoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

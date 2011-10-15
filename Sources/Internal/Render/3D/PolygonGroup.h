@@ -41,7 +41,7 @@ namespace DAVA
 	\ingroup render_3d
 	\brief Group of polygons with same data type & structure
  */
-class PolygonGroup
+class PolygonGroup : public BaseObject
 {
 public:
 	enum VertexDataType

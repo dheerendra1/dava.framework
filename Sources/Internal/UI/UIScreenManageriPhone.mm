@@ -57,7 +57,7 @@ UIScreenManager::~UIScreenManager()
 		if(it->second.type == Screen::TYPE_SCREEN)
 		{
 			((UIScreen*)it->second.value)->UnloadGroup();
-			it->second.type == Screen::TYPE_NULL;
+			//it->second.type == Screen::TYPE_NULL;
 			releaseBuf.push_back(it->second);
 		}
 	}
@@ -214,7 +214,7 @@ void UIScreenManager::StopGLAnimation()
 	Screen & glController = screens[glControllerId];
 	UIViewController * controller = (UIViewController *)glController.value;
 	EAGLView * view = (EAGLView *)controller.view;
-	[view stopAnimation];
+    [view performSelector: @selector(stopAnimation)];
 }
 
 void UIScreenManager::StartGLAnimation()
@@ -222,7 +222,7 @@ void UIScreenManager::StartGLAnimation()
 	Screen & glController = screens[glControllerId];
 	UIViewController * controller = (UIViewController *)glController.value;
 	EAGLView * view = (EAGLView *)controller.view;
-	[view startAnimation];
+    [view performSelector: @selector(startAnimation)];
 }
 
 	

@@ -127,6 +127,28 @@ int32 Texture::GetPixelFormatSize(PixelFormat format)
 	};
 	return 0;
 }
+    
+const char * Texture::GetPixelFormatString(PixelFormat format)
+{
+    switch(format)
+	{
+        case FORMAT_RGBA8888:
+            return "FORMAT_RGBA8888";
+        case FORMAT_RGB565:
+            return "FORMAT_RGB565";
+        case FORMAT_RGBA4444:
+            return "FORMAT_RGBA4444";
+        case FORMAT_A8:
+            return "FORMAT_A8";
+        case FORMAT_PVR4:
+            return "FORMAT_PVR4";
+        case FORMAT_PVR2:
+            return "FORMAT_PVR2";
+        default:
+            return "WRONG FORMAT";
+	};
+    return "WRONG FORMAT";
+}
 
 Texture * Texture::Get(const String & pathName)
 {
@@ -152,6 +174,7 @@ Texture::Texture()
 #ifdef __DAVAENGINE_DIRECTX9__
 	saveTexture = 0;
 	renderTargetModified = false;
+    renderTargetAutosave = true;
 #endif 
 
 #ifdef __DAVAENGINE_OPENGL__
@@ -1017,7 +1040,7 @@ void Texture::DumpTextures()
 	for(Map<String, Texture *>::iterator it = textureMap.begin(); it != textureMap.end(); ++it)
 	{
 		Texture *t = it->second;
-		Logger::Info("%s with id %d   (%dx%d)  retainCount: %d debug: %s", t->relativePathname.c_str(), t->id, t->width, t->height, t->GetRetainCount(), t->debugInfo.c_str());
+		Logger::Info("%s with id %d (%dx%d) retainCount: %d debug: %s format: %s", t->relativePathname.c_str(), t->id, t->width, t->height, t->GetRetainCount(), t->debugInfo.c_str(), GetPixelFormatString(t->format));
 		cnt++;
 		switch (t->format) 
 		{

@@ -40,6 +40,7 @@ SceneNode::SceneNode(Scene * _scene)
 	, parent(0)
     , visible(true)
     , inUpdate(false)
+    , tag(0)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
@@ -50,7 +51,12 @@ SceneNode::SceneNode(Scene * _scene)
 
 SceneNode::~SceneNode()
 {
-
+	for (std::vector<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
+	{
+        SceneNode *node = *t;
+        node->SetParent(0);
+        node->Release();
+	}
 }
 
 void SceneNode::SetParent(SceneNode * node)
@@ -60,14 +66,20 @@ void SceneNode::SetParent(SceneNode * node)
 
 void SceneNode::AddNode(SceneNode * node)
 {
-	if (node)node->Retain();
-	
-	childs.push_back(node);
-	node->SetParent(this);
+	if (node)
+    {
+        node->Retain();
+        childs.push_back(node);
+        node->SetParent(this);
+    }
 }
 
 void SceneNode::RemoveNode(SceneNode * node)
 {
+    if (!node) 
+    {
+        return;
+    }
     if (inUpdate) 
     {
         removedCache.push_back(node);
@@ -79,9 +91,6 @@ void SceneNode::RemoveNode(SceneNode * node)
 		if (*t == node)
 		{
 			childs.erase(t);
-            
-            // Fix: Boroda
-            // Do not release node if function remove node called for wrong parent
             if (node)
             {
                 node->SetParent(0);
@@ -166,7 +175,7 @@ void SceneNode::StopAllAnimations(bool recursive)
 
 void SceneNode::RestoreOriginalTransforms()
 {
-	localTransform = originalLocalTransform;
+    SetLocalTransform(GetDefaultLocalTransform());
 	
 	uint32 size = (uint32)childs.size();
 	for (uint32 c = 0; c < size; ++c)
@@ -245,12 +254,25 @@ void SceneNode::Update(float32 timeElapsed)
         
         // need propagate changes to child nodes
         flags |= NODE_WORLD_MATRIX_ACTUAL;
+        uint32 size = (uint32)childs.size();
+        for (uint32 c = 0; c < size; ++c)
+        {
+            childs[c]->InvalidateLocalTransform();
+            childs[c]->Update(timeElapsed);
+        }
+        
 	}
+    else 
+    {
+        uint32 size = (uint32)childs.size();
+        for (uint32 c = 0; c < size; ++c)
+        {
+            childs[c]->Update(timeElapsed);
+        }
+    }
+
 	//printf("- node: %s tr: %f %f %f\n", name.c_str(), localTransform.data[12], localTransform.data[13], localTransform.data[14]); 
 	
-	uint32 size = (uint32)childs.size();
-	for (uint32 c = 0; c < size; ++c)
-		childs[c]->Update(timeElapsed);
 	
 	inUpdate = false;
 
@@ -282,7 +304,7 @@ SceneNode* SceneNode::Clone(SceneNode *dstNode)
         dstNode = new SceneNode(scene);
     }
     dstNode->visible = visible;
-    dstNode->originalLocalTransform = originalLocalTransform;
+    dstNode->defaultLocalTransform = defaultLocalTransform;
     
     dstNode->localTransform = localTransform;
     dstNode->worldTransform = worldTransform;
@@ -345,6 +367,8 @@ String SceneNode::RecursiveBuildFullName(SceneNode * node, SceneNode * endNode)
         return node->name;
     }
 }
+    
+
 
 };
 

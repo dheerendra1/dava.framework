@@ -49,7 +49,12 @@ public:
 	
 	void Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho = false);
 	void SetFOV(float32 _fovy);
-	
+    /**
+        \brief Set camera aspect ratio 
+        Aspect ratio is viewport width / viewport height
+     */
+	void SetAspect(float32 aspect);
+    
 	// forms matrix
 	//void LookAt(Vector3 position, Vector3 view, Vector3 up);
 	
@@ -117,7 +122,6 @@ protected:
     
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
-
 	float32 xmin, xmax, ymin, ymax, znear, zfar, aspect, fovy;
 	bool ortho;
 		

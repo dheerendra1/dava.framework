@@ -39,10 +39,12 @@
 #include "Scene3D/Camera.h"
 #include "Scene3D/SceneNodeAnimationList.h"
 #include "Utils/StringFormat.h"
+#include "FileSystem/FileSystem.h"
 
 namespace DAVA
 {
-	
+
+void ReadString(FILE * fp, char * res, int maxSize);  // XCode 4 fix
 void ReadString(FILE * fp, char * res, int maxSize)
 {
 	int pos = 0;
@@ -60,7 +62,7 @@ SceneFile::Header::Header()
 	descriptor[0] = 'D'; descriptor[1] = 'V';
 	descriptor[2] = 'S'; descriptor[3] = 'C';
 	
-	version = 100;
+	version = 101;
 	textureCount = 0;			
 	materialCount = 0;
 	staticMeshCount = 0;
@@ -104,7 +106,6 @@ bool SceneFile::LoadScene( const char * filename, Scene * _scene, bool relToBund
 
 	Logger::Debug("scene start load: path = %s\n", scenePath.c_str());
 	
-	SceneFile::Header header;
 	sceneFP->Read(&header, sizeof(SceneFile::Header));
 	
 	if (debugLogEnabled)Logger::Debug("File version: %d\n", header.version);
@@ -174,7 +175,7 @@ bool SceneFile::LoadScene( const char * filename, Scene * _scene, bool relToBund
 			SceneNodeAnimation * anim = aList->animations[k];
 			if (!anim)
 			{
-				if (debugLogEnabled)Logger::Debug("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->name.c_str());
+				if (debugLogEnabled)Logger::Debug("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->GetName().c_str());
 				continue;
 			}
 			String & name = anim->bindName;
@@ -215,6 +216,12 @@ bool SceneFile::ReadTexture()
 	}
 
 	tname = scenePath + tname;
+    
+    uint8 hasOpacity = false;
+    if (header.version == 101)
+    {
+        sceneFP->Read(&hasOpacity, sizeof(hasOpacity));
+    }
 	
 	DAVA::Texture * texture = DAVA::Texture::CreateFromFile(tname);//textureDef.name);//0;
 	if (texture)
@@ -232,29 +239,27 @@ bool SceneFile::ReadTexture()
 		texture->SetWrapMode(Texture::WRAP_REPEAT, Texture::WRAP_REPEAT);
 //		texture->SetWrapMode(Texture::WRAP_CLAMP, Texture::WRAP_CLAMP);
 		scene->AddTexture(texture);
-        SafeRelease(texture);
 	}else
 	{
 		Logger::Debug("*** error reading texture: %s\n", textureDef.name);
-        uint8 * textureData = new uint8[64 * 64 * 4]; 
-        for (int32 k = 0; k < 64 * 64 * 4; k += 4)
+        uint8 * textureData = new uint8[8 * 8 * 4]; 
+        for (int32 k = 0; k < 8 * 8 * 4; k += 4)
         {
             textureData[k + 0] = 0xFF; 
             textureData[k + 1] = 0x00; 
             textureData[k + 2] = 0xFF; 
             textureData[k + 3] = 0xFF; 
         }
-        Texture * tex = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 64, 64);
-        scene->AddTexture(tex);
-        tex->GenerateMipmaps();
-        SafeRelease(tex);
+        texture = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 8, 8);
+        scene->AddTexture(texture);
+        texture->GenerateMipmaps();
 	}
 	
-	if (debugLogEnabled)Logger::Debug("- Texture: %s %d\n", textureDef.name, textureDef.id);
+	if (debugLogEnabled)Logger::Debug("- Texture: %s %d hasOpacity: %s %s\n", textureDef.name, textureDef.id, (hasOpacity) ? ("yes") : ("no"), Texture::GetPixelFormatString(texture->format));
     
     if (!mipMapsEnabled)
         Texture::DisableMipmapGeneration();
-    
+    SafeRelease(texture);
 	return true;
 }
 	
@@ -275,25 +280,36 @@ bool SceneFile::ReadMaterial()
 	sceneFP->Read(&materialDef.specular, sizeof(materialDef.specular));
 	sceneFP->Read(&materialDef.transparency, sizeof(materialDef.transparency));
 	sceneFP->Read(&materialDef.transparent, sizeof(materialDef.transparent));
+    materialDef.hasOpacity = false;
+    if (header.version == 101)
+        sceneFP->Read(&materialDef.hasOpacity, sizeof(materialDef.hasOpacity));
 
 	Material * mat = new Material(scene);
 
 	mat->ambient = materialDef.ambient;
 	mat->diffuse = materialDef.diffuse;
 	
-	if ( (materialDef.diffuseTextureId >= 0) && (materialDef.diffuseTextureId < scene->GetTextureCount()))
+	if ((int32)materialDef.diffuseTextureId < scene->GetTextureCount())
 	{	
 		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 
 	{
 		mat->diffuseTexture = 0;
 	}
-	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %d tp: 0x%08x\n", materialDef.name, materialDef.id, materialDef.diffuseTextureId, mat->diffuseTexture);
+    
+    String diffuseTextureName = "no texture"; 
+    if (mat->diffuseTexture)
+    {
+        String tempPath;
+        FileSystem::SplitPath(mat->diffuseTexture->GetPathname(), tempPath, diffuseTextureName);
+    }
+    
+	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %s hasOpacity: %s\n", materialDef.name, materialDef.id, diffuseTextureName.c_str(), (materialDef.hasOpacity) ? ("yes") : ("no"));
 	
 
 	mat->emission = materialDef.emission;
 	mat->indexOfRefraction = materialDef.indexOfRefraction;
-	mat->name = materialDef.name;
+	mat->SetName(materialDef.name);
 	mat->reflective = materialDef.reflective;
 	// TODO for reflective texture
 	//mat->reflectiveTexture = materialDef.r
@@ -303,6 +319,7 @@ bool SceneFile::ReadMaterial()
 	mat->specular = materialDef.specular;
 	mat->transparency = materialDef.transparency;
 	mat->transparent = materialDef.transparent;
+    mat->hasOpacity = materialDef.hasOpacity;
 	
 	scene->AddMaterial(mat);
 	SafeRelease(mat);
@@ -461,8 +478,9 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 	if (def.nodeType == SceneNodeDef::SCENE_NODE_BASE)
 	{
 		node = new SceneNode3d(scene);
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -476,9 +494,10 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		
 		currentSkeletonNode = new SkeletonNode(scene);
 		node = currentSkeletonNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
 		currentSkeletonNode->inverse0Matrix = inverse0;
-		node->name = name;
+		node->SetName(name);
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -491,9 +510,11 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 
 		BoneNode * boneNode = new BoneNode(scene, currentSkeletonNode);
 		node = boneNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		boneNode->inverse0Matrix = inverse0;
-		node->name = name;
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+
+		boneNode->inverse0Matrix = inverse0;    // TODO: make inverse0Matrix protected
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -504,10 +525,13 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		int32 camIndex = -1;
 		sceneFP->Read(&camIndex, sizeof(int32));
 		
-		Camera * cam = scene->GetCamera(camIndex + cameraIndexOffset);
+		Camera * cam = SafeRetain(scene->GetCamera(camIndex + cameraIndexOffset));
 		node = cam;//new Camera(scene);
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
+        
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+        
         if (parentNode != scene) 
         {
             parentNode->AddNode(node);
@@ -522,9 +546,11 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 		
 		MeshInstanceNode* meshNode = new MeshInstanceNode(scene);
 		node = meshNode;
-		node->localTransform = node->originalLocalTransform = def.localTransform;
-		node->name = name;
-
+        
+        node->SetDefaultLocalTransform(def.localTransform);
+		node->SetLocalTransform(def.localTransform);
+		node->SetName(name);
+        
 		int pgInstancesCount = 0;
 		sceneFP->Read(&pgInstancesCount, sizeof(int));
 
@@ -591,7 +617,7 @@ bool SceneFile::ReadCamera()
 	CameraDef cd;
 	sceneFP->Read(&cd, sizeof(CameraDef));
 	
-	cam->Setup(cd.fovy, 480.0f / 320.0f, cd.znear, cd.zfar, cd.ortho);
+	cam->Setup(cd.fovy, 320.0f / 480.0f, cd.znear, cd.zfar, cd.ortho);
 	SafeRelease(cam);
 	return true;
 }
@@ -602,7 +628,7 @@ bool SceneFile::ReadAnimation()
 	
 	char name[512];
 	sceneFP->ReadString(name, 512);
-	animationList->name = name;
+	animationList->SetName(name);
 
 	
 	int nodeCount;

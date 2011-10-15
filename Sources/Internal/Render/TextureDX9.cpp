@@ -63,7 +63,13 @@ void Texture::SaveToSystemMemory()
 {
 	if (isRenderTarget)
 	{
-		HRESULT hr = RenderManager::Instance()->GetD3DDevice()->TestCooperativeLevel(); 
+        /*
+            Do not save texture if autosave flag is false
+         */
+        if (!renderTargetAutosave)
+            return;
+		
+        HRESULT hr = RenderManager::Instance()->GetD3DDevice()->TestCooperativeLevel(); 
 		if (hr == D3DERR_DEVICELOST)
 		{
 			//if (!saveTexture)

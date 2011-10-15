@@ -243,7 +243,6 @@ void TextBlock::Prepare()
 		
 		int32 w = (int32)drawSize.x;
 		int32 h = (int32)drawSize.y;
-//		Logger::Info("Inital size: %dx%d", w, h);
 		
 		Size2i textSize;
 		stringSizes.clear();
@@ -251,7 +250,6 @@ void TextBlock::Prepare()
 		if(!isMultilineEnabled)
 		{
 			textSize = font->GetStringSize(text);
-			textSize.dy += 2;
             if(fittingType & FITTING_POINTS)
             {
                 pointsStr.clear();
@@ -366,8 +364,6 @@ void TextBlock::Prepare()
 					}
 					font->SetSize(finalSize);
 					textSize = font->GetStringSize(text);
-					textSize.dy += 2;
-					
 				};
 			}
 		}
@@ -535,7 +531,6 @@ void TextBlock::Prepare()
 		int32 i;
 		int32 dx = (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w);
 		float32 finalW = (float32)dx / Core::GetVirtualToPhysicalFactor();
-//		Logger::Info("Crreating text buffer width: %d", dx);
 		if((dx != 1) && (dx & (dx - 1))) 
 		{
 			i = 1;
@@ -545,7 +540,6 @@ void TextBlock::Prepare()
 		}
 		int32 dy = (int32)ceilf(Core::GetVirtualToPhysicalFactor() * h);
 		float32 finalH = (float32)dy / Core::GetVirtualToPhysicalFactor();
-//		Logger::Info("Crreating text buffer height: %d", dy);
 		if((dy != 1) && (dy & (dy - 1))) 
 		{
 			i = 1;
@@ -795,15 +789,7 @@ void TextBlock::DrawToBuffer(int16 *buf)
         
 		if (buf)
 		{
-			if (cacheUseJustify) 
-			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), drawText, true);
-			}
-			else 
-			{
-				realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, drawText, true);
-			}
-			
+			realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, 0, text, true);
 		}
 		else
 		{
@@ -821,7 +807,6 @@ void TextBlock::DrawToBuffer(int16 *buf)
 	{
 		
 		uint32 yOffset = 0;
-			//			uint32 fontHeight = font->GetFontHeight() + yOffset;
 		int32 fontHeight = font->GetFontHeight() + font->GetVerticalSpacing();
 		for (int32 line = 0; line < (int32)multilineStrings.size(); ++line)
 		{
@@ -851,11 +836,13 @@ void TextBlock::DrawToBuffer(int16 *buf)
 			{
 				if (cacheUseJustify) 
 				{
-					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), multilineStrings[line], true);
+					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 
+						(int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW), (int32)ceilf(Core::GetVirtualToPhysicalFactor() * stringSizes[line]), multilineStrings[line], true);
 				}
 				else 
 				{
-					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 0, multilineStrings[line], true);
+					ds = font->DrawStringToBuffer(buf, cacheDx, cacheDy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 
+						0, 0, multilineStrings[line], true);
 				}
 				
 			}
@@ -864,12 +851,12 @@ void TextBlock::DrawToBuffer(int16 *buf)
 				if (cacheUseJustify) 
 				{
 					// TODO: Hottych fix warnings please??
-					ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW)); 
+					ds = font->DrawString((Core::GetVirtualToPhysicalFactor() * xo), (Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], (int32)ceilf(Core::GetVirtualToPhysicalFactor() * cacheW)); 
 				}
 				else 
 				{
 					// TODO: Hottych fix warnings please??
-					ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], 0); 
+					ds = font->DrawString((Core::GetVirtualToPhysicalFactor() * xo), (Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], 0); 
 				}
 				
 			}

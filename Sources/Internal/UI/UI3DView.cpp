@@ -54,6 +54,11 @@ UI3DView::~UI3DView()
 void UI3DView::SetScene(Scene * _scene)
 {
     scene = SafeRetain(_scene);
+    //
+    for (int32 k = 0; k < scene->GetCameraCount(); ++k)
+    {
+        scene->GetCamera(k)->SetAspect(size.dx / size.dy);
+    }
 }
 
 Scene * UI3DView::GetScene() const
@@ -87,6 +92,11 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
     }
 
     //glViewport(viewportRect.x, viewportRect.y, viewportRect.dx, viewportRect.dy);
+    RenderManager::Instance()->PushDrawMatrix();
+	RenderManager::Instance()->PushMappingMatrix();
+    Matrix4 modelViewSave = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
+    Matrix4 projectionSave = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION);
+
     RenderManager::Instance()->SetViewport(viewportRect);
     
     RenderManager::Instance()->EnableDepthWrite(true);
@@ -98,13 +108,10 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
 //	glPushMatrix();
 //	glMatrixMode(GL_PROJECTION);
 //	glPushMatrix();
-    Matrix4 modelViewSave = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW);
-    Matrix4 projectionSave = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION);
+
     
     Draw(geometricData);
     
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelViewSave);
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, projectionSave);
     
 //  glMatrixMode(GL_MODELVIEW);
 //	glPopMatrix();
@@ -112,7 +119,6 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
 //	glPopMatrix();
     
     
-    RenderManager::Instance()->Reset();
 
     RenderManager::Instance()->EnableDepthTest(false);
     RenderManager::Instance()->EnableDepthWrite(false);
@@ -124,6 +130,13 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
      */
     RenderManager::Instance()->SetViewport(Rect(0.0f, 0.0f, -1.0f, -1.0f));
     RenderManager::Instance()->SetRenderOrientation(Core::Instance()->GetScreenOrientation());
+
+    RenderManager::Instance()->Reset();
+
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelViewSave);
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, projectionSave);
+	RenderManager::Instance()->PopDrawMatrix();
+	RenderManager::Instance()->PopMappingMatrix();
 }
     
 void UI3DView::Update(float32 timeElapsed)

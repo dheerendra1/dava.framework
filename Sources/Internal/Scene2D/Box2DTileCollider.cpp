@@ -48,8 +48,8 @@ namespace DAVA
 		manager = _manager;
 
 		b2ContactManager &contactManager = (b2ContactManager &)manager->box2DWorld->GetContactManager();
-		contactManager.m_broadPhase.CreateTiledMap(manager->VectorGameManagerToBox2D(Vector2(0, mapHeight * tileHeight))
-												   , manager->SizeGameManagerToBox2D(Vector2(tileWidth, tileHeight))
+		contactManager.m_broadPhase.CreateTiledMap(manager->VectorGameManagerToBox2D(Vector2(0, (float32)mapHeight * tileHeight))
+												   , manager->SizeGameManagerToBox2D(Vector2((float32)tileWidth, (float32)tileHeight))
 												   , mapWidth, mapHeight);
 		bodyVector.resize(mapWidth * mapHeight, NULL);
 
@@ -104,8 +104,8 @@ namespace DAVA
 			int32 mapY = mapIndex / mapWidth;
 			int32 mapX = mapIndex -  mapY * mapWidth;
 					
-			float32 posX = mapX * tileWidth + (tileWidth >> 1);
-			float32 posY = mapY * tileHeight + (tileHeight >> 1);
+			float32 posX = (float32)(mapX * tileWidth + (tileWidth >> 1));
+			float32 posY = (float32)(mapY * tileHeight + (tileHeight >> 1));
 					
 			bDef.position = manager->VectorGameManagerToBox2D(Vector2(posX, posY));
 					
@@ -158,8 +158,8 @@ namespace DAVA
 				int32 mapY = i / mapWidth;
 				int32 mapX = i -  mapY * mapWidth;
 				
-				float32 posX = mapX * tileWidth + (tileWidth >> 1);
-				float32 posY = mapY * tileHeight + (tileHeight >> 1);
+				float32 posX = (float32)(mapX * tileWidth + (tileWidth >> 1));
+				float32 posY = (float32)(mapY * tileHeight + (tileHeight >> 1));
 				
 				bDef.position = manager->VectorGameManagerToBox2D(Vector2(posX, posY));
 				

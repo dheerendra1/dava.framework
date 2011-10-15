@@ -44,7 +44,11 @@ StaticMesh::StaticMesh(Scene * _scene)
 	
 StaticMesh::~StaticMesh()
 {
-	
+	for (int32 p = 0; p < (int32)polygroupCount; ++p)
+	{
+        SafeRelease(polygroups[p]);
+    }
+    polygroups.clear();
 }
 	
 void StaticMesh::Create(uint32 _polygroupCount)
@@ -127,7 +131,20 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 		{
 			RenderManager::Instance()->SetTexture(material->diffuseTexture);
             RenderManager::Instance()->SetRenderData(group->renderDataObject);
-		}
+
+        }
+        
+        if (material->hasOpacity)
+        {
+            //RenderManager::Instance()->EnableBlending(true);
+            //RenderManager::Instance()->SetBlendMode(BLEND_ONE, BLEND_ONE_MINUS_SRC_ALPHA);
+            glAlphaFunc ( GL_GREATER, 0.5 );
+            glEnable ( GL_ALPHA_TEST ) ;
+            glDisable( GL_CULL_FACE );
+        }else
+        {
+            RenderManager::Instance()->EnableBlending(false);
+        }
 		
 		//glEnable(GL_COLOR_MATERIAL);
 #if 0
@@ -165,6 +182,13 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	//RenderManager::Instance()->DrawArrays(GL_TRIANGLES, );
 	//RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
+    
+    
+    if (material && material->hasOpacity)
+    {
+        glDisable ( GL_ALPHA_TEST ) ;
+        glEnable(GL_CULL_FACE);
+    }
 #endif
 }
 

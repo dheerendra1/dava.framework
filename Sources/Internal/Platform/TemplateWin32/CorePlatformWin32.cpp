@@ -30,6 +30,7 @@
 #include "Platform/TemplateWin32/CorePlatformWin32.h"
 #include "Platform/TemplateWin32/WindowsSpecifics.h"
 #include "Platform/Thread.h"
+#include "Utils/Utils.h"
 
 #if defined(__DAVAENGINE_WIN32__)
 
@@ -44,15 +45,20 @@ namespace DAVA
 	{
 		CoreWin32Platform * core = new CoreWin32Platform();
 		core->CreateSingletons();
-		core->CreateWin32Window(handle);
-		core->Run();
-		core->ReleaseSingletons();
-#ifdef ENABLE_MEMORY_MANAGER
-		if (DAVA::MemoryManager::Instance() != 0)
+		bool windowCreated = core->CreateWin32Window(handle);
+		if(windowCreated)
 		{
-			DAVA::MemoryManager::Instance()->FinalLog();
-		}
+			core->Run();
+			core->ReleaseSingletons();
+#ifdef ENABLE_MEMORY_MANAGER
+			if (DAVA::MemoryManager::Instance() != 0)
+			{
+				DAVA::MemoryManager::Instance()->FinalLog();
+			}
 #endif
+		}
+
+		CloseHandle(core->hMutex);
 		return 0;
 	
 	}
@@ -113,8 +119,25 @@ namespace DAVA
 	
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void CoreWin32Platform::CreateWin32Window(HINSTANCE hInstance)
+	bool CoreWin32Platform::CreateWin32Window(HINSTANCE hInstance)
 	{	
+		//single instance check
+		TCHAR fileName[MAX_PATH];
+		GetModuleFileName(NULL, fileName, MAX_PATH);
+		fileName[MAX_PATH-1] = 0; //string can be not null-terminated on winXP
+		for(int32 i = 0; i < MAX_PATH; ++i)
+		{
+			if(fileName[i] == L'\\') //symbol \ is not allowed in CreateMutex mutex name
+			{
+				fileName[i] = ' ';
+			}
+		}
+		hMutex = CreateMutex(NULL, FALSE, fileName);
+		if(ERROR_ALREADY_EXISTS == GetLastError())
+		{
+			return false;
+		}
+
 		windowedMode = DisplayMode(800, 600, 16, 0);
 		fullscreenMode = DisplayMode(800, 600, 16, 0);
 		currentMode = windowedMode;
@@ -163,8 +186,8 @@ namespace DAVA
 		int32 realWidth = clientSize.right - clientSize.left;
 		int32 realHeight = clientSize.bottom - clientSize.top;
 
-		int32 windowLeft = (GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
-		int32 windowTop = (GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
+		int32 windowLeft = -10000;//(GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
+		int32 windowTop = -10000;//(GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
 
 		if (isFullscreen)
 		{
@@ -236,6 +259,8 @@ namespace DAVA
 		RenderManager::Instance()->Init(currentMode.width, currentMode.height);
 		UIControlSystem::Instance()->SetInputScreenAreaSize(currentMode.width, currentMode.height);
 		Core::Instance()->SetPhysicalScreenSize(currentMode.width, currentMode.height);
+
+		return true;
 	}
 
 	void CoreWin32Platform::Run()

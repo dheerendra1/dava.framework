@@ -125,8 +125,8 @@ b2_int32 b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
 	{
 		b2Assert(tileMap);
 		b2Body *b = ((b2FixtureProxy*) userData)->fixture->GetBody();
-		b2_int32 x = floor((b->GetPosition().x - mapLocation.x) / tileSize.x);
-		b2_int32 y = floor((b->GetPosition().y - mapLocation.y) / tileSize.y);
+		b2_int32 x = (b2_int32)floor((b->GetPosition().x - mapLocation.x) / tileSize.x);
+		b2_int32 y = (b2_int32)floor((b->GetPosition().y - mapLocation.y) / tileSize.y);
 		
 		b2_int32 mi = x + y * mapWidth;
 		(*tileMap)[mi] = proxyId;
@@ -151,8 +151,8 @@ void b2DynamicTree::DestroyProxy(b2_int32 proxyId)
 	{
 		b2Assert(tileMap);
 		b2Body *b = ((b2FixtureProxy*)GetUserData(proxyId))->fixture->GetBody();
-		b2_int32 x = floor((b->GetPosition().x - mapLocation.x) / tileSize.x);
-		b2_int32 y = floor((b->GetPosition().y - mapLocation.y) / tileSize.y);
+		b2_int32 x = (b2_int32)floor((b->GetPosition().x - mapLocation.x) / tileSize.x);
+		b2_int32 y = (b2_int32)floor((b->GetPosition().y - mapLocation.y) / tileSize.y);
 		
 		b2_int32 mi = x + y * mapWidth;
 		(*tileMap)[mi] = -1;

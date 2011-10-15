@@ -89,7 +89,6 @@ void UIStaticText::SetFittingOption(int32 fittingType)
 	PrepareSprite();
 }
 
-
 void UIStaticText::SetFont(Font * _font)
 {
 	textBlock->SetRectSize(size);

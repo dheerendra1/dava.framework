@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include <wchar.h>
 #include "ColladaTexture.h"
+#include "FileSystem/Logger.h"
+#include <Magick++.h>
+#include "Render/Image.h"
 
 ///*
 // INCLUDE DevIL
@@ -37,7 +40,7 @@ ColladaTexture::ColladaTexture(FCDImage * _image)
 	//GL_MAX_TEXTURE_SIZE.
 
 	// initializate some variables
-	hasAlphaChannel = false;
+	hasOpacity = false;
 
 	wchar_t orig[512];
 	const size_t newsize = 256;
@@ -56,6 +59,93 @@ ColladaTexture::ColladaTexture(FCDImage * _image)
 	wcsnrtombs( nstring, &origTmp, 512, 256, NULL);
 #endif
 	texturePathName =  nstring;
+    
+    String fileName = nstring;
+    
+    Image * image = Image::CreateFromFile(fileName);
+    if (image)
+    {
+        bool opacityFound = false;
+        
+        int32 height = image->GetHeight();
+        int32 width = image->GetWidth();
+
+        if (image->GetPixelFormat() == Image::FORMAT_RGBA8888)
+        {
+            for (int32 y = 0; y < height; ++y)
+            {
+                for (int32 x = 0; x < width; ++x)
+                {
+                    
+                    if (image->GetData()[(y * width + x) * 4 + 3] != 255)
+                    {
+                        opacityFound = true;
+                        break;
+                    }
+                }
+                if (opacityFound)break;
+            }
+            
+        }
+        Logger::Debug("Image opened: %s - %d x %d - opacity: %s", fileName.c_str(), width, height, (opacityFound) ? ("yes") : ("no"));        
+        
+        SafeRelease(image);
+        hasOpacity = opacityFound;
+    }
+    
+ 	/*try 
+	{
+        std::vector<Magick::Image> layers;
+		Magick::readImages(&layers, fileName);
+		
+		if (layers.size() != 1)
+		{
+			Logger::Error("Number of layers is wrong: %s", fileName.c_str());
+		}
+        
+        Magick::Image & magickImage = layers[0];
+        Magick::Geometry geo = magickImage.size();
+        //magickImage.magick("RGBA");
+		magickImage.modifyImage();
+        
+        bool opacityFound = false;
+        if (magickImage.type() == Magick::TrueColorMatteType)
+        {  
+//        magickImage.type(Magick::TrueColorMatteType);
+            Magick::PixelPacket *pixelCache = magickImage.getPixels(0, 0, geo.width(), geo.height());
+
+            
+            int32 height = geo.height();
+            int32 width = geo.width();
+            
+            int32 size = sizeof(pixelCache[0].opacity);
+            int32 opaqueValue = 255;
+            if (size == 2)opaqueValue = 65535;
+            
+            for (int32 y = 0; y < height; ++y)
+            {
+                for (int32 x = 0; x < width; ++x)
+                {
+                    
+                    if (pixelCache[y * width + x].opacity != opaqueValue)
+                    {
+                        opacityFound = true;
+                        break;
+                    }
+                }
+                if (opacityFound)break;
+            }
+        }
+        Logger::Debug("Image opened: %s - %d x %d - opacity: %s", fileName.c_str(), geo.width(), geo.height(), (opacityFound) ? ("yes"):("no"));
+		
+	}
+	catch( Magick::Exception &error_ )
+    {
+        Logger::Error("Caught exception: %s file: %s", error_.what(), fileName.c_str());
+		//std::cout << "Caught exception: " << error_.what() << " file: "<< psdPathname << std::endl;
+    }*/
+    
+    
 //	
 //	wprintf(L"* added texture: %s", (wchar_t*)(image->GetFilename().c_str()));
 //	printf(" name: %s\n", image->GetDaeId().c_str());

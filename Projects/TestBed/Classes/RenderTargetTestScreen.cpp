@@ -75,17 +75,17 @@ void RenderTargetTestScreen::Update(float32 timeElapsed)
         Polygon2 testPoly;
         
         testPoly.AddPoint(Vector2(50, 85));
-        testPoly.AddPoint(Vector2(480 - 50, 50));
-        testPoly.AddPoint(Vector2(480.0f - 25, 320 - 85));
-        testPoly.AddPoint(Vector2(80, 320 - 50));
+        testPoly.AddPoint(Vector2(size.x - 50, 50));
+        testPoly.AddPoint(Vector2(size.x - 25, size.y - 85));
+        testPoly.AddPoint(Vector2(80, size.y - 50));
         
         Matrix3 t, invT, r;
-        t.BuildTranslation(Vector2(-240, -160));
-        invT.BuildTranslation(Vector2(240, 160));
+        t.BuildTranslation(size/-2);
+        invT.BuildTranslation(size/2);
         r.BuildRotation(DegToRad(10));
         Matrix3 res = t * r * invT;
         testPoly.Transform(res);
-        testPoly.Scale(Vector2(240, 160), 2.0f);
+        testPoly.Scale(size/2, 2.0f);
         ft->SetDuration(10.f);
         ft->SetPolygon(testPoly);
         

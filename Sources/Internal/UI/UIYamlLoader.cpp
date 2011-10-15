@@ -201,7 +201,6 @@ void UIYamlLoader::ProcessLoad(UIControl * rootControl, const String & yamlPathn
 			if (fontShadowColorNode)
 			{
 				Color color = GetColorFromYamlNode(fontShadowColorNode);
-				font->SetShadowColor(color);
 			}
             
             YamlNode * fontVerticalSpacingNode = node->Get("verticalSpacing");

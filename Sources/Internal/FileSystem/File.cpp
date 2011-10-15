@@ -70,7 +70,7 @@ File * File::CreateFromSystemPath(const String &filename, uint32 attributes)
 		if (pos == 0)
 		{
 			String relfilename = filenamecpp.substr(item.attachPath.length());
-			uint32 size = item.archive->LoadResource(relfilename, 0);
+			int32 size = item.archive->LoadResource(relfilename, 0);
 			if ( size == -1 )
 			{
 				return 0;
@@ -242,7 +242,7 @@ bool File::WriteLine(const String & string)
 {
 	uint32 written = 0;
 	const char * str = string.c_str();
-	char * endLine = "\r\n";
+	const char * endLine = "\r\n";
 	uint32 endLength = strlen(endLine);
 	uint32 strLength = string.length();
 
