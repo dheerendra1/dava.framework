@@ -64,7 +64,7 @@ namespace DAVA
 		b2Fixture* AddFixture(const b2FixtureDef &fixtureDef);
 		b2Fixture* AddFixture(const b2Shape &shape, float32 density = 0);//density is 0 for static bodies
 		
-		inline b2Body *GetBox2DBody()
+		inline b2Body *GetBox2DBody() const
 		{
 			return box2DBody;
 		}

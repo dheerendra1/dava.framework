@@ -101,24 +101,22 @@ void Box2DGameObjectManager::EnableDebugDraw()
 void Box2DGameObjectManager::Update(float32 timeElapsed)
 {
 	currentTimeDelta += timeElapsed;
-	while (currentTimeDelta >= stepTimeDelta) 
+	while(currentTimeDelta >= stepTimeDelta) 
 	{
 		// Instruct the world to perform a single step of simulation. It is
 		// generally best to keep the time step and iterations fixed.
 		box2DWorld->Step(stepTimeDelta, velocityIterations, positionIterations);
-		box2DWorld->ClearForces();
+		//box2DWorld->ClearForces(); it's done by default after Step()
 		
-		
-		for (b2Body* b = box2DWorld->GetBodyList(); b; b = b->GetNext())
+		for(b2Body* b = box2DWorld->GetBodyList(); b; b = b->GetNext())
 		{
 			if(!b->IsTiled()) 
 			{
-				GameObject * gameObject = (GameObject*)b->GetUserData();
-				if (gameObject != NULL)
+				GameObject *gameObject = (GameObject*) b->GetUserData();
+				if(gameObject != NULL)
 				{
 					gameObject->SetPosition(VectorBox2DToGameManager(b->GetPosition()));
-					gameObject->SetAngle(-b->GetAngle());
-					
+					gameObject->SetAngle(-b->GetAngle());					
 				}
 			}
 		}

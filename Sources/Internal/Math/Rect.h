@@ -34,7 +34,6 @@
 
 namespace DAVA
 {
-	
 /**	
 	\ingroup math
 	\brief Rect in 2D space. This class is used for all rectangles along all SDK subsystems.
@@ -74,8 +73,6 @@ struct Rect
 	inline Rect 	operator - (const Vector2 & Point) const;
 };
 
-
-
 inline Rect::Rect()
 {
 	x = y = dx = dy = 0;
@@ -96,6 +93,14 @@ inline Rect::Rect(const Rect & rect)
 	dx = rect.dx;
 	dy = rect.dy;
 };
+
+inline Rect::Rect( const Vector2 & point, const Vector2 & size )
+{
+    x = point.x;
+    y = point.y;
+    dx = size.x;
+    dy = size.y;
+}
 
 inline bool Rect::PointInside(const Vector2 & point) const
 {	
@@ -220,8 +225,5 @@ inline Rect Rect::operator - (const Vector2 & pt) const
 	return Rect( x - pt.x, y - pt.y, dx, dy);
 }
 
-
 }; // end of namespace DAVA
-
-
 #endif // __DAVAENGINE_MATH2DBASE_H__
