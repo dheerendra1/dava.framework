@@ -869,7 +869,7 @@
 		0867D691FE84028FC02AAC07 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				FEF4D37C12C91A29004B850E /* External Dependencies */,
+				FEF4D38112C91A3A004B850E /* Box2D_iPhone.xcodeproj */,
 				FECFB1D912E5904400C71562 /* External */,
 				FECFB32D12E5904400C71562 /* Internal */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
@@ -1507,14 +1507,6 @@
 			path = Effects;
 			sourceTree = "<group>";
 		};
-		FEF4D37C12C91A29004B850E /* External Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				FEF4D38112C91A3A004B850E /* Box2D_iPhone.xcodeproj */,
-			);
-			name = "External Dependencies";
-			sourceTree = "<group>";
-		};
 		FEF4D38212C91A3A004B850E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2041,7 +2033,6 @@
 				GCC_WARN_PEDANTIC = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -2068,7 +2059,6 @@
 				GCC_WARN_PEDANTIC = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -2087,7 +2077,7 @@
 					DAVA_DEBUG,
 				);
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -2101,7 +2091,6 @@
 					./../../Libs/libpng/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = ./../../Libs/libpng/lib;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -2128,7 +2117,7 @@
 					FT2_BUILD_LIBRARY,
 				);
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -2142,7 +2131,6 @@
 					./../../Libs/libpng/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = ./../../Libs/libpng/lib;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -2168,7 +2156,7 @@
 					FT2_BUILD_LIBRARY,
 				);
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -2182,7 +2170,6 @@
 					./../../Libs/libpng/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = ./../../Libs/libpng/lib;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -2218,7 +2205,6 @@
 				GCC_WARN_PEDANTIC = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -2235,7 +2221,7 @@
 					FT2_BUILD_LIBRARY,
 				);
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_PEDANTIC = NO;
@@ -2249,7 +2235,6 @@
 					./../../Libs/libpng/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
-				LIBRARY_SEARCH_PATHS = ./../../Libs/libpng/lib;
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -2285,12 +2270,10 @@
 				GCC_WARN_PEDANTIC = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Tools/LibPNG/LibPNG/build/Debug-iphoneos\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Framework;
-				VALID_ARCHS = armv6;
 			};
 			name = Distribution;
 		};

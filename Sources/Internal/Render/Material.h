@@ -68,7 +68,7 @@ public:
 	float	indexOfRefraction;
 
 	Texture	* diffuseTexture;   
-    bool    hasOpacity;         // require sorting
+    uint8    hasOpacity;         // require sorting
     
 	char	* reflectiveTexture;
 
