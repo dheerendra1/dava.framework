@@ -321,6 +321,7 @@ bool SceneFile::ReadMaterial()
 	mat->transparent = materialDef.transparent;
     mat->hasOpacity = materialDef.hasOpacity;
 	
+    
 	scene->AddMaterial(mat);
 	SafeRelease(mat);
 

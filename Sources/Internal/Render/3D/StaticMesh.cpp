@@ -138,7 +138,7 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
         {
             //RenderManager::Instance()->EnableBlending(true);
             //RenderManager::Instance()->SetBlendMode(BLEND_ONE, BLEND_ONE_MINUS_SRC_ALPHA);
-            glAlphaFunc ( GL_GREATER, 0.5 );
+            glAlphaFunc ( GL_GREATER, 0.5f);
             glEnable ( GL_ALPHA_TEST ) ;
             glDisable( GL_CULL_FACE );
         }else
