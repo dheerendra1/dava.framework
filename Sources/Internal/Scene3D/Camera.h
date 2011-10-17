@@ -122,7 +122,6 @@ protected:
     
     
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
-
 	float32 xmin, xmax, ymin, ymax, znear, zfar, aspect, fovy;
 	bool ortho;
 		

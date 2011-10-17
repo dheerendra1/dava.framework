@@ -20,7 +20,7 @@ public:
 	FCDImage  * image;
 
 	GLuint		textureId;
-	bool		hasAlphaChannel;
+	bool		hasOpacity;
 	
 	fstring texturePathName;
 };

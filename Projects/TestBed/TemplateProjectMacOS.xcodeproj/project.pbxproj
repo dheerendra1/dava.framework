@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		47A1423A12CBD3EC003E267E /* StaticTextScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47A1423812CBD3EC003E267E /* StaticTextScreen.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		EAA3DF0C1446FA3B009132AA /* LandscapeTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAA3DF0A1446FA3B009132AA /* LandscapeTestScreen.cpp */; };
 		FE044F75140EEC6D002A6D27 /* ImageUsageScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F73140EEC6D002A6D27 /* ImageUsageScreen.cpp */; };
 		FE0D6C52128AE27A00ECAE3B /* GameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */; };
 		FE0D6C58128AE36300ECAE3B /* SpritePerfScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0D6C56128AE36300ECAE3B /* SpritePerfScreen.cpp */; };
@@ -62,6 +63,8 @@
 		47A1423812CBD3EC003E267E /* StaticTextScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StaticTextScreen.cpp; path = Classes/StaticTextScreen.cpp; sourceTree = "<group>"; };
 		47A1423912CBD3EC003E267E /* StaticTextScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StaticTextScreen.h; path = Classes/StaticTextScreen.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAA3DF0A1446FA3B009132AA /* LandscapeTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LandscapeTestScreen.cpp; path = Classes/LandscapeTestScreen.cpp; sourceTree = "<group>"; };
+		EAA3DF0B1446FA3B009132AA /* LandscapeTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LandscapeTestScreen.h; path = Classes/LandscapeTestScreen.h; sourceTree = "<group>"; };
 		FE044F73140EEC6D002A6D27 /* ImageUsageScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageUsageScreen.cpp; path = Classes/ImageUsageScreen.cpp; sourceTree = "<group>"; };
 		FE044F74140EEC6D002A6D27 /* ImageUsageScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageUsageScreen.h; path = Classes/ImageUsageScreen.h; sourceTree = "<group>"; };
 		FE0D6C50128AE27A00ECAE3B /* GameObjectTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameObjectTestScreen.cpp; path = Classes/GameObjectTestScreen.cpp; sourceTree = "<group>"; };
@@ -196,6 +199,8 @@
 		FE445A961153C27800F5EFD6 /* User classes */ = {
 			isa = PBXGroup;
 			children = (
+				EAA3DF0A1446FA3B009132AA /* LandscapeTestScreen.cpp */,
+				EAA3DF0B1446FA3B009132AA /* LandscapeTestScreen.h */,
 				FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */,
 				FEC3CA701283557F00541220 /* FrameworkMain.h */,
 				FEC3CA711283557F00541220 /* GameCore.cpp */,
@@ -374,6 +379,7 @@
 				FEF4E25F12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp in Sources */,
 				FEA02A8912E39D8900935314 /* CollisionTestScreen.cpp in Sources */,
 				FE044F75140EEC6D002A6D27 /* ImageUsageScreen.cpp in Sources */,
+				EAA3DF0C1446FA3B009132AA /* LandscapeTestScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

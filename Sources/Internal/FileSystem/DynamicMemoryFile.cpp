@@ -110,7 +110,7 @@ uint32 DynamicMemoryFile::Read(void * pointerToData, uint32 dataSize)
 		return 0;
 	}
 	
-	uint32 realReadSize = dataSize;
+	int32 realReadSize = dataSize;
 	int32 size = data.size();
 	if (currentPtr + realReadSize > size)
 	{
@@ -139,17 +139,17 @@ uint32 DynamicMemoryFile::GetSize()
 
 bool DynamicMemoryFile::Seek(int32 position, uint32 seekType)
 {
-	int64 pos = 0;
+	int32 pos = 0;
 	switch(seekType)
 	{
 		case SEEK_FROM_START:
-			pos = (int64)position;
+			pos = position;
 			break;
 		case SEEK_FROM_CURRENT:
-			pos = (int64)GetPos() + (int64)position;
+			pos = GetPos() + position;
 			break;
 		case SEEK_FROM_END:
-			pos = (int64)GetSize() - 1 + (int64)position;
+			pos = GetSize() - 1 + position;
 			break;
 		default:
 			return false;
@@ -157,7 +157,7 @@ bool DynamicMemoryFile::Seek(int32 position, uint32 seekType)
 	
 	
 	if (pos < 0)return false;
-	if (pos >= GetSize())return false;
+	if (pos >= (int32)GetSize())return false;
 	
 	currentPtr = pos;
 	return true;
@@ -166,7 +166,7 @@ bool DynamicMemoryFile::Seek(int32 position, uint32 seekType)
 
 bool DynamicMemoryFile::IsEof()
 {
-	return currentPtr >= data.size();
+	return currentPtr >= (int32)data.size();
 }
 	
 };

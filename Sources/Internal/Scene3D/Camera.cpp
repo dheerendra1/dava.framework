@@ -100,13 +100,7 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 {
     flags |= REQUIRE_REBUILD_PROJECTION;
 
-    if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT))
-    {
-        this->aspect = 1.0f / aspect;
-	}else
-    {
-        this->aspect = aspect;
-    }
+    this->aspect = aspect;
     
     this->fovy = fovy;
 	this->znear = znear;
@@ -123,8 +117,14 @@ void Camera::Recalc()
 	ymax = znear * tanf(fovy* PI / 360.0f);
 	ymin = -ymax;
 	
-	xmin = ymin * aspect;
-	xmax = ymax * aspect;
+    float32 realAspect = aspect;
+    if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT))
+    {
+        realAspect = 1.0f / realAspect;
+	}
+    
+	xmin = ymin * realAspect;
+	xmax = ymax * realAspect;
 }
 
 Vector2 Camera::GetOnScreenPosition(const Vector3 &forPoint)

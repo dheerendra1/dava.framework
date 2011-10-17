@@ -42,7 +42,17 @@ namespace DAVA
 class Material : public SceneNode
 {
 public:
-	Material(Scene * sc) : SceneNode(sc) {};
+
+/*
+    enum
+    {
+        MATERIAL_TEXTURE, 
+        MATERIAL_LIGHTMAPPED_TEXTURE,   
+        MATERIAL_NORMAL_MAPPED, 
+        MATERIAL_VERTEX_LIGHTING, // flag
+    };
+*/
+    Material(Scene * sc) : SceneNode(sc) {};
 
 	Vector4 ambient;
 	Vector4 diffuse;
@@ -57,7 +67,9 @@ public:
 	float	transparency; 
 	float	indexOfRefraction;
 
-	Texture	* diffuseTexture;
+	Texture	* diffuseTexture;   
+    bool    hasOpacity;         // require sorting
+    
 	char	* reflectiveTexture;
 
 	char	* shaderName;

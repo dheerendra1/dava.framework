@@ -66,15 +66,8 @@ public:
 	static int32 GetDPI();
 	
 	virtual void SetColor(float32 r, float32 g, float32 b, float32 a);
-	virtual void SetShadowColor(float32 r, float32 g, float32 b, float32 a);
 	virtual void SetColor(const Color & color);
 	virtual const Color & GetColor() const;
-	virtual void SetShadowColor(const Color & color);
-	virtual const Color & GetShadowColor() const;
-	
-	virtual void SetShadowOffset(const Vector2 & offset);
-	virtual void SetShadowOffset(float32 x, float32 y);
-	virtual const Vector2 & GetShadowOffset() const;
 	
 	virtual void SetSize(float32 size);
 	virtual float32	GetSize();
@@ -96,7 +89,7 @@ public:
 
 	// functions to overload rendering
 	virtual bool IsTextSupportsSoftwareRendering() { return false; };
-	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, const WideString & str, bool contentScaleIncluded = false) { return  Size2i(0, 0); };
+	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString & str, bool contentScaleIncluded = false) { return  Size2i(0, 0); };
 	
 	virtual bool IsTextSupportsHardwareRendering() { return false; };
 	virtual Size2i DrawString(float32 offsetX, float32 offsetY, const WideString & str, int32 justifyWidth = 0) { return Size2i(0, 0);};
@@ -108,8 +101,6 @@ protected:
 	
 	float32	size;
 	Color color;
-	Color shadowColor;
-	Vector2	shadowOffset;
 	int32 verticalSpacing;
 	
 	eFontType fontType;

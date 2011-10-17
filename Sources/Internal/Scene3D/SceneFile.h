@@ -80,7 +80,8 @@ public:
 	Scene *		scene;
 	SkeletonNode * currentSkeletonNode;
 	bool		debugLogEnabled;
-	
+
+
 	struct Header
 	{
 		Header();
@@ -97,6 +98,8 @@ public:
 
 		uint32	nodeAnimationsCount;
 	};
+    
+    Header  header;
 
 	class ObjectDef
 	{
@@ -108,7 +111,7 @@ public:
 	class TextureDef : public ObjectDef
 	{
 	public:
-		
+		uint8   hasOpacity;
 	};
 
 	class MaterialDef : public ObjectDef
@@ -130,6 +133,8 @@ public:
 		uint32	diffuseTextureId;	
 		char8	diffuseTexture[512];
 		char8	reflectiveTexture[512];
+        
+        uint8   hasOpacity;                 // means material has opacity and have to be sorted from back to front
 	};
 
 	struct LightDef : ObjectDef

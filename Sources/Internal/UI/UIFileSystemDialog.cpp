@@ -298,8 +298,8 @@ void UIFileSystemDialog::RefreshList()
     fileUnits.clear();
     int32 cnt = files->GetCount();
     int32 outCnt = 0;
-    int32 p = currentDir.npos;
-
+    int32 p;
+    
     while (true) 
     {
         p = currentDir.rfind("/", p);

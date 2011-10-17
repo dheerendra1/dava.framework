@@ -39,6 +39,7 @@
 #include "Scene3D/Camera.h"
 #include "Scene3D/SceneNodeAnimationList.h"
 #include "Utils/StringFormat.h"
+#include "FileSystem/FileSystem.h"
 
 namespace DAVA
 {
@@ -61,7 +62,7 @@ SceneFile::Header::Header()
 	descriptor[0] = 'D'; descriptor[1] = 'V';
 	descriptor[2] = 'S'; descriptor[3] = 'C';
 	
-	version = 100;
+	version = 101;
 	textureCount = 0;			
 	materialCount = 0;
 	staticMeshCount = 0;
@@ -105,7 +106,6 @@ bool SceneFile::LoadScene( const char * filename, Scene * _scene, bool relToBund
 
 	Logger::Debug("scene start load: path = %s\n", scenePath.c_str());
 	
-	SceneFile::Header header;
 	sceneFP->Read(&header, sizeof(SceneFile::Header));
 	
 	if (debugLogEnabled)Logger::Debug("File version: %d\n", header.version);
@@ -216,6 +216,12 @@ bool SceneFile::ReadTexture()
 	}
 
 	tname = scenePath + tname;
+    
+    uint8 hasOpacity = false;
+    if (header.version == 101)
+    {
+        sceneFP->Read(&hasOpacity, sizeof(hasOpacity));
+    }
 	
 	DAVA::Texture * texture = DAVA::Texture::CreateFromFile(tname);//textureDef.name);//0;
 	if (texture)
@@ -233,29 +239,27 @@ bool SceneFile::ReadTexture()
 		texture->SetWrapMode(Texture::WRAP_REPEAT, Texture::WRAP_REPEAT);
 //		texture->SetWrapMode(Texture::WRAP_CLAMP, Texture::WRAP_CLAMP);
 		scene->AddTexture(texture);
-        SafeRelease(texture);
 	}else
 	{
 		Logger::Debug("*** error reading texture: %s\n", textureDef.name);
-        uint8 * textureData = new uint8[64 * 64 * 4]; 
-        for (int32 k = 0; k < 64 * 64 * 4; k += 4)
+        uint8 * textureData = new uint8[8 * 8 * 4]; 
+        for (int32 k = 0; k < 8 * 8 * 4; k += 4)
         {
             textureData[k + 0] = 0xFF; 
             textureData[k + 1] = 0x00; 
             textureData[k + 2] = 0xFF; 
             textureData[k + 3] = 0xFF; 
         }
-        Texture * tex = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 64, 64);
-        scene->AddTexture(tex);
-        tex->GenerateMipmaps();
-        SafeRelease(tex);
+        texture = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 8, 8);
+        scene->AddTexture(texture);
+        texture->GenerateMipmaps();
 	}
 	
-	if (debugLogEnabled)Logger::Debug("- Texture: %s %d\n", textureDef.name, textureDef.id);
+	if (debugLogEnabled)Logger::Debug("- Texture: %s %d hasOpacity: %s %s\n", textureDef.name, textureDef.id, (hasOpacity) ? ("yes") : ("no"), Texture::GetPixelFormatString(texture->format));
     
     if (!mipMapsEnabled)
         Texture::DisableMipmapGeneration();
-    
+    SafeRelease(texture);
 	return true;
 }
 	
@@ -276,20 +280,31 @@ bool SceneFile::ReadMaterial()
 	sceneFP->Read(&materialDef.specular, sizeof(materialDef.specular));
 	sceneFP->Read(&materialDef.transparency, sizeof(materialDef.transparency));
 	sceneFP->Read(&materialDef.transparent, sizeof(materialDef.transparent));
+    materialDef.hasOpacity = false;
+    if (header.version == 101)
+        sceneFP->Read(&materialDef.hasOpacity, sizeof(materialDef.hasOpacity));
 
 	Material * mat = new Material(scene);
 
 	mat->ambient = materialDef.ambient;
 	mat->diffuse = materialDef.diffuse;
 	
-	if (materialDef.diffuseTextureId < scene->GetTextureCount())
+	if ((int32)materialDef.diffuseTextureId < scene->GetTextureCount())
 	{	
 		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 
 	{
 		mat->diffuseTexture = 0;
 	}
-	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %d tp: 0x%08x\n", materialDef.name, materialDef.id, materialDef.diffuseTextureId, mat->diffuseTexture);
+    
+    String diffuseTextureName = "no texture"; 
+    if (mat->diffuseTexture)
+    {
+        String tempPath;
+        FileSystem::SplitPath(mat->diffuseTexture->GetPathname(), tempPath, diffuseTextureName);
+    }
+    
+	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %s hasOpacity: %s\n", materialDef.name, materialDef.id, diffuseTextureName.c_str(), (materialDef.hasOpacity) ? ("yes") : ("no"));
 	
 
 	mat->emission = materialDef.emission;
@@ -304,6 +319,7 @@ bool SceneFile::ReadMaterial()
 	mat->specular = materialDef.specular;
 	mat->transparency = materialDef.transparency;
 	mat->transparent = materialDef.transparent;
+    mat->hasOpacity = materialDef.hasOpacity;
 	
 	scene->AddMaterial(mat);
 	SafeRelease(mat);

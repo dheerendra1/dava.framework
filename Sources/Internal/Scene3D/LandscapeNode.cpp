@@ -636,7 +636,7 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 
 void LandscapeNode::Draw()
 {
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
@@ -671,6 +671,8 @@ void LandscapeNode::Draw()
     {
         case RENDERING_MODE_TEXTURE:
             RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
+            if (textures[TEXTURE_TEXTURE0])
+                RenderManager::Instance()->SetTexture(textures[TEXTURE_TEXTURE0], 0);
         break;
             
         case RENDERING_MODE_DETAIL_SHADER:
@@ -711,7 +713,7 @@ void LandscapeNode::Draw()
     DrawFans();
     
     
-    glDisable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
     {

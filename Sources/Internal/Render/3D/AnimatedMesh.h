@@ -82,6 +82,9 @@ public:
 class BoneAnimation
 {
 public:
+    BoneAnimation();
+    ~BoneAnimation();
+
 	BoneAnimationKey &	GetKey(int32 bone, int32 frame);
 	const String &		GetName();
 	float32				GetFPS();

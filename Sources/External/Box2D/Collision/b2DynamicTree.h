@@ -210,10 +210,10 @@ inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
 		//added for tiles
 	if (tileMap) 
 	{//TODO: optimize it's later
-		b2_int32 minX = floor((aabb.lowerBound.x - b2_aabbExtension - mapLocation.x) / tileSize.x);
-		b2_int32 maxX = ceil((aabb.upperBound.x + b2_aabbExtension - mapLocation.x) / tileSize.x);
-		b2_int32 minY = floor((aabb.lowerBound.y - b2_aabbExtension - mapLocation.y) / tileSize.y);
-		b2_int32 maxY = ceil((aabb.upperBound.y + b2_aabbExtension - mapLocation.y) / tileSize.y);
+		b2_int32 minX = (b2_int32)floor((aabb.lowerBound.x - b2_aabbExtension - mapLocation.x) / tileSize.x);
+		b2_int32 maxX = (b2_int32)ceil((aabb.upperBound.x + b2_aabbExtension - mapLocation.x) / tileSize.x);
+		b2_int32 minY = (b2_int32)floor((aabb.lowerBound.y - b2_aabbExtension - mapLocation.y) / tileSize.y);
+		b2_int32 maxY = (b2_int32)ceil((aabb.upperBound.y + b2_aabbExtension - mapLocation.y) / tileSize.y);
 
 		
 		minX = b2Max(0, minX);

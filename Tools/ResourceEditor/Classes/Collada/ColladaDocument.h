@@ -49,6 +49,7 @@ public:
 	ColladaScene *				colladaScene;
 private:
 	FCDocument *				document; 
+    SceneFile::Header           header;
 };
 };
 

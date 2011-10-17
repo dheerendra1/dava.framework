@@ -33,7 +33,22 @@
 
 namespace DAVA 
 {
-	
+    
+BoneAnimation::BoneAnimation()
+{
+    boneCount = 0;
+    keys = 0;
+}
+
+BoneAnimation::~BoneAnimation()
+{
+    for (int32 bi = 0; bi < boneCount; ++bi)
+    {
+        SafeDeleteArray(keys[bi]);
+    }
+    SafeDeleteArray(keys);
+}
+
 BoneAnimationKey &	BoneAnimation::GetKey(int32 bone, int32 frame)
 {
 	if (frame >= frameCount)frame = frameCount - 1;
@@ -77,7 +92,6 @@ void BoneAnimation::Load(File * file, int32 _boneCount, int32 _frameCount)
 	}
 }
 
-
 const String &		BoneAnimation::GetName()
 {
 	return name;
@@ -95,7 +109,7 @@ AnimatedMesh::AnimatedMesh(Scene * _scene)
 
 AnimatedMesh::~AnimatedMesh()
 {
-	
+
 }
 	
 // structure for fast joint access
@@ -104,8 +118,7 @@ struct JointWeight
 	int32 index[4];
 	float32 weight[4];
 };
-	
-	
+
 	
 inline void BlendedMul(Vector3 * res, const Vector3 & _v, const Matrix4 & _m, float32 w)
 {

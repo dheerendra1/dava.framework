@@ -78,8 +78,6 @@ Font * GraphicsFont::Clone()
 	cloneFont->fontSprite = SafeRetain(this->fontSprite);
 
 	cloneFont->SetColor(this->GetColor());
-	cloneFont->SetShadowColor(this->GetShadowColor());
-	cloneFont->SetShadowOffset(this->GetShadowOffset());
 	cloneFont->SetVerticalSpacing(this->GetVerticalSpacing());
 	cloneFont->SetSize(this->GetSize());
 	

@@ -87,7 +87,12 @@ public:
         \returns size in bits, for example for FORMAT_RGBA8888 function will return 32.
      */
 	static int32 GetPixelFormatSize(PixelFormat format);
-	
+	/**
+        \brief Return string representation of pixel format
+        \returns string value describing pixel format
+     */
+    static const char * GetPixelFormatString(PixelFormat format);
+    
     /**
         \brief Create texture from data arrray
         This function creates texture from given format, data pointer and width + height
@@ -172,6 +177,13 @@ public:
         By default autosave is enabled for all DX9 textures. 
      */
     inline void EnableRenderTargetAutosave(bool isEnabled);
+    
+    
+    /**
+        \brief Function to receive pathname of texture object
+        \returns pathname of texture
+     */
+    inline const String & GetPathname();
 
 public:							// properties for fast access
 
@@ -228,6 +240,10 @@ inline void Texture::EnableRenderTargetAutosave(bool isEnabled)
     renderTargetAutosave = isEnabled;
 #endif 
 }
-    
+inline const String & Texture::GetPathname()
+{
+    return relativePathname;
+}
+
 };
 #endif // __DAVAENGINE_TEXTUREGLES_H__
