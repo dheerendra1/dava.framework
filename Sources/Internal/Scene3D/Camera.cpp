@@ -118,7 +118,7 @@ void Camera::Recalc()
 	ymin = -ymax;
 	
     float32 realAspect = aspect;
-    if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_LANDSCAPE_RIGHT))
+    if ((Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_PORTRAIT) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_PORTRAIT_UPSIDE_DOWN) || (Core::Instance()->GetScreenOrientation() == Core::SCREEN_ORIENTATION_TEXTURE))
     {
         realAspect = 1.0f / realAspect;
 	}
