@@ -536,6 +536,7 @@ namespace DAVA
 			0,
 			LR_DEFAULTSIZE));
 		SendMessage(hWindow, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);
+		SendMessage(hWindow, WM_SETICON, ICON_BIG, (LPARAM)smallIcon);
 	}
 
 	static Vector<DAVA::UIEvent> activeTouches;
