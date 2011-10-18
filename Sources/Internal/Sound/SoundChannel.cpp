@@ -73,7 +73,7 @@ SoundChannel::eState SoundChannel::GetState()
 
 void SoundChannel::Stop()
 {
-	if(STATE_PLAYING == state)
+	if(STATE_PLAYING == state || STATE_PAUSED == state)
 	{
 		state = STATE_FREE;
 #ifdef __DAVASOUND_AL__
