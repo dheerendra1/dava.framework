@@ -340,7 +340,8 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 
 		FT_Glyph_Get_CBox(image, FT_GLYPH_BBOX_PIXELS, &bbox);
 
-		int32 baseSize = (int32)(((float32)((faceBboxYMax-faceBboxYMin)>>6))*virtualToPhysicalFactor); 
+		float32 bboxSize = ceilf(((float32)(faceBboxYMax-faceBboxYMin))/64.f);
+		int32 baseSize = (int32)ceilf(bboxSize*virtualToPhysicalFactor); 
 		int32 multilineOffsetY = baseSize+offsetY*2;
 		if(!realDraw || (bbox.xMax>0 && bbox.yMax>0 && bbox.xMin<bufWidth && bbox.yMin < bufHeight))
 		{
@@ -354,6 +355,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 				int32 top = multilineOffsetY-bit->top;
 				int32 width = bitmap->width;
 				//int32 height = bitmap->rows;
+
 				if(charSizes)
 				{
 					if(0 == width)
@@ -385,13 +387,12 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 						for(int32 w = 0; w < realW; w++)
 						{
 							int oldPix = bitmap->buffer[h*bitmap->pitch+w];
-
 							uint8 preAlpha = (oldPix*a)>>8;
 							if(preAlpha)
 							{
 								int32 revAlpha = 256-preAlpha;
 								int32 ind = (h+top)*bufWidth + ((left)+w);
-
+								DVASSERT(ind >= 0 && ind < bufWidth*bufHeight);
 								uint8 prevA = (resultBuf[ind] & 0xf)<<4;
 								uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
 								uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
@@ -409,7 +410,6 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 									(((tempB)>>4)<<4) | 
 									((tempA)>>4)); 
 							}
-
 						}
 					}
 				}
@@ -441,7 +441,7 @@ bool FTInternalFont::IsCharAvaliable(char16 ch)
 uint32 FTInternalFont::GetFontHeight(float32 size)
 {
 	SetFTCharSize(size);
-	return ((FT_MulFix(face->bbox.yMax-face->bbox.yMin, face->size->metrics.y_scale))>>6);
+	return (uint32)ceilf((float32)((FT_MulFix(face->bbox.yMax-face->bbox.yMin, face->size->metrics.y_scale)))/64.f);
 }
 	
 void FTInternalFont::SetFTCharSize(float32 size)
