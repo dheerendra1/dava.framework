@@ -35,13 +35,13 @@ void StaticTextScreen::LoadResources()
 	Font::SetDPI(160);
 
 	Font *fnt;
-	fnt = FTFont::Create("~res:/Fonts/korinna.ttf");
+	fnt = FTFont::Create("~res:/Fonts/yikes.ttf");
 //	fnt = GraphicsFont::Create("~res:/Fonts/korinna.def", "~res:/Gfx/Fonts2/korinna");
 	fnt->SetSize(7.5f);
 //	fnt->SetSize(12);
 //	fnt->SetVerticalSpacing(-1);
 	fnt->SetColor(.82f, .81f, 0.73f, 1.0f);
-	float32 sizeX = 150;
+	float32 sizeX = 50;
 	float32 sizeY = 80;
 
     

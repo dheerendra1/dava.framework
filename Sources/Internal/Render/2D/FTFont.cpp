@@ -382,35 +382,33 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 				{
 					int32 realH = Min((int32)bitmap->rows, (int32)(bufHeight - top));
 					int32 realW = Min((int32)bitmap->width, (int32)(bufWidth - left)); 
+					int32 ind = top*bufWidth + left;
+					DVASSERT(ind >= 0);
+					int16 * writeBuf = resultBuf + ind;
+					uint8 * readBuf = bitmap->buffer;
 					for(int32 h = 0; h < realH; h++)
 					{
 						for(int32 w = 0; w < realW; w++)
 						{
-							int oldPix = bitmap->buffer[h*bitmap->pitch+w];
+							int32 oldPix = *readBuf;
 							uint8 preAlpha = (oldPix*a)>>8;
 							if(preAlpha)
 							{
-								int32 revAlpha = 256-preAlpha;
-								int32 ind = (h+top)*bufWidth + ((left)+w);
-								DVASSERT(ind >= 0 && ind < bufWidth*bufHeight);
-								uint8 prevA = (resultBuf[ind] & 0xf)<<4;
-								uint8 prevR = ((resultBuf[ind]>>12) & 0xf)<<4;
-								uint8 prevG = ((resultBuf[ind]>>8) & 0xf)<<4;
-								uint8 prevB = ((resultBuf[ind]>>4) & 0xf)<<4;
-
-								//		    source		        destination
-								//		    one			        1-srcAlpha
-								uint8 tempA = ((preAlpha)+((revAlpha*prevA)>>8));
-								uint8 tempR = ((preAlpha*r)+(revAlpha*prevR))>>8; 
-								uint8 tempG = ((preAlpha*g)+(revAlpha*prevG))>>8;
-								uint8 tempB = ((preAlpha*b)+(revAlpha*prevB))>>8;
-								resultBuf[ind] = (
-									(((tempR)>>4)<<12) |
-									(((tempG)>>4)<<8) | 
-									(((tempB)>>4)<<4) | 
-									((tempA)>>4)); 
+								uint8 tempA = preAlpha>>4;
+								uint8 tempR = (preAlpha*r)>>12; 
+								uint8 tempG = (preAlpha*g)>>12;
+								uint8 tempB = (preAlpha*b)>>12;
+								DVASSERT(writeBuf-resultBuf <= bufWidth*bufHeight);
+								*writeBuf = ((tempR<<12) | (tempG<<8) | (tempB<<4) | tempA);
 							}
+							++writeBuf;
+							++readBuf;
 						}
+						writeBuf += bufWidth-realW;
+					}
+					if(writeBuf > resultBuf + ind)
+					{
+						DVASSERT((writeBuf-resultBuf-(bufWidth-realW)) <= (bufWidth*bufHeight));
 					}
 				}
 			}
