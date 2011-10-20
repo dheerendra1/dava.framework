@@ -110,6 +110,7 @@ namespace DAVA
 		}
 		selectedBackground = background;
 		oldState = 0;
+		stateBacks[DRAW_STATE_UNPRESSED] = background;
 	}
 
 

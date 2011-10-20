@@ -408,22 +408,22 @@ void MoveTouchsToVector(NSEvent *curEvent, int touchPhase, Vector<UIEvent> *outT
 	
 	
 	//NSLog(@"key Down View");
-	unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
-	
-	if ([event modifierFlags] & NSCommandKeyMask)
-	{
-		if (c == 'f')
-		{
-			NSLog(@"[CoreMacOSPlatform] Switch screen mode");
-			if (Core::Instance()->GetScreenMode() == Core::MODE_WINDOWED)
-			{
-				Core::Instance()->SwitchScreenToMode(Core::MODE_FULLSCREEN);
-			}else 
-			{	
-				Core::Instance()->SwitchScreenToMode(Core::MODE_WINDOWED);
-			}
-		}
-	}
+//	unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
+//	
+//	if ([event modifierFlags] & NSCommandKeyMask)
+//	{
+//		if (c == 'f')
+//		{
+//			NSLog(@"[CoreMacOSPlatform] Switch screen mode");
+//			if (Core::Instance()->GetScreenMode() == Core::MODE_WINDOWED)
+//			{
+//				Core::Instance()->SwitchScreenToMode(Core::MODE_FULLSCREEN);
+//			}else 
+//			{	
+//				Core::Instance()->SwitchScreenToMode(Core::MODE_WINDOWED);
+//			}
+//		}
+//	}
 
 }	
 

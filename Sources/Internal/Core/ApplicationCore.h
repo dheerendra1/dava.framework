@@ -162,9 +162,19 @@ public:
 	 */
 	virtual void OnResume();
 
+	/**
+		\brief Called when application is going to quit.
+		Called after quit event has come from operating system. If false is returned, application will quit in normal way (all destructors are called).
+		Is true is returned, application will fast quit (no desructors are called). Fast quit is usually used to prevent crash on quit while loading transition is in progress.
+		Return false in default implementation.
+
+		\returns true for fast quit, false for normal quit
+	 */
+	virtual bool OnQuit();
+
 protected:
 	/**
-		\brief Called immediatelly after application initialized and all singletons are created. 
+		\brief Called immediately after application initialized and all singletons are created. 
 		This function is second initialization function of your application. First initialization function is FrameworkDidLaunched and it actually allow you to set 
 		some important things like your application resolution, set available graphics resources folders and do preliminary initialization.
 		This function is more related to your game or application logic. 
@@ -196,7 +206,7 @@ protected:
 		Framework can help you to find memory leaks but to use memory leak detection you should release all objects carefully. 
 		
 		We do not recommend to save game progress in this function, because on some platforms it can create problems. 
-		Our recomendation to perform in-game progress saves during the game immediatelly after changes that are important. 
+		Our recommendation to perform in-game progress saves during the game immediately after changes that are important. 
 	 */
 	virtual void OnAppFinished() = 0;
 

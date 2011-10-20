@@ -1305,6 +1305,7 @@
 				FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */,
 				FECFC17112E87E3000C71562 /* D3D9Helpers.cpp */,
 				FECFC17212E87E3000C71562 /* D3D9Helpers.h */,
+				FECFC17E12E87E3000C71562 /* OGLHelpers.h */,
 				FECFC17312E87E3000C71562 /* DynamicIndexBuffer.cpp */,
 				FECFC17412E87E3000C71562 /* DynamicIndexBuffer.h */,
 				FECFC17512E87E3000C71562 /* DynamicVertexBuffer.cpp */,
@@ -1318,7 +1319,6 @@
 				FECFC17B12E87E3000C71562 /* LibPngHelpers.h */,
 				FECFC17C12E87E3000C71562 /* Light.h */,
 				FECFC17D12E87E3000C71562 /* Material.h */,
-				FECFC17E12E87E3000C71562 /* OGLHelpers.h */,
 				FECFC17F12E87E3000C71562 /* RenderBase.h */,
 				FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */,
 				FECFC18212E87E3000C71562 /* RenderGrayscaleEffect.cpp */,
@@ -2108,7 +2108,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
-				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = (
 					./../../Sources/Internal,
 					./../../Sources/External,
@@ -2124,7 +2123,6 @@
 					"\"$(SRCROOT)/../../Libs/feetype/lib\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Framework;
 			};
 			name = Debug;
@@ -2142,7 +2140,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
-				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = (
 					./../../Sources/Internal,
 					./../../Sources/External,
@@ -2173,7 +2170,7 @@
 					FT2_BUILD_LIBRARY,
 					DAVA_DEBUG,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
@@ -2206,7 +2203,7 @@
 					DDARWIN_NO_CARBON,
 					FT2_BUILD_LIBRARY,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
