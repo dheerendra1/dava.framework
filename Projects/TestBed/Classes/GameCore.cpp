@@ -95,7 +95,7 @@ void GameCore::OnAppStarted()
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
     UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_STATIC_TEXT);
+	UIScreenManager::Instance()->SetFirst(SCREEN_LANDSCAPE_TEST);
 	cursor = 0;
 }
 

@@ -38,7 +38,7 @@ void LandscapeTestScreen::LoadResources()
     
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
-    scene3dView->SetDebugDraw(true);
+    //scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
@@ -57,7 +57,7 @@ void LandscapeTestScreen::LoadResources()
     AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-#if 0
+#if 1
     node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
     
     Texture::EnableMipmapGeneration();
@@ -77,6 +77,12 @@ void LandscapeTestScreen::LoadResources()
     node->SetName("landscapeNode");
     scene->AddNode(node);
     SafeRelease(node);
+    
+    SceneFile * file = new SceneFile();
+    file->SetDebugLog(true);
+    file->LoadScene("~res:/Scenes/level0/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level0/scene.sce"));
+    SafeRelease(file);
 
 	inTouch = false;
     

@@ -136,15 +136,18 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
         
         if (material->hasOpacity)
         {
+            RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST);
+            RenderManager::Instance()->EnableCulling(false);
             //RenderManager::Instance()->EnableBlending(true);
             //RenderManager::Instance()->SetBlendMode(BLEND_ONE, BLEND_ONE_MINUS_SRC_ALPHA);
-            glAlphaFunc ( GL_GREATER, 0.5f);
-            glEnable ( GL_ALPHA_TEST ) ;
-            glDisable( GL_CULL_FACE );
-        }else
-        {
-            RenderManager::Instance()->EnableBlending(false);
+            //glAlphaFunc ( GL_GREATER, 0.5f);
+            //glEnable ( GL_ALPHA_TEST ) ;
+            //glDisable( GL_CULL_FACE );
         }
+//        else
+//        {
+//            RenderManager::Instance()->EnableBlending(false);
+//        }
 		
 		//glEnable(GL_COLOR_MATERIAL);
 #if 0
@@ -182,13 +185,13 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 	//RenderManager::Instance()->DrawArrays(GL_TRIANGLES, );
 	//RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
+    RenderManager::Instance()->EnableCulling(true);
     
-    
-    if (material && material->hasOpacity)
-    {
-        glDisable ( GL_ALPHA_TEST ) ;
-        glEnable(GL_CULL_FACE);
-    }
+//    if (material && material->hasOpacity)
+//    {
+//        glDisable ( GL_ALPHA_TEST ) ;
+//        glEnable(GL_CULL_FACE);
+//    }
 #endif
 }
 

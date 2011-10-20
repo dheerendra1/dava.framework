@@ -33,6 +33,7 @@
 #include "Render/RenderManager.h"
 #include "FileSystem/YamlParser.h"
 #include "FileSystem/FileSystem.h"
+#include "Platform/SystemTimer.h"
 
 namespace DAVA 
 {
@@ -41,6 +42,8 @@ GLuint Shader::activeProgram = 0;
 
 Shader::Shader()
 {
+    DVASSERT(RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0 || RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL);
+    
     vertexShader = 0;
     fragmentShader = 0;
     program = 0;
@@ -55,6 +58,9 @@ Shader::Shader()
     
     for (int32 ki = 0; ki < VERTEX_FORMAT_STREAM_MAX_COUNT; ++ki)
          vertexFormatAttribIndeces[ki] = -1;
+
+    vertexShaderBytes = 0;
+    fragmentShaderBytes = 0;
 }
 
 String VertexTypeStringFromEnum(GLenum type); // Fucking XCode 4 analyzer
@@ -104,11 +110,16 @@ int32 Shader::GetAttributeIndexByName(const char * name)
     return -1;
 }
     
+void Shader::SetDefines(const String & _defines)
+{
+    defines = _defines;
+}
+    
 bool Shader::LoadFromYaml(const String & pathname)
 {
+    uint64 shaderLoadTime = SystemTimer::Instance()->AbsoluteMS();
     String pathOnly, shaderFilename;
     FileSystem::SplitPath(pathname, pathOnly, shaderFilename);
-    
     
     YamlParser * parser = YamlParser::Create(pathname);
     if (!parser)
@@ -149,34 +160,51 @@ bool Shader::LoadFromYaml(const String & pathname)
         return false;
     }
     
-    
     String vertexShaderPath = glslVertexNode->AsString();
-    uint32 fileSize;
-    uint8 * bytes = FileSystem::Instance()->ReadFileContents(pathOnly + vertexShaderPath, fileSize);
-    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, fileSize, (GLchar*)bytes))
-    {
-        Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
-        SafeRelease(parser);
-        return false;
-    }
-    SafeDeleteArray(bytes);
+    vertexShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + vertexShaderPath, vertexShaderSize);
     
     String fragmentShaderPath = glslFragmentNode->AsString();
-    uint8 * fbytes = FileSystem::Instance()->ReadFileContents(pathOnly + fragmentShaderPath, fileSize);
-    if (!CompileShader(&fragmentShader, GL_FRAGMENT_SHADER, fileSize, (GLchar*)fbytes))
+    fragmentShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + fragmentShaderPath, fragmentShaderSize);
+
+    SafeRelease(parser);
+ 
+    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderSize, (GLchar*)vertexShaderBytes))
     {
-        Logger::Error("Failed to compile fragment shader: %s", fragmentShaderPath.c_str());
-        SafeRelease(parser);
+        Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
         return false;
     }
-    SafeDeleteArray(fbytes);
     
+    if (!CompileShader(&fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderSize, (GLchar*)fragmentShaderBytes))
+    {
+        Logger::Error("Failed to compile fragment shader: %s", fragmentShaderPath.c_str());
+        return false;
+    }
+   
+    if (!Recompile())
+    {
+        return false;
+    }
+   
+    shaderLoadTime = SystemTimer::Instance()->AbsoluteMS() - shaderLoadTime;
     
-    SafeRelease(parser);
-
+    Logger::Debug("shader loaded:%s load-compile-time: %lld ms", pathname.c_str(), shaderLoadTime);
+    return true;
+}
     
+Shader::~Shader()
+{
+    SafeDeleteArray(uniformNames);
+    SafeDeleteArray(uniformIDs);
+    SafeDeleteArray(uniformLocations);
+    SafeDeleteArray(vertexShaderBytes);
+    SafeDeleteArray(fragmentShaderBytes);
+    
+    DeleteShaders();
+}
+    
+bool Shader::Recompile()
+{
     program = glCreateProgram();
-    
     RENDER_VERIFY(glAttachShader(program, vertexShader));
     RENDER_VERIFY(glAttachShader(program, fragmentShader));
     
@@ -185,12 +213,12 @@ bool Shader::LoadFromYaml(const String & pathname)
         DeleteShaders();
         return false;
     }
-
+    
     
     RENDER_VERIFY(glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &activeAttributes));
-                  
-    Logger::Debug("shader loaded: %s attributeCount: %d", pathname.c_str(), activeAttributes);
-
+    
+    //Logger::Debug("shader loaded: %s attributeCount: %d", pathname.c_str(), activeAttributes);
+    
     char attributeName[512];
     attributeNames = new String[activeAttributes];
     for (int32 k = 0; k < activeAttributes; ++k)
@@ -202,11 +230,11 @@ bool Shader::LoadFromYaml(const String & pathname)
         
         int32 flagIndex = GetAttributeIndexByName(attributeName);
         vertexFormatAttribIndeces[flagIndex] = k;
-        Logger::Debug("shader attr: %s size: %d type: %s", attributeName, size, VertexTypeStringFromEnum(type).c_str());
-        if (vertexFormatAttribIndeces[k] != -1)
-            Logger::Debug("shader attr matched: 0x%08x", (1 << flagIndex));
+        //Logger::Debug("shader attr: %s size: %d type: %s", attributeName, size, VertexTypeStringFromEnum(type).c_str());
+        //if (vertexFormatAttribIndeces[k] != -1)
+        //    Logger::Debug("shader attr matched: 0x%08x", (1 << flagIndex));
     }
- 
+    
     RENDER_VERIFY(glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &activeUniforms));
     
     uniformLocations = new GLint[activeUniforms];
@@ -222,19 +250,9 @@ bool Shader::LoadFromYaml(const String & pathname)
         uniformNames[k] = attributeName;
         uniformLocations[k] = glGetUniformLocation(program, uniformNames[k].c_str());
         uniformIDs[k] = uniform;
-        Logger::Debug("shader known uniform: %s size: %d type: %s", uniformNames[k].c_str(), size, VertexTypeStringFromEnum(type).c_str());
+        //Logger::Debug("shader known uniform: %s size: %d type: %s", uniformNames[k].c_str(), size, VertexTypeStringFromEnum(type).c_str());
     }
-    
     return true;
-}
-    
-    
-Shader::~Shader()
-{
-    SafeDeleteArray(uniformNames);
-    SafeDeleteArray(uniformIDs);
-    SafeDeleteArray(uniformLocations);
-    DeleteShaders();
 }
     
 void Shader::SetUniformValue(int32 uniformLocation, int32 value)
@@ -283,7 +301,7 @@ GLint Shader::LinkProgram(GLuint prog)
     {
         GLchar *log = (GLchar *)malloc(logLength);
         glGetProgramInfoLog(prog, logLength, &logLength, log);
-        Logger::Debug("Program link log:\n%s", log);
+        //Logger::Debug("Program link log:\n%s", log);
         free(log);
     }
     
@@ -301,7 +319,25 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     //const GLchar *sources;
         
     *shader = glCreateShader(type);				// create shader
-    glShaderSource(*shader, 1, &sources, &count);	// set source code in the shader
+    
+    if (defines.length() == 0)
+    {
+        glShaderSource(*shader, 1, &sources, &count);	// set source code in the shader
+    }else
+    {
+        const GLchar * multipleSources[] = 
+        {
+            defines.c_str(),
+            sources,
+        };
+        const GLint multipleCounts[] = 
+        {
+            defines.length(),
+            count,
+        };
+        glShaderSource(*shader, 2, multipleSources, multipleCounts);	// set source code in the shader
+    }
+    
     glCompileShader(*shader);					// compile shader
     
 //#if defined(DEBUG)
@@ -311,7 +347,7 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     {
         GLchar *log = (GLchar *)malloc(logLength);
         glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        Logger::Debug("Shader compile log:\n%s", log);
+        //Logger::Debug("Shader compile log:\n%s", log);
         free(log);
     }
 //#endif

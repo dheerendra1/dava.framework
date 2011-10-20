@@ -36,7 +36,7 @@
 namespace DAVA
 {
 
-
+/*
 class BlendEnable
 {
 public:
@@ -69,10 +69,6 @@ class RenderStateVariableImpl : public RenderStateVariable
 {
 public:
     RenderStateVariableImpl(RenderStateBlock * mainBlock);
-    /*
-    {
-        mainBlock->varArray[mainBlock->varCount++] = this;
-    }*/
     
     inline void UpdateVarGL() { renderStateImpl.UpdateVarGL(value); };
     inline void Set(const V & _value) { value = _value; };
@@ -81,10 +77,6 @@ public:
     IMPL_CLASS renderStateImpl;
 };
 
-/**
-    \brief Render state management base class
- 
- */	
 
 class RenderStateBlock
 {
@@ -168,6 +160,187 @@ inline uint32 RenderStateBlock::GetStateValue(uint32 state)
 {
     return varValue[state];
 }
+    
+*/
+class Texture;
+class Shader;
+    
+class RenderStateBlock
+{
+public:    
+    enum
+    {
+        STATE_COLOR                 = 1 << 0, 
+        STATE_BLEND_ENABLED         = 1 << 1,
+        STATE_SRC_BLEND             = 1 << 2,
+        STATE_DEST_BLEND            = 1 << 3, 
+        STATE_BLEND_FUNC            = (1 << 2) | (1 << 3),
+        STATE_TEXTURE_ENABLED       = 1 << 4,
+        STATE_TEXTURE               = 1 << 5,
+        STATE_DEPTH_TEST_ENABLED    = 1 << 6,
+        STATE_DEPTH_WRITE_ENABLED   = 1 << 7,
+        STATE_STENCIL_TEST_ENABLED  = 1 << 8,
+//        STATE_ALPHA_TEST_ENABLED    = 1 << 9,
+//        STATE_SCISSOR_TEST_ENABLED  = 1 << 10,
+    };
+
+    RenderStateBlock(Core::eRenderer _renderer);
+    ~RenderStateBlock();
+        
+    Core::eRenderer renderer;
+    uint32  state;
+    Color   color;
+    eBlendMode sourceFactor, destFactor;
+    
+    static const int32 MAX_TEXTURE_LEVELS = 2;
+    Texture * currentTexture[MAX_TEXTURE_LEVELS];
+    
+    // STATE_COLOR
+    inline void SetColor(float32 _r, float32 _g, float32 _b, float32 _a);
+    inline void SetColor(const Color & _color);
+    inline const Color & GetColor() const;
+    inline void SetColorInHW();
+    
+    // STATE_BLEND_ENABLED
+    inline void EnableBlending(bool isEnabled);
+    inline bool IsBlendingEnabled(); 
+    inline void SetEnableBlendingInHW();
+    
+    // STATE_BLEND_FUNC
+    inline void SetBlendMode(eBlendMode _sourceFactor, eBlendMode _destFactor);
+	inline eBlendMode GetSrcBlend();
+	inline eBlendMode GetDestBlend();
+    inline void SetBlendModeInHW();
+    
+    // STATE_TEXTURE_ENABLED
+    inline void EnableTexturing(bool isEnabled);
+    inline bool IsTexturingEnabled();
+    inline void SetEnableTexturingInHW();
+    
+    // STATE_TEXTURE
+    inline void SetTexture(Texture *texture, uint32 textureLevel = 0);
+	inline Texture * GetTexture(uint32 textureLevel = 0);
+    inline void SetTextureLevelInHW(uint32 textureLevel);
+    
+    // STATE_DEPTH_TEST_ENABLED
+    inline void EnableDepthTest(bool isEnabled);
+    inline bool IsDepthTestEnabled();
+    inline void SetDepthTestInHW();
+
+    // STATE_DEPTH_WRITE_ENABLED
+    inline void EnableDepthWrite(bool isEnabled);
+    inline bool IsDepthWriteEnabled();
+    inline void SetDepthWriteInHW();
+    
+    
+    /**
+        Function to reset state to original zero state.
+     */
+    void Reset(bool doHardwareReset);
+    
+    /**
+        Function to flush state into graphics hardware
+        It checks what was changed from previous flush
+     */
+    void Flush(RenderStateBlock * previousState);
+};
+
+// Implementation of inline functions
+inline void RenderStateBlock::SetColor(float32 _r, float32 _g, float32 _b, float32 _a)
+{
+    color.r = _r;
+    color.g = _g;
+    color.b = _b;
+    color.a = _a;
+}
+
+inline void RenderStateBlock::SetColor(const Color & _color)
+{
+    color = _color;
+}
+    
+inline const Color & RenderStateBlock::GetColor() const
+{
+    return color;
+}
+
+// STATE_BLEND_ENABLED
+inline void RenderStateBlock::EnableBlending(bool isEnabled)
+{
+    if (isEnabled)state |= STATE_BLEND_ENABLED;
+    else state &= ~STATE_BLEND_ENABLED;  
+}
+    
+inline bool RenderStateBlock::IsBlendingEnabled()
+{
+    return (state & STATE_BLEND_ENABLED) != 0;
+}
+
+// STATE_BLEND_FUNC
+inline void RenderStateBlock::SetBlendMode(eBlendMode _sourceFactor, eBlendMode _destFactor)
+{
+    sourceFactor = _sourceFactor;
+    destFactor = _destFactor;
+}
+    
+inline eBlendMode RenderStateBlock::GetSrcBlend()
+{
+    return sourceFactor;
+}
+
+inline eBlendMode RenderStateBlock::GetDestBlend()
+{
+    return destFactor;
+}
+
+// STATE_TEXTURE_ENABLED
+inline void RenderStateBlock::EnableTexturing(bool isEnabled)
+{
+    if (isEnabled)state |= STATE_TEXTURE_ENABLED;
+    else state &= ~STATE_TEXTURE_ENABLED;  
+}
+
+inline bool RenderStateBlock::IsTexturingEnabled()
+{
+    return (state & STATE_TEXTURE_ENABLED) != 0;
+}
+
+// STATE_TEXTURE
+inline void RenderStateBlock::SetTexture(Texture *texture, uint32 textureLevel)
+{
+    currentTexture[textureLevel] = texture;
+}
+
+inline Texture * RenderStateBlock::GetTexture(uint32 textureLevel)
+{
+    return currentTexture[textureLevel];
+}
+
+// STATE_DEPTH_TEST_ENABLED
+inline void RenderStateBlock::EnableDepthTest(bool isEnabled)
+{
+    if (isEnabled)state |= STATE_DEPTH_TEST_ENABLED;
+    else state &= ~STATE_DEPTH_TEST_ENABLED; 
+}
+
+inline bool RenderStateBlock::IsDepthTestEnabled()
+{
+    return (state & STATE_DEPTH_TEST_ENABLED) != 0;
+}
+
+// STATE_DEPTH_WRITE_ENABLED
+inline void RenderStateBlock::EnableDepthWrite(bool isEnabled)
+{
+    if (isEnabled)state |= STATE_DEPTH_WRITE_ENABLED;
+    else state &= STATE_DEPTH_WRITE_ENABLED; 
+}
+
+inline bool RenderStateBlock::IsDepthWriteEnabled()
+{
+    return (state & STATE_DEPTH_WRITE_ENABLED) != 0;
+}
+    
+
     
 };
 

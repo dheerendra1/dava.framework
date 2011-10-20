@@ -69,6 +69,8 @@
 		FE578C601327927C0081BDE9 /* libogg_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5D1327927C0081BDE9 /* libogg_macos.a */; };
 		FE578C611327927C0081BDE9 /* libvorbis_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5E1327927C0081BDE9 /* libvorbis_macos.a */; };
 		FE578C621327927C0081BDE9 /* libvorbisfile_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5F1327927C0081BDE9 /* libvorbisfile_macos.a */; };
+		FE879F87145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE879F85145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp */; };
+		FE879F88145061E400F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FE879F86145061E400F889E5 /* TextureMulColorAlphaTestEffect.h */; };
 		FE941D321331543700515418 /* CorePlatformMacOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE941D2C1331543700515418 /* CorePlatformMacOS.cpp */; };
 		FE941D331331543700515418 /* CorePlatformMacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = FE941D2D1331543700515418 /* CorePlatformMacOS.h */; };
 		FE941D341331543700515418 /* MainWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE941D2E1331543700515418 /* MainWindowController.h */; };
@@ -517,6 +519,8 @@
 		FE578C5D1327927C0081BDE9 /* libogg_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg_macos.a; path = ../../Libs/oggvorbis/lib/libogg_macos.a; sourceTree = SOURCE_ROOT; };
 		FE578C5E1327927C0081BDE9 /* libvorbis_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis_macos.a; path = ../../Libs/oggvorbis/lib/libvorbis_macos.a; sourceTree = SOURCE_ROOT; };
 		FE578C5F1327927C0081BDE9 /* libvorbisfile_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile_macos.a; path = ../../Libs/oggvorbis/lib/libvorbisfile_macos.a; sourceTree = SOURCE_ROOT; };
+		FE879F85145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureMulColorAlphaTestEffect.cpp; sourceTree = "<group>"; };
+		FE879F86145061E400F889E5 /* TextureMulColorAlphaTestEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMulColorAlphaTestEffect.h; sourceTree = "<group>"; };
 		FE941D2C1331543700515418 /* CorePlatformMacOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CorePlatformMacOS.cpp; sourceTree = "<group>"; };
 		FE941D2D1331543700515418 /* CorePlatformMacOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CorePlatformMacOS.h; sourceTree = "<group>"; };
 		FE941D2E1331543700515418 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
@@ -997,6 +1001,8 @@
 		FECA0D6313D5F64B00059D5D /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				FE879F85145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp */,
+				FE879F86145061E400F889E5 /* TextureMulColorAlphaTestEffect.h */,
 				FE044F2E140EEA24002A6D27 /* ColorOnlyEffect.cpp */,
 				FE044F2F140EEA24002A6D27 /* ColorOnlyEffect.h */,
 				FE044F30140EEA24002A6D27 /* MultiTextureEffect.cpp */,
@@ -1812,6 +1818,7 @@
 				FE044F3D140EEA32002A6D27 /* RenderDataObject.h in Headers */,
 				FE044F43140EEA75002A6D27 /* RenderManagerGL20.h in Headers */,
 				FEDDC95E1429E5040004BF1A /* UIFileSystemDialog.h in Headers */,
+				FE879F88145061E400F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2079,6 +2086,7 @@
 				FE044F3F140EEA53002A6D27 /* RenderManagerFactory.cpp in Sources */,
 				FE044F42140EEA75002A6D27 /* RenderManagerGL20.cpp in Sources */,
 				FEDDC95D1429E5040004BF1A /* UIFileSystemDialog.cpp in Sources */,
+				FE879F87145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

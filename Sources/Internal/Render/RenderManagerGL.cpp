@@ -341,20 +341,6 @@ eBlendMode RenderManager::GetDestBlend()
 	return newDFactor;
 }
 
-static GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
-{
-		0,	// not a valid blend mode
-		GL_ZERO,
-		GL_ONE,
-		GL_DST_COLOR,
-		GL_ONE_MINUS_DST_COLOR,
-		GL_SRC_ALPHA,
-		GL_ONE_MINUS_SRC_ALPHA,
-		GL_DST_ALPHA,
-		GL_ONE_MINUS_DST_ALPHA,
-		GL_SRC_ALPHA_SATURATE,
-};
-
 
 void RenderManager::EnableBlending(bool isEnabled)
 {
@@ -477,6 +463,44 @@ void RenderManager::FlushState()
 		}
 		oldTextureEnabled = newTextureEnabled;
 	}
+    
+    if (cullingEnabled != oldCullingEnabled)
+    {
+        if (cullingEnabled)
+        {
+            RENDER_VERIFY(glEnable(GL_CULL_FACE));
+            
+            if (cullFace != oldCullFace)
+            {
+                RENDER_VERIFY(glCullFace(CULL_FACE_MAP[cullFace]));
+            }
+            oldCullFace = cullFace;
+        }else
+        {
+            RENDER_VERIFY(glDisable(GL_CULL_FACE));
+        }
+        oldCullingEnabled = cullingEnabled;
+    }
+    
+    if ((renderer == Core::RENDERER_OPENGL) || (renderer == Core::RENDERER_OPENGL_ES_1_0))
+        if (alphaTestEnabled != oldAlphaTestEnabled)
+        {
+            if (alphaTestEnabled)
+            {
+                RENDER_VERIFY(glEnable(GL_ALPHA_TEST));
+            
+                // if alpha test enabled set alpha func values
+                if ((alphaFunc != oldAlphaFunc) || (alphaTestCmpValue != oldAlphaTestCmpValue))
+                {
+                    RENDER_VERIFY(glAlphaFunc(alphaFunc, alphaTestCmpValue) );
+                    oldAlphaFunc = alphaFunc;
+                    oldAlphaTestCmpValue = alphaTestCmpValue;
+                }
+            }else
+                RENDER_VERIFY(glDisable(GL_ALPHA_TEST));
+        
+            oldAlphaTestEnabled = alphaTestEnabled;
+        }
 	
 	PrepareRealMatrix();
     

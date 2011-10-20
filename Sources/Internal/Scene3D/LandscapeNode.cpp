@@ -636,8 +636,6 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 
 void LandscapeNode::Draw()
 {
-    //glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
     {
@@ -712,8 +710,6 @@ void LandscapeNode::Draw()
     Draw(&quadTreeHead);
     DrawFans();
     
-    
-    //glDisable(GL_CULL_FACE);
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
     {

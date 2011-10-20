@@ -65,6 +65,7 @@ class RenderManager : public Singleton<RenderManager>
 public:
     static RenderEffect * FLAT_COLOR;
     static RenderEffect * TEXTURE_MUL_FLAT_COLOR;
+    static RenderEffect * TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST;
     
     
     struct Caps
@@ -266,6 +267,12 @@ public:
 
     void EnableDepthTest(bool isEnabled);
     void EnableDepthWrite(bool isEnabled);
+    
+    void EnableAlphaTest(bool isEnabled);
+    void SetAlphaFunc(eAlphaFunc func, float32 cmpValue);
+    void EnableCulling(bool isEnabled);
+    void SetCullFace(eCull cullFace);
+    
     
     void SetRenderData(RenderDataObject * object);
     virtual void AttachRenderData(Shader * shader);
@@ -515,6 +522,16 @@ protected:
 	int oldBlendingEnabled;                         // state
     int depthWriteEnabled;                          // state
     int depthTestEnabled;                           // state
+    
+    bool oldAlphaTestEnabled;                       // default value: false
+    bool alphaTestEnabled;                          // default value: false
+    eAlphaFunc alphaFunc;                           // 
+    eAlphaFunc oldAlphaFunc;
+    float32 oldAlphaTestCmpValue;                   // old alpha test cmp value
+    float32 alphaTestCmpValue;                      // default value: 0.0f
+    bool cullingEnabled, oldCullingEnabled;
+    eCull cullFace, oldCullFace;
+    
     
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;

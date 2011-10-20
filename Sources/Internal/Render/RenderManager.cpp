@@ -36,6 +36,7 @@
 #include "Render/RenderDataObject.h"
 #include "Render/Effects/ColorOnlyEffect.h"
 #include "Render/Effects/TextureMulColorEffect.h"
+#include "Render/Effects/TextureMulColorAlphaTestEffect.h"
 
 
 namespace DAVA
@@ -43,6 +44,7 @@ namespace DAVA
     
 RenderEffect * RenderManager::FLAT_COLOR = 0;
 RenderEffect * RenderManager::TEXTURE_MUL_FLAT_COLOR = 0;
+RenderEffect * RenderManager::TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST = 0;
 
     
 RenderManager::RenderManager(Core::eRenderer _renderer)
@@ -101,6 +103,12 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	
 	isInsideDraw = false;
 
+    oldAlphaTestEnabled = alphaTestEnabled = false;
+    oldAlphaTestCmpValue = alphaTestCmpValue = 0.0f;
+    oldAlphaFunc = ALPHA_ALWAYS;
+    
+    cullingEnabled = oldCullingEnabled = false;
+    cullFace = oldCullFace = CULL_BACK;
 
 #if defined(__DAVAENGINE_DIRECTX9__)
 	depthStencilSurface = 0;
@@ -118,12 +126,14 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     
     FLAT_COLOR = 0;
     TEXTURE_MUL_FLAT_COLOR = 0;
+    TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST = 0;
 }
 	
 RenderManager::~RenderManager()
 {
     SafeRelease(FLAT_COLOR);
     SafeRelease(TEXTURE_MUL_FLAT_COLOR);
+    SafeRelease(TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST);
 	SafeRelease(cursor);
 	Logger::Debug("[RenderManager] released");
 }
@@ -144,7 +154,8 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
         FLAT_COLOR = ColorOnlyEffect::Create(renderer);
     if (!TEXTURE_MUL_FLAT_COLOR) 
         TEXTURE_MUL_FLAT_COLOR= TextureMulColorEffect::Create(renderer);
-    
+    if (!TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST)
+        TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST = TextureMulColorAlphaTestEffect::Create(renderer);
     
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
@@ -672,7 +683,7 @@ void RenderManager::EnableOutputDebugStatsEveryNFrame(int32 _frameToShowDebugSta
 }
 
 void RenderManager::ProcessStats()
-{
+{ 
     if (frameToShowDebugStats == -1)return;
     
     statsFrameCountToShowDebug++;
@@ -684,6 +695,26 @@ void RenderManager::ProcessStats()
             Logger::Debug("== Primitive Stats: %d ==", stats.primitiveCount[k]);
     }
 }
+    
+void RenderManager::EnableAlphaTest(bool isEnabled)
+{
+    alphaTestEnabled = isEnabled;
+}
 
+void RenderManager::SetAlphaFunc(eAlphaFunc func, float32 cmpValue)
+{
+    alphaFunc = func;
+    alphaTestCmpValue = cmpValue;
+}
+    
+void RenderManager::EnableCulling(bool isEnabled)
+{
+    cullingEnabled = isEnabled;
+}
+
+void RenderManager::SetCullFace(eCull _cullFace)
+{
+    cullFace = _cullFace;
+}
 	
 };

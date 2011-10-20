@@ -27,48 +27,53 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#include "Render/RenderEffect.h"
-#include "Render/Texture.h"
+#ifndef __DAVAENGINE_TEXTURE_MUL_COLOR_ALPHA_TEST_EFFECT_H__
+#define __DAVAENGINE_TEXTURE_MUL_COLOR_ALPHA_TEST_EFFECT_H__
 
-namespace DAVA 
-{
-Map<String, RenderEffect*> RenderEffect::effectsMap;
-    
-RenderEffect::RenderEffect()
-{
-    /* 
-    TODO: fix this code
-     
-    const String & name = GetName();
-    Map<String, RenderEffect *>::iterator effectIt = effectsMap.find(name);
-    if (effectIt == effectsMap.end())
-    {
-        //Logger::Debug("Register effect: %s", name.c_str());
-        effectsMap[name] = this; 
-    }else
-    {
-        //Logger::Debug("RenderEffect \"%s\" already registered", name.c_str());
-    }*/
-}
+#include "Base/BaseTypes.h"
+#include "Base/BaseObject.h"
+#include "Render/RenderBase.h"
 
-RenderEffect::~RenderEffect()
+namespace DAVA
 {
-    //effectsMap.erase(GetName());
-}
-    
-const char * RenderEffect::GetName()
+class Texture;
+class Shader;
+class TextureMulColorAlphaTestEffect : public RenderEffect
 {
-    return "EmptyEffect";
-}
+public:
+    DECLARE_EFFECT(FixedFunc_TextureMulColorAlphaTestEffect);
+    static RenderEffect * Create(Core::eRenderer renderer);
+};
 
-void RenderEffect::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
+#if defined(__DAVAENGINE_OPENGL__)
+class TextureMulColorAlphaTestEffectGL : public TextureMulColorAlphaTestEffect
 {
-    DVASSERT("RenderEffect::DrawArrays not implemented but called" && 0);
-}
-    
-void RenderEffect::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
+public:
+    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+};
+
+class TextureMulColorAlphaTestEffectGL20 : public TextureMulColorAlphaTestEffect
 {
-    DVASSERT("RenderEffect::DrawElements not implemented but called" && 0);
-}
+public:
+    TextureMulColorAlphaTestEffectGL20();
+    ~TextureMulColorAlphaTestEffectGL20();
+    virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+    virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+protected:
+    Shader * shader;
+};
+#elif defined(__DAVAENGINE_DIRECTX9__)
+
+class TextureMulColorAlphaTestEffectDX9 : public TextureMulColorAlphaTestEffect
+{
+public:
+	virtual void DrawArrays(ePrimitiveType mode, int32 first, int32 count);
+	virtual void DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices); 
+};
+
+#endif 
 
 };
+
+#endif // __DAVAENGINE_TEXTURE_MUL_COLOR_ALPHA_TEST_EFFECT_H__

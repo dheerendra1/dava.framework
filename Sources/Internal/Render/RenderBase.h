@@ -106,7 +106,75 @@ enum eBlendMode
 	BLEND_MODE_COUNT,
 };
 
-
+#if defined(__DAVAENGINE_OPENGL__)
+static const GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
+{
+    0,	// not a valid blend mode
+    GL_ZERO,
+    GL_ONE,
+    GL_DST_COLOR,
+    GL_ONE_MINUS_DST_COLOR,
+    GL_SRC_ALPHA,
+    GL_ONE_MINUS_SRC_ALPHA,
+    GL_DST_ALPHA,
+    GL_ONE_MINUS_DST_ALPHA,
+    GL_SRC_ALPHA_SATURATE,
+};
+#elif defined(__DAVAENGINE_DIRECTX9__)
+static const GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
+{
+    0,	// not a valid blend mode
+    D3DBLEND_ZERO,
+    D3DBLEND_ONE,
+    D3DBLEND_DESTCOLOR,
+    D3DBLEND_INVDESTCOLOR,
+    D3DBLEND_SRCALPHA,
+    D3DBLEND_INVSRCALPHA,
+    D3DBLEND_DESTALPHA,
+    D3DBLEND_INVDESTALPHA,
+    D3DBLEND_SRCALPHASAT,
+};
+#endif
+  
+enum eAlphaFunc
+{
+    ALPHA_NEVER = 0,   // Never passes.
+    ALPHA_LESS,    // Passes if the incoming alpha value is less than the reference value.
+    ALPHA_EQUAL,   // Passes if the incoming alpha value is equal to the reference value.
+    ALPHA_LEQUAL,  // Passes if the incoming alpha value is less than or equal to the reference value.
+    ALPHA_GREATER, // Passes if the incoming alpha value is greater than the reference value.
+    ALPHA_NOTEQUAL, // Passes if the incoming alpha value is not equal to the reference value.
+    ALPHA_GEQUAL,   // Passes if the incoming alpha value is greater than or equal to the reference value.
+    ALPHA_ALWAYS,
+    ALPHA_TEST_MODE_COUNT, 
+};
+    
+#if defined(__DAVAENGINE_OPENGL__)
+static const GLint ALPHA_TEST_MODE_MAP[ALPHA_TEST_MODE_COUNT] = 
+{
+    GL_NEVER,
+    GL_LESS,
+    GL_EQUAL,
+    GL_LEQUAL,
+    GL_GREATER,
+    GL_NOTEQUAL,
+    GL_GEQUAL,
+    GL_ALWAYS,
+};
+#elif defined(__DAVAENGINE_DIRECTX9__)  
+static const GLint ALPHA_TEST_MODE_MAP[ALPHA_TEST_MODE_COUNT] = 
+{
+    D3DCMP_NEVER,
+    D3DCMP_LESS,
+    D3DCMP_EQUAL,
+    D3DCMP_LESSEQUAL,
+    D3DCMP_GREATER,
+    D3DCMP_NOTEQUAL,
+    D3DCMP_GREATEREQUAL,
+    D3DCMP_ALWAYS,
+};  
+#endif
+    
 enum eVertexDataType
 {
 	TYPE_FLOAT = 0,
@@ -139,7 +207,22 @@ enum eCull
     CULL_FRONT = 0,
     CULL_BACK,
     CULL_FRONT_AND_BACK,
+    CULL_COUNT,
 };
+    
+#if defined(__DAVAENGINE_OPENGL__)
+    static const GLint CULL_FACE_MAP[CULL_COUNT] = 
+    {
+        GL_FRONT,
+        GL_BACK,
+        GL_FRONT_AND_BACK,
+    };
+#elif defined(__DAVAENGINE_DIRECTX9__) 
+//    static const int32 CULL_FACE_MAP[CULL_COUNT] = 
+//    {
+//        CULL
+//    }
+#endif
     
 enum ePrimitiveType
 {

@@ -627,21 +627,6 @@ void RenderManager::EnableDepthWrite(bool isEnabled)
 {
 	RENDER_VERIFY(direct3DDevice->SetRenderState(D3DRS_ZWRITEENABLE , isEnabled));
 }
-    
-
-static GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] = 
-{
-		0,	// not a valid blend mode
-		D3DBLEND_ZERO,
-		D3DBLEND_ONE,
-		D3DBLEND_DESTCOLOR,
-		D3DBLEND_INVDESTCOLOR,
-		D3DBLEND_SRCALPHA,
-		D3DBLEND_INVSRCALPHA,
-		D3DBLEND_DESTALPHA,
-		D3DBLEND_INVDESTALPHA,
-		D3DBLEND_SRCALPHASAT,
-};
 
 /*
 	D3DBLEND_ZERO              = 1,
@@ -701,6 +686,13 @@ void RenderManager::FlushState()
 		oldTextureEnabled = newTextureEnabled;
 	}
 
+    
+    if (alphaTestEnabled != oldAlphaTestEnabled)
+    {
+        DVASSERT("Implement alpha test functionality on DX9" && 0);
+    }
+    
+    
 	PrepareRealMatrix();
 
     // TODO: when will be added shader support on DX
