@@ -51,14 +51,7 @@ class FTInternalFont;
 
 
 class FTFont : public Font
-{
-private:
-	FTFont(FTInternalFont* internalFont);
-	
-	//font color
-	//shadow		
-	uint8			r, g, b, a;
-	
+{	
 public:
 	FTInternalFont	* internalFont;
 
@@ -66,9 +59,6 @@ public:
 	virtual		~FTFont();
 
 	FTFont *	Clone();
-
-	virtual void SetColor(float32 r, float32 g, float32 b, float32 a);
-	virtual void SetColor(const Color & color);
 
 	virtual bool IsEqual(Font *font);
 
@@ -82,6 +72,9 @@ public:
 
 	virtual bool IsTextSupportsSoftwareRendering() { return true; };
 	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString & str, bool contentScaleIncluded = false);
+
+private:
+	FTFont(FTInternalFont* internalFont);
 };
 
 

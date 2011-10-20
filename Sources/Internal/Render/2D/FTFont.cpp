@@ -94,11 +94,6 @@ private:
 };
 
 FTFont::FTFont(FTInternalFont* _internalFont)
-:	Font(),
-	r((uint8)(color.r * 255.0f)),  
-	g((uint8)(color.g * 255.0f)), 
-	b((uint8)(color.b * 255.0f)), 
-	a((uint8)(color.a * 255.0f))
 {
 	internalFont = _internalFont;
 	internalFont->Retain();
@@ -134,11 +129,7 @@ FTFont *	FTFont::Clone()
 {
 	FTFont *retFont = new FTFont(internalFont);
 	retFont->size =	size;
-	
-	retFont->r =	r;
-	retFont->g =	g;
-	retFont->b =	b;
-	retFont->a =	a;
+	retFont->SetColor(color);
 
 	retFont->verticalSpacing =	verticalSpacing;
 
@@ -154,28 +145,13 @@ bool FTFont::IsEqual(Font *font)
 	}
 	return true;
 }
-
-
-void FTFont::SetColor(float32 _r, float32 _g, float32 _b, float32 _a)
-{
-	color.r = _r;
-	color.g = _g;
-	color.b = _b;
-	color.a = _a;
-	r = (uint8)(_r*255.0);
-	g = (uint8)(_g*255.0);
-	b = (uint8)(_b*255.0);
-	a = (uint8)(_a*255.0);
-}
-
-
-void FTFont::SetColor(const Color & color)
-{
-	SetColor(color.r, color.g, color.b, color.a);
-}
 	
 Size2i FTFont::DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString& str, bool contentScaleIncluded )
 {
+	uint8 r = ((uint8)(color.r * 255.0f));
+	uint8 g = ((uint8)(color.g * 255.0f)); 
+	uint8 b = ((uint8)(color.b * 255.0f)); 
+	uint8 a = ((uint8)(color.a * 255.0f));
 	return internalFont->DrawString(str, buffer, bufWidth, bufHeight, r, g, b, a, size, true, offsetX, offsetY, justifyWidth, spaceAddon, NULL, contentScaleIncluded );
 }
 
