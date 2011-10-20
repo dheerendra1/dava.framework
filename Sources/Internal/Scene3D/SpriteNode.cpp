@@ -192,7 +192,7 @@ void SpriteNode::Draw()
     RenderManager::Instance()->EnableDepthTest(false);
     RenderManager::Instance()->EnableDepthWrite(false);
     RenderManager::Instance()->SetTexture(sprite->GetTexture(frame));
-	RenderManager::Instance()->FlushState();
+//	RenderManager::Instance()->FlushState();
     
     RenderManager::Instance()->SetRenderData(renderData);
 
