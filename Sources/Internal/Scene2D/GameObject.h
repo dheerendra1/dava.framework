@@ -90,7 +90,7 @@ public:
 	inline void		SetPivotPoint(float32 x, float32 y);
 	inline Vector2 & GetPivotPoint();
 	
-	inline Vector2	GetSize();
+	inline Vector2	GetSize() const;
 	
 	inline void		SetSprite(Sprite * sprite);
 	inline void		SetSprite(const String &spriteName);
@@ -335,7 +335,7 @@ inline Vector2 & GameObject::GetPivotPoint()
 	return localDrawState.pivotPoint;
 }
 	
-inline Vector2	GameObject::GetSize()
+inline Vector2	GameObject::GetSize() const
 {
 	return Vector2(sprite->GetWidth() * localDrawState.scale.x, sprite->GetHeight() * localDrawState.scale.y);
 }
