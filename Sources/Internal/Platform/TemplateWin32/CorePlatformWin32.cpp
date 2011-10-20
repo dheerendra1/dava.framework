@@ -277,8 +277,18 @@ namespace DAVA
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 
-				if (msg.message == WM_QUIT)
-					willQuit = true;
+				if(msg.message == WM_QUIT)
+				{
+					ApplicationCore * appCore = Core::Instance()->GetApplicationCore();
+					if(appCore && appCore->OnQuit())
+					{
+						exit(0);
+					}
+					else
+					{
+						willQuit = true;
+					}
+				}
 			}
 			Sleep(1);
 			RenderManager::Instance()->Lock();

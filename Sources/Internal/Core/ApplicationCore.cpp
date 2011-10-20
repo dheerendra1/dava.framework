@@ -84,6 +84,11 @@ void ApplicationCore::OnResume()
 	SoundSystem::Instance()->Resume();
 }
 
+bool ApplicationCore::OnQuit()
+{
+	return false;
+}
+
 
 
 };
