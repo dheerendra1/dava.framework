@@ -45,7 +45,7 @@ RenderEffect * TextureMulColorAlphaTestEffect::Create(Core::eRenderer renderer)
 #endif 
     
 #if defined(__DAVAENGINE_DIRECTX9__)
-    CONDITIONAL_CREATE(Core::RENDERER_DIRECTX9, TextureMulColorEffectDX9);
+    CONDITIONAL_CREATE(Core::RENDERER_DIRECTX9, TextureMulColorAlphaTestEffectDX9);
 #endif
     return 0;
 }
