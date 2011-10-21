@@ -175,7 +175,7 @@ bool SceneFile::LoadScene( const char * filename, Scene * _scene, bool relToBund
 			SceneNodeAnimation * anim = aList->animations[k];
 			if (!anim)
 			{
-				if (debugLogEnabled)Logger::Debug("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->GetName().c_str());
+				if (debugLogEnabled)Logger::Error("*** ERROR: animation: %d can't find anim: %s\n", animationIndex, aList->GetName().c_str());
 				continue;
 			}
 			String & name = anim->bindName;
@@ -289,7 +289,7 @@ bool SceneFile::ReadMaterial()
 	mat->ambient = materialDef.ambient;
 	mat->diffuse = materialDef.diffuse;
 	
-	if ((int32)materialDef.diffuseTextureId < scene->GetTextureCount())
+	if (materialDef.diffuseTextureId < (uint32)scene->GetTextureCount())
 	{	
 		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 

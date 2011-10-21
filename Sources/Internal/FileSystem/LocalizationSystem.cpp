@@ -30,7 +30,7 @@
 #include "FileSystem/LocalizationSystem.h"
 #include "Utils/Utils.h"
 #include "FileSystem/Logger.h"
-#include "yaml.h"
+#include "yaml/yaml.h"
 #include "Utils/UTF8Utils.h"
 #include "Debug/DVAssert.h"
 #include "FileSystem/FileSystem.h"
@@ -45,6 +45,9 @@ namespace DAVA
 LocalizationSystem::LocalizationSystem()
 {
 	langId = "en";
+
+	dataHolder = new YamlParser::YamlDataHolder();
+	dataHolder->data = 0;
 }
 
 LocalizationSystem::~LocalizationSystem()
@@ -56,6 +59,10 @@ LocalizationSystem::~LocalizationSystem()
 		SafeDelete(file);
 	}		
 	stringsList.clear();
+
+	SafeDeleteArray(dataHolder->data);
+	SafeDelete(dataHolder);
+
 }
 	
 void LocalizationSystem::InitWithDirectory(const String &directoryPath)
@@ -76,18 +83,6 @@ void LocalizationSystem::SetCurrentLocale(const String &newLangId)
 	langId = newLangId;
 }
 	
-int read_handler_localization_system(void *ext, unsigned char *buffer, size_t size, size_t *length)
-{
-	LocalizationSystem::YamlDataHolder * holder = (LocalizationSystem::YamlDataHolder*)ext;
-	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
-	memcpy(buffer, holder->data, sizeToWrite);
-	*length = sizeToWrite;
-
-	holder->dataOffset += sizeToWrite;
-
-	return 1;
-}
-
 LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const String & pathName)
 {
 	yaml_parser_t parser;
@@ -101,14 +96,13 @@ LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const Stri
 	yaml_parser_set_encoding(&parser, YAML_UTF8_ENCODING);
 	
 	File * yamlFile = File::Create(pathName, File::OPEN | File::READ);
-	dataHolder.fileSize = yamlFile->GetSize();
-	dataHolder.data = new uint8[dataHolder.fileSize];
-	dataHolder.dataOffset = 0;
-	yamlFile->Read(dataHolder.data, dataHolder.fileSize);
+	dataHolder->fileSize = yamlFile->GetSize();
+	dataHolder->data = new uint8[dataHolder->fileSize];
+	dataHolder->dataOffset = 0;
+	yamlFile->Read(dataHolder->data, dataHolder->fileSize);
 	yamlFile->Release();
 	
-	yaml_parser_set_input(&parser, read_handler_localization_system, &dataHolder);
-
+	yaml_parser_set_input(&parser, read_handler, dataHolder);
 	
 	WideString key;
 	WideString value;
@@ -194,7 +188,7 @@ LocalizationSystem::StringFile * LocalizationSystem::LoadFromYamlFile(const Stri
 		strFile->pathName = pathName;
 	}
 
-	SafeDeleteArray(dataHolder.data);
+	SafeDeleteArray(dataHolder->data);
 	return strFile;
 }
 	

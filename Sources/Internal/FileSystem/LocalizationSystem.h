@@ -33,6 +33,8 @@
 #include "Base/BaseTypes.h"
 #include "Base/Singleton.h"
 
+#include "FileSystem/YamlParser.h"
+
 namespace DAVA 
 {
 
@@ -49,13 +51,6 @@ public:
 	
 	const WideString & GetLocalizedString(const WideString & key);
 
-	struct YamlDataHolder
-	{
-		uint32 fileSize;
-		uint32 dataOffset;
-		uint8 * data;
-	};
-	
 private:
 
 	void LoadStringFile(const String & fileName);
@@ -72,7 +67,7 @@ private:
 
 	StringFile* LoadFromYamlFile(const String & fileName);
 
-	YamlDataHolder dataHolder;
+	YamlParser::YamlDataHolder *dataHolder;
 };
 
 inline const WideString &  LocalizedString(const WideString & key)

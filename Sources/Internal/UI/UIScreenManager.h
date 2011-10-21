@@ -37,6 +37,10 @@
 #include "UI/UIScreenManagerMacOS.h"
 #elif defined(__DAVAENGINE_IPHONE__)
 #include "UI/UIScreenManageriPhone.h"
-#endif
+#elif defined(__DAVAENGINE_ANDROID__)
+	#include "UI/UIScreenManagerAndroid.h"
+#else //PLATFORMS
+	//other platforms
+#endif //PLATFORMS
 
 #endif // __DAVAENGINE_SCREENMANAGER_C_H__

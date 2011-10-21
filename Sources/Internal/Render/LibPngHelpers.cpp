@@ -31,7 +31,8 @@
 
 #if !defined(__DAVAENGINE_WIN32__)
 #include <unistd.h>
-#endif 
+#endif //#if !defined(__DAVAENGINE_WIN32__)
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,10 +40,12 @@
 #include <stdarg.h>
 #include <iostream>
 
-#include <png.h>
+#include <pnglib/png.h>
 #include "Render/RenderManager.h"
 #include "Render/2D/Sprite.h"
 #include "Render/Texture.h"
+
+#include "FileSystem/File.h"
 #include "FileSystem/FileSystem.h"
 
 using namespace DAVA;
@@ -93,9 +96,8 @@ static void	PngImageRead(png_structp pngPtr, png_bytep data, png_size_t size)
 	self->file->Read(data, size);
 }
 
-int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr)
+int LibPngWrapper::ReadPngFile(File *infile, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr)
 {
-	File         *infile;         /* PNG file pointer */
 	png_structp   png_ptr;        /* internally used by libpng */
 	png_infop     info_ptr;       /* user requested transforms */
 	
@@ -106,21 +108,13 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	int           bit_depth;
 	int           color_type;
 	
-	png_uint_32 width;            /* PNG image width in pixels */
-	png_uint_32 height;           /* PNG image height in pixels */
+	unsigned long width;            /* PNG image width in pixels */
+	unsigned long height;           /* PNG image height in pixels */
 	unsigned int rowbytes;         /* raw bytes at row n in image */
 	
 	image_data = NULL;
 	int i;
 	png_bytepp row_pointers = NULL;
-	
-	/* Open the file. */
-	infile = File::Create(file, File::OPEN | File::READ);
-	if (!infile) 
-	{
-		return 0;
-	}
-	
 	
 	/*
 	 * 		13.3 readpng_init()
@@ -131,7 +125,7 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	
 	if (!png_check_sig((unsigned char *) sig, 8)) 
 	{
-		infile->Release();
+		Logger::Error("[LibPngWrapper::ReadPngFile] wrong sig");
 		return 0;
 	}
 	
@@ -141,7 +135,7 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr) 
 	{
-		infile->Release();
+		Logger::Error("[LibPngWrapper::ReadPngFile] wrong PNG_LIBPNG_VER_STRING");
 		return 4;    /* out of memory */
 	}
 	
@@ -149,19 +143,31 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	if (!info_ptr) 
 	{
 		png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
-		infile->Release();
+		Logger::Error("[LibPngWrapper::ReadPngFile] failed png_create_info_struct");
 		return 4;    /* out of memory */
 	}
 	
 	
+	//VK_
+	//create png info struct
+	png_infop end_info = png_create_info_struct(png_ptr);
+	if (!end_info) 
+	{
+		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
+
+		Logger::Error("[LibPngWrapper::ReadPngFile] Unable to create png end info");
+		return 4;
+	}
+	//VK_
+
 	/*
 	 * block to handle libpng errors, 
 	 * then check whether the PNG file had a bKGD chunk
 	 */
 	if (setjmp(png_jmpbuf(png_ptr))) 
 	{
-		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-		infile->Release();
+		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+		Logger::Error("[LibPngWrapper::ReadPngFile] failed png_jmpbuf");
 		return 0;
 	}
 	
@@ -170,10 +176,12 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	 * stores it in the png_ptr struct for later use.
 	 */
 	/* png_ptr->io_ptr = (png_voidp)infile;*/
-	//png_init_io(png_ptr, infile);
 	PngImageRawData	raw;
 	raw.file = infile;
 	png_set_read_fn (png_ptr, &raw, PngImageRead);
+	
+//	png_ptr->io_ptr = (png_voidp)infile;
+//	png_set_read_fn(png_ptr, infile, PngReadMethod);
 	
 	/*
 	 * lets libpng know that we already checked the 8 
@@ -224,7 +232,7 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 
 	if (color_type == PNG_COLOR_TYPE_RGB)
 	{	
-		printf("*** Converting %s from RGB to RGBA\n", file);
+//		printf("*** Converting %s from RGB to RGBA\n", file);
 		png_set_filler(png_ptr, 0xFFFF, PNG_FILLER_AFTER);
 	}
 		
@@ -288,7 +296,6 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 	
 	/* Clean up. */
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-	infile->Release();
 	
 	*image_data_ptr = image_data;
 	
@@ -296,10 +303,28 @@ int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, 
 }
 
 
+int LibPngWrapper::ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr)
+{
+	File *pngFile = FileSystem::Instance()->CreateFileForFrameworkPath(file, 0);
+	if(pngFile)
+	{
+		int ret = ReadPngFile(pngFile, pwidth, pheight, image_data_ptr);
+		SafeRelease(pngFile);
+		return ret;
+	}
+	else
+	{
+		Logger::Error("[LibPngWrapper::ReadPngFile] can't create pngFile for %s", file);
+	}
+	
+	return 0;
+}
+
+
 
 void LibPngWrapper::WritePngFile(const char* file_name, int32 width, int32 height, uint8 * data)
 {
-	printf("* Writing PNG file (%d x %d): %s\n", width, height, file_name);
+	Logger::Debug("[LibPngWrapper::WritePngFile] Writing PNG file (%d x %d): %s\n", width, height, file_name);
 	png_byte color_type = PNG_COLOR_TYPE_RGBA;
 	png_byte bit_depth = 8;
 	png_color_8 sig_bit;
@@ -317,7 +342,11 @@ void LibPngWrapper::WritePngFile(const char* file_name, int32 width, int32 heigh
 	/* create file */
 	FILE *fp = fopen(file_name, "wb");
 	if (!fp)
-		abort_("[write_png_file] File %s could not be opened for writing", file_name);
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] File %s could not be opened for writing", file_name);
+		//abort_("[write_png_file] File %s could not be opened for writing", file_name);
+		return;
+	}
 	
 	
 	/* initialize stuff */
@@ -328,17 +357,30 @@ void LibPngWrapper::WritePngFile(const char* file_name, int32 width, int32 heigh
 	
 	info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr)
-		abort_("[write_png_file] png_create_info_struct failed");
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] png_create_info_struct failed");
+
+		//abort_("[write_png_file] png_create_info_struct failed");
+		return;
+	}
 	
 	if (setjmp(png_jmpbuf(png_ptr)))
-		abort_("[write_png_file] Error during init_io");
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] Error during init_io");
+		//abort_("[write_png_file] Error during init_io");
+		return;
+	}
 	
 	png_init_io(png_ptr, fp);
 	
 	
 	/* write header */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		abort_("[write_png_file] Error during writing header");
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] Error during writing header");
+		//abort_("[write_png_file] Error during writing header");
+		return;
+	}
 	
 	png_set_IHDR(png_ptr, info_ptr, width, height,
 				 bit_depth, color_type, PNG_INTERLACE_NONE,
@@ -358,14 +400,22 @@ void LibPngWrapper::WritePngFile(const char* file_name, int32 width, int32 heigh
 	
 	/* write bytes */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		abort_("[write_png_file] Error during writing bytes");
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] Error during writing bytes");
+		//abort_("[write_png_file] Error during writing bytes");
+		return;
+	}
 	
 	png_write_image(png_ptr, row_pointers);
 	
 	
 	/* end write */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		abort_("[write_png_file] Error during end of write");
+	{
+		Logger::Error("[LibPngWrapper::WritePngFile] Error during end of write");
+		//abort_("[write_png_file] Error during end of write");
+		return;
+	}
 	
 	png_write_end(png_ptr, NULL);
 	

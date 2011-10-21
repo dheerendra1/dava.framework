@@ -43,18 +43,32 @@ namespace DAVA
 
 //const char * FilepathInDocuments(const char * relativePathname);
 //const char * FilepathInDocuments(const String & relativePathname);
+//#endif//#if defined(__DAVAENGINE_ANDROID__)
+
+int32 GetSavedTextureID();
+void BindTexture(int32 tId);
+
+int32 GetSavedFBO();
+void BindFBO(int32 fbo);
+
+
+int read_handler(void *ext, unsigned char *buffer, size_t size, size_t *length);
+
 
 bool IsDrawThread();
 
 inline WideString StringToWString(const String& s);
 inline String WStringToString(const WideString& s);
 
+WideString WcharToWString(const wchar_t *s);
+bool IsEqual(const WideString& s1, const WideString& s2);
+
 WideString GetDeviceName();
 	
 #if defined(__DAVAENGINE_IPHONE__)
 void DisableSleepTimer();
 void EnableSleepTimer();
-#endif
+#endif //#if defined(__DAVAENGINE_IPHONE__)
 	
 //int SplitString(const String& input, const String& delimiter, std::vector<String>& results, bool includeEmpties = true);
 void Split(const String & inputString, const String & delims, Vector<String> & tokens);

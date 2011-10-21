@@ -35,6 +35,13 @@
 #include "Render/VertexBuffer.h"
 #include "Base/BaseMath.h"
 
+#ifdef __DAVAENGINE_ANDROID__
+#if !defined(GLchar)
+typedef char             GLchar;
+#endif //not defined GLchar
+#endif //#ifdef __DAVAENGINE_ANDROID__
+
+
 namespace DAVA
 {
     

@@ -35,7 +35,7 @@ using namespace DAVA;
 
 void FrameworkDidLaunched()
 {
-#if defined(__DAVAENGINE_IPHONE__)
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
 	KeyedArchive * appOptions = new KeyedArchive();
 	appOptions->SetInt("orientation", Core::SCREEN_ORIENTATION_LANDSCAPE_LEFT);
     appOptions->SetInt("renderer", Core::RENDERER_OPENGL_ES_2_0);

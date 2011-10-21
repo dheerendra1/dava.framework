@@ -36,7 +36,11 @@
 #include "Animation/AnimatedObject.h"
 #include "Scene2D/GameObjectManager.h"
 #include <stack>
+
+#if !defined(__DAVAENGINE_ANDROID__)
 #include <typeinfo>
+#endif //#if !defined(__DAVAENGINE_ANDROID__)
+
 #include "Box2D/Box2D.h"
 #include "Scene2D/Box2DDebugDraw.h"
 #include "Scene2D/Box2DTileCollider.h"

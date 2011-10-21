@@ -76,7 +76,7 @@ SoundBuffer::SoundBuffer()
 {
 #ifdef __DAVASOUND_AL__
 	buffer = 0;
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 SoundBuffer::~SoundBuffer()
@@ -100,10 +100,12 @@ int32 SoundBuffer::Release()
 void SoundBuffer::FullFill(SoundDataProvider * provider)
 {
 	int32 actualSize = provider->LoadData(&data, -1);
+
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alGenBuffers(1, &buffer));
 	AL_VERIFY(alBufferData(buffer, provider->GetFormat(), data, actualSize, provider->GetSampleRate()));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
+
 	Free(data);
 	data = 0;
 }
@@ -113,7 +115,7 @@ ALuint SoundBuffer::GetALBuffer()
 {
 	return buffer;
 }
-#endif 
+#endif //#ifdef __DAVASOUND_AL__
 
 bool SoundBuffer::Fill(SoundDataProvider * provider, int32 size)
 {
@@ -128,7 +130,7 @@ bool SoundBuffer::Fill(SoundDataProvider * provider, int32 size)
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alGenBuffers(1, &buffer));
 	AL_VERIFY(alBufferData(buffer, provider->GetFormat(), data, actualSize, provider->GetSampleRate()));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 	
 	Free(data);
 	data = 0;

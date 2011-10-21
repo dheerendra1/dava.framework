@@ -200,6 +200,21 @@ private:
 	List<ResourceArchiveItem> resourceArchiveList;
 
 	friend class File;
+
+#if defined(__DAVAENGINE_ANDROID__)
+private:	
+	enum eConst
+	{
+		MAX_PATH = 260
+	};
+	char8 assetsPath[MAX_PATH];
+	char8 documentsPath[MAX_PATH];
+	zip *APKArchive;
+public:
+	void SetPath(const char8 *docPath, const char8 *assets);
+
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+	
 };
 	
 };

@@ -46,7 +46,16 @@ namespace DAVA
 //        Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
 //}
     
-#define RENDER_VERIFY(command) command;  
+//#define RENDER_VERIFY(command) command;  
+    
+#define RENDER_VERIFY(command) \
+{ \
+	command;\
+	GLenum err = glGetError();\
+	if (err != GL_NO_ERROR)\
+        Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", #command, __FILE__, __LINE__, err);\
+}
+
 
 };
 #endif // #if defined(__DAVAENGINE_OPENGL__)

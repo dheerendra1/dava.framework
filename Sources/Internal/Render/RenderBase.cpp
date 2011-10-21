@@ -54,6 +54,4 @@ namespace DAVA
 			DVASSERT(0 && "Application tried to call GL or DX not between BeginFrame / EndFrame.");
 		}
 	}
-
-
 };

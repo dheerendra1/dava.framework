@@ -57,14 +57,15 @@
 	#define __DAVAENGINE_OPENGL__
 	//	#include <GL/glew.h>
 	#include <OpenGL/OpenGL.h>
-	//	#include <GLUT/glut.h>
+    #include <OpenGL/gl.h>
+//    #include <GLUT/glut.h>
 #elif defined(__DAVAENGINE_WIN32__)
  	#if defined(__DAVAENGINE_RENDER_AUTOCONFIG__)
  	#define __DAVAENGINE_DIRECTX9__
 //	#define __DAVAENGINE_OPENGL__
  	#endif 
 
-	#if defined(__DAVAENGINE_OPENGL__)
+    #if defined(__DAVAENGINE_OPENGL__)
 		#include <GL/glew.h>
 		#include <direct.h>
 	#elif defined(__DAVAENGINE_DIRECTX9__)
@@ -76,8 +77,18 @@
 		#include <d3d9.h>
 		#include <dxerr.h>
 #endif 
+#elif defined(__DAVAENGINE_ANDROID__)
+	#define __DAVAENGINE_OPENGL__
+	#include <GLES/gl.h>
+	#include <GLES/glext.h>
+ 	#include <GLES2/gl2.h>
+ 	#include <GLES2/gl2ext.h>
 
-#endif 
+	#define __DAVAENGINE_ANDROID_APIVERSION_8__	// for different SDK versions different path and 
+
+#else //PLATFORMS
+	//other platforms
+#endif//PLATFORMS 
 
 
 #if defined(__DAVAENGINE_OPENGL__)
@@ -193,7 +204,6 @@ inline int32 GetVertexSize(int32 flags)
     if (flags & EVF_JOINTWEIGHT) size += 2 * sizeof(float32); // 4 * 3 + 4 * 3= 12 + 12 
     return size;
 }
-
 
 class RenderGuard
 {

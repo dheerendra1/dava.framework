@@ -194,7 +194,7 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 
 void StaticMesh::Draw()
 {
-#ifdef __DAVAENGINE_IPHONE__
+#if defined(__DAVAENGINE_IPHONE__) || defined (__DAVAENGINE_ANDROID__)
 	glPushMatrix();
 	
 	for (uint32 k = 0; k < polygroupCount; ++k)
@@ -202,7 +202,7 @@ void StaticMesh::Draw()
 		DrawPolygonGroup(k, NULL);
 	}
 	glPopMatrix();
-#endif
+#endif //#if defined(__DAVAENGINE_IPHONE__) || defined (__DAVAENGINE_ANDROID__)
 	SceneNode::Draw();
 }
 	

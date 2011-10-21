@@ -51,9 +51,10 @@ public:
 
 	void FullFill(SoundDataProvider * provider);
 	bool Fill(SoundDataProvider * provider, int32 size); //false if not filled
+
 #ifdef __DAVASOUND_AL__
 	ALuint GetALBuffer();
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 
 private:
 	enum eType
@@ -67,7 +68,7 @@ private:
 
 #ifdef __DAVASOUND_AL__
 	ALuint buffer;
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 
 	String fileName;
 	int8 * data;

@@ -1098,7 +1098,7 @@ namespace DAVA
 		
 		switch (currentInput->phase) 
 		{
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                
 			case UIEvent::PHASE_KEYCHAR:
 			{
 					Input(currentInput);
@@ -1178,7 +1178,7 @@ namespace DAVA
 									{
 										controlState |= STATE_PRESSED_INSIDE;
 										controlState &= ~STATE_PRESSED_OUTSIDE;
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 										controlState |= STATE_HOVER;
 #endif
 									}
@@ -1221,7 +1221,7 @@ namespace DAVA
 							if(currentInput->controlState == UIEvent::CONTROL_STATE_INSIDE)
 							{
 								touchesInside--;
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 								if(totalTouches == 0)
 								{
 									controlState |= STATE_HOVER;
@@ -1255,7 +1255,7 @@ namespace DAVA
 							{
 								controlState |= STATE_PRESSED_OUTSIDE;
 								controlState &= ~STATE_PRESSED_INSIDE;
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 								controlState &= ~STATE_HOVER;
 #endif
 							}

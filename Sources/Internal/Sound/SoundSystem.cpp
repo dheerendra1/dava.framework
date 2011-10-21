@@ -39,9 +39,10 @@ namespace DAVA
 {
 
 #ifdef __DAVASOUND_AL__
-ALCcontext * context;
-ALCdevice * device;
-#endif
+ALCcontext * context = NULL;
+ALCdevice * device = NULL;
+#endif //#ifdef __DAVASOUND_AL__
+
 SoundSystem::SoundSystem(int32 _maxChannels)
 :	maxChannels(_maxChannels),
 	volume(1.f)
@@ -54,7 +55,8 @@ SoundSystem::SoundSystem(int32 _maxChannels)
 		AL_CHECKERROR();
 		AL_VERIFY(alcMakeContextCurrent(context));
 	}
-#endif
+#endif //#ifdef __DAVASOUND_AL__
+
 
 	for(int32 i = 0; i < maxChannels; ++i)
 	{
@@ -81,7 +83,7 @@ SoundSystem::~SoundSystem()
 	alcMakeContextCurrent(0);
 	alcDestroyContext(context);
 	alcCloseDevice(device);
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 SoundChannel * SoundSystem::FindChannel(int32 priority)
@@ -160,7 +162,7 @@ void SoundSystem::Suspend()
 	}
 #ifdef __DAVASOUND_AL__
 	alcSuspendContext(context);
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundSystem::Resume()
@@ -177,15 +179,16 @@ void SoundSystem::Resume()
 			ch->Pause(false);
 		}
 	}
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundSystem::SetVolume(float32 _volume)
 {
 	volume = Clamp(_volume, 0.f, 1.f);
+
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alListenerf(AL_GAIN, volume));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 float32 SoundSystem::GetVolume()

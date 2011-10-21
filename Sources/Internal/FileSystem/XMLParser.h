@@ -34,6 +34,9 @@
 #include "Base/BaseTypes.h"
 #include "Base/BaseObject.h"
 
+#include "FileSystem/FileSystem.h"
+
+#include "libxml/xmlstring.h"
 
 namespace DAVA 
 {
@@ -69,11 +72,18 @@ public:
 	bool ParseFile(const String &fileName, XMLParserDelegate *delegate);
 	bool ParseBytes(const unsigned char *bytes, int length, XMLParserDelegate *delegate);
 	
+private:
+	static void StartDocument(void *user_data);
+	static void EndDocument(void *user_data);
+	static void Characters(void *user_data, const xmlChar *ch, int len);
+
+	static void StartElement(void *user_data, const xmlChar *name, const xmlChar **attrs);
+	static void EndElement(void *user_data, const xmlChar *name);
 	
 	
 protected:
 	
-	~XMLParser();
+	virtual ~XMLParser();
 };
 	
 	
@@ -92,4 +102,4 @@ bool XMLParserDelegate::GetAttribute(const Map<String, String> &attributesMap, c
 	
 };
 
-#endif
+#endif //#ifndef __DAVAENGINE_XML_PARSER__

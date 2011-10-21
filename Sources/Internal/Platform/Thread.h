@@ -119,7 +119,20 @@ public:
 		Note: This function called from Core::Create. Core::Create must be always called from main thread.
 	*/
 	static void		InitMainThread();
-#endif	
+
+
+#elif defined(__DAVAENGINE_ANDROID__)
+private:
+	friend void	* PthreadMain(void * param);
+	void		StartAndroid();
+	bool		isMainThread;
+public:
+	void		MainThread();
+	static void		SleepThread(int32 timems);
+
+#else //PLATFORMS
+	// other platforms
+#endif //PLATFORMS	
 };
 
 };

@@ -35,6 +35,9 @@
 
 namespace DAVA 
 {
+#if defined(__DAVAENGINE_ANDROID__)
+class Mutex;
+#endif //#if defined(__DAVAENGINE_ANDROID__)
 class SystemTimer : public Singleton<SystemTimer> 
 {
 #if defined(__DAVAENGINE_WIN32__)
@@ -42,9 +45,14 @@ class SystemTimer : public Singleton<SystemTimer>
 	LARGE_INTEGER	tLi;
 	BOOL			bHighTimerSupport;
 	float32			t0;
-#else // Mac & iPhone
+#elif defined (__DAVAENGINE_ANDROID__)
+	float32			t0;
+	uint64 savedSec;
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	uint64_t t0;
-#endif // 
+#else //PLATFORMS
+	//other platforms
+#endif //PLATFORMS
 
 	static float delta;
 	static uint64 stampTime;
@@ -52,6 +60,8 @@ class SystemTimer : public Singleton<SystemTimer>
 public:
 	
 	SystemTimer();
+	virtual ~SystemTimer();
+
 	void Start();
 	float32 ElapsedSec();
 	uint64 AbsoluteMS();
@@ -67,6 +77,11 @@ public:
 	{
 		return stampTime;
 	}
+#if defined(__DAVAENGINE_ANDROID__)
+	Mutex  *tickMutex;
+	uint64 GetTickCount();
+	void InitTickCount();
+#endif //#if defined(__DAVAENGINE_ANDROID__)
 };
 };
 

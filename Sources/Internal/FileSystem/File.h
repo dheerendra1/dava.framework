@@ -33,6 +33,10 @@
 #include "Base/BaseTypes.h"
 #include "Base/BaseObject.h"
 
+#if defined(__DAVAENGINE_ANDROID__)
+	#include "zip/zip.h"
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
 namespace DAVA 
 {
 /**
@@ -85,6 +89,10 @@ public:
 	 \returns file instance
 	 */
 	static File * CreateFromSystemPath(const String &filePath, uint32 attributes);
+#if defined(__DAVAENGINE_ANDROID__)
+	static File * CreateFromSystemPath(zip *APKArchive, const String &filename);
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
 
 	/**
 		\brief Get this file name

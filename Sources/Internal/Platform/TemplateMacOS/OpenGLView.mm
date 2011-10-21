@@ -30,7 +30,6 @@
 #import "OpenGLView.h"
 #include "DAVAEngine.h"
 
-
 extern void FrameworkMain(int argc, char *argv[]);
 
 @implementation OpenGLView
@@ -40,9 +39,10 @@ extern void FrameworkMain(int argc, char *argv[]);
 	NSLog(@"[CoreMacOSPlatform] OpenGLView Init");
 	
 	
-	NSLog(@"Display bpp: %d", CGDisplayBitsPerPixel(kCGDirectMainDisplay));
+	NSLog(@"Display bpp: %d", [self DisplayBitsPerPixel:kCGDirectMainDisplay]);// CGDisplayBitsPerPixel(kCGDirectMainDisplay));
 
     // Pixel Format Attributes for the View-based (non-FullScreen) NSOpenGLContext
+    size_t displ = [self DisplayBitsPerPixel: kCGDirectMainDisplay];
     NSOpenGLPixelFormatAttribute attrs[] = 
 	{
 		
@@ -50,7 +50,7 @@ extern void FrameworkMain(int argc, char *argv[]);
         NSOpenGLPFANoRecovery,
 		
         // Attributes Common to FullScreen and non-FullScreen
-        NSOpenGLPFAColorSize, CGDisplayBitsPerPixel(kCGDirectMainDisplay),//24,
+        NSOpenGLPFAColorSize, displ,//24,
         NSOpenGLPFADepthSize, 16,
         NSOpenGLPFADoubleBuffer,
         NSOpenGLPFAAccelerated,
@@ -83,6 +83,59 @@ extern void FrameworkMain(int argc, char *argv[]);
     //RenderManager::Create(Core::RENDERER_OPENGL);
 	
 	return self;	
+}
+
+- (size_t)DisplayBitsPerPixel:(CGDirectDisplayID)displayId
+{
+//    Gestalt(gestaltSystemVersionMajor, &versMaj);
+//    Gestalt(gestaltSystemVersionMinor, &versMin);
+//    Gestalt(gestaltSystemVersionBugFix, &versBugFix);
+    
+    SInt32 MacVersion;
+    
+    if (Gestalt(gestaltSystemVersion, &MacVersion) == noErr)
+    {
+        if (MacVersion == 0x0602)
+        {
+            // User is using Mac System 6.0.2
+            // (No, neither Cocoa nor Carbon work under System 6.0.2,
+            // or any OS release prior to System 8.1.
+            // This is just an example of how it is done.)
+        }
+        else if (MacVersion <= 0x0605)
+        {
+            // User is using Mac System 6.0.5 or earlier
+        }
+        else if (MacVersion >= 0x0904)
+        {
+            // User is using Mac System 9.0.4 or later
+        }
+        else if (MacVersion == 0x1013)
+        {
+            // User is using Mac OS X 10.1.3
+        }
+    }
+    
+    size_t depth = 0;
+    if(true)
+    {
+        CGDisplayModeRef mode = CGDisplayCopyDisplayMode(displayId);
+        
+        CFStringRef pixEnc = CGDisplayModeCopyPixelEncoding(mode);
+        if(CFStringCompare(pixEnc, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
+            depth = 32;
+        else if(CFStringCompare(pixEnc, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
+            depth = 16;
+        else if(CFStringCompare(pixEnc, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo)
+            depth = 8;
+    }
+    else
+    {
+//        depth = CGDisplayBitsPerPixel(displayId);
+    }
+    
+    
+    return depth;
 }
 
 - (void) enableTrackingArea

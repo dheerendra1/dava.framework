@@ -24,9 +24,14 @@
 #ifndef __NEON_MATRIX_IMPL_H__
 #define __NEON_MATRIX_IMPL_H__
 
+#include "Base/BaseTypes.h"
+
+#if !defined(__DAVAENGINE_ANDROID__)
 #ifdef __arm__
 #include "arm/arch.h"
 #endif
+#endif //#if !defined(__DAVAENGINE_ANDROID__)
+
 
 // Matrixes are assumed to be stored in column major format according to OpenGL
 // specification.

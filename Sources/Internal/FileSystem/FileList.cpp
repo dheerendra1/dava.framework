@@ -30,22 +30,26 @@
 #include "FileSystem/FileList.h"
 #include "Utils/Utils.h"
 
-#if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__)
+#if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #elif defined(__DAVAENGINE_WIN32__)
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <io.h>
 #include <direct.h>
-
-#endif
+#endif //PLATFORMS
 
 namespace DAVA
 {
+
+#if defined(__DAVAENGINE_ANDROID__)
+int alphasortAndroid(const dirent **a, const dirent **b)
+{
+	alphasort(a, b);
+}
+#endif //#if defined(__DAVAENGINE_ANDROID__)
 
 FileList::FileList(const String & filepath)
 {
@@ -103,7 +107,25 @@ FileList::FileList(const String & filepath)
 		}
 		free(namelist);
 	}
-#endif 
+#elif defined(__DAVAENGINE_ANDROID__)
+	struct dirent **namelist;
+	FileEntry entry;
+
+	int32 n = scandir(path.c_str(), &namelist, 0, alphasortAndroid);
+	if (n >= 0)
+	{
+		while(n--)
+		{
+			entry.name = namelist[n]->d_name;
+			entry.size = 0;
+			entry.isDirectory = namelist[n]->d_type == DT_DIR;
+			fileList.push_back(entry);
+			free(namelist[n]);
+		}
+		free(namelist);
+	}
+#endif //PLATFORMS
+
 	directoryCount = 0;
 	fileCount = 0;
 	for (int fi = 0; fi < GetCount(); ++fi)

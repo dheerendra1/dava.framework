@@ -50,7 +50,7 @@ class Scene : public SceneNode
 {
 public:	
 	Scene();
-	~Scene();
+	virtual ~Scene();
 	
 	void		ClearScene();
 	

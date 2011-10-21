@@ -46,6 +46,14 @@ int32 SoundDataProvider::GetSampleRate()
 	return sampleRate;
 }
 
+bool SoundDataProvider::Init()
+{
+    isInited = true;
+    
+    return true;
+}
+
+    
 #ifdef __DAVASOUND_AL__
 ALenum SoundDataProvider::GetFormat()
 {
@@ -88,13 +96,7 @@ ALenum SoundDataProvider::GetFormat()
 	}
 }
 
-bool SoundDataProvider::Init()
-{
-	isInited = true;
+#endif //#ifdef __DAVASOUND_AL__
 
-	return true;
-}
-
-#endif
 
 };

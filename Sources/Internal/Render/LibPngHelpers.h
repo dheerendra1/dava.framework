@@ -39,9 +39,13 @@ namespace DAVA
 
 class Texture;
 class Sprite;
+class File;
 
 class LibPngWrapper
 {
+private:
+	static int ReadPngFile(File *file, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr);
+
 public:
 	static int ReadPngFile(const char *file, int32 *pwidth, int32 *pheight, uint8 **image_data_ptr);
 	static void WritePngFile(const char* fileName, int32 width, int32 height, uint8 * data);

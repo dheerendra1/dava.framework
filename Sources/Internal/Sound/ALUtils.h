@@ -42,6 +42,9 @@
 #elif defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_IPHONE__)
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
+#elif defined(__DAVAENGINE_ANDROID__)
+#include <openal/include/al/al.h>
+#include <openal/include/al/alc.h>
 #endif
 
 namespace DAVA
@@ -55,7 +58,7 @@ namespace DAVA
 	ALenum error; \
 	if((error = alGetError()) != AL_NO_ERROR) \
 	{ \
-		Logger::Debug("OpenAL: %s file:%s line:%d failed with errorcode: 0x%x", #command, __FILE__, __LINE__, error); \
+		Logger::Error("OpenAL: %s file:%s line:%d failed with errorcode: 0x%x", #command, __FILE__, __LINE__, error); \
 	} \
 } \
 
@@ -64,7 +67,7 @@ namespace DAVA
 	ALenum error; \
 	if((error = alGetError()) != AL_NO_ERROR) \
 	{ \
-		Logger::Debug("OpenAL: file:%s line:%d failed with errorcode: 0x%x", __FILE__, __LINE__, error); \
+		Logger::Error("OpenAL: file:%s line:%d failed with errorcode: 0x%x", __FILE__, __LINE__, error); \
 	} \
 } \
 

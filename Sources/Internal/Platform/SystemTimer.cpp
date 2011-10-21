@@ -33,14 +33,17 @@
 #include "DAVAConfig.h"
 #include "Debug/Replay.h"
 
+
+#if defined(__DAVAENGINE_ANDROID__)
+#include "Platform/mutex.h"
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
 namespace DAVA 
 {
 
-#if defined(__DAVAENGINE_WIN32__)
-
-#else
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	static mach_timebase_info_data_t timebase;
-#endif 
+#endif //#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 
 float SystemTimer::delta = 0;
 uint64 SystemTimer::stampTime = 0;
@@ -49,7 +52,43 @@ uint64 SystemTimer::stampTime = 0;
 static uint64 startTime;
 static uint64 curTime;
 static int frameCount;
-#endif
+#endif //#ifdef SHOW_FRAME_TIME
+
+
+#if defined(__DAVAENGINE_ANDROID__)
+void SystemTimer::InitTickCount()
+{
+	if(!tickMutex)
+		return;
+
+	tickMutex->Lock();
+	struct timeval tv; 
+	gettimeofday(&tv,NULL); 
+	savedSec = tv.tv_sec;
+	tickMutex->Unlock();
+
+	Logger::Info("[SystemTimer::InitTickCount] savedSec = %ld", savedSec);
+}
+
+uint64 SystemTimer::GetTickCount() 
+{ 
+	if(!tickMutex)
+		return 0;
+
+	tickMutex->Lock();
+	struct timeval tv; 
+	gettimeofday(&tv,NULL); 
+
+	uint64 sec = tv.tv_sec - savedSec;
+	uint64 msec = tv.tv_usec;
+	sec = sec*1000;
+	msec = msec / 1000;
+	uint64 ret = sec + msec;
+
+	tickMutex->Unlock();
+ 	return  ret;
+}
+#endif //#if defined(__DAVAENGINE_ANDROID__)
 
 SystemTimer::SystemTimer()
 {
@@ -59,16 +98,30 @@ SystemTimer::SystemTimer()
 	{
 		Logger::Debug("[SystemTimer] High frequency timer support enabled\n");
 	}
-
-#else
+#elif defined(__DAVAENGINE_ANDROID__)
+	tickMutex = new Mutex();
+	savedSec = 0;
+	InitTickCount();
+ 	//t0 = (float32)(GetTickCount() / 1000.0f);
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	(void) mach_timebase_info(&timebase);
 	t0 = mach_absolute_time();
-#endif
+#else //PLATFORMS
+	//other platorfms
+#endif //PLATFORMS
 
 #ifdef SHOW_FRAME_TIME
 	curTime = startTime = AbsoluteMS();
 	frameCount = 0;
-#endif
+#endif //#ifdef SHOW_FRAME_TIME
+}
+
+SystemTimer::~SystemTimer()
+{
+#if defined(__DAVAENGINE_ANDROID__)
+	SafeRelease(tickMutex);
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
 }
 
 void SystemTimer::Start()
@@ -96,8 +149,21 @@ void SystemTimer::Start()
 	{
 		t0 = (float32)(GetTickCount() / 1000.0f);
 	}
+#elif defined (__DAVAENGINE_ANDROID__)
+	delta = ElapsedSec();
 
-#else
+	if(delta < 0.001f)
+	{
+		delta = 0.001f;
+	}
+	else if(delta > 0.1f)
+	{
+		delta = 0.1f;
+	}
+
+ 	t0 = (float32)(GetTickCount() / 1000.0f);
+
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	delta = ElapsedSec();
 #ifdef SHOW_FRAME_TIME
 	curTime = AbsoluteMS();
@@ -108,7 +174,7 @@ void SystemTimer::Start()
 		startTime = curTime;
 		frameCount = 0;
 	}
-#endif
+#endif //#ifdef SHOW_FRAME_TIME
 	if(delta < 0.001f)
 	{
 		delta = 0.001f;
@@ -118,7 +184,9 @@ void SystemTimer::Start()
 		delta = 0.1f;
 	}
 	t0 = mach_absolute_time();	
-#endif
+#else //PLATFORMS
+	//other platforms
+#endif //PLATFORMS
 	
 	stampTime = AbsoluteMS();
 }
@@ -139,8 +207,10 @@ float32 SystemTimer::ElapsedSec()
 		Logger::Info("delta %f", currentTime - t0);
 		return currentTime - t0;
 	}
-
-#else
+#elif defined(__DAVAENGINE_ANDROID__)
+	float32 currentTime = (float32)(GetTickCount() / 1000.0f);
+	return (currentTime - t0);
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	uint64_t current = mach_absolute_time();
 	uint64_t elapsed = (current - t0) * timebase.numer / timebase.denom;
 	int highestBitSet = 31;
@@ -160,7 +230,10 @@ float32 SystemTimer::ElapsedSec()
 	float t2 = (float)elapsed32 * mult / 1000000000.0f ;
 	//float t = ((float)(mach_absolute_time() - t0)) * ((float)timebase.numer) / ((float)timebase.denom) / 1000000000.0f;
 	return t2;
-#endif
+#else //PLATFORMS
+	//other platforms
+	return 0;
+#endif //PLATFORMS
 }
 
 uint64 SystemTimer::AbsoluteMS()
@@ -176,7 +249,10 @@ uint64 SystemTimer::AbsoluteMS()
 	{
 		return 0;
 	}
-#else
+
+#elif defined(__DAVAENGINE_ANDROID__)
+	return 0;
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	uint64_t numer = timebase.numer;
 	uint64_t denom = timebase.denom;
 
@@ -189,7 +265,10 @@ uint64 SystemTimer::AbsoluteMS()
 	elapsed *= numer;
 	elapsed /= denom;
 	return elapsed / 1000000;
-#endif
+#else //PLATFORMS
+	//other plaforms
+	return 0;
+#endif //PLATFORMS
 }
 
 void SystemTimer::SetFrameDelta(float32 _delta)

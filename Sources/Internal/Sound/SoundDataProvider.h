@@ -52,7 +52,7 @@ public:
 	int32 GetSampleRate();
 #ifdef __DAVASOUND_AL__
 	ALenum GetFormat();
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 
 protected:
 	String fileName;

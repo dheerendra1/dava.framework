@@ -40,7 +40,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #elif defined(__DAVAENGINE_MACOS__)
 #include <ApplicationServices/ApplicationServices.h>
-#endif 
+#endif //PLATFORMS
 
 namespace DAVA 
 {
@@ -426,7 +426,55 @@ Image * Image::CreateFromFile(const String & pathName)
 	return davaImage;
 };
 
-#endif //	
+
+#elif defined(__DAVAENGINE_ANDROID__)
+
+Image * Image::CreateFromFile(const String & pathName)
+{
+	//TODO: VK: add android code
+	//to do as Win32?
+	//	Logger::Debug("[Image::CreateFromFile] pathname is %s", pathName.c_str());
+
+
+	Image * davaImage = new Image();
+	davaImage->format = FORMAT_RGBA8888;
+	//  	int ret = LibPngWrapper::ReadPngFile(FileSystem::Instance()->SystemPathForFrameworkPath(pathName).c_str(), &davaImage->width, &davaImage->height, &davaImage->data);
+	int ret = LibPngWrapper::ReadPngFile(pathName.c_str(), &davaImage->width, &davaImage->height, &davaImage->data);
+	//	Logger::Debug("[Image::CreateFromFile] ret = %d", ret);
+
+
+	if(davaImage->format == Image::FORMAT_RGBA8888) 
+	{
+		unsigned int * inOutPixel32 = (unsigned int*)davaImage->data;
+		for(int i = 0; i < davaImage->width * davaImage->height; ++i)
+		{
+			unsigned int pixel = *inOutPixel32;
+			//pixel = pixel & (0xFFFFFFFF);
+
+			unsigned int a = (pixel >> 24) & 0xFF;
+			unsigned int r = (pixel >> 16) & 0xFF;
+			unsigned int g = (pixel >> 8) & 0xFF;
+			unsigned int b = pixel & 0xFF;
+
+			//if (a != 0)
+			{
+				r = r * a / 255;
+				g = g * a / 255;
+				b = b * a / 255;
+			}
+			*inOutPixel32 = ((a) << 24) | (r << 16) | (g << 8) | b;
+			inOutPixel32++;
+			//	*inOutPixel32 = ((*inAlphaData) << 24) | pixel;
+			//	unsigned int a = *inAlphaData;
+			//	inAlphaData++;
+		}
+	}
+	return davaImage;
+}
+
+#else //other platforms
+
+#endif //PLATFORMS
 
 
 void Image::Save(const String & filename)

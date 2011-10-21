@@ -55,9 +55,9 @@ public:
 			PHASE_BEGAN = 0	//!<Screen touch or mouse button press is began.
 		,	PHASE_DRAG		//!<User moves mouse with presset button or finger over the screen.
 		,	PHASE_ENDED		//!<Screen touch or mouse button press is ended.
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 		,	PHASE_MOVE		//!<Mouse move event. Mouse moves without pressing any buttons. Works only with mouse controller.
-#endif
+#endif //#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 		,	PHASE_CANCELLED	//!<Event was cancelled by the platform or by the control system for the some reason.
 
         ,	PHASE_KEYCHAR	//!<Event is a keyboard key pressing event.

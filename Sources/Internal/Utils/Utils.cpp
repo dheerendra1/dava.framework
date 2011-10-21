@@ -31,10 +31,118 @@
 #include "Utils/Utils.h"
 #include "Utils/StringFormat.h"
 
+#include "FileSystem/YamlParser.h"
+
 namespace DAVA
 {
 
 	
+WideString WcharToWString(const wchar_t *s)
+{
+//	Logger::Info("[WcharToWString] s = %s", s);
+
+	WideString temp;
+	if(s)
+	{
+
+		wchar_t c = 0;
+		int size = 0;
+		do 
+		{
+			c = s[size];
+			++size;
+//			Logger::Info("[WcharToWString] c = %d, size = %d", c, size);
+			
+			if(c)
+				temp.append(1, c);
+		} while (c);
+	}
+
+	return temp; 
+}
+
+bool IsEqual(const WideString& s1, const WideString& s2)
+{
+	char16 *p1 = (char16 *)s1.c_str();
+	char16 *p2 = (char16 *)s2.c_str();
+
+	while(*p1 && *p2)
+	{
+		if(*p1 != *p2)
+			return false;
+
+		++p1;
+		++p2;
+	}
+
+	return (*p1 == *p2);
+}
+
+
+int32 lastBindedTexture = 0;
+int32 GetSavedTextureID()
+{
+	int32 saveId = 0;
+
+#if defined(__DAVAENGINE_ANDROID__)
+	saveId = lastBindedTexture;
+#else //#if defined(__DAVAENGINE_ANDROID__)
+	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
+	return saveId;
+}
+
+void BindTexture(int32 tId)
+{
+	if(0 != tId)
+	{
+// 		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, tId));
+		glBindTexture(GL_TEXTURE_2D, tId);
+
+		GLenum err = glGetError();
+		if (err != GL_NO_ERROR)
+			Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", "glBindTexture(GL_TEXTURE_2D, tId)", __FILE__, __LINE__, err);
+
+		lastBindedTexture = tId;
+	}
+}
+
+int32 lastBindedFBO = 0;
+int32 GetSavedFBO()
+{
+	int32 saveFBO = 0;
+
+#if defined(__DAVAENGINE_IPHONE__)
+	RENDER_VERIFY(glGetIntegerv(GL_FRAMEBUFFER_BINDING_OES, &saveFBO));
+#elif defined(__DAVAENGINE_ANDROID__)
+	saveFBO = lastBindedFBO;
+#else //Non ES platforms
+	RENDER_VERIFY(glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &saveFBO));
+#endif //PLATFORMS
+
+	return saveFBO;
+}
+void BindFBO(int32 fbo)
+{
+//	if(0 != fbo)
+	{
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
+		glBindFramebufferOES(GL_FRAMEBUFFER_OES, fbo);	// Unbind the FBO for now
+#else //Non ES platforms
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);	// Unbind the FBO for now
+#endif //PLATFORMS
+
+		GLenum err = glGetError();
+		if (err != GL_NO_ERROR)
+			Logger::Debug("%s file:%s line:%d gl failed with errorcode: 0x%08x", "glBindTexture(GL_TEXTURE_2D, tId)", __FILE__, __LINE__, err);
+
+
+		lastBindedFBO = fbo;
+	}
+}
+
+
 
 void Split(const String & inputString, const String & delims, Vector<String> & tokens)
 {
@@ -54,6 +162,28 @@ void Split(const String & inputString, const String & delims, Vector<String> & t
 		// Find next delimiter at end of token.
 		pos     = inputString.find_first_of(delims, lastPos);
 	}	
+}
+
+	
+/* Set a generic reader. */
+int read_handler(void *ext, unsigned char *buffer, size_t size, size_t *length)
+{
+	YamlParser::YamlDataHolder * holder = (YamlParser::YamlDataHolder*)ext;
+	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
+
+//    Logger::Debug("[read_handler] sizeToWrite = %d, holder = %p, buffer = %p", sizeToWrite, holder, buffer);
+//    if(holder)
+//    {
+//        Logger::Debug("[read_handler] holder->data = %p", holder->data);
+//    }
+    
+	memcpy(buffer, holder->data, sizeToWrite);
+	
+    *length = sizeToWrite;
+
+	holder->dataOffset += sizeToWrite;
+
+	return 1;
 }
 
 	

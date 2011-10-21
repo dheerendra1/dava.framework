@@ -35,6 +35,7 @@
 namespace DAVA
 {
 
+#if defined(__OGG_ENABLED__)
 size_t OVReadFunc(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
 	File * file = (File*)datasource;
@@ -75,6 +76,7 @@ long OVTellFunc(void *datasource)
 	File * file = (File*)datasource;
 	return (long)file->GetPos();
 }
+#endif //#if defined(__OGG_ENABLED__)
 
 SoundOVProvider::SoundOVProvider(const String & _fileName)
 :	SoundDataProvider(_fileName),
@@ -87,7 +89,11 @@ SoundOVProvider::~SoundOVProvider()
 {
 	if(file)
 	{
+#if defined(__OGG_ENABLED__)
 		ov_clear(&oggFile);
+#endif //#if defined(__OGG_ENABLED__)
+
+		//TODO: VK: need SafeRelease(file) ?
 	}
 }
 
@@ -101,6 +107,8 @@ bool SoundOVProvider::Init()
 	file = File::Create(fileName, File::OPEN | File::READ);
 	if(0 == file)
 		return false;
+
+#if defined(__OGG_ENABLED__)
 
 	ov_callbacks callbacks;
 	callbacks.read_func = OVReadFunc;
@@ -121,11 +129,15 @@ bool SoundOVProvider::Init()
 	//250 ms
 	streamBufferSize = channelsCount*sampleRate*sampleSize/8;
 
+#endif //#if defined(__OGG_ENABLED__)
+
 	return true;
 }
 
 int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 {
+#if defined(__OGG_ENABLED__)
+
 	bool infiniteLoad = false;
 	static const int32 OV_CHUNK_SIZE = 4096;
 	if(-1 == desiredSize)
@@ -173,11 +185,16 @@ int32 SoundOVProvider::LoadData(int8 ** buffer, int32 desiredSize)
 	}
 
 	return size;
+#else //#if defined(__OGG_ENABLED__)
+	return 0;
+#endif //#if defined(__OGG_ENABLED__)
 }
 
 void SoundOVProvider::Rewind()
 {
+#if defined(__OGG_ENABLED__)
 	ov_raw_seek(&oggFile, 0);
+#endif //#if defined(__OGG_ENABLED__)
 }
 
 };

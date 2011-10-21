@@ -70,7 +70,7 @@ public:
 private:
 #ifdef __DAVASOUND_AL__
 	ALuint source;
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 
 	eState state;
 	int32 priority;

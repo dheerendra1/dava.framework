@@ -231,14 +231,41 @@ void UIFileSystemDialog::SetExtensionFilter(const String & extensionFilter)
     SetExtensionFilter(newExtensionFilter);
 }
 
+#ifdef __DAVAENGINE_ANDROID__
+int AndroidToLower (int c)
+{
+    if('A' <= c && c <= 'Z')
+    {
+        return c - ('A' - 'a');
+    }
+    else
+    {
+        WideString str = L"АЯа";
+        if(str.at(0) <= c && c <= str.at(1))
+        {
+            return c - (str.at(0) - str.at(2));
+        }
+    }
+    
+    return c;
+}
+
+#endif //#ifdef __DAVAENGINE_ANDROID__
+    
+
 void UIFileSystemDialog::SetExtensionFilter(const Vector<String> &newExtensionFilter)
 {
     DVASSERT(!GetParent());
     extensionFilter.clear();
     extensionFilter = newExtensionFilter;
     
+#ifdef __DAVAENGINE_ANDROID__    
+    for (int32 k = 0; k < extensionFilter.size(); ++k)
+        std::transform(extensionFilter[k].begin(), extensionFilter[k].end(), extensionFilter[k].begin(), AndroidToLower);
+#else //#ifdef __DAVAENGINE_ANDROID__    
     for (int32 k = 0; k < extensionFilter.size(); ++k)
         std::transform(extensionFilter[k].begin(), extensionFilter[k].end(), extensionFilter[k].begin(), std::tolower);
+#endif //#ifndef __DAVAENGINE_ANDROID__    
 }
 
 const Vector<String> & UIFileSystemDialog::GetExtensionFilter()
@@ -346,7 +373,11 @@ void UIFileSystemDialog::RefreshList()
                     continue;
                 }
                 String ext = FileSystem::GetExtension(fu.name);
+#ifdef __DAVAENGINE_ANDROID__    
+                std::transform(ext.begin(), ext.end(), ext.begin(), AndroidToLower);
+#else //#ifdef __DAVAENGINE_ANDROID__
                 std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower);
+#endif //#ifdef __DAVAENGINE_ANDROID__    
                 bool isPresent = false;
                 for (int n = 0; n < extensionFilter.size(); n++) 
                 {

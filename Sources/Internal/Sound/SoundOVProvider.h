@@ -32,10 +32,19 @@
 #define __DAVAENGINE_SOUND_OV_PROVIDER_H__
 
 #include "Sound/SoundDataProvider.h"
+
+#if !defined(__DAVAENGINE_ANDROID__)
+#	define __OGG_ENABLED__
+#endif 
+
+#if defined(__OGG_ENABLED__)
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisenc.h>
 #include <vorbis/vorbisfile.h>
+#endif //#if defined(__OGG_ENABLED__)
+
+
 
 namespace DAVA
 {
@@ -52,7 +61,10 @@ public:
 	virtual void Rewind();
 
 private:
+#if defined(__OGG_ENABLED__)
 	OggVorbis_File  oggFile;
+#endif //#if defined(__OGG_ENABLED__)
+
 	File			* file;
 };
 

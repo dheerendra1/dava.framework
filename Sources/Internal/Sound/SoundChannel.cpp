@@ -41,14 +41,14 @@ SoundChannel::SoundChannel()
 {
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alGenSources(1, &source));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 SoundChannel::~SoundChannel()
 {
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alDeleteSources(1, &source));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundChannel::SetPriority(int32 newPriority)
@@ -92,7 +92,7 @@ void SoundChannel::Stop()
 		{
 			AL_VERIFY(alSourcei(source, AL_BUFFER, 0));
 		}
-#endif //__DAVASOUND_AL__
+#endif //#ifdef __DAVASOUND_AL__
 	}
 }
 
@@ -130,7 +130,7 @@ void SoundChannel::PlayStatic()
 	AL_VERIFY(alSourcei(source, AL_BUFFER, buddySound->buffer->GetALBuffer()));
 	AL_VERIFY(alSourcei(source, AL_LOOPING, looping));
 	AL_VERIFY(alSourcePlay(source));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundChannel::PlayStreamed()
@@ -142,7 +142,7 @@ void SoundChannel::PlayStreamed()
 	AL_VERIFY(alSourceQueueBuffers(source, 1, &bid2));
 	AL_VERIFY(alSourcei(source, AL_LOOPING, false));
 	AL_VERIFY(alSourcePlay(source));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundChannel::UpdateStatic()
@@ -166,7 +166,7 @@ void SoundChannel::UpdateStatic()
 	{
 		AL_VERIFY(alSourcei(source, AL_BUFFER, 0));
 	}
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundChannel::UpdateStreamed()
@@ -202,7 +202,7 @@ void SoundChannel::UpdateStreamed()
 		bid = buddySound->streamBuffer->GetALBuffer();
 		AL_VERIFY(alSourceQueueBuffers(source, 1, &bid));
 	}
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 void SoundChannel::Pause(bool pause)
@@ -224,7 +224,7 @@ void SoundChannel::Pause(bool pause)
 		}
 
 	}
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 Sound	* SoundChannel::GetBuddySound()
@@ -237,7 +237,7 @@ void SoundChannel::SetVolume(float32 _volume)
 	volume = Clamp(_volume, 0.f, 1.f);
 #ifdef __DAVASOUND_AL__
 	AL_VERIFY(alSourcef(source, AL_GAIN, volume));
-#endif
+#endif //#ifdef __DAVASOUND_AL__
 }
 
 float32 SoundChannel::GetVolume()

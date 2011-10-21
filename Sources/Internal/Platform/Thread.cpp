@@ -36,7 +36,7 @@ Thread * Thread::Create(const Message& msg)
 {
 #if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	InitMacOS();
-#endif
+#endif //defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 
 	Thread * t = new Thread(msg);
 	t->state = STATE_CREATED;
@@ -50,7 +50,7 @@ Thread::Thread(const Message& _msg)
 #if defined (__DAVAENGINE_WIN32__)
 	handle = 0;
 	tid = 0;
-#endif
+#endif //#if defined (__DAVAENGINE_WIN32__)
 	msg = _msg;
 }
 
@@ -59,10 +59,13 @@ void Thread::Start()
 	Retain();
 #if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__)
 	StartMacOS();
-#else
-	//other platforms...
+#elif defined(__DAVAENGINE_WIN32__) 
 	StartWin32();
-#endif
+#elif defined(__DAVAENGINE_ANDROID__)
+	StartAndroid();
+#else //PLATFORMS
+	//other platforms
+#endif //PLATFORMS
 }
 
 Thread::eThreadState Thread::GetState()

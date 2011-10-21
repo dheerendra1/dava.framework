@@ -29,6 +29,8 @@
 =====================================================================================*/
 #include "Render/RenderGrayscaleEffect.h"
 #include "Render/RenderManager.h"
+#include "Utils/Utils.h"
+
 
 namespace DAVA 
 {
@@ -40,7 +42,7 @@ void RenderGrayscaleEffect::StartEffect()
 	
 	float constColor[] = {0.67f, 0.67f, 0.67f, 0.25f};
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, RenderManager::Instance()->GetTexture()->id);
+	BindTexture(RenderManager::Instance()->GetTexture()->id);
 	
 	glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constColor);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -54,7 +56,7 @@ void RenderGrayscaleEffect::StartEffect()
 	
 	glActiveTexture(GL_TEXTURE1);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, RenderManager::Instance()->GetTexture()->id);
+	BindTexture(RenderManager::Instance()->GetTexture()->id);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
 	glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_DOT3_RGB);
 	glTexEnvi(GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
@@ -75,7 +77,7 @@ void RenderGrayscaleEffect::StopEffect()
 
 	glClientActiveTexture(GL_TEXTURE0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, RenderManager::Instance()->GetTexture()->id);
+	BindTexture(RenderManager::Instance()->GetTexture()->id);
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	float constColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -91,9 +93,9 @@ void RenderGrayscaleEffect::SetColor(float r, float g, float b, float a)
 void RenderGrayscaleEffect::SetTexture(Texture *texture)
 {
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	BindTexture(texture->id);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	BindTexture(texture->id);
 
 }
 	

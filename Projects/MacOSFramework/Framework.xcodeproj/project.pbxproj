@@ -21,6 +21,7 @@
 		47FBFFD713A790C800E5A7F6 /* UIHierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FBFFD513A790C800E5A7F6 /* UIHierarchy.cpp */; };
 		47FBFFDA13A7951100E5A7F6 /* UIHierarchyCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 47FBFFD813A7951100E5A7F6 /* UIHierarchyCell.h */; };
 		47FBFFDB13A7951100E5A7F6 /* UIHierarchyCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FBFFD913A7951100E5A7F6 /* UIHierarchyCell.cpp */; };
+		5C784771145069D600AB6CF7 /* libyaml_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C784770145069D600AB6CF7 /* libyaml_macos.a */; };
 		D2AAC088055469A000DB518D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		EA29C3401446EF270049FD7A /* libfreetype_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA29C33F1446EF270049FD7A /* libfreetype_macos.a */; };
 		FE044F2C140EE9FC002A6D27 /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F2A140EE9FC002A6D27 /* ResourceArchive.cpp */; };
@@ -82,17 +83,6 @@
 		FEA4D8C41328D03E00E261D0 /* RenderBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */; };
 		FEA4D9421328FD6A00E261D0 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA4D9411328FD6A00E261D0 /* Random.h */; };
 		FEC3E537133CCCDF00442ADD /* DoxygenDocumenation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */; };
-		FECFAF8712E58B7A00C71562 /* api.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFACFF12E58B7900C71562 /* api.c */; };
-		FECFAF8812E58B7A00C71562 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAD0012E58B7900C71562 /* config.h */; };
-		FECFAF8912E58B7A00C71562 /* dumper.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0112E58B7900C71562 /* dumper.c */; };
-		FECFAF8A12E58B7A00C71562 /* emitter.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0212E58B7900C71562 /* emitter.c */; };
-		FECFAF8B12E58B7A00C71562 /* loader.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0312E58B7900C71562 /* loader.c */; };
-		FECFAF8C12E58B7A00C71562 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0412E58B7900C71562 /* parser.c */; };
-		FECFAF8D12E58B7A00C71562 /* reader.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0512E58B7900C71562 /* reader.c */; };
-		FECFAF8E12E58B7A00C71562 /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0612E58B7900C71562 /* scanner.c */; };
-		FECFAF8F12E58B7A00C71562 /* writer.c in Sources */ = {isa = PBXBuildFile; fileRef = FECFAD0712E58B7900C71562 /* writer.c */; };
-		FECFAF9012E58B7A00C71562 /* yaml.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAD0812E58B7900C71562 /* yaml.h */; };
-		FECFAF9112E58B7A00C71562 /* yaml_private.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFAD0912E58B7900C71562 /* yaml_private.h */; };
 		FECFC20E12E87E3000C71562 /* AnimatedObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFC0A712E87E3000C71562 /* AnimatedObject.cpp */; };
 		FECFC20F12E87E3000C71562 /* AnimatedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FECFC0A812E87E3000C71562 /* AnimatedObject.h */; };
 		FECFC21012E87E3000C71562 /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FECFC0A912E87E3000C71562 /* Animation.cpp */; };
@@ -468,6 +458,7 @@
 		47FBFFD513A790C800E5A7F6 /* UIHierarchy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHierarchy.cpp; sourceTree = "<group>"; };
 		47FBFFD813A7951100E5A7F6 /* UIHierarchyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHierarchyCell.h; sourceTree = "<group>"; };
 		47FBFFD913A7951100E5A7F6 /* UIHierarchyCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHierarchyCell.cpp; sourceTree = "<group>"; };
+		5C784770145069D600AB6CF7 /* libyaml_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libyaml_macos.a; path = ../../Libs/libs/libyaml_macos.a; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E8BE07B2D77200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		EA29C33F1446EF270049FD7A /* libfreetype_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_macos.a; path = ../../Libs/freetype/lib/libfreetype_macos.a; sourceTree = "<group>"; };
@@ -532,17 +523,6 @@
 		FEC3E536133CCCDF00442ADD /* DoxygenDocumenation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoxygenDocumenation.h; sourceTree = "<group>"; };
 		FECA0D7013D5F67000059D5D /* Frustum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Frustum.cpp; sourceTree = "<group>"; };
 		FECA0D7113D5F67000059D5D /* Frustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frustum.h; sourceTree = "<group>"; };
-		FECFACFF12E58B7900C71562 /* api.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = api.c; sourceTree = "<group>"; };
-		FECFAD0012E58B7900C71562 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		FECFAD0112E58B7900C71562 /* dumper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dumper.c; sourceTree = "<group>"; };
-		FECFAD0212E58B7900C71562 /* emitter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = emitter.c; sourceTree = "<group>"; };
-		FECFAD0312E58B7900C71562 /* loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loader.c; sourceTree = "<group>"; };
-		FECFAD0412E58B7900C71562 /* parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
-		FECFAD0512E58B7900C71562 /* reader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reader.c; sourceTree = "<group>"; };
-		FECFAD0612E58B7900C71562 /* scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanner.c; sourceTree = "<group>"; };
-		FECFAD0712E58B7900C71562 /* writer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = writer.c; sourceTree = "<group>"; };
-		FECFAD0812E58B7900C71562 /* yaml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml.h; sourceTree = "<group>"; };
-		FECFAD0912E58B7900C71562 /* yaml_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml_private.h; sourceTree = "<group>"; };
 		FECFC0A712E87E3000C71562 /* AnimatedObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatedObject.cpp; sourceTree = "<group>"; };
 		FECFC0A812E87E3000C71562 /* AnimatedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedObject.h; sourceTree = "<group>"; };
 		FECFC0A912E87E3000C71562 /* Animation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Animation.cpp; sourceTree = "<group>"; };
@@ -885,6 +865,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C784771145069D600AB6CF7 /* libyaml_macos.a in Frameworks */,
 				FEF4E23212CD3C1F004B850E /* libBox2D_MacOS.a in Frameworks */,
 				D2AAC088055469A000DB518D /* Cocoa.framework in Frameworks */,
 				FE44432A114D8DF600F5EFD6 /* ApplicationServices.framework in Frameworks */,
@@ -910,6 +891,7 @@
 		0867D691FE84028FC02AAC07 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				5C784770145069D600AB6CF7 /* libyaml_macos.a */,
 				FEF4E22712CD3BED004B850E /* Box2D_MacOS.xcodeproj */,
 				FECFABB612E58B7800C71562 /* External */,
 				FECFC0A512E87E3000C71562 /* Internal */,
@@ -1010,29 +992,10 @@
 		FECFABB612E58B7800C71562 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				FECFACFE12E58B7900C71562 /* Yaml */,
 			);
 			name = External;
 			path = ../../Sources/External;
 			sourceTree = SOURCE_ROOT;
-		};
-		FECFACFE12E58B7900C71562 /* Yaml */ = {
-			isa = PBXGroup;
-			children = (
-				FECFACFF12E58B7900C71562 /* api.c */,
-				FECFAD0012E58B7900C71562 /* config.h */,
-				FECFAD0112E58B7900C71562 /* dumper.c */,
-				FECFAD0212E58B7900C71562 /* emitter.c */,
-				FECFAD0312E58B7900C71562 /* loader.c */,
-				FECFAD0412E58B7900C71562 /* parser.c */,
-				FECFAD0512E58B7900C71562 /* reader.c */,
-				FECFAD0612E58B7900C71562 /* scanner.c */,
-				FECFAD0712E58B7900C71562 /* writer.c */,
-				FECFAD0812E58B7900C71562 /* yaml.h */,
-				FECFAD0912E58B7900C71562 /* yaml_private.h */,
-			);
-			path = Yaml;
-			sourceTree = "<group>";
 		};
 		FECFC0A512E87E3000C71562 /* Internal */ = {
 			isa = PBXGroup;
@@ -1593,9 +1556,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FECFAF8812E58B7A00C71562 /* config.h in Headers */,
-				FECFAF9012E58B7A00C71562 /* yaml.h in Headers */,
-				FECFAF9112E58B7A00C71562 /* yaml_private.h in Headers */,
 				FECFC20F12E87E3000C71562 /* AnimatedObject.h in Headers */,
 				FECFC21112E87E3000C71562 /* Animation.h in Headers */,
 				FECFC21312E87E3000C71562 /* AnimationManager.h in Headers */,
@@ -1887,14 +1847,6 @@
 			files = (
 				FE04522D140EED6F002A6D27 /* Frustum.cpp in Sources */,
 				FE04522C140EED5C002A6D27 /* LandscapeNode.cpp in Sources */,
-				FECFAF8712E58B7A00C71562 /* api.c in Sources */,
-				FECFAF8912E58B7A00C71562 /* dumper.c in Sources */,
-				FECFAF8A12E58B7A00C71562 /* emitter.c in Sources */,
-				FECFAF8B12E58B7A00C71562 /* loader.c in Sources */,
-				FECFAF8C12E58B7A00C71562 /* parser.c in Sources */,
-				FECFAF8D12E58B7A00C71562 /* reader.c in Sources */,
-				FECFAF8E12E58B7A00C71562 /* scanner.c in Sources */,
-				FECFAF8F12E58B7A00C71562 /* writer.c in Sources */,
 				FECFC20E12E87E3000C71562 /* AnimatedObject.cpp in Sources */,
 				FECFC21012E87E3000C71562 /* Animation.cpp in Sources */,
 				FECFC21212E87E3000C71562 /* AnimationManager.cpp in Sources */,
@@ -2108,7 +2060,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
-				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = (
 					./../../Sources/Internal,
 					./../../Sources/External,
@@ -2116,6 +2067,7 @@
 					./../../Sources/External/Yaml,
 					./../../Libs/libpng/include,
 					./../../Libs/oggvorbis/include,
+					./../../Libs/include,
 				);
 				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
@@ -2123,6 +2075,7 @@
 					"\"$(SRCROOT)/../../Libs/oggvorbis/lib\"",
 					"\"$(SRCROOT)/../../Libs/feetype/lib\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
+					"\"$(SRCROOT)/../../Libs/libs\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Framework;
@@ -2142,7 +2095,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Framework_Prefix.pch;
-				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = (
 					./../../Sources/Internal,
 					./../../Sources/External,
@@ -2150,6 +2102,7 @@
 					./../../Sources/External/Yaml,
 					./../../Libs/libpng/include,
 					./../../Libs/oggvorbis/include,
+					./../../Libs/include,
 				);
 				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
@@ -2157,6 +2110,7 @@
 					"\"$(SRCROOT)/../../Libs/oggvorbis/lib\"",
 					"\"$(SRCROOT)/../../Libs/feetype/lib\"",
 					"\"$(SRCROOT)/../../Libs/freetype/lib\"",
+					"\"$(SRCROOT)/../../Libs/libs\"",
 				);
 				PRODUCT_NAME = Framework;
 			};
@@ -2173,7 +2127,7 @@
 					FT2_BUILD_LIBRARY,
 					DAVA_DEBUG,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
@@ -2181,11 +2135,14 @@
 					./../../Sources/Internal,
 					./../../Sources/External,
 					./../../Sources/External/Freetype,
-					./../../Sources/External/Yaml,
 					./../../Libs/libpng/include,
 					./../../Libs/oggvorbis/include,
+					./../../Libs/include,
 				);
-				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					./../../Libs/libs,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2206,7 +2163,7 @@
 					DDARWIN_NO_CARBON,
 					FT2_BUILD_LIBRARY,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
@@ -2214,11 +2171,14 @@
 					./../../Sources/Internal,
 					./../../Sources/External,
 					./../../Sources/External/Freetype,
-					./../../Sources/External/Yaml,
 					./../../Libs/libpng/include,
 					./../../Libs/oggvorbis/include,
+					./../../Libs/include,
 				);
-				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					./../../Libs/libs,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

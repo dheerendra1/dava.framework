@@ -269,7 +269,8 @@ void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
             RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
             if (textureLevel != 0)
                 RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
-            RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
+            
+            BindTexture(texture->id);
 #elif defined(__DAVAENGINE_DIRECTX9__)
             RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
 #endif 

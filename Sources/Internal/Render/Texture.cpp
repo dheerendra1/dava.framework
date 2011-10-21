@@ -46,7 +46,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #elif defined(__DAVAENGINE_MACOS__)
 #include <ApplicationServices/ApplicationServices.h>
-#endif 
+#endif //PLATFORMS
 
 #include "Render/Image.h"
 #include "Render/OGLHelpers.h"
@@ -175,11 +175,20 @@ Texture::Texture()
 	saveTexture = 0;
 	renderTargetModified = false;
     renderTargetAutosave = true;
-#endif 
+#endif //#ifdef __DAVAENGINE_DIRECTX9__
+
+    
 
 #ifdef __DAVAENGINE_OPENGL__
 	fboID = -1;
 #endif
+
+#ifdef __DAVAENGINE_ANDROID__
+	savedData = NULL;
+	savedDataSize = 0;
+	renderTargetModified = false;
+    renderTargetAutosave = true;
+#endif //#ifdef __DAVAENGINE_ANDROID__
 }
 
 Texture::~Texture()
@@ -196,9 +205,14 @@ Texture::~Texture()
 	{
 #if defined(__DAVAENGINE_IPHONE__)
 		RENDER_VERIFY(glDeleteFramebuffersOES(1, &fboID));
-#else
+#elif defined(__DAVAENGINE_ANDROID__)
+		RENDER_VERIFY(glDeleteFramebuffersOES(1, &fboID));
+		
+		SafeDeleteArray(savedData);
+		savedDataSize = 0;
+#else //Non ES platforms
 		RENDER_VERIFY(glDeleteFramebuffersEXT(1, &fboID));
-#endif
+#endif //PLATFORMS
 	}
 	
 	if(id)
@@ -208,7 +222,7 @@ Texture::~Texture()
 #elif defined(__DAVAENGINE_DIRECTX9__)
 	D3DSafeRelease(id);
 	D3DSafeRelease(saveTexture);
-#endif 
+#endif //#if defined(__DAVAENGINE_OPENGL__)
 	RenderManager::Instance()->UnlockNonMain();
 }
 
@@ -216,12 +230,21 @@ Texture * Texture::CreateTextFromData(PixelFormat format, uint8 * data, uint32 w
 {
 	RenderManager::Instance()->LockNonMain();
 	Texture * tx = CreateFromData(format, data, width, height);
+#if defined(__DAVAENGINE_ANDROID__)
+    tx->SaveData(format, data, width, height);
+#endif //#if defined(__DAVAENGINE_ANDROID__)
 	RenderManager::Instance()->UnlockNonMain();
 	
+    //TODO: VK: need to set isRenderTargetFlag?
+    
 	if (!addInfo)
+	{
 		tx->relativePathname = Format("Text texture %d", textureFboCounter);
+	}
 	else 
+	{
 		tx->relativePathname = Format("Text texture %d info:%s", textureFboCounter, addInfo);
+	}
 
 	textureFboCounter++;
 	textureMap[tx->relativePathname] = tx;
@@ -232,9 +255,8 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _d
 {
 #if defined(__DAVAENGINE_OPENGL__)
 
-	int saveId;
-	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, id));
+	int saveId = GetSavedTextureID();
+	BindTexture(id);
 	
 	switch(format) 
 	{
@@ -254,8 +276,10 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _d
 			return;
 	}
 	
-	if (saveId != 0)
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+	if(0 != saveId)
+	{
+		BindTexture(saveId);
+	}
 
 #elif defined(__DAVAENGINE_DIRECTX9__)
 	if (!id)
@@ -341,9 +365,9 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 		Logger::Error("TEXTURE %d GENERATE ERROR: %d", i, glGetError());
 	}	
 
-	int saveId;
-	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
+
+	int saveId = GetSavedTextureID();
+	BindTexture(texture->id);
 	RENDER_VERIFY(glPixelStorei( GL_UNPACK_ALIGNMENT, 1 ));
 		
 	switch(texture->format) 
@@ -382,11 +406,11 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,  data);
 */
 	GLint wrapMode = 0;
-#if defined(__DAVAENGINE_IPHONE__)
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
 	wrapMode = GL_CLAMP_TO_EDGE;
-#else 
+#else //Non ES platforms
 	wrapMode = GL_CLAMP;
-#endif 
+#endif //PLATFORMS
 	if (isMipmapGenerationEnabled)
 	{
 		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode));
@@ -403,7 +427,9 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	}
 	
 	if (saveId != 0)
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+	{
+		BindTexture(saveId);
+	}
 	
 #elif defined(__DAVAENGINE_DIRECTX9__)
 
@@ -438,16 +464,15 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	SafeDeleteArray(mipMapData2);
 	SafeDeleteArray(mipMapData);
 
-#endif 
+#endif //#if defined(__DAVAENGINE_OPENGL__)
 	return texture;
 }		
 	
 void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 {
 #if defined(__DAVAENGINE_OPENGL__)
-	int saveId;
-	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, id));
+	int saveId = GetSavedTextureID();
+	BindTexture(id);
 	
 	GLint glWrapS = 0;
 	switch(wrapS)
@@ -480,12 +505,14 @@ void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glWrapT));
 
 	if (saveId != 0)
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+	{
+		BindTexture(saveId);
+	}
 #elif defined(__DAVAENGINE_DIRECTX9____)
 	
 
 
-#endif 
+#endif //#if defined(__DAVAENGINE_OPENGL__)
 }
 	
 bool Texture::isMipmapGenerationEnabled = false;
@@ -504,25 +531,26 @@ void Texture::GenerateMipmaps()
 {
 #if defined(__DAVAENGINE_OPENGL__)
 
-	int saveId;
-	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, id));
+	int saveId = GetSavedTextureID();
+	BindTexture(id);
 	
-#if defined(__DAVAENGINE_IPHONE__)
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
 	// definitelly works for the iPhone
 	RENDER_VERIFY(glGenerateMipmapOES(GL_TEXTURE_2D));
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-#else
+#else //Non-ES platforms
 	RENDER_VERIFY(glGenerateMipmapEXT(GL_TEXTURE_2D));
 
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-#endif // #if defined(__DAVAENGINE_IPHONE__)
+#endif //PLATFORMS
 
 	if (saveId != 0)
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+	{
+		BindTexture(saveId);
+	}
+	
 	
 #elif defined(__DAVAENGINE_DIRECTX9__)
 
@@ -532,9 +560,8 @@ void Texture::GenerateMipmaps()
 void Texture::UsePvrMipmaps()
 {
 #if defined(__DAVAENGINE_OPENGL__)
-	int saveId;
-	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, id));
+	int saveId = GetSavedTextureID();
+	BindTexture(id);
 
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE));
 	
@@ -542,13 +569,15 @@ void Texture::UsePvrMipmaps()
 	RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	
 	if (saveId != 0)
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+	{
+		BindTexture(saveId);
+	}
 
 #elif defined(__DAVAENGINE_DIRECTX9__)
 
 
 
-#endif
+#endif //#if defined(__DAVAENGINE_OPENGL__)
 }
 	
 	
@@ -578,7 +607,7 @@ Texture * Texture::CreateFromPNG(const String & pathName)
 	Image * image = Image::CreateFromFile(pathName);
 	if (!image)
 	{
-		Logger::Debug("[Texture] Failed to load image from: %s", pathName.c_str());
+		Logger::Debug("[Texture::CreateFromPNG] Failed to load image from: %s", pathName.c_str());
 		return 0;
 	}
 	
@@ -814,9 +843,8 @@ Texture * Texture::UnpackPVRData(uint8 * data, uint32 fileDataSize)
 		
 		RENDER_VERIFY(glGenTextures(1, &texture->id));
 		
-		int saveId;
-		RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
-		RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
+		int32 savedId = GetSavedTextureID();
+		BindTexture(texture->id);
 		
 		int32 i = 0;
 		for (List<TextureFrame>::iterator it = imageList.begin(); it != imageList.end(); ++it)
@@ -830,8 +858,10 @@ Texture * Texture::UnpackPVRData(uint8 * data, uint32 fileDataSize)
 		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		
-		if (saveId != 0)
-			RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveId));
+		if (savedId)
+		{
+			BindTexture(savedId);
+		}
 	}
 	return texture;
 }
@@ -897,7 +927,7 @@ Texture * Texture::CreateFromFile(const String & pathName)
 #if defined(__DAVAENGINE_IPHONE__)
 	else if (extension == String(".pvr"))
 		return CreateFromPVR(pathName);
-#endif
+#endif //#if defined(__DAVAENGINE_IPHONE__)
 	return 0;
 }
 	
@@ -942,28 +972,24 @@ Texture * Texture::CreateFBO(uint32 w, uint32 h, PixelFormat format)
 	
 #if defined(__DAVAENGINE_OPENGL__)
 
-	GLint saveTexture;
-	GLint saveFBO;
-	glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveTexture);
-#if defined(__DAVAENGINE_IPHONE__)
-	glGetIntegerv(GL_FRAMEBUFFER_BINDING_OES, &saveFBO);
-#else
-	glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &saveFBO);
-#endif	
+	GLint saveFBO = GetSavedFBO();
+	GLint saveTexture = GetSavedTextureID();
+
 	Texture *tx = Texture::CreateFromData(format, NULL, dx, dy);
 	DVASSERT(tx);
 	 
 	// Now setup a texture to render to
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, tx->id));
+	BindTexture(tx->id);
+
 	RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	
 		// Setup our FBO
-#if defined(__DAVAENGINE_IPHONE__)
+#if defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_ANDROID__)
 	RENDER_VERIFY(glGenFramebuffersOES(1, &tx->fboID));
-	RENDER_VERIFY(glBindFramebufferOES(GL_FRAMEBUFFER_OES, tx->fboID));
+	BindFBO(tx->fboID);
 		
 	// And attach it to the FBO so we can render to it
 	RENDER_VERIFY(glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, tx->id, 0));
@@ -973,11 +999,12 @@ Texture * Texture::CreateFBO(uint32 w, uint32 h, PixelFormat format)
 	{
 		Logger::Error("glCheckFramebufferStatusOES: %d", status);
 	}
-#else
+
+#else //PLATFORMS
 #if defined(__DAVAENGINE_WIN32__)    
 	if(GLEW_EXT_framebuffer_object)
 	{
-#endif        
+#endif //#if defined(__DAVAENGINE_WIN32__)        
 		RENDER_VERIFY(glGenFramebuffersEXT(1, &tx->fboID));
 		RENDER_VERIFY(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, tx->fboID));
 	
@@ -995,15 +1022,16 @@ Texture * Texture::CreateFBO(uint32 w, uint32 h, PixelFormat format)
 	{
 		Logger::Error("[Texture::CreateFBO] GL_EXT_framebuffer_object not supported");
 	}
-#endif    
-#endif
+#endif //#if defined(__DAVAENGINE_WIN32__)       
+#endif //PLATFORMS
 				
-#if defined(__DAVAENGINE_IPHONE__) 
-	RENDER_VERIFY(glBindFramebufferOES(GL_FRAMEBUFFER_OES, saveFBO));	// Unbind the FBO for now
-#else 
-	RENDER_VERIFY(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, saveFBO));	// Unbind the FBO for now
-#endif
-	RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, saveTexture));
+
+	BindFBO(saveFBO);
+
+	if(saveTexture)
+	{
+		BindTexture(saveTexture);
+	}
 #elif defined(__DAVAENGINE_DIRECTX9__)
 	
 	// TODO: Create FBO
@@ -1016,7 +1044,7 @@ Texture * Texture::CreateFBO(uint32 w, uint32 h, PixelFormat format)
 
 	tx->id = CreateTextureNative(Vector2((float32)tx->width, (float32)tx->height), tx->format, true, 0);
 
-#endif 
+#endif //OPEN GL
 
 	RenderManager::Instance()->UnlockNonMain();
 
@@ -1085,6 +1113,274 @@ void Texture::SetDebugInfo(const String & _debugInfo)
 }
 
 	
+#if defined(__DAVAENGINE_ANDROID__)
+    
+void Texture::SaveData(PixelFormat format, uint8 * data, uint32 width, uint32 height)
+{
+    int32 textureSize = width * height * FormatMultiplier(format);
+    SaveData(data, textureSize);
+}
+
+void Texture::SaveData(uint8 * data, int32 dataSize)
+{
+    if(data)
+    {
+        if(savedDataSize != dataSize)
+        {
+            SafeDeleteArray(savedData);
+            savedData = new uint8[dataSize];
+            savedDataSize = dataSize;
+        }
+        
+        memmove(savedData, data, dataSize);
+    }
+}
+
+
+int32 Texture::FormatMultiplier(PixelFormat format)
+{
+	switch(format)
+	{
+	case FORMAT_RGBA8888:
+		return 4;
+	case FORMAT_RGB565: 
+		return 2;
+	case FORMAT_RGBA4444:
+		return 2;
+	}
+
+	return 4;
+}
+
+void Texture::SaveToSystemMemory()
+{
+	RenderManager::Instance()->LockNonMain();
+	if(RenderManager::Instance()->GetTexture() == this)
+	{//to avoid drawing deleted textures
+//		RenderManager::Instance()->SetTexture(0);
+	}
+
+	if(id)
+	{
+		if(isRenderTarget)
+		{
+            if (!renderTargetAutosave)
+                return;
+
+            if (!renderTargetModified)
+                return;
+
+            
+			int32 textureSize = width * height * FormatMultiplier(format);
+			if(savedDataSize != textureSize)
+			{
+				SafeDeleteArray(savedData);
+				savedData = new uint8[textureSize];
+				savedDataSize = textureSize;
+			}
+
+			if(savedData)
+			{
+				int saveFBO = GetSavedFBO();
+				BindFBO(fboID);
+
+				int saveId = GetSavedTextureID();
+				BindTexture(id);
+
+				RENDER_VERIFY(glPixelStorei( GL_UNPACK_ALIGNMENT, 1 ));
+				switch(format) 
+				{
+				case Texture::FORMAT_RGBA8888:
+					RENDER_VERIFY(glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)savedData));
+					break;
+				case Texture::FORMAT_RGB565:
+					RENDER_VERIFY(glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_SHORT_5_6_5, (GLvoid *)savedData));
+					break;
+				case Texture::FORMAT_A8:
+					RENDER_VERIFY(glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)savedData));
+					break;
+				case Texture::FORMAT_RGBA4444:
+					RENDER_VERIFY(glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, (GLvoid *)savedData));
+					break;
+				}
+
+				BindFBO(saveFBO);
+
+				if (saveId != 0)
+				{
+					BindTexture(saveId);
+				}
+			}
+            
+            renderTargetModified = false;
+		}
+	}
+	RenderManager::Instance()->UnlockNonMain();
+}
+
+void Texture::Lost()
+{
+	Logger::Debug("[Texture::Lost] id = %d, isrendertarget = %d, fboID = %d, file = %s", id, isRenderTarget, fboID, relativePathname.c_str());
+
+	RenderManager::Instance()->LockNonMain();
+	if(RenderManager::Instance()->GetTexture() == this)
+	{//to avoid drawing deleted textures
+		RenderManager::Instance()->SetTexture(0);
+	}
+
+	if(fboID != (uint32)-1)
+	{
+		RENDER_VERIFY(glDeleteFramebuffersOES(1, &fboID));
+		fboID = -1;
+	}
+
+	if(id)
+	{
+		RENDER_VERIFY(glDeleteTextures(1, &id));
+		id = 0;
+	}
+
+	RenderManager::Instance()->UnlockNonMain();
+}
+
+void Texture::Invalidate()
+{
+	Logger::Debug("[Texture::Invalidate] id is %d, isRenderTarget is %d", id, isRenderTarget);
+	if(id)
+	{
+		Logger::Warning("[Texture::Invalidate] id is %d, exit", id);
+		return;
+	}
+
+	RenderManager::Instance()->LockNonMain();
+
+	if(isRenderTarget)
+	{
+		//////////////////////////////////////////////////////////////////////////
+		InvalidateFromSavedData();
+		//////////////////////////////////////////////////////////////////////////
+
+		GLint saveFBO = GetSavedFBO();
+		GLint saveTexture = GetSavedTextureID();
+
+		// Now setup a texture to render to
+		BindTexture(id);
+
+		RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+		RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+		RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		RENDER_VERIFY(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+
+		// Setup our FBO
+		RENDER_VERIFY(glGenFramebuffersOES(1, &fboID));
+		BindFBO(fboID);
+
+		// And attach it to the FBO so we can render to it
+		RENDER_VERIFY(glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, id, 0));
+
+		GLenum status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
+		if(status != GL_FRAMEBUFFER_COMPLETE_OES)
+		{
+			Logger::Error("[Texture::Invalidate] glCheckFramebufferStatusOES: %d", status);
+		}
+
+		BindFBO(saveFBO);
+
+		if(saveTexture)
+		{
+			BindTexture(saveTexture);
+		}
+	}
+	else if(savedData)
+	{
+		Logger::Debug("[Texture::Invalidate] from savedData, relativePathname: %s", relativePathname.c_str());
+
+		InvalidateFromSavedData();
+	}
+	else
+	{
+		Logger::Debug("[Texture::Invalidate] from file, relativePathname: %s", relativePathname.c_str());
+
+		InvalidateFromFile();
+	}
+
+	RenderManager::Instance()->UnlockNonMain();
+}
+
+void Texture::InvalidateFromSavedData()
+{
+	for (int i = 0; i < 10; i++) 
+	{
+		RENDER_VERIFY(glGenTextures(1, &id));
+		if(id != 0)
+		{
+			break;
+		}
+		Logger::Error("TEXTURE %d GENERATE ERROR: %d", i, glGetError());
+	}
+
+	int saveId = GetSavedTextureID();
+	BindTexture(id);
+
+	RENDER_VERIFY(glPixelStorei( GL_UNPACK_ALIGNMENT, 1 ));
+	switch(format) 
+	{
+		case Texture::FORMAT_RGBA8888:
+			RENDER_VERIFY(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)savedData));
+			break;
+		case Texture::FORMAT_RGB565:
+			RENDER_VERIFY(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, (GLvoid *)savedData));
+			break;
+		case Texture::FORMAT_A8:
+			RENDER_VERIFY(glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, (GLvoid *)savedData));
+			break;
+		case Texture::FORMAT_RGBA4444:
+			RENDER_VERIFY(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, (GLvoid *)savedData));
+			break;
+	}
+
+
+	GLint wrapMode = GL_CLAMP_TO_EDGE;
+	if (isMipmapGenerationEnabled)
+	{
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode));
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode));
+		GenerateMipmaps();
+	}
+	else
+	{
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode));
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode));
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		RENDER_VERIFY(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	}
+
+	if (saveId != 0)
+	{
+		BindTexture(saveId);
+	}
+}
+
+void Texture::InvalidateFromFile()
+{
+	Logger::Debug("[Texture::InvalidateFromFile] load image from: %s", relativePathname.c_str());
+
+	Image * image = Image::CreateFromFile(relativePathname);
+	if (!image)
+	{
+		Logger::Error("[Texture::InvalidateFromFile] Failed to load image from: %s", relativePathname.c_str());
+		return;
+	}
+
+	savedData = image->GetData();
+	InvalidateFromSavedData();
+	savedData = NULL;
+}
+
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
+
+
 };
 
 

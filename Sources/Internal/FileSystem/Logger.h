@@ -107,6 +107,10 @@ public:
 	static void Info(const char16 * text, ...);
 	static void Error(const char16 * text, ...);
 
+#if defined(__DAVAENGINE_ANDROID__)
+    static void SetTag(const char8 *logTag);
+#endif    
+    
 protected:	
 	const char8 * GetLogLevelString(eLogLevel ll);
 	

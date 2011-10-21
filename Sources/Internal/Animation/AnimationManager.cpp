@@ -29,7 +29,10 @@
 =====================================================================================*/
 #include "Animation/AnimationManager.h"
 #include "FileSystem/Logger.h"
+
+#if !defined (__DAVAENGINE_ANDROID__)
 #include <typeinfo>
+#endif //#if !defined (__DAVAENGINE_ANDROID__)
 
 namespace DAVA
 {
@@ -277,10 +280,16 @@ void AnimationManager::DumpState()
 	for (int k = 0; k < (int)animations.size(); ++k)
 	{
 		Animation * animation = animations[k];  
+
+#if defined(__DAVAENGINE_ANDROID__)
+		//TOD: VK: add typeid for android
+#else //#if defined(__DAVAENGINE_ANDROID__)
         String ownerName = "no owner";
         if (animation->owner)
             ownerName = typeid(*animation->owner).name();
 		Logger::Debug("addr:0x%08x state:%d class: %s ownerClass: %s", animation, animation->state, typeid(*animation).name(), ownerName.c_str());
+#endif //#if defined(__DAVAENGINE_ANDROID__)
+
 	}
 	Logger::Info("============================================================");
 }

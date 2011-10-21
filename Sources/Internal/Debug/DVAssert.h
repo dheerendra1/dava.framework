@@ -81,10 +81,12 @@ template <> struct CompileTimeError<true> {};
 
 #if defined(__DAVAENGINE_WIN32__)
 #define DebugBreak() { __debugbreak(); }
-#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__) // Mac & iPhone
+#elif defined(__DAVAENGINE_IPHONE__) || defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_ANDROID__) // Mac & iPhone & Android
 #include <signal.h>
 #define DebugBreak() { kill( getpid(), SIGINT ) ; }
-#endif
+#else //PLATFORMS
+	//other platforms
+#endif //PLATFORMS
 	
 #if defined(__DAVAENGINE_DEBUG__)
 
