@@ -25,9 +25,6 @@
     <Filter Include="External\Box2D\Dynamics\Joints">
       <UniqueIdentifier>{ce06b154-b8a0-4b9b-a2e1-f330d7eb8340}</UniqueIdentifier>
     </Filter>
-    <Filter Include="External\Yaml">
-      <UniqueIdentifier>{b79b5cea-30ab-4035-b40e-b4afec39fbcb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Internal">
       <UniqueIdentifier>{ffd93e08-e98d-4f64-85eb-9e318a1b40d2}</UniqueIdentifier>
     </Filter>
@@ -155,15 +152,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\External\Box2D\Dynamics\b2WorldCallbacks.h">
       <Filter>External\Box2D\Dynamics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\External\Yaml\config.h">
-      <Filter>External\Yaml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\External\Yaml\yaml.h">
-      <Filter>External\Yaml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\External\Yaml\yaml_private.h">
-      <Filter>External\Yaml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Internal\DAVAConfig.h">
       <Filter>Internal</Filter>
@@ -946,30 +934,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\External\Box2D\Dynamics\b2WorldCallbacks.cpp">
       <Filter>External\Box2D\Dynamics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\api.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\dumper.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\emitter.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\loader.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\parser.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\reader.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\scanner.c">
-      <Filter>External\Yaml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\External\Yaml\writer.c">
-      <Filter>External\Yaml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Internal\DAVAEngine.cpp">
       <Filter>Internal</Filter>
