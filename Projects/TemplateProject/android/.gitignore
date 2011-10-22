@@ -1,0 +1,9 @@
+# a comment - this is ignored
+*.o
+*.d
+obj/
+/obj
+/obj/
+/libs
+libs/
+/libs/

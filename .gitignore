@@ -17,9 +17,6 @@ $process/
 # ignore android object files
 *.o
 *.d
-libs/
-/libs
-/libs/
 obj/
 /obj
 /obj/
