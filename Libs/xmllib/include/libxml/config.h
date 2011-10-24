@@ -283,7 +283,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 // #undef HAVE_UNISTD_H
+#if !defined(_WIN32)
 #define HAVE_UNISTD_H 1
+#endif //#if !defined(_WIN32)
 
 /* Whether va_copy() is available */
 #undef HAVE_VA_COPY

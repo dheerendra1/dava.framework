@@ -1490,5 +1490,8 @@
     <ClCompile Include="..\..\Sources\Internal\Scene3D\LandscapeNode.cpp">
       <Filter>Internal\Scene3D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\FileSystem\XMLParser.cpp">
+      <Filter>Internal\FileSystem</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
