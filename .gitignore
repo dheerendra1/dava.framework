@@ -33,3 +33,6 @@ Release/
 /Debug
 Debug/
 /Debug/
+/ipch
+ipch/
+/ipch/
