@@ -12,7 +12,6 @@
 		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
 		FE9892E511638EF700500198 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E111638EF700500198 /* InfoPlist.strings */; };
 		FE9892E611638EF700500198 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E311638EF700500198 /* MainMenu.xib */; };
-		FEA024E312DCEEC600935314 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE98931811638F3C00500198 /* libFramework.a */; };
 		FEA30C331231362D00E691CC /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FEA30C291231362D00E691CC /* main.mm */; };
 		FEA30C361231362D00E691CC /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = FEA30C2E1231362D00E691CC /* version.plist */; };
 		FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */; };
@@ -23,18 +22,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FE93072A12C28C1100A33E69 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = Framework;
-		};
-		FE98931711638F3C00500198 /* PBXContainerItemProxy */ = {
+		5CD2EC971455B09F00211F1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Framework;
+		};
+		5CD2EC991455B0E200211F1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = Framework;
 		};
 /* End PBXContainerItemProxy section */
@@ -50,7 +49,7 @@
 		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE9892E211638EF700500198 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = MacOSSpecific/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FE9892E411638EF700500198 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = MacOSSpecific/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		FE98930B11638F3C00500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE98930B11638F3C00500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../dava.framework/Projects/MacOSFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEA30C291231362D00E691CC /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		FEA30C2E1231362D00E691CC /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
 		FEC3CA6C1283557F00541220 /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppScreens.h; path = Classes/AppScreens.h; sourceTree = "<group>"; };
@@ -69,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEA024E312DCEEC600935314 /* libFramework.a in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */,
 				FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */,
@@ -149,6 +147,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5CD2EC941455B09F00211F1B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5CD2EC981455B09F00211F1B /* libFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FE445A961153C27800F5EFD6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,14 +167,6 @@
 				FEC3CA7C1283557F00541220 /* TestScreen.h */,
 			);
 			name = Classes;
-			sourceTree = "<group>";
-		};
-		FE98930C11638F3C00500198 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FE98931811638F3C00500198 /* libFramework.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		FEA30C211231362D00E691CC /* MacOSSpecific */ = {
@@ -195,7 +193,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				FE93072B12C28C1100A33E69 /* PBXTargetDependency */,
+				5CD2EC9A1455B0E200211F1B /* PBXTargetDependency */,
 			);
 			name = TemplateProjectMacOS;
 			productInstallPath = "$(HOME)/Applications";
@@ -225,7 +223,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FE98930C11638F3C00500198 /* Products */;
+					ProductGroup = 5CD2EC941455B09F00211F1B /* Products */;
 					ProjectRef = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
 				},
 			);
@@ -237,11 +235,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FE98931811638F3C00500198 /* libFramework.a */ = {
+		5CD2EC981455B09F00211F1B /* libFramework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFramework.a;
-			remoteRef = FE98931711638F3C00500198 /* PBXContainerItemProxy */;
+			remoteRef = 5CD2EC971455B09F00211F1B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -292,10 +290,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FE93072B12C28C1100A33E69 /* PBXTargetDependency */ = {
+		5CD2EC9A1455B0E200211F1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Framework;
-			targetProxy = FE93072A12C28C1100A33E69 /* PBXContainerItemProxy */;
+			targetProxy = 5CD2EC991455B0E200211F1B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -361,17 +359,17 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/Internal,
-					./../../Sources/External,
+					./../dava.framework/Sources/Internal,
+					./../dava.framework/Sources/External,
 					/opt/local/include/,
-					./../../Libs/include,
+					./../dava.framework/Libs/include,
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fvisibility=hidden",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lframework";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -386,16 +384,16 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/Internal,
-					./../../Sources/External,
+					./../dava.framework/Sources/Internal,
+					./../dava.framework/Sources/External,
 					/opt/local/include/,
-					./../../Libs/include,
+					./../dava.framework/Libs/include,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fvisibility=hidden",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lframework";
 				SDKROOT = macosx;
 			};
 			name = Release;
