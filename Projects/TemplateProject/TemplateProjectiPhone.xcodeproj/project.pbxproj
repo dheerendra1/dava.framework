@@ -27,14 +27,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FE9895571163F13500500198 /* PBXContainerItemProxy */ = {
+		5CD2EC821455AF4B00211F1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE9895531163F13500500198 /* Framework.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = Framework;
 		};
-		FE9895591163F14500500198 /* PBXContainerItemProxy */ = {
+		5CD2EC841455AF8700211F1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE9895531163F13500500198 /* Framework.xcodeproj */;
 			proxyType = 1;
@@ -56,7 +56,7 @@
 		FE76D9F61163F304009E83B6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		FE76D9FE1163F316009E83B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		FE76DA031163F32F009E83B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		FE9895531163F13500500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../iPhoneFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE9895531163F13500500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../dava.framework/Projects/iPhoneFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEC3CBC21284374A00541220 /* AppScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppScreens.h; sourceTree = "<group>"; };
 		FEC3CBC51284374A00541220 /* FrameworkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameworkMain.cpp; sourceTree = "<group>"; };
 		FEC3CBC61284374A00541220 /* FrameworkMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameworkMain.h; sourceTree = "<group>"; };
@@ -166,10 +166,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		FE9895541163F13500500198 /* Products */ = {
+		5CD2EC7F1455AF4B00211F1B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE9895581163F13500500198 /* libFramework.a */,
+				5CD2EC831455AF4B00211F1B /* libFramework.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,7 +189,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				FE98955A1163F14500500198 /* PBXTargetDependency */,
+				5CD2EC851455AF8700211F1B /* PBXTargetDependency */,
 			);
 			name = TemplateProjectiPhone;
 			productName = TemplateProjectiPhone;
@@ -215,7 +215,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FE9895541163F13500500198 /* Products */;
+					ProductGroup = 5CD2EC7F1455AF4B00211F1B /* Products */;
 					ProjectRef = FE9895531163F13500500198 /* Framework.xcodeproj */;
 				},
 			);
@@ -227,11 +227,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FE9895581163F13500500198 /* libFramework.a */ = {
+		5CD2EC831455AF4B00211F1B /* libFramework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFramework.a;
-			remoteRef = FE9895571163F13500500198 /* PBXContainerItemProxy */;
+			remoteRef = 5CD2EC821455AF4B00211F1B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -280,10 +280,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FE98955A1163F14500500198 /* PBXTargetDependency */ = {
+		5CD2EC851455AF8700211F1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Framework;
-			targetProxy = FE9895591163F14500500198 /* PBXContainerItemProxy */;
+			targetProxy = 5CD2EC841455AF8700211F1B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -325,10 +325,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/Internal,
-					./../../Sources/External,
 					./../dava.framework/Sources/Internal,
 					./../dava.framework/Sources/External,
+					./../dava.framework/Libs/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = (
@@ -352,10 +351,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					./../../Sources/Internal,
-					./../../Sources/External,
 					./../dava.framework/Sources/Internal,
 					./../dava.framework/Sources/External,
+					./../dava.framework/Libs/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = (
