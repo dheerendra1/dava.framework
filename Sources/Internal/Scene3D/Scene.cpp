@@ -360,9 +360,6 @@ void Scene::Draw()
     nodeCounter = 0;
     uint64 time = SystemTimer::Instance()->AbsoluteMS();
     
-    glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-    
     RenderManager::Instance()->EnableCulling(true);
     RenderManager::Instance()->SetCullFace(CULL_BACK);
     
