@@ -90,6 +90,7 @@ public:
 	void SetTarget(const Vector3 & target);
 	void SetUp(const Vector3 & up);
 	void SetLeft(const Vector3 & left);
+    
 	
 	Vector3 & GetTarget();
 	Vector3 & GetPosition();
@@ -106,6 +107,8 @@ public:
 //    virtual SceneNode* Clone();
     
     Frustum * GetFrustum() const;
+    
+    float32 GetZoomFactor() const;
 
     
     // mostly for debug purposes
@@ -157,6 +160,10 @@ protected:
 	/** operates on model-view matrix */
 	void ApplyTransform();
     
+    
+    void CalculateZoomFactor();
+    
+    float32 zoomFactor;
     
 };
 
