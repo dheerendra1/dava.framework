@@ -9,7 +9,7 @@ echo " "
 
 echo "PWD=`pwd`"
 
-SDK_ROOT=`pwd`/../../../Sources
+SDK_ROOT=`pwd`/../../dava.framework/Sources
 
 echo ""
 echo "SDK_ROOT = $SDK_ROOT"

@@ -73,7 +73,7 @@ LOCAL_SRC_FILES :=\
                   ../../src/zip_unchange_archive.c \
                   ../../src/zip_unchange_data.c \
 
-LOCAL_CFLAGS := -g -O0
+#LOCAL_CFLAGS := -g -O0
 
 # set used libs
 #LOCAL_LDLIBS := -lz

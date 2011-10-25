@@ -9,10 +9,7 @@ echo " "
 
 echo "PWD=`pwd`"
 
-SDK_ROOT="/Users/klesch/Work/android/Sources"
-
-
-#echo "SDK_ROOT=$SDK_ROOT"
+SDK_ROOT=`pwd`/../../dava.framework/Sources
 
 export NDK_MODULE_PATH=`pwd`/jni:$SDK_ROOT/External:$SDK_ROOT/External/Yaml:$SDK_ROOT/External/Box2D:$SDK_ROOT/External/Freetype:$SDK_ROOT/Internal:$SDK_ROOT
 

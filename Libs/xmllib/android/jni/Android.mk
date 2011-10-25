@@ -65,7 +65,8 @@ LOCAL_SRC_FILES :=  \
                   ../../src/xpointer.c \
 
 # set build flags
-LOCAL_CFLAGS := -DHAVE_CONFIG_H -g -O0
+LOCAL_CFLAGS := -DHAVE_CONFIG_H 
+#-g -O0
 
 #set exported build flags
 LOCAL_EXPORT_CFLAGS := $(LOCAL_CFLAGS) 

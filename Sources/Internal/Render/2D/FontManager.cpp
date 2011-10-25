@@ -27,7 +27,7 @@
     Revision History:
         * Created by Vitaliy Borodovsky 
 =====================================================================================*/
-#include <freetype/ft2build.h>
+#include <ft2build.h>
 #include <freetype/ftglyph.h>
 //#include "ftglyph.h"
 #include FT_FREETYPE_H

@@ -35,7 +35,7 @@
 #include "FileSystem/File.h"
 #include "Core/Core.h"
 
-#include <freetype/ft2build.h>
+#include <ft2build.h>
 #include <freetype/ftglyph.h>
 #include FT_FREETYPE_H
 
