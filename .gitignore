@@ -14,9 +14,25 @@ $process/
 .DS_Store
 *.pbxuser
 #doc/*.txt # ignore doc/notes.txt, but not doc/server/arch.txt
+
 # ignore android object files
 *.o
 *.d
 obj/
 /obj
 /obj/
+
+#win32
+*.suo
+*.sdf
+*.user
+*.opensdf
+/Release
+Release/
+/Release/
+/Debug
+Debug/
+/Debug/
+/ipch
+ipch/
+/ipch/
