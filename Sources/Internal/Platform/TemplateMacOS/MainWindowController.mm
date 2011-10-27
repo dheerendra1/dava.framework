@@ -99,6 +99,7 @@ namespace DAVA
 - (void) switchToFullScreen;
 
 - (void)windowWillMiniaturize:(NSNotification *)notification;
+- (void)windowDidMiniaturize:(NSNotification *)notification;
 - (void)windowDidDeminiaturize:(NSNotification *)notification;
 @end
 
@@ -263,28 +264,49 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 
 - (void)windowWillMiniaturize:(NSNotification *)notification
 {
-    NSLog(@"[MainWindowController] windowWillMiniaturize");
-    if(core)
-    {
-        core->OnSuspend();
-    }
-    else 
-    {
-        Core::Instance()->SetIsActive(false);
-    }
+//    NSLog(@"[MainWindowController] windowWillMiniaturize");
+//    if(core)
+//    {
+//        core->OnSuspend();
+//    }
+//    else 
+//    {
+//        Core::Instance()->SetIsActive(false);
+//    }
+}
+
+- (void)windowDidMiniaturize:(NSNotification *)notification
+{
+    NSLog(@"[MainWindowController] windowDidMiniaturize");
+    
+    SoundSystem::Instance()->Suspend();
+    Core::Instance()->SetIsActive(false);
+    
+//    if(core)
+//    {
+//        core->OnSuspend();
+//    }
+//    else 
+//    {
+//        Core::Instance()->SetIsActive(false);
+//    }
 }
 
 - (void)windowDidDeminiaturize:(NSNotification *)notification
 {
     NSLog(@"[MainWindowController] windowDidDeminiaturize");
-    if(core)
-    {
-        core->OnResume();
-    }
-    else 
-    {
-        Core::Instance()->SetIsActive(true);
-    }
+    
+    SoundSystem::Instance()->Resume();
+    Core::Instance()->SetIsActive(true);
+    
+//    if(core)
+//    {
+//        core->OnResume();
+//    }
+//    else 
+//    {
+//        Core::Instance()->SetIsActive(true);
+//    }
 }
 
 // Action method wired up to fire when the user clicks the "Go FullScreen" button.  We remain in this method until the user exits FullScreen mode.
