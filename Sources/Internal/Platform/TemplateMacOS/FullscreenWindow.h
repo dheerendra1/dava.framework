@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface FullscreenWindow : NSWindow {
+@interface FullscreenWindow : NSWindow 
+{
 @private
     
 }
+- (void)performMiniaturize:(id)sender;
+- (BOOL)canBecomeKeyWindow;
+- (void)keyDown:(NSEvent *)event;
+- (void)keyUp:(NSEvent *)event;
 
 @end

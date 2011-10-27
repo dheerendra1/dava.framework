@@ -97,6 +97,9 @@ namespace DAVA
 - (void) animationTimerFired:(NSTimer *)timer;
 
 - (void) switchToFullScreen;
+
+- (void)windowWillMiniaturize:(NSNotification *)notification;
+- (void)windowDidDeminiaturize:(NSNotification *)notification;
 @end
 
 @implementation MainWindowController
@@ -172,7 +175,7 @@ namespace DAVA
 	
 	mainWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect((fullscreenMode.width - width) / 2, 
 																  (fullscreenMode.height - height) / 2, width, height) 
-											 styleMask:NSTitledWindowMask+NSClosableWindowMask
+											 styleMask:NSTitledWindowMask+NSMiniaturizableWindowMask+NSClosableWindowMask
 											backing:NSBackingStoreBuffered defer:FALSE];
 	[mainWindow setDelegate:self];
 	openGLView = [[OpenGLView alloc]initWithFrame: NSMakeRect(0, 0, width, height)];
@@ -210,11 +213,18 @@ namespace DAVA
 
 - (NSWindow *) beginFullScreen
 { 
-	fullscreenWindow = [ [NSWindow alloc]
-			  initWithContentRect:[[NSScreen mainScreen] frame]
-			  styleMask:NSBorderlessWindowMask
-			  backing:NSBackingStoreBuffered
-			  defer:NO];
+//	fullscreenWindow = [ [NSWindow alloc]
+//			  initWithContentRect:[[NSScreen mainScreen] frame]
+//			  styleMask:NSBorderlessWindowMask
+//			  backing:NSBackingStoreBuffered
+//			  defer:NO];
+    
+    fullscreenWindow = [ [FullscreenWindow alloc]
+                        initWithContentRect:[[NSScreen mainScreen] frame]
+                        styleMask:NSBorderlessWindowMask
+                        backing:NSBackingStoreBuffered
+                        defer:NO];
+    
 	[NSMenu setMenuBarVisible:NO];
 	[fullscreenWindow setHasShadow:NO];
 	[fullscreenWindow setContentView:[mainWindow contentView]];
@@ -250,6 +260,33 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 		CFNumberGetValue(numRef, kCFNumberLongType, &value); 	
 	return value;
 }
+
+- (void)windowWillMiniaturize:(NSNotification *)notification
+{
+    NSLog(@"[MainWindowController] windowWillMiniaturize");
+    if(core)
+    {
+        core->OnSuspend();
+    }
+    else 
+    {
+        Core::Instance()->SetIsActive(false);
+    }
+}
+
+- (void)windowDidDeminiaturize:(NSNotification *)notification
+{
+    NSLog(@"[MainWindowController] windowDidDeminiaturize");
+    if(core)
+    {
+        core->OnResume();
+    }
+    else 
+    {
+        Core::Instance()->SetIsActive(true);
+    }
+}
+
 // Action method wired up to fire when the user clicks the "Go FullScreen" button.  We remain in this method until the user exits FullScreen mode.
 - (void) switchToFullScreen
 {
@@ -439,10 +476,13 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
                     break;
 					
                 case NSKeyDown:
-                    [self keyDown:event];
+                    //[self keyDown:event];
+                    [NSApp sendEvent:event];
+                    //[fullscreenWindow keyDown:event];
                     break;
 					
                 default:
+                    [NSApp sendEvent:event];
                     break;
             }
         }
@@ -514,6 +554,17 @@ long GetDictionaryLong(CFDictionaryRef theDict, const void* key)
 {
 	[openGLView keyDown:event];
 
+//	unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
+//	
+//	if ([event modifierFlags] & NSCommandKeyMask)
+//	{
+//		if (c == 'm')
+//		{
+//			NSLog(@"[CoreMacOSPlatform] keyDown cmd+m");
+//			[fullscreenWindow miniaturize:fullscreenWindow];
+//		}
+//	}
+    
 //	// TODO: remove that from template
 //	switch (c) 
 //	{

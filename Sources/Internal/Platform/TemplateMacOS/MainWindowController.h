@@ -30,6 +30,7 @@
 #import <Cocoa/Cocoa.h>
 #import "OpenGLView.h"
 #import "AppDelegate.h"
+#import "FullscreenWindow.h"
 
 
 @interface MainWindowController : NSWindowController <NSWindowDelegate>
@@ -38,8 +39,9 @@
 	float32	currFPS;
 	OpenGLView * openGLView;
 	NSWindow * mainWindow;
-	NSWindow * fullscreenWindow;
-	
+	//NSWindow * fullscreenWindow;
+	FullscreenWindow * fullscreenWindow;
+    
 	NSOpenGLContext * fullScreenContext;
 
 	bool isAnimating;
@@ -51,5 +53,8 @@
 }
 
 - (void)switchToFullScreen;
+
+- (void)windowWillMiniaturize:(NSNotification *)notification;
+- (void)windowDidDeminiaturize:(NSNotification *)notification;
 
 @end

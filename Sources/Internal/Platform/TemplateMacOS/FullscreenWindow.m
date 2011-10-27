@@ -26,4 +26,40 @@
     [super dealloc];
 }
 
+- (void)performMiniaturize:(id)sender
+{
+    NSLog(@"[FullscreenWindow] performMiniaturize");
+    [self miniaturize:sender];
+}
+
+- (BOOL)canBecomeKeyWindow
+{
+    return YES;
+}
+
+- (void)keyDown:(NSEvent *)event
+{
+    // your code here
+    NSLog(@"[FullscreenWindow] keyDown");
+
+//	unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];
+//	
+//	if ([event modifierFlags] & NSCommandKeyMask)
+//	{
+//		if (c == 'm')
+//		{
+//			NSLog(@"[FullscreenWindow] keyDown cmd+m");
+//			[self miniaturize:self];
+//		}
+//	}
+    
+    [super keyDown:event];
+}
+
+- (void)keyUp:(NSEvent *)event
+{
+    // your code here
+    [super keyUp:event];
+}
+
 @end

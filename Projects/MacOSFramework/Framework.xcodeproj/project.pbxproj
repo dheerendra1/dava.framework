@@ -21,6 +21,8 @@
 		47FBFFD713A790C800E5A7F6 /* UIHierarchy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FBFFD513A790C800E5A7F6 /* UIHierarchy.cpp */; };
 		47FBFFDA13A7951100E5A7F6 /* UIHierarchyCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 47FBFFD813A7951100E5A7F6 /* UIHierarchyCell.h */; };
 		47FBFFDB13A7951100E5A7F6 /* UIHierarchyCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FBFFD913A7951100E5A7F6 /* UIHierarchyCell.cpp */; };
+		C77D137D14570E1F000648C3 /* FullscreenWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = C77D137B14570E1E000648C3 /* FullscreenWindow.h */; };
+		C77D137E14570E1F000648C3 /* FullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = C77D137C14570E1E000648C3 /* FullscreenWindow.m */; };
 		D2AAC088055469A000DB518D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		EA29C3401446EF270049FD7A /* libfreetype_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA29C33F1446EF270049FD7A /* libfreetype_macos.a */; };
 		FE044F2C140EE9FC002A6D27 /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F2A140EE9FC002A6D27 /* ResourceArchive.cpp */; };
@@ -470,6 +472,8 @@
 		47FBFFD513A790C800E5A7F6 /* UIHierarchy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHierarchy.cpp; sourceTree = "<group>"; };
 		47FBFFD813A7951100E5A7F6 /* UIHierarchyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHierarchyCell.h; sourceTree = "<group>"; };
 		47FBFFD913A7951100E5A7F6 /* UIHierarchyCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIHierarchyCell.cpp; sourceTree = "<group>"; };
+		C77D137B14570E1E000648C3 /* FullscreenWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenWindow.h; sourceTree = "<group>"; };
+		C77D137C14570E1E000648C3 /* FullscreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenWindow.m; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E8BE07B2D77200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		EA29C33F1446EF270049FD7A /* libfreetype_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_macos.a; path = ../../Libs/freetype/lib/libfreetype_macos.a; sourceTree = "<group>"; };
@@ -994,6 +998,8 @@
 				FE941D2F1331543700515418 /* MainWindowController.mm */,
 				FE941D301331543700515418 /* OpenGLView.h */,
 				FE941D311331543700515418 /* OpenGLView.mm */,
+				C77D137B14570E1E000648C3 /* FullscreenWindow.h */,
+				C77D137C14570E1E000648C3 /* FullscreenWindow.m */,
 			);
 			path = TemplateMacOS;
 			sourceTree = "<group>";
@@ -1819,6 +1825,7 @@
 				FE044F43140EEA75002A6D27 /* RenderManagerGL20.h in Headers */,
 				FEDDC95E1429E5040004BF1A /* UIFileSystemDialog.h in Headers */,
 				FE879F88145061E400F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */,
+				C77D137D14570E1F000648C3 /* FullscreenWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2087,6 +2094,7 @@
 				FE044F42140EEA75002A6D27 /* RenderManagerGL20.cpp in Sources */,
 				FEDDC95D1429E5040004BF1A /* UIFileSystemDialog.cpp in Sources */,
 				FE879F87145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */,
+				C77D137E14570E1F000648C3 /* FullscreenWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
