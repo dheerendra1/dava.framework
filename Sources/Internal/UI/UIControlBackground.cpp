@@ -310,24 +310,45 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 		break;
 		
 		case DRAW_SCALE_PROPORTIONAL:
+        case DRAW_SCALE_PROPORTIONAL_ONE:
 		{
 			if (!spr)break;
 			float32 w, h;
 			w = drawRect.dx / (spr->GetWidth() * geometricData.scale.x);
 			h = drawRect.dy / (spr->GetHeight() * geometricData.scale.y);
 			float ph = spr->GetDefaultPivotPoint().y;
-			if(w < h)
-			{
-				h = spr->GetHeight() * w * geometricData.scale.x;
-				ph *= w;
-				w = drawRect.dx;
-			}
-			else
-			{
-				w = spr->GetWidth() * h * geometricData.scale.y;
-				ph *= h;
-				h = drawRect.dy;
-			}
+            
+            if(w < h)
+            {
+                if(type==DRAW_SCALE_PROPORTIONAL_ONE)
+                {
+                    w = spr->GetWidth() * h * geometricData.scale.y;
+                    ph *= h;
+                    h = drawRect.dy;
+                }
+                else
+                {
+                    h = spr->GetHeight() * w * geometricData.scale.x;
+                    ph *= w;
+                    w = drawRect.dx;
+                }
+            }
+            else
+            {
+                if(type==DRAW_SCALE_PROPORTIONAL_ONE)
+                {
+                    h = spr->GetHeight() * w * geometricData.scale.x;
+                    ph *= w;
+                    w = drawRect.dx;
+                }
+                else
+                {
+                    w = spr->GetWidth() * h * geometricData.scale.y;
+                    ph *= h;
+                    h = drawRect.dy;
+                }
+            }
+            
 			if(align & ALIGN_LEFT)
 			{
 				drawState.position.x = drawRect.x;
