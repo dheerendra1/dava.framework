@@ -71,7 +71,10 @@ public:
     virtual ~Shader();
     
     // virtual void SetActiveShader(const String & string);
+    virtual void SetDefines(const String & defines);
     virtual bool LoadFromYaml(const String & pathname);
+    virtual bool Recompile();
+    
     virtual void Bind();
     static void Unbind();
     virtual int32 FindUniformLocationByName(const String & name);
@@ -117,6 +120,12 @@ private:
     int32 GetAttributeIndexByName(const char * name);
     
     static GLuint activeProgram;
+    String defines;
+    
+    uint8 * vertexShaderBytes;
+    uint32 vertexShaderSize;
+    uint8 * fragmentShaderBytes;
+    uint32 fragmentShaderSize;
 #endif
 };
 };

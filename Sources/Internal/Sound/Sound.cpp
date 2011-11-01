@@ -128,7 +128,7 @@ void Sound::PrepareStaticBuffer()
 	buffer = SoundBuffer::CreateStatic(fileName);
 	if(1 == buffer->GetRetainCount()) 
 	{
-		provider->Init();
+		DVVERIFY(provider->Init());
 		buffer->FullFill(provider);
 	}
 }

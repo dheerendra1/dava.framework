@@ -529,6 +529,7 @@ void Texture::DisableMipmapGeneration()
 
 void Texture::GenerateMipmaps()
 {
+	RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 
 	int saveId = GetSavedTextureID();
@@ -555,10 +556,12 @@ void Texture::GenerateMipmaps()
 #elif defined(__DAVAENGINE_DIRECTX9__)
 
 #endif // #if defined(__DAVAENGINE_OPENGL__)
+	RenderManager::Instance()->UnlockNonMain();
 }
 
 void Texture::UsePvrMipmaps()
 {
+	RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 	int saveId = GetSavedTextureID();
 	BindTexture(id);
@@ -578,6 +581,8 @@ void Texture::UsePvrMipmaps()
 
 
 #endif //#if defined(__DAVAENGINE_OPENGL__)
+
+    RenderManager::Instance()->UnlockNonMain();
 }
 	
 	

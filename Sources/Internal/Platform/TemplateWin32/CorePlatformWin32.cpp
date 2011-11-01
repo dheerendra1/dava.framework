@@ -277,8 +277,18 @@ namespace DAVA
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 
-				if (msg.message == WM_QUIT)
-					willQuit = true;
+				if(msg.message == WM_QUIT)
+				{
+					ApplicationCore * appCore = Core::Instance()->GetApplicationCore();
+					if(appCore && appCore->OnQuit())
+					{
+						exit(0);
+					}
+					else
+					{
+						willQuit = true;
+					}
+				}
 			}
 			Sleep(1);
 			RenderManager::Instance()->Lock();
@@ -536,6 +546,7 @@ namespace DAVA
 			0,
 			LR_DEFAULTSIZE));
 		SendMessage(hWindow, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);
+		SendMessage(hWindow, WM_SETICON, ICON_BIG, (LPARAM)smallIcon);
 	}
 
 	static Vector<DAVA::UIEvent> activeTouches;

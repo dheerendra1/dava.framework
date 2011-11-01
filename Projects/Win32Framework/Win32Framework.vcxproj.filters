@@ -879,6 +879,9 @@
     <ClInclude Include="..\..\Sources\Internal\Scene3D\LandscapeNode.h">
       <Filter>Internal\Scene3D</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\Effects\TextureMulColorAlphaTestEffect.h">
+      <Filter>Internal\Render\Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2BroadPhase.cpp">
@@ -1492,6 +1495,8 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Internal\FileSystem\XMLParser.cpp">
       <Filter>Internal\FileSystem</Filter>
+    <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorAlphaTestEffect.cpp">
+      <Filter>Internal\Render\Effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

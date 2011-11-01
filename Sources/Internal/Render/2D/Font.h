@@ -55,12 +55,12 @@ class Font : public BaseObject
 public:
 	enum eFontType 
 	{
-			FONT_TYPE_FT = 0
-		,	FONT_TYPE_GRAPHICAL
+			FONT_TYPE_FT = 0	//!< freetype-based
+		,	FONT_TYPE_GRAPHICAL //!< sprite-based
 	};
 	
 	Font();
-	~Font();
+	virtual ~Font();
 
 	static void SetDPI(int32 dpi);
 	static int32 GetDPI();
@@ -72,7 +72,18 @@ public:
 	virtual void SetSize(float32 size);
 	virtual float32	GetSize();
 	
+	/**
+	 \brief Set vertical spacing
+	 Spacing value is added to vertical range between lines in multiline text.
+	 \param[in] verticalSpacing value in pixels
+	 */
 	virtual void SetVerticalSpacing(int32 verticalSpacing);
+
+
+	/**
+	 \brief Get vertical spacing 
+	 \returns vertical spacing value in pixels
+	 */
 	virtual int32 GetVerticalSpacing();
 	
 	// text splitting functions

@@ -227,7 +227,7 @@ protected:
 	UIStaticText	*selectedText;
 	
 	virtual ~UIButton();
-    eButtonDrawState GetDrawStateForControlState(int32 state);
+	eButtonDrawState GetDrawStateForControlState(int32 state);
 
 private:
 

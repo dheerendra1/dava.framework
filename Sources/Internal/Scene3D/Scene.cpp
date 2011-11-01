@@ -360,8 +360,10 @@ void Scene::Draw()
     nodeCounter = 0;
     uint64 time = SystemTimer::Instance()->AbsoluteMS();
     
-    glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+    RenderManager::Instance()->EnableCulling(true);
+    RenderManager::Instance()->SetCullFace(CULL_BACK);
+    
+    
 	SetupTestLighting();
 
     if (currentCamera)
@@ -370,9 +372,8 @@ void Scene::Draw()
     }
 	SceneNode::Draw();
 	
-    glCullFace(GL_FRONT_AND_BACK);
-    glDisable(GL_CULL_FACE);
-
+    RenderManager::Instance()->EnableCulling(false);
+    
     drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
 //  Logger::Debug("upt: %lld drawt: %lld, %ld", updateTime, drawTime, nodeCounter);
 	
