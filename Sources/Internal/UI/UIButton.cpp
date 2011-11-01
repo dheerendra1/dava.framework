@@ -422,12 +422,6 @@ namespace DAVA
 	
 
 	
-	
-	
-	
-	
-	
-	
 	UIControlBackground *UIButton::GetActualBackground(int32 state)
 	{
 		return stateBacks[BackgroundIndexForState(GetDrawStateForControlState(state))];
@@ -622,6 +616,21 @@ namespace DAVA
 			{
 				UIControlBackground::eDrawType type = (UIControlBackground::eDrawType)loader->GetDrawTypeFromNode(stateDrawTypeNode);
                 SetStateDrawType(stateArray[k],type);
+                
+                YamlNode * leftRightStretchCapNode = node->Get(Format("leftRightStrechCap%s", statePostfix[k].c_str()));
+                YamlNode * topBottomStretchCapNode = node->Get(Format("topBottomStretchCap%s", statePostfix[k].c_str()));
+
+                if(leftRightStretchCapNode)
+                {
+                    float32 leftStretchCap = leftRightStretchCapNode->AsFloat();
+                    GetActualBackground(stateArray[k])->SetLeftRightStretchCap(leftStretchCap);
+                }
+                
+                if(topBottomStretchCapNode)
+                {
+                    float32 topStretchCap = topBottomStretchCapNode->AsFloat();
+                    GetActualBackground(stateArray[k])->SetTopBottomStretchCap(topStretchCap);
+                }
 			}
             
             YamlNode * stateAlignNode = node->Get(Format("stateAlign%s", statePostfix[k].c_str()));
@@ -660,7 +669,5 @@ namespace DAVA
 				}
 			}
 		}
-		
-		
 	}
 };

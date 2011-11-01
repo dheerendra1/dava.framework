@@ -227,9 +227,9 @@ protected:
 	UIStaticText	*selectedText;
 	
 	virtual ~UIButton();
-	
+    eButtonDrawState GetDrawStateForControlState(int32 state);
+
 private:
-	eButtonDrawState GetDrawStateForControlState(int32 state);
 
 	int32 BackgroundIndexForState(eButtonDrawState buttonState);
 	UIControlBackground *GetActualBackground(int32 state);
@@ -238,7 +238,6 @@ private:
 	virtual UIStaticText *CreateTextForState(eButtonDrawState buttonState);
 	UIStaticText *GetActualText(int32 state);
 	int32 TextIndexForState(eButtonDrawState buttonState);
-
 };
 };
 

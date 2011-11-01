@@ -1407,8 +1407,12 @@ namespace DAVA
 		YamlNode * alignNode = node->Get("align");
 		YamlNode * pivotNode = node->Get("pivot");
 		YamlNode * colorInheritNode = node->Get("colorInherit");
+        
         YamlNode * drawTypeNode = node->Get("drawType");
-		YamlNode * angleNode = node->Get("angle");
+        YamlNode * leftRightStretchCapNode = node->Get("leftRightStrechCap");
+        YamlNode * topBottomStretchCapNode = node->Get("topBottomStretchCap");
+		
+        YamlNode * angleNode = node->Get("angle");
 		YamlNode * tagNode = node->Get("tag");
 		
 		Rect rect = GetRect();
@@ -1485,6 +1489,18 @@ namespace DAVA
 		{
 			UIControlBackground::eDrawType type = (UIControlBackground::eDrawType)loader->GetDrawTypeFromNode(drawTypeNode);
 			GetBackground()->SetDrawType(type);
+            
+            if(leftRightStretchCapNode)
+            {
+                float32 leftStretchCap = leftRightStretchCapNode->AsFloat();
+                GetBackground()->SetLeftRightStretchCap(leftStretchCap);
+            }
+            
+            if(topBottomStretchCapNode)
+            {
+                float32 topStretchCap = topBottomStretchCapNode->AsFloat();
+                GetBackground()->SetTopBottomStretchCap(topStretchCap);
+            }
 		}
 
 		if(angleNode)
@@ -1655,5 +1671,4 @@ namespace DAVA
 			}
 		}
 	}
-
 }
