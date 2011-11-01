@@ -228,7 +228,6 @@ protected:
 	
 	virtual ~UIButton();
 	eButtonDrawState GetDrawStateForControlState(int32 state);
-
 private:
 
 	int32 BackgroundIndexForState(eButtonDrawState buttonState);
