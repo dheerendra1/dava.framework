@@ -172,7 +172,7 @@ namespace DAVA
 	
 	mainWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect((fullscreenMode.width - width) / 2, 
 																  (fullscreenMode.height - height) / 2, width, height) 
-											 styleMask:NSTitledWindowMask+NSClosableWindowMask+NSResizableWindowMask 
+											 styleMask:NSTitledWindowMask+NSClosableWindowMask
 											backing:NSBackingStoreBuffered defer:FALSE];
 	[mainWindow setDelegate:self];
 	openGLView = [[OpenGLView alloc]initWithFrame: NSMakeRect(0, 0, width, height)];
