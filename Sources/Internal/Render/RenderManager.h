@@ -386,7 +386,8 @@ public:
 	virtual void SetDrawScale(const Vector2 &scale);
 
 	virtual void IdentityDrawMatrix();
-	virtual void IdentityTotalMatrix();
+	virtual void IdentityMappingMatrix();
+	virtual void IdentityModelMatrix();
 	
 	/*
 		TODO:	Hottych - напиши пожалуйста что делают эти функции детально, 
@@ -464,11 +465,10 @@ protected:
 	Vector2 viewMappingDrawOffset;
 	Vector2 viewMappingDrawScale;
 
-	Vector2 realDrawOffset;
-	Vector2 realDrawScale;
-	
 	Vector2 currentDrawOffset;
 	Vector2 currentDrawScale;
+    
+    bool mappingMatrixChanged;
 	
 	void PrepareRealMatrix();
 

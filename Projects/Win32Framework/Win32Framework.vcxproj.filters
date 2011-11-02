@@ -1493,13 +1493,11 @@
     <ClCompile Include="..\..\Sources\Internal\Scene3D\LandscapeNode.cpp">
       <Filter>Internal\Scene3D</Filter>
     </ClCompile>
-<<<<<<< .merge_file_Bsxh2B
-    <ClCompile Include="..\..\Sources\Internal\FileSystem\XMLParser.cpp">
-      <Filter>Internal\FileSystem</Filter>
-=======
->>>>>>> .merge_file_JJyRgr
     <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorAlphaTestEffect.cpp">
       <Filter>Internal\Render\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\FileSystem\XMLParser.cpp">
+      <Filter>Internal\FileSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
