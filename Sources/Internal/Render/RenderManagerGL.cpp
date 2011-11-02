@@ -314,6 +314,8 @@ void RenderManager::SetRenderOrientation(int32 orientation)
 	//glLoadIdentity();
 	
     RenderManager::Instance()->SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
+    currentDrawScale = Vector2(1,1);
+    currentDrawOffset = Vector2(0,0);
     
 	RENDER_VERIFY();
 
@@ -740,6 +742,8 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		//RENDER_VERIFY(glLoadIdentity());
         
         SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
+        currentDrawScale = Vector2(1,1);
+        currentDrawOffset = Vector2(0,0);
         
 		IdentityTotalMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
