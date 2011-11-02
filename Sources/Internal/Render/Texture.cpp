@@ -581,9 +581,7 @@ void Texture::UsePvrMipmaps()
 
 
 #endif //#if defined(__DAVAENGINE_OPENGL__)
-
     RenderManager::Instance()->UnlockNonMain();
-
 }
 	
 	
