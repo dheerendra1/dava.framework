@@ -252,22 +252,20 @@ bool b2TestOverlap(	const b2Shape* shapeA, b2_int32 indexA,
 
 inline bool b2AABB::IsValid() const
 {
-	b2Vec2 d = upperBound - lowerBound;
+	const b2Vec2 d(upperBound - lowerBound);
 	bool valid = d.x >= 0.0f && d.y >= 0.0f;
 	valid = valid && lowerBound.IsValid() && upperBound.IsValid();
 	return valid;
 }
 
-inline bool b2TestOverlap(const b2AABB& a, const b2AABB& b)
+inline bool b2TestOverlap(const b2AABB &a, const b2AABB &b)
 {
-	b2Vec2 d1, d2;
-	d1 = b.lowerBound - a.upperBound;
-	d2 = a.lowerBound - b.upperBound;
-
-	if (d1.x > 0.0f || d1.y > 0.0f)
+	const b2Vec2 d1(b.lowerBound - a.upperBound);
+	if(d1.x > 0.0f || d1.y > 0.0f)
 		return false;
 
-	if (d2.x > 0.0f || d2.y > 0.0f)
+    const b2Vec2 d2(a.lowerBound - b.upperBound);
+	if(d2.x > 0.0f || d2.y > 0.0f)
 		return false;
 
 	return true;
