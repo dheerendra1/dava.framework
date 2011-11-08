@@ -138,6 +138,8 @@ private:
     UIStaticText * staticText;
     float32 cursorTime;
     bool showCursor;
+
+	static UITextField * focus;
 };
 
 };

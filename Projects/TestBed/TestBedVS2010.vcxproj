@@ -111,6 +111,7 @@
     <ClCompile Include="Classes\SpritePerfScreen.cpp" />
     <ClCompile Include="Classes\StaticTextScreen.cpp" />
     <ClCompile Include="Classes\TestScreen.cpp" />
+    <ClCompile Include="Classes\TextinputTestScreen.cpp" />
     <ClCompile Include="Classes\TouchEffectsControl.cpp" />
     <ClCompile Include="Win32Specific\main.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="Classes\SpritePerfScreen.h" />
     <ClInclude Include="Classes\StaticTextScreen.h" />
     <ClInclude Include="Classes\TestScreen.h" />
+    <ClInclude Include="Classes\TextinputTestScreen.h" />
     <ClInclude Include="Classes\TouchEffectsControl.h" />
   </ItemGroup>
   <ItemGroup>

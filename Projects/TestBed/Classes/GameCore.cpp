@@ -43,6 +43,7 @@
 #include "CollisionTestScreen.h"
 #include "ImageUsageScreen.h"
 #include "LandscapeTestScreen.h"
+#include "TextinputTestScreen.h"
 
 using namespace DAVA;
 
@@ -78,7 +79,14 @@ void GameCore::OnAppStarted()
  	stScreen = new StaticTextScreen();
 // 	collisionTestScreen = new CollisionTestScreen();
 	imageUsageScreen = new ImageUsageScreen();
-    landscapeTestScreen = new LandscapeTestScreen();
+#if defined(__DAVAENGINE_WIN32__) //Dizz: cause LandscapeTestScreen doesn't work on Windows, similar #ifdef in LandscapeTestScreen.cpp
+	landscapeTestScreen = 0;
+#else
+	landscapeTestScreen = new LandscapeTestScreen();
+#endif
+	
+	textinputTestScreen1 = new TextinputTestScreen(L"textinputTestScreen 1");
+	textinputTestScreen2 = new TextinputTestScreen(L"textinputTestScreen 2");
     
 //	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
@@ -93,9 +101,11 @@ void GameCore::OnAppStarted()
  	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
-    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
-    
-	UIScreenManager::Instance()->SetFirst(SCREEN_LANDSCAPE_TEST);
+//   UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
+	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_1, textinputTestScreen1);   
+	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_2, textinputTestScreen2);
+
+	UIScreenManager::Instance()->SetFirst(SCREEN_TEXTINPUT_TEST_1);
 	cursor = 0;
 }
 
@@ -103,6 +113,8 @@ void GameCore::OnAppFinished()
 {
 	SafeRelease(cursor);
 
+	SafeRelease(textinputTestScreen1);
+	SafeRelease(textinputTestScreen2);
     SafeRelease(landscapeTestScreen);
 //	SafeRelease(collisionTestScreen);
 // 	SafeRelease(stScreen);
