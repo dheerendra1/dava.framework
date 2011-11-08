@@ -368,6 +368,28 @@ String SceneNode::RecursiveBuildFullName(SceneNode * node, SceneNode * endNode)
     }
 }
     
+bool SceneNode::FindNodesByNamePart(const String &namePart, List<SceneNode *> &outNodeList)
+{
+    bool isFind = false;
+    uint32 fp = name.find(namePart);
+    if (fp != String::npos) 
+    {
+        outNodeList.push_back(this);
+        isFind = true;
+    }
+    
+    int32 sz = childs.size();
+    for (int i = 0; i < sz; i++) 
+    {
+        if (childs[i]->FindNodesByNamePart(namePart, outNodeList)) 
+        {
+            isFind = true;
+        }
+    }
+    
+    return isFind;
+}
+
 
 
 };

@@ -31,6 +31,7 @@
 #define __DAVAENGINE_VECTOR_H__
 
 #include "Base/BaseTypes.h"
+#include <math.h>
 
 namespace DAVA
 {
