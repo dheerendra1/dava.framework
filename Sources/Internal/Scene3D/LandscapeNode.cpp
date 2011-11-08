@@ -562,9 +562,9 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
     
     for (int32 k = 0; k < lodLevelsCount; ++k)
     {
-        if (minDist > lodDistance[k])
+        if (minDist > lodSqDistance[k])
             minLod = k + 1;
-        if (maxDist > lodDistance[k])
+        if (maxDist > lodSqDistance[k])
             maxLod = k + 1;
     }
     

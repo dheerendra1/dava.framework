@@ -227,6 +227,8 @@ protected:
     Frustum *frustum;
     
     eRenderingMode renderingMode;
+    ePrimitiveType primitypeType;
+
     void InitShaders();
     void ReleaseShaders();
     
@@ -242,6 +244,8 @@ protected:
     int32 uniformTexture0;
     int32 uniformTexture1;
     int32 uniformTextureMask;
+    
+    
 };
 
 	
