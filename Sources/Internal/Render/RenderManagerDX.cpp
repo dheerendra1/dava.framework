@@ -1277,6 +1277,8 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&identity));
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&identity));
 
+		currentDrawOffset = Vector2(0, 0);
+		currentDrawScale = Vector2(1, 1); 
 		IdentityMappingMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
 		viewMappingDrawScale.y = renderTarget->GetResourceToPhysicalFactor();
@@ -1295,7 +1297,7 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 
 void RenderManager::PrepareRealMatrix()
 {
-    if (mappingMatrixChanged)
+	if (mappingMatrixChanged)
     {
         mappingMatrixChanged = false;
         Vector2 realDrawScale(viewMappingDrawScale.x * userDrawScale.x, viewMappingDrawScale.y * userDrawScale.y);
