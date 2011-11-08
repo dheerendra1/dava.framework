@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		C7880FC91460ABD0003C10A4 /* FileSystemDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7880FC71460ABD0003C10A4 /* FileSystemDialog.cpp */; };
-		C78F631914621AEB001917D1 /* PreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78F631714621AEB001917D1 /* PreviewControl.cpp */; };
-		C78F9996145B4AC000914097 /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78F9994145B4AC000914097 /* PropertyLineEditControl.cpp */; };
-		C79AB1B61464A775006C3567 /* ForcePreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79AB1B51464A775006C3567 /* ForcePreviewControl.cpp */; };
-		C7D1B55B1457942D00368D54 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D1B5581457941A00368D54 /* libFramework.a */; };
+		C7F49E9E14697F2F00035926 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F49E9D14697F1000035926 /* libFramework.a */; };
+		C7F49EA71469806E00035926 /* FileSystemDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49E9F1469806E00035926 /* FileSystemDialog.cpp */; };
+		C7F49EA81469806E00035926 /* ForcePreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49EA11469806E00035926 /* ForcePreviewControl.cpp */; };
+		C7F49EA91469806E00035926 /* PreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49EA31469806E00035926 /* PreviewControl.cpp */; };
+		C7F49EAA1469806E00035926 /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49EA51469806E00035926 /* PropertyLineEditControl.cpp */; };
 		FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */; };
 		FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */; };
 		FE9892E511638EF700500198 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FE9892E111638EF700500198 /* InfoPlist.strings */; };
@@ -27,7 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C7D1B5571457941A00368D54 /* PBXContainerItemProxy */ = {
+		C7F49E9C14697F1000035926 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
 			proxyType = 2;
@@ -43,14 +43,14 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TemplateProjectMacOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateProjectMacOS_Prefix.pch; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TemplateProjectMacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TemplateProjectMacOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7880FC71460ABD0003C10A4 /* FileSystemDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileSystemDialog.cpp; path = Classes/FileSystemDialog.cpp; sourceTree = "<group>"; };
-		C7880FC81460ABD0003C10A4 /* FileSystemDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileSystemDialog.h; path = Classes/FileSystemDialog.h; sourceTree = "<group>"; };
-		C78F631714621AEB001917D1 /* PreviewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreviewControl.cpp; path = Classes/PreviewControl.cpp; sourceTree = "<group>"; };
-		C78F631814621AEB001917D1 /* PreviewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreviewControl.h; path = Classes/PreviewControl.h; sourceTree = "<group>"; };
-		C78F9994145B4AC000914097 /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyLineEditControl.cpp; path = Classes/PropertyLineEditControl.cpp; sourceTree = "<group>"; };
-		C78F9995145B4AC000914097 /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyLineEditControl.h; path = Classes/PropertyLineEditControl.h; sourceTree = "<group>"; };
-		C79AB1B41464A74B006C3567 /* ForcePreviewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForcePreviewControl.h; path = Classes/ForcePreviewControl.h; sourceTree = "<group>"; };
-		C79AB1B51464A775006C3567 /* ForcePreviewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ForcePreviewControl.cpp; path = Classes/ForcePreviewControl.cpp; sourceTree = "<group>"; };
+		C7F49E9F1469806E00035926 /* FileSystemDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileSystemDialog.cpp; path = Classes/FileSystemDialog.cpp; sourceTree = "<group>"; };
+		C7F49EA01469806E00035926 /* FileSystemDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileSystemDialog.h; path = Classes/FileSystemDialog.h; sourceTree = "<group>"; };
+		C7F49EA11469806E00035926 /* ForcePreviewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ForcePreviewControl.cpp; path = Classes/ForcePreviewControl.cpp; sourceTree = "<group>"; };
+		C7F49EA21469806E00035926 /* ForcePreviewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForcePreviewControl.h; path = Classes/ForcePreviewControl.h; sourceTree = "<group>"; };
+		C7F49EA31469806E00035926 /* PreviewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PreviewControl.cpp; path = Classes/PreviewControl.cpp; sourceTree = "<group>"; };
+		C7F49EA41469806E00035926 /* PreviewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PreviewControl.h; path = Classes/PreviewControl.h; sourceTree = "<group>"; };
+		C7F49EA51469806E00035926 /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyLineEditControl.cpp; path = Classes/PropertyLineEditControl.cpp; sourceTree = "<group>"; };
+		C7F49EA61469806E00035926 /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyLineEditControl.h; path = Classes/PropertyLineEditControl.h; sourceTree = "<group>"; };
 		FE444EEA1153A1D500F5EFD6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		FE5288A4132FA5EB000FE4F0 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FE9892E211638EF700500198 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = MacOSSpecific/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1B55B1457942D00368D54 /* libFramework.a in Frameworks */,
+				C7F49E9E14697F2F00035926 /* libFramework.a in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */,
 				FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */,
@@ -154,10 +154,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C7D1B5541457941100368D54 /* Products */ = {
+		C7F49E9814697F1000035926 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1B5581457941A00368D54 /* libFramework.a */,
+				C7F49E9D14697F1000035926 /* libFramework.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,21 +165,21 @@
 		FE445A961153C27800F5EFD6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C78F631714621AEB001917D1 /* PreviewControl.cpp */,
-				C78F631814621AEB001917D1 /* PreviewControl.h */,
-				C78F9994145B4AC000914097 /* PropertyLineEditControl.cpp */,
-				C78F9995145B4AC000914097 /* PropertyLineEditControl.h */,
+				C7F49E9F1469806E00035926 /* FileSystemDialog.cpp */,
+				C7F49EA01469806E00035926 /* FileSystemDialog.h */,
+				C7F49EA11469806E00035926 /* ForcePreviewControl.cpp */,
+				C7F49EA21469806E00035926 /* ForcePreviewControl.h */,
+				C7F49EA31469806E00035926 /* PreviewControl.cpp */,
+				C7F49EA41469806E00035926 /* PreviewControl.h */,
+				C7F49EA51469806E00035926 /* PropertyLineEditControl.cpp */,
+				C7F49EA61469806E00035926 /* PropertyLineEditControl.h */,
 				FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */,
 				FEC3CA701283557F00541220 /* FrameworkMain.h */,
 				FEC3CA711283557F00541220 /* GameCore.cpp */,
-				C7880FC71460ABD0003C10A4 /* FileSystemDialog.cpp */,
-				C7880FC81460ABD0003C10A4 /* FileSystemDialog.h */,
 				FEC3CA721283557F00541220 /* GameCore.h */,
 				FEC3CA6C1283557F00541220 /* AppScreens.h */,
 				FEC3CA7B1283557F00541220 /* TestScreen.cpp */,
 				FEC3CA7C1283557F00541220 /* TestScreen.h */,
-				C79AB1B41464A74B006C3567 /* ForcePreviewControl.h */,
-				C79AB1B51464A775006C3567 /* ForcePreviewControl.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -237,7 +237,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C7D1B5541457941100368D54 /* Products */;
+					ProductGroup = C7F49E9814697F1000035926 /* Products */;
 					ProjectRef = FE98930B11638F3C00500198 /* Framework.xcodeproj */;
 				},
 			);
@@ -249,11 +249,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C7D1B5581457941A00368D54 /* libFramework.a */ = {
+		C7F49E9D14697F1000035926 /* libFramework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libFramework.a;
-			remoteRef = C7D1B5571457941A00368D54 /* PBXContainerItemProxy */;
+			remoteRef = C7F49E9C14697F1000035926 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -298,10 +298,10 @@
 				FEC3CA811283557F00541220 /* FrameworkMain.cpp in Sources */,
 				FEC3CA821283557F00541220 /* GameCore.cpp in Sources */,
 				FEC3CA871283557F00541220 /* TestScreen.cpp in Sources */,
-				C78F9996145B4AC000914097 /* PropertyLineEditControl.cpp in Sources */,
-				C7880FC91460ABD0003C10A4 /* FileSystemDialog.cpp in Sources */,
-				C78F631914621AEB001917D1 /* PreviewControl.cpp in Sources */,
-				C79AB1B61464A775006C3567 /* ForcePreviewControl.cpp in Sources */,
+				C7F49EA71469806E00035926 /* FileSystemDialog.cpp in Sources */,
+				C7F49EA81469806E00035926 /* ForcePreviewControl.cpp in Sources */,
+				C7F49EA91469806E00035926 /* PreviewControl.cpp in Sources */,
+				C7F49EAA1469806E00035926 /* PropertyLineEditControl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

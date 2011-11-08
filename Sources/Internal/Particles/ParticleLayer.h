@@ -154,7 +154,7 @@ private:
 	Sprite 			* sprite;
 	Vector2			pivotPoint;
 
-protected:		
+public:		
 	/*
 	 Properties of particle layer that describe particle system logic
 	 */
@@ -200,159 +200,12 @@ protected:
 	int32		frameStart;
 	int32		frameEnd;
 	eType		type;
-
-public:
-    RefPtr< PropertyLine<float32> > GetLife();
-    RefPtr< PropertyLine<float32> > GetLifeVariation();
-    RefPtr< PropertyLine<float32> > GetNumber();
-    RefPtr< PropertyLine<float32> > GetNumberVariation();
-    
-    RefPtr< PropertyLine<Vector2> > GetSize();
-    RefPtr< PropertyLine<Vector2> > GetSizeVariation();
-    RefPtr< PropertyLine<float32> > GetSizeOverLife();
-    
-    RefPtr< PropertyLine<float32> > GetVelocity();
-    RefPtr< PropertyLine<float32> > GetVelocityVariation();
-    RefPtr< PropertyLine<float32> > GetVelocityOverLife();
-    
-    Vector< RefPtr< PropertyLine<Vector2> > > & GetForces();
-    Vector< RefPtr< PropertyLine<Vector2> > > & GetForcesVariation();
-    Vector< RefPtr< PropertyLine<float32> > > & GetForcesOverLife();
-    
-	RefPtr< PropertyLine<float32> > GetSpin();
-	RefPtr< PropertyLine<float32> > GetSpinVariation();
-	RefPtr< PropertyLine<float32> > GetSpinOverLife();
-    
-	RefPtr< PropertyLine<float32> > GetMotionRandom();
-	RefPtr< PropertyLine<float32> > GetMotionRandomVariation();
-	RefPtr< PropertyLine<float32> > GetMotionRandomOverLife();
-    
-	RefPtr< PropertyLine<float32> > GetBounce();
-	RefPtr< PropertyLine<float32> > GetBounceVariation();
-	RefPtr< PropertyLine<float32> > GetBounceOverLife();
-    
-    RefPtr< PropertyLine<Color> > GetColorRandom();		
-	RefPtr< PropertyLine<float32> > GetAlphaOverLife();	
-	RefPtr< PropertyLine<Color> > GetColorOverLife();	
-	RefPtr< PropertyLine<float32> > GetFrameOverLife();
 };
 
 inline int32 ParticleLayer::GetParticleCount()
 {
 	return count;
 }
-
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetLife()
-    {
-        return life;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetLifeVariation()
-    {
-        return lifeVariation;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetNumber()
-    {
-        return number;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetNumberVariation()
-    {
-        return numberVariation;
-    }
-    
-    inline RefPtr< PropertyLine<Vector2> > ParticleLayer::GetSize()
-    {
-        return size;
-    }
-    inline RefPtr< PropertyLine<Vector2> > ParticleLayer::GetSizeVariation()
-    {
-        return sizeVariation;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetSizeOverLife()
-    {
-        return sizeOverLife;
-    }
-    
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetVelocity()
-    {
-        return velocity;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetVelocityVariation()
-    {
-        return velocityVariation;
-    }
-    inline RefPtr< PropertyLine<float32> > ParticleLayer::GetVelocityOverLife()
-    {
-        return velocityOverLife;
-    }
-    
-    inline Vector< RefPtr< PropertyLine<Vector2> > > & ParticleLayer::GetForces()
-    {
-        return forces;
-    }
-    inline Vector< RefPtr< PropertyLine<Vector2> > > & ParticleLayer::GetForcesVariation()
-    {
-        return forcesVariation;
-    }
-    inline Vector< RefPtr< PropertyLine<float32> > > & ParticleLayer::GetForcesOverLife()
-    {
-        return forcesOverLife;
-    }
-    
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetSpin()
-    {
-        return spin;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetSpinVariation()
-    {
-        return spinVariation;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetSpinOverLife()
-    {
-        return spinOverLife;
-    }
-    
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetMotionRandom()
-    {
-        return motionRandom;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetMotionRandomVariation()
-    {
-        return motionRandomVariation;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetMotionRandomOverLife()
-    {
-        return motionRandomOverLife;
-    }
-    
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetBounce()
-    {
-        return bounce;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetBounceVariation()
-    {
-        return bounceVariation;
-    }
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetBounceOverLife()
-    {
-        return bounceOverLife;
-    }
-    
-    inline RefPtr< PropertyLine<Color> > ParticleLayer::GetColorRandom()
-    {
-        return colorRandom;
-    }		
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetAlphaOverLife()
-    {
-        return alphaOverLife;
-    }	
-	inline RefPtr< PropertyLine<Color> > ParticleLayer::GetColorOverLife()
-    {
-        return colorOverLife;
-    }	
-	inline RefPtr< PropertyLine<float32> > ParticleLayer::GetFrameOverLife()
-    {
-        return frameOverLife;
-    }
 };
 
 #endif // __DAVAENGINE_PARTICLE_LAYER_H__
