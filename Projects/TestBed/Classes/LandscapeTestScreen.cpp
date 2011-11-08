@@ -105,7 +105,7 @@ void LandscapeTestScreen::LoadResources()
     angleJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
     angleJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
 	AddControl(angleJoypad);
-}  
+}
 
 void LandscapeTestScreen::UnloadResources()
 {

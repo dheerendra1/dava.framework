@@ -91,6 +91,7 @@ ColladaMaterial::ColladaMaterial( ColladaScene * scene, FCDMaterial * _material 
 	diffuseTexture = 0;
 
 	// diffuse texture
+    int32 diffuseChannelCount = standardProfile->GetTextureCount(FUDaeTextureChannel::DIFFUSE);
 	if (standardProfile->GetTextureCount(FUDaeTextureChannel::DIFFUSE) > 0) 
 	{
 		FCDTexture * texture = standardProfile->GetTexture(FUDaeTextureChannel::DIFFUSE, 0);
@@ -109,6 +110,31 @@ ColladaMaterial::ColladaMaterial( ColladaScene * scene, FCDMaterial * _material 
 			}
 		}
 	}	
+    
+    // diffuse texture
+    //int32 diffuseChannelCount = standardProfile->GetTextureCount(FUDaeTextureChannel::DIFFUSE);
+    /*
+        We get lightmaps from specular channel 
+     */ 
+    lightmapTexture = 0;
+	if (standardProfile->GetTextureCount(FUDaeTextureChannel::SPECULAR) > 0) 
+	{
+		FCDTexture * texture = standardProfile->GetTexture(FUDaeTextureChannel::SPECULAR, 0);
+		if (texture != NULL) 
+		{
+			FCDImage * image = texture->GetImage();
+			
+			if (image!=NULL) 
+			{
+				lightmapTexture = scene->FindTextureWithName(image->GetDaeId());
+				lightmapTextureName = image->GetDaeId();
+                
+				if (lightmapTexture != NULL)
+					if (lightmapTexture->GetTextureId() != -1)
+						hasLightmapTexture = true;
+			}
+		}
+	}
 
 	// reflective texture
 	hasReflectiveTexture = false;

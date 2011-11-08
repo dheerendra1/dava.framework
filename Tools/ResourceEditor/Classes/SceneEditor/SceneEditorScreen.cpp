@@ -31,11 +31,9 @@
 void SceneEditorScreen::LoadResources()
 {
     //RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
-
     GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     GetBackground()->SetColor(Color(0.7f, 0.7f, 0.7f, 1.0f));
 
-    
     scene = new Scene();
 
     
@@ -48,17 +46,16 @@ void SceneEditorScreen::LoadResources()
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(200, 100, 480, 320));
     scene3dView->SetDebugDraw(true);
-    scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
-
-/*
+    
     Camera * cam = new Camera(scene);
     scene->AddCamera(cam);
-    cam->Setup(70.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
     scene->SetCurrentCamera(cam);
     cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
     cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
+    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    cam->SetTarget(Vector3(1.0f, 0.0f, 0.0f));
     
 //    Camera * cam = scene->GetCamera(0);
 //    cam->Setup(83.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
@@ -70,7 +67,7 @@ void SceneEditorScreen::LoadResources()
 //    scene->SetClipCamera(cam2);
     
     // 483, -2000, 119
-    LandscapeNode * node = new LandscapeNode(scene);
+    /*LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
     
     //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
@@ -160,10 +157,31 @@ void SceneEditorScreen::LoadResources()
     fileSystemDialog->SetCurrentDir("/Sources/dava.framework/Tools/Bin");
     
     CreateTopMenu();
+    
+    // Camera info
+    
+    {
+        FTFont * font = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+        font->SetSize(12.0f);
+        font->SetColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
+        
+        cameraInfo = new UIStaticText(Rect(10, 21, 600, 20));
+        cameraInfo->SetAlign(ALIGN_LEFT | ALIGN_VCENTER);
+        cameraInfo->SetFont(font);
+        cameraInfo->SetText(L"");
+        SafeRelease(font);
+        
+        AddControl(cameraInfo);
+    }
+    scene3dView->SetScene(scene);
+    cam->Setup(70.0f, 320.0f / 480.0f, 1.0f, 5000.0f); 
+
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    SafeRelease(cameraInfo);
+    
     ReleaseTopMenu();
     
     SafeRelease(nodeName);
@@ -186,7 +204,7 @@ void SceneEditorScreen::CreateTopMenu()
     f->SetSize(12);
     f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
     
-    openButton = new UIButton(Rect(0, 0, 150, 30));
+    openButton = new UIButton(Rect(0, 0, 150, 20));
     openButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     openButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
     openButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
@@ -199,7 +217,7 @@ void SceneEditorScreen::CreateTopMenu()
     
     AddControl(openButton);
     
-    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 30));
+    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 20));
     convertButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     convertButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
     convertButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
@@ -271,10 +289,10 @@ void SceneEditorScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
 
 void SceneEditorScreen::WillAppear()
 {
-    for (int32 k = 0; k < 32; ++k)
-    {
-        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
-    }
+//    for (int32 k = 0; k < 32; ++k)
+//    {
+//        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
+//    }
 }
 
 void SceneEditorScreen::WillDisappear()
@@ -337,6 +355,21 @@ void SceneEditorScreen::Input(UIEvent * event)
 
 void SceneEditorScreen::Update(float32 timeElapsed)
 {
+    Camera * cam = scene->GetCurrentCamera();
+    Camera * frustumCam = scene->GetClipCamera();
+    
+    if (!cam)
+    {
+        cameraInfo->SetText(L"no active camera");
+    }else
+    {
+        WideString cameraInfoString = Format(L"cam: %s pos(%f, %f, %f) dir(%f, %f, %f) up(%f, %f, %f)", 
+                                             cam->GetName().c_str(), 
+                                             cam->GetPosition().x, cam->GetPosition().y, cam->GetPosition().z, 
+                                             cam->GetDirection().x, cam->GetDirection().y, cam->GetDirection().z, 
+                                             cam->GetUp().x, cam->GetUp().y, cam->GetUp().z);
+        cameraInfo->SetText(cameraInfoString);
+    }
     
 //    Camera * cam = scene->GetCamera(0);
 //    Vector3 pos = cam->GetPosition();

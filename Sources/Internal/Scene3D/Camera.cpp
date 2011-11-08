@@ -114,7 +114,7 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 
 void Camera::Recalc()
 {
-	ymax = znear * tanf(fovy* PI / 360.0f);
+	ymax = znear * tanf(fovy * PI / 360.0f);
 	ymin = -ymax;
 	
     float32 realAspect = aspect;

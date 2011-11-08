@@ -62,7 +62,7 @@ SceneFile::Header::Header()
 	descriptor[0] = 'D'; descriptor[1] = 'V';
 	descriptor[2] = 'S'; descriptor[3] = 'C';
 	
-	version = 101;
+	version = 102;
 	textureCount = 0;			
 	materialCount = 0;
 	staticMeshCount = 0;
@@ -218,7 +218,7 @@ bool SceneFile::ReadTexture()
 	tname = scenePath + tname;
     
     uint8 hasOpacity = false;
-    if (header.version == 101)
+    if (header.version >= 101)
     {
         sceneFP->Read(&hasOpacity, sizeof(hasOpacity));
     }
@@ -281,8 +281,12 @@ bool SceneFile::ReadMaterial()
 	sceneFP->Read(&materialDef.transparency, sizeof(materialDef.transparency));
 	sceneFP->Read(&materialDef.transparent, sizeof(materialDef.transparent));
     materialDef.hasOpacity = false;
-    if (header.version == 101)
+    if (header.version >= 101)
         sceneFP->Read(&materialDef.hasOpacity, sizeof(materialDef.hasOpacity));
+    
+    if (header.version >= 102)
+        sceneFP->ReadString(materialDef.lightmapTexture, 512);
+
 
 	Material * mat = new Material(scene);
 
@@ -291,19 +295,23 @@ bool SceneFile::ReadMaterial()
 	
 	if (materialDef.diffuseTextureId < (uint32)scene->GetTextureCount())
 	{	
-		mat->diffuseTexture = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
+		mat->textures[Material::TEXTURE_DIFFUSE] = scene->GetTexture(materialDef.diffuseTextureId + textureIndexOffset);
 	}else 
 	{
-		mat->diffuseTexture = 0;
+		mat->textures[Material::TEXTURE_DIFFUSE] = 0;
 	}
     
     String diffuseTextureName = "no texture"; 
-    if (mat->diffuseTexture)
+    if (mat->textures[Material::TEXTURE_DIFFUSE])
     {
         String tempPath;
-        FileSystem::SplitPath(mat->diffuseTexture->GetPathname(), tempPath, diffuseTextureName);
+        FileSystem::SplitPath(mat->textures[Material::TEXTURE_DIFFUSE]->GetPathname(), tempPath, diffuseTextureName);
     }
     
+    if (strlen(materialDef.lightmapTexture))
+    {
+        mat->textures[Material::TEXTURE_DIFFUSE] = Texture::CreateFromFile(scenePath + String(materialDef.lightmapTexture));
+    }
 	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %s hasOpacity: %s\n", materialDef.name, materialDef.id, diffuseTextureName.c_str(), (materialDef.hasOpacity) ? ("yes") : ("no"));
 	
 
@@ -361,7 +369,7 @@ bool SceneFile::ReadStaticMesh()
             if (polygonGroup->GetFormat() & EVF_NORMAL)
                 polygonGroup->SetNormal(v, normal);
             if (polygonGroup->GetFormat() & EVF_TEXCOORD0)
-                polygonGroup->SetTexcoord(0, v, texCoords0);
+                polygonGroup->SetTexcoord(0, v, texCoords1);
 		}
 		
         polygonGroup->BuildVertexBuffer();

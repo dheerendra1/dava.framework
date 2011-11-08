@@ -67,46 +67,6 @@ void StaticMesh::Create(uint32 _polygroupCount)
 
 void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 {
-	//RenderManager::Instance()->SetTexture(textures[frameTextureIndex[frame]]);
-
-	PolygonGroup * group = polygroups[index];
-#if 0
-	//	glColor4f(1.0f, 1.0f, 0.0f, 255.0f);
-	glVertexPointer(3, GL_FLOAT, group->vertexStride, group->vertexArray);
-	//	glNormalPointer(GL_FLOAT, cube->vertexStride, cube->normalArray);
-	glColorPointer(4, GL_UNSIGNED_BYTE, group->vertexStride, group->colorArray);
-	//	glTexCoordPointer(2, GL_FLOAT, cube->vertexStride, cube->textureCoordArray[0]);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	//	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	glDrawElements(GL_TRIANGLES, group->indexCount, GL_UNSIGNED_SHORT, group->indexArray);
-	
-	glDisableClientState(GL_VERTEX_ARRAY);
-	//	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-#else
-/*
-	RenderManager::Instance()->SetVertexPointer(3, TYPE_FLOAT, group->vertexStride, group->vertexArray);
-//	RenderManager::Instance()->SetNormalPointer(GL_FLOAT, group->vertexStride, group->normalArray);
-//	RenderManager::Instance()->SetColorPointer(4, GL_UNSIGNED_BYTE, group->vertexStride, group->colorArray);
-	RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, group->vertexStride, group->textureCoordArray[0]);
-	
-	RenderManager::Instance()->EnableVertexArray(true);
-	RenderManager::Instance()->EnableTextureCoordArray(true);
-*/
-	// TODO replace with calls to RenderManager
-	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_COLOR_ARRAY);
-
-	// TODO set material from interface
-	//Material * mat = scene->GetMaterial(index);
-
-
 //    Matrix4 proj = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION);
 //    Matrix4 glMatrixProj;
 //    glGetFloatv(GL_PROJECTION_MATRIX, glMatrixProj.data);
@@ -122,14 +82,16 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
 //    LOG_AS_MATRIX4(glModelView);
     
     
+    PolygonGroup * group = polygroups[index];
     
     RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
-	if (material)
+#if 0 // old material code
+    if (material)
 	{
 
-		if (material->diffuseTexture)
+		if (material->textures[Material::TEXTURE_DIFFUSE])
 		{
-			RenderManager::Instance()->SetTexture(material->diffuseTexture);
+			RenderManager::Instance()->SetTexture(material->textures[Material::TEXTURE_DIFFUSE]);
             RenderManager::Instance()->SetRenderData(group->renderDataObject);
 
         }
@@ -138,61 +100,39 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
         {
             RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST);
             RenderManager::Instance()->EnableCulling(false);
-            //RenderManager::Instance()->EnableBlending(true);
-            //RenderManager::Instance()->SetBlendMode(BLEND_ONE, BLEND_ONE_MINUS_SRC_ALPHA);
-            //glAlphaFunc ( GL_GREATER, 0.5f);
-            //glEnable ( GL_ALPHA_TEST ) ;
-            //glDisable( GL_CULL_FACE );
         }
-//        else
-//        {
-//            RenderManager::Instance()->EnableBlending(false);
-//        }
-		
-		//glEnable(GL_COLOR_MATERIAL);
-#if 0
-		//glDisable(GL_CULL_FACE);
-		//glEnable(GL_COLOR_MATERIAL);
-		//glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material->shininess);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient.data);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material->diffuse.data);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material->specular.data);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, material->emission.data);
-		
-		//glFrontFace(GL_CW);
-		
-		
-		glMaterialf(GL_FRONT, GL_SHININESS, material->shininess);
-		glMaterialfv(GL_FRONT, GL_AMBIENT, material->ambient.data);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, material->diffuse.data);
-		glMaterialfv(GL_FRONT, GL_SPECULAR, material->specular.data);
-		glMaterialfv(GL_FRONT, GL_EMISSION, material->emission.data);
-		
-		
-		/*
-		glMaterialf(GL_BACK, GL_SHININESS, material->shininess);
-		glMaterialfv(GL_BACK, GL_AMBIENT, material->ambient.data);
-		glMaterialfv(GL_BACK, GL_DIFFUSE, material->diffuse.data);
-		glMaterialfv(GL_BACK, GL_SPECULAR, material->specular.data);
-		glMaterialfv(GL_BACK, GL_EMISSION, material->emission.data);
-		 */
-		
-		//glDisable(GL_COLOR_MATERIAL);
-#endif
+	}
+#else 
+    if (material)
+	{
+        RenderManager::Instance()->SetShader(material->shader);
+
+		if (material->textures[Material::TEXTURE_DIFFUSE])
+		{
+            RenderManager::Instance()->SetRenderData(group->renderDataObject);
+			RenderManager::Instance()->SetTexture(material->textures[Material::TEXTURE_DIFFUSE]);
+        }
+        
+        if (material->textures[Material::TEXTURE_DECAL])
+        {
+			RenderManager::Instance()->SetTexture(material->textures[Material::TEXTURE_DECAL], 1);
+        }
+        
+        if (material->hasOpacity)
+        {
+            RenderManager::Instance()->EnableCulling(false);
+        }
 	}
 
-	// render
-	//RenderManager::Instance()->DrawArrays(GL_TRIANGLES, );
-	//RenderManager::Instance()->FlushState();
-	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
-    RenderManager::Instance()->EnableCulling(true);
-    
-//    if (material && material->hasOpacity)
-//    {
-//        glDisable ( GL_ALPHA_TEST ) ;
-//        glEnable(GL_CULL_FACE);
-//    }
 #endif
+
+	// render
+
+	RenderManager::Instance()->DrawElements(PRIMITIVETYPE_TRIANGLELIST, group->indexCount, EIF_16, group->indexArray);
+    
+    
+    RenderManager::Instance()->SetTexture(0, 1); // clear texture block 1
+    RenderManager::Instance()->EnableCulling(true);
 }
 
 void StaticMesh::Draw()

@@ -34,6 +34,8 @@
 #include "FileSystem/YamlParser.h"
 #include "FileSystem/FileSystem.h"
 #include "Platform/SystemTimer.h"
+#include "Utils/Utils.h"
+#include "Utils/StringFormat.h"
 
 namespace DAVA 
 {
@@ -59,8 +61,8 @@ Shader::Shader()
     for (int32 ki = 0; ki < VERTEX_FORMAT_STREAM_MAX_COUNT; ++ki)
          vertexFormatAttribIndeces[ki] = -1;
 
-    vertexShaderBytes = 0;
-    fragmentShaderBytes = 0;
+    vertexShaderData = 0;
+    fragmentShaderData = 0;
 }
 
 String VertexTypeStringFromEnum(GLenum type); // Fucking XCode 4 analyzer
@@ -82,6 +84,7 @@ const char * uniformStrings[Shader::UNIFORM_COUNT] =
         "modelViewProjectionMatrix",
         "flatColor",
     };
+
 const char * attributeStrings[VERTEX_FORMAT_STREAM_MAX_COUNT] = 
     {
         "inPosition",
@@ -113,6 +116,19 @@ int32 Shader::GetAttributeIndexByName(const char * name)
 void Shader::SetDefines(const String & _defines)
 {
     defines = _defines;
+}
+    
+void Shader::SetDefineList(const String & enableDefinesList)
+{
+    Vector<String> defineNameList;
+    String result;
+    Split(enableDefinesList, ";", defineNameList);
+    size_t size = defineNameList.size();
+    for (size_t i = 0; i < size; ++i)
+    {
+        result += Format("#define %s\n", defineNameList[i].c_str());
+    }
+    SetDefines(result);
 }
     
 bool Shader::LoadFromYaml(const String & pathname)
@@ -160,34 +176,22 @@ bool Shader::LoadFromYaml(const String & pathname)
         return false;
     }
     
-    String vertexShaderPath = glslVertexNode->AsString();
-    vertexShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + vertexShaderPath, vertexShaderSize);
-    
-    String fragmentShaderPath = glslFragmentNode->AsString();
-    fragmentShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + fragmentShaderPath, fragmentShaderSize);
+    uint32 vertexShaderSize = 0, fragmentShaderSize = 0;
 
-    SafeRelease(parser);
- 
-    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderSize, (GLchar*)vertexShaderBytes))
-    {
-        Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
-        return false;
-    }
+    vertexShaderPath = glslVertexNode->AsString();
     
-    if (!CompileShader(&fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderSize, (GLchar*)fragmentShaderBytes))
-    {
-        Logger::Error("Failed to compile fragment shader: %s", fragmentShaderPath.c_str());
-        return false;
-    }
-   
-    if (!Recompile())
-    {
-        return false;
-    }
-   
+    uint8 * vertexShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + vertexShaderPath, vertexShaderSize);
+    vertexShaderData = new Data(vertexShaderBytes, vertexShaderSize);
+    
+    fragmentShaderPath = glslFragmentNode->AsString();
+    uint8 * fragmentShaderBytes = FileSystem::Instance()->ReadFileContents(pathOnly + fragmentShaderPath, fragmentShaderSize);
+    fragmentShaderData = new Data(fragmentShaderBytes, fragmentShaderSize);
+    
+    SafeRelease(parser);
+    
     shaderLoadTime = SystemTimer::Instance()->AbsoluteMS() - shaderLoadTime;
     
-    Logger::Debug("shader loaded:%s load-compile-time: %lld ms", pathname.c_str(), shaderLoadTime);
+    Logger::Debug("shader loaded:%s load-time: %lld ms", pathname.c_str(), shaderLoadTime);
     return true;
 }
     
@@ -196,14 +200,26 @@ Shader::~Shader()
     SafeDeleteArray(uniformNames);
     SafeDeleteArray(uniformIDs);
     SafeDeleteArray(uniformLocations);
-    SafeDeleteArray(vertexShaderBytes);
-    SafeDeleteArray(fragmentShaderBytes);
+    SafeRelease(vertexShaderData);
+    SafeRelease(fragmentShaderData);
     
     DeleteShaders();
 }
     
 bool Shader::Recompile()
 {
+    if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderData->GetSize(), (GLchar*)vertexShaderData->GetPtr()))
+    {
+        Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
+        return false;
+    }
+    
+    if (!CompileShader(&fragmentShader, GL_FRAGMENT_SHADER, fragmentShaderData->GetSize(), (GLchar*)fragmentShaderData->GetPtr()))
+    {
+        Logger::Error("Failed to compile fragment shader: %s", fragmentShaderPath.c_str());
+        return false;
+    }
+    
     program = glCreateProgram();
     RENDER_VERIFY(glAttachShader(program, vertexShader));
     RENDER_VERIFY(glAttachShader(program, fragmentShader));
@@ -347,7 +363,7 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     {
         GLchar *log = (GLchar *)malloc(logLength);
         glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        //Logger::Debug("Shader compile log:\n%s", log);
+        Logger::Debug("Shader compile log:\n%s", log);
         free(log);
     }
 //#endif
@@ -355,7 +371,7 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
     if (status == GL_FALSE)
     {
-        Logger::Debug("Failed to compile shader:\n");
+        //Logger::Debug("Failed to compile shader:\n");
     }
     
     return status;
@@ -413,6 +429,21 @@ int32 Shader::FindUniformLocationByName(const String & name)
     }
     return -1;
 }
+    
+Shader * Shader::RecompileNewInstance(const String & combination)
+{
+    Shader * shader = new Shader();
+    shader->vertexShaderData = SafeRetain(vertexShaderData);
+    shader->fragmentShaderData = SafeRetain(fragmentShaderData);
+    shader->SetDefineList(combination);
+    if (!shader->Recompile())
+    {
+        SafeRelease(shader);
+        return 0;
+    }
+    return shader;
+}
+
     
 
 #endif 

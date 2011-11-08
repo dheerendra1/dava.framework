@@ -41,6 +41,11 @@
 		FE0A502F134B2E43001EAA90 /* Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0A502C134B2E43001EAA90 /* Cursor.h */; };
 		FE0A5030134B2E43001EAA90 /* CursorMacOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE0A502D134B2E43001EAA90 /* CursorMacOS.mm */; };
 		FE0A5031134B2E43001EAA90 /* CursorWin32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */; };
+		FE25F785145DB0FB00A72F9C /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE25F784145DB0FB00A72F9C /* Material.cpp */; };
+		FE25F788145DB33E00A72F9C /* UberShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE25F786145DB33E00A72F9C /* UberShader.cpp */; };
+		FE25F789145DB33E00A72F9C /* UberShader.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25F787145DB33E00A72F9C /* UberShader.h */; };
+		FE25F78B145DB75700A72F9C /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25F78A145DB75700A72F9C /* Data.h */; };
+		FE25F78D145DB88B00A72F9C /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE25F78C145DB88B00A72F9C /* Data.cpp */; };
 		FE44432A114D8DF600F5EFD6 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE444329114D8DF600F5EFD6 /* ApplicationServices.framework */; };
 		FE444430114E77EC00F5EFD6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE44442F114E77EC00F5EFD6 /* OpenAL.framework */; };
 		FE4E01B913AA733A0013464E /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE4E01B713AA733A0013464E /* Camera.cpp */; };
@@ -489,6 +494,11 @@
 		FE0A502C134B2E43001EAA90 /* Cursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursor.h; sourceTree = "<group>"; };
 		FE0A502D134B2E43001EAA90 /* CursorMacOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CursorMacOS.mm; sourceTree = "<group>"; };
 		FE0A502E134B2E43001EAA90 /* CursorWin32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorWin32.cpp; sourceTree = "<group>"; };
+		FE25F784145DB0FB00A72F9C /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		FE25F786145DB33E00A72F9C /* UberShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UberShader.cpp; sourceTree = "<group>"; };
+		FE25F787145DB33E00A72F9C /* UberShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UberShader.h; sourceTree = "<group>"; };
+		FE25F78A145DB75700A72F9C /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
+		FE25F78C145DB88B00A72F9C /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
 		FE444329114D8DF600F5EFD6 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		FE44442F114E77EC00F5EFD6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = /System/Library/Frameworks/OpenAL.framework; sourceTree = "<absolute>"; };
 		FE4A005213EBDC24006E924D /* LandscapeNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandscapeNode.cpp; sourceTree = "<group>"; };
@@ -1113,6 +1123,8 @@
 				FECFC0C712E87E3000C71562 /* RefPtr.h */,
 				FECFC0C812E87E3000C71562 /* Singleton.h */,
 				FECFC0C912E87E3000C71562 /* StaticSingleton.h */,
+				FE25F78A145DB75700A72F9C /* Data.h */,
+				FE25F78C145DB88B00A72F9C /* Data.cpp */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1325,6 +1337,9 @@
 				FECFC17B12E87E3000C71562 /* LibPngHelpers.h */,
 				FECFC17C12E87E3000C71562 /* Light.h */,
 				FECFC17D12E87E3000C71562 /* Material.h */,
+				FE25F784145DB0FB00A72F9C /* Material.cpp */,
+				FE25F787145DB33E00A72F9C /* UberShader.h */,
+				FE25F786145DB33E00A72F9C /* UberShader.cpp */,
 				FECFC17F12E87E3000C71562 /* RenderBase.h */,
 				FEA4D8C31328D03E00E261D0 /* RenderBase.cpp */,
 				FECFC18212E87E3000C71562 /* RenderGrayscaleEffect.cpp */,
@@ -1819,6 +1834,8 @@
 				FE044F43140EEA75002A6D27 /* RenderManagerGL20.h in Headers */,
 				FEDDC95E1429E5040004BF1A /* UIFileSystemDialog.h in Headers */,
 				FE879F88145061E400F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */,
+				FE25F789145DB33E00A72F9C /* UberShader.h in Headers */,
+				FE25F78B145DB75700A72F9C /* Data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2087,6 +2104,9 @@
 				FE044F42140EEA75002A6D27 /* RenderManagerGL20.cpp in Sources */,
 				FEDDC95D1429E5040004BF1A /* UIFileSystemDialog.cpp in Sources */,
 				FE879F87145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */,
+				FE25F785145DB0FB00A72F9C /* Material.cpp in Sources */,
+				FE25F788145DB33E00A72F9C /* UberShader.cpp in Sources */,
+				FE25F78D145DB88B00A72F9C /* Data.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -78,6 +78,8 @@ void LandscapeNode::InitShaders()
         case RENDERING_MODE_DETAIL_SHADER:
             detailShader = new Shader();
             detailShader->LoadFromYaml("~res:/Shaders/Landscape/detail-texture.shader");
+            detailShader->Recompile();
+
             
             uniformTexture = detailShader->FindUniformLocationByName("texture");
             uniformDetailTexture = detailShader->FindUniformLocationByName("detailTexture");
@@ -88,7 +90,8 @@ void LandscapeNode::InitShaders()
         case RENDERING_MODE_BLENDED_SHADER:
             blendedShader = new Shader();
             blendedShader->LoadFromYaml("~res:/Shaders/Landscape/blended-texture.shader");
-            
+            blendedShader->Recompile();
+
             uniformTexture0 = blendedShader->FindUniformLocationByName("texture0");
             uniformTexture1 = blendedShader->FindUniformLocationByName("texture1");
             uniformTextureMask = blendedShader->FindUniformLocationByName("textureMask");

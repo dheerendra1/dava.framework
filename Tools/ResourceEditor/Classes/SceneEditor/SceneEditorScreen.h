@@ -118,6 +118,7 @@ public:
     CameraPanel * cameraPanel;
     
     WASDCameraController * cameraController;
+    UIStaticText * cameraInfo;
 };
 
 #endif // __SCENE_EDITOR_SCREEN_H__
