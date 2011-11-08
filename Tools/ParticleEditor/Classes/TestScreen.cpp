@@ -332,9 +332,9 @@ void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
             }
         }
         if(selectedPropElement == 11)
-            forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->GetForces()[selectedForceElement].Get()->GetValue(curPropEditTime));
+            forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forces[selectedForceElement].Get()->GetValue(curPropEditTime));
         if(selectedPropElement == 12)
-            forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->GetForcesVariation()[selectedForceElement].Get()->GetValue(curPropEditTime));
+            forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forcesVariation[selectedForceElement].Get()->GetValue(curPropEditTime));
     }
 }
 
@@ -470,15 +470,15 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedPropElement == 11)
         {
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().push_back(RefPtr<PropertyLine<Vector2> >(0));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector2> >(0));
         }
         if(selectedPropElement == 12)
         {
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().push_back(RefPtr<PropertyLine<Vector2> >(0));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector2> >(0));
         }
         if(selectedPropElement == 13)
         {
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().push_back(RefPtr<PropertyLine<float32> >(0));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(0));
         }
         HideAndResetEditFields();
         selectedForceElement = -1;
@@ -491,15 +491,15 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         {
             if(selectedPropElement == 11)
             {
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().erase(emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().begin() + selectedForceElement);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
             }
             if(selectedPropElement == 12)
             {
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().erase(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().begin() + selectedForceElement);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
             }
             if(selectedPropElement == 13)
             {
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().erase(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().begin() + selectedForceElement);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
             }
             forcesList->RefreshList();
             selectedForceElement = -1;
@@ -641,8 +641,8 @@ void TestScreen::GetEmitterPropValue(int32 id)
     PropertyLineKeyframes<Color> *ck;
     switch (id) {
         case 0:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetEmissionAngle().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetEmissionAngle().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
             layers.at(0).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -650,8 +650,8 @@ void TestScreen::GetEmitterPropValue(int32 id)
             break;
             
         case 1:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetEmissionRange().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetEmissionRange().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
             layers.at(0).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -659,8 +659,8 @@ void TestScreen::GetEmitterPropValue(int32 id)
             break;
             
         case 2:
-            pk = dynamic_cast< PropertyLineKeyframes<float> *>(emitter->GetRadius().Get());
-            pv = dynamic_cast< PropertyLineValue<float> *>(emitter->GetRadius().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float> *>(emitter->radius.Get());
+            pv = dynamic_cast< PropertyLineValue<float> *>(emitter->radius.Get());
             layers.at(0).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -668,8 +668,8 @@ void TestScreen::GetEmitterPropValue(int32 id)
             break;
             
         case 3:
-            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetColorOverLife().Get());
-            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetColorOverLife().Get());
+            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
+            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
             layers.at(0).props.at(id).isDefault = false;
             if(!GetProp(ck))
                 if(!GetProp(cv))
@@ -730,19 +730,19 @@ void TestScreen::SetEmitterPropValue(int32 id, bool def)
     }
     switch (id) {
         case 0:
-            emitter->GetEmissionAngle().Set(valueDim1);
+            emitter->emissionAngle.Set(valueDim1);
             break;
             
         case 1:
-            emitter->GetEmissionRange().Set(valueDim1);      
+            emitter->emissionRange.Set(valueDim1);      
             break;
            
         case 2:
-            emitter->GetRadius().Set(valueDim1);
+            emitter->radius.Set(valueDim1);
             break;
             
         case 3:
-            emitter->GetColorOverLife().Set(valueDim4);
+            emitter->colorOverLife.Set(valueDim4);
             break;
             
         default:
@@ -754,19 +754,19 @@ void TestScreen::ResetEmitterPropValue(int32 id)
 {
     switch (id) {
         case 0:
-            emitter->GetEmissionAngle().Set(0);
+            emitter->emissionAngle.Set(0);
             break;
             
         case 1:
-            emitter->GetEmissionRange().Set(0);      
+            emitter->emissionRange.Set(0);      
             break;
             
         case 2:
-            emitter->GetRadius().Set(0);
+            emitter->radius.Set(0);
             break;
             
         case 3:
-            emitter->GetColorOverLife().Set(0);
+            emitter->colorOverLife.Set(0);
             break;
             
         default:
@@ -781,101 +781,101 @@ void TestScreen::ResetLayerPropValue(int32 id)
             emitter->GetLayers().at(selectedEmitterElement-1)->SetSprite(Sprite::Create(defSpriteFile));
             break;
         case 1:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetLife().Set(0);
+            emitter->GetLayers().at(selectedEmitterElement-1)->life.Set(0);
             break;
             
         case 2:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetLifeVariation().Set(0);       
+            emitter->GetLayers().at(selectedEmitterElement-1)->lifeVariation.Set(0);       
             break;
             
         case 3:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetNumber().Set(0);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->number.Set(0);     
             break;
             
         case 4:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetNumberVariation().Set(0);
+            emitter->GetLayers().at(selectedEmitterElement-1)->numberVariation.Set(0);
             break;
             
         case 5:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSize().Set(0);
+            emitter->GetLayers().at(selectedEmitterElement-1)->size.Set(0);
             break;
             
         case 6:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeVariation().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->sizeVariation.Set(0);      
             break;
             
         case 7:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeOverLife().Set(0);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->sizeOverLife.Set(0);     
             break;
             
         case 8:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocity().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocity.Set(0);      
             break;
             
         case 9:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityVariation().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocityVariation.Set(0);      
             break;
             
         case 10:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityOverLife().Set(0);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocityOverLife.Set(0);     
             break;
             
         case 11:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().clear();
+            emitter->GetLayers().at(selectedEmitterElement-1)->forces.clear();
             break;
             
         case 12:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().clear();
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.clear();
             break;
             
         case 13:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().clear();
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.clear();
             break;
             
         case 14:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpin().Set(0);    
+            emitter->GetLayers().at(selectedEmitterElement-1)->spin.Set(0);    
             break;
             
         case 15:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinVariation().Set(0);
+            emitter->GetLayers().at(selectedEmitterElement-1)->spinVariation.Set(0);
             break;
             
         case 16:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinOverLife().Set(0);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Set(0);     
             break;
             
         case 17:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandom().Set(0);    
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandom.Set(0);    
             break;
             
         case 18:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomVariation().Set(0);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomVariation.Set(0);     
             break;
             
         case 19:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomOverLife().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomOverLife.Set(0);      
             break;
             
         case 20:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetBounce().Set(0);       
+            emitter->GetLayers().at(selectedEmitterElement-1)->bounce.Set(0);       
             break;
             
         case 21:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceVariation().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->bounceVariation.Set(0);      
             break;
             
-        case 22:emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceOverLife().Set(0);    
+        case 22:emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Set(0);    
             break;
             
-        case 23:emitter->GetLayers().at(selectedEmitterElement-1)->GetColorRandom().Set(0);      
+        case 23:emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Set(0);      
             break;
             
         case 24:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetAlphaOverLife().Set(0);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->alphaOverLife.Set(0);      
             break;
             
         case 25:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetColorOverLife().Set(0);  
+            emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife.Set(0);  
             break;
             
         default:
@@ -909,8 +909,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 1:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->life.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->life.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -918,8 +918,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 2:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetLifeVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetLifeVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->lifeVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->lifeVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -927,8 +927,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 3:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetNumber().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetNumber().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->number.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->number.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -936,8 +936,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 4:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetNumberVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetNumberVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->numberVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->numberVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -945,8 +945,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 5:
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSize().Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSize().Get());
+            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->size.Get());
+            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->size.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(vk))
                 if(!GetProp(vv))
@@ -954,8 +954,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 6:
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeVariation().Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeVariation().Get());
+            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->sizeVariation.Get());
+            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->sizeVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(vk))
                 if(!GetProp(vv))
@@ -963,8 +963,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 7:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->sizeOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->sizeOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -972,8 +972,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 8:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocity().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocity().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocity.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocity.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -981,8 +981,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 9:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocityVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocityVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -990,8 +990,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 10:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocityOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->velocityOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1008,8 +1008,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 14:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpin().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpin().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spin.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spin.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1017,8 +1017,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 15:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1027,8 +1027,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             
         case 16:
             
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1036,8 +1036,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 17:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandom().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandom().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandom.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandom.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1045,8 +1045,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 18:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1054,8 +1054,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 19:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1063,8 +1063,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 20:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounce().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounce().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounce.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounce.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1072,8 +1072,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 21:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceVariation().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceVariation().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounceVariation.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounceVariation.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1081,8 +1081,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 22:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1090,8 +1090,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 23:
-            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetColorRandom().Get());
-            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetColorRandom().Get());
+            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Get());
+            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(ck))
                 if(!GetProp(cv))
@@ -1099,8 +1099,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 24:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetAlphaOverLife().Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetAlphaOverLife().Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->alphaOverLife.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->alphaOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(pk))
                 if(!GetProp(pv))
@@ -1108,8 +1108,8 @@ void TestScreen::GetLayerPropValue(int32 id)
             break;
             
         case 25:
-            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetColorOverLife().Get());
-            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetColorOverLife().Get());
+            ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife.Get());
+            cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife.Get());
             layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             if(!GetProp(ck))
                 if(!GetProp(cv))
@@ -1174,104 +1174,104 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
             break;
             
         case 1:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetLife().Set(valueDim1);
+            emitter->GetLayers().at(selectedEmitterElement-1)->life.Set(valueDim1);
             break;
             
         case 2:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetLifeVariation().Set(valueDim1);       
+            emitter->GetLayers().at(selectedEmitterElement-1)->lifeVariation.Set(valueDim1);       
             break;
             
         case 3:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetNumber().Set(valueDim1);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->number.Set(valueDim1);     
             break;
             
         case 4:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetNumberVariation().Set(valueDim1);
+            emitter->GetLayers().at(selectedEmitterElement-1)->numberVariation.Set(valueDim1);
             break;
             
         case 5:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSize().Set(valueDim2);
+            emitter->GetLayers().at(selectedEmitterElement-1)->size.Set(valueDim2);
             break;
             
         case 6:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeVariation().Set(valueDim2);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->sizeVariation.Set(valueDim2);      
             break;
             
         case 7:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSizeOverLife().Set(valueDim1);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->sizeOverLife.Set(valueDim1);     
             break;
             
         case 8:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocity().Set(valueDim1);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocity.Set(valueDim1);      
             break;
             
         case 9:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityVariation().Set(valueDim1);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocityVariation.Set(valueDim1);      
             break;
             
         case 10:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetVelocityOverLife().Set(valueDim1);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->velocityOverLife.Set(valueDim1);     
             break;
             
         case 11:
             if(selectedForceElement >= 0)
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().at(selectedForceElement).Set(valueDim2);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Set(valueDim2);
             break;
             
         case 12:
             if(selectedForceElement >= 0)
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().at(selectedForceElement).Set(valueDim2);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Set(valueDim2);
             break;
             
         case 13:
             if(selectedForceElement >= 0)
-                emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().at(selectedForceElement).Set(valueDim1);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Set(valueDim1);
             break;
             
         case 14:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpin().Set(valueDim1);    
+            emitter->GetLayers().at(selectedEmitterElement-1)->spin.Set(valueDim1);    
             break;
             
         case 15:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinVariation().Set(valueDim1);
+            emitter->GetLayers().at(selectedEmitterElement-1)->spinVariation.Set(valueDim1);
             break;
             
         case 16:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetSpinOverLife().Set(valueDim1);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Set(valueDim1);     
             break;
             
         case 17:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandom().Set(valueDim1);    
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandom.Set(valueDim1);    
             break;
             
         case 18:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomVariation().Set(valueDim1);     
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomVariation.Set(valueDim1);     
             break;
             
         case 19:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetMotionRandomOverLife().Set(valueDim1);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomOverLife.Set(valueDim1);      
             break;
             
         case 20:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetBounce().Set(valueDim1);       
+            emitter->GetLayers().at(selectedEmitterElement-1)->bounce.Set(valueDim1);       
             break;
             
         case 21:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceVariation().Set(valueDim1);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->bounceVariation.Set(valueDim1);      
             break;
             
-        case 22:emitter->GetLayers().at(selectedEmitterElement-1)->GetBounceOverLife().Set(valueDim1);    
+        case 22:emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Set(valueDim1);    
             break;
             
-        case 23:emitter->GetLayers().at(selectedEmitterElement-1)->GetColorRandom().Set(valueDim4);      
+        case 23:emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Set(valueDim4);      
             break;
             
         case 24:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetAlphaOverLife().Set(valueDim1);      
+            emitter->GetLayers().at(selectedEmitterElement-1)->alphaOverLife.Set(valueDim1);      
             break;
             
         case 25:
-            emitter->GetLayers().at(selectedEmitterElement-1)->GetColorOverLife().Set(valueDim4);  
+            emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife.Set(valueDim4);  
             break;
             
         default:
@@ -1285,8 +1285,8 @@ void TestScreen::GetForcesValue(int32 id)
     ShowForcesList();
     if (selectedPropElement == 11)
     {
-        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().at(selectedForceElement).Get());
-        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().at(selectedForceElement).Get());
+        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Get());
+        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Get());
         if(vv)
         {
             GetProp(vv);
@@ -1300,8 +1300,8 @@ void TestScreen::GetForcesValue(int32 id)
     }
     if (selectedPropElement == 12)
     {
-        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().at(selectedForceElement).Get());
-        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().at(selectedForceElement).Get());
+        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Get());
+        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Get());
         if(vv)
         {
             GetProp(vv);
@@ -1315,8 +1315,8 @@ void TestScreen::GetForcesValue(int32 id)
     }
     if (selectedPropElement == 13)
     {
-        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().at(selectedForceElement).Get());
-        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().at(selectedForceElement).Get());
+        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Get());
+        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Get());
         if(vv)
         {
             GetProp(vv);
@@ -1420,9 +1420,9 @@ void TestScreen::OnMouseMove(float32 t)
 {
     curPropEditTime = t;
     if(selectedPropElement == 11)
-        forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->GetForces()[selectedForceElement].Get()->GetValue(curPropEditTime));
+        forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forces[selectedForceElement].Get()->GetValue(curPropEditTime));
     if(selectedPropElement == 12)
-        forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->GetForcesVariation()[selectedForceElement].Get()->GetValue(curPropEditTime));
+        forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forcesVariation[selectedForceElement].Get()->GetValue(curPropEditTime));
         
 }
 void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathToFile)
@@ -1629,15 +1629,15 @@ int32 TestScreen::ElementsCount(UIList *forList)
     {
         switch (selectedPropElement) {
             case 11:
-                n = emitter->GetLayers().at(selectedEmitterElement-1)->GetForces().size();
+                n = emitter->GetLayers().at(selectedEmitterElement-1)->forces.size();
                 break;
                 
             case 12:
-                n = emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesVariation().size();
+                n = emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.size();
                 break;
                 
             case 13:
-                n = emitter->GetLayers().at(selectedEmitterElement-1)->GetForcesOverLife().size();
+                n = emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.size();
                 break;
             default:
                 break;
@@ -1879,29 +1879,29 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     PropertyLineKeyframes<Color> *ck;
     
     fprintf(file, "emitter:\n");
-    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetEmissionAngle().Get());
-    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetEmissionAngle().Get());
+    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
+    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
     if(pk)
         PrintPropKFValue(file, emitterProps[0], pk);
     else if(pv)
         PrintPropValue(file, emitterProps[0], pv);
     
-    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetEmissionRange().Get());
-    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetEmissionRange().Get());
+    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
+    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
     if(pk)
         PrintPropKFValue(file, emitterProps[1], pk);
     else if(pv)
         PrintPropValue(file, emitterProps[1], pv);
     
-    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetRadius().Get());
-    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetRadius().Get());
+    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->radius.Get());
+    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->radius.Get());
     if(pk)
         PrintPropKFValue(file, emitterProps[2], pk);
     else if(pv)
         PrintPropValue(file, emitterProps[2], pv);
     
-    ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetColorOverLife().Get());
-    cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetColorOverLife().Get());
+    ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
+    cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
     if(pk)
         PrintPropKFValue(file, emitterProps[3], ck);
     else if(pv)
@@ -1918,33 +1918,16 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         fprintf(file, "    %s: \"%s\"\n", layerProps[propIndex].c_str(), layers[i+1].spritePath.c_str());
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->life.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->life.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetLifeVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetLifeVariation().Get());
-        if(pk)
-            PrintPropKFValue(file, layerProps[propIndex], pk);
-        else if(pv)
-            PrintPropValue(file, layerProps[propIndex], pv);
-        propIndex++;
-        fprintf(file, "\n");
-        
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetNumber().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetNumber().Get());
-        if(pk)
-            PrintPropKFValue(file, layerProps[propIndex], pk);
-        else if(pv)
-            PrintPropValue(file, layerProps[propIndex], pv);
-        propIndex++;
-        
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetNumberVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetNumberVariation().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->lifeVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->lifeVariation.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
@@ -1952,24 +1935,41 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex++;
         fprintf(file, "\n");
         
-        vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->GetSize().Get());
-        vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->GetSize().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->number.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->number.Get());
+        if(pk)
+            PrintPropKFValue(file, layerProps[propIndex], pk);
+        else if(pv)
+            PrintPropValue(file, layerProps[propIndex], pv);
+        propIndex++;
+        
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->numberVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->numberVariation.Get());
+        if(pk)
+            PrintPropKFValue(file, layerProps[propIndex], pk);
+        else if(pv)
+            PrintPropValue(file, layerProps[propIndex], pv);
+        propIndex++;
+        fprintf(file, "\n");
+        
+        vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->size.Get());
+        vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->size.Get());
         if(vk)
             PrintPropKFValue(file, layerProps[propIndex], vk);
         else if(vv)
             PrintPropValue(file, layerProps[propIndex], vv);
         propIndex++;
         
-        vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->GetSizeVariation().Get());
-        vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->GetSizeVariation().Get());
+        vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->sizeVariation.Get());
+        vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->sizeVariation.Get());
         if(vk)
             PrintPropKFValue(file, layerProps[propIndex], vk);
         else if(vv)
             PrintPropValue(file, layerProps[propIndex], vv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetSizeOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetSizeOverLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->sizeOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->sizeOverLife.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
@@ -1977,24 +1977,24 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex++;
         fprintf(file, "\n");
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetVelocity().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetVelocity().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->velocity.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->velocity.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetVelocityVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetVelocityVariation().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->velocityVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->velocityVariation.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetVelocityOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetVelocityOverLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->velocityOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->velocityOverLife.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
@@ -2002,30 +2002,30 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex++;
         fprintf(file, "\n");
         
-        int32 forceCount = emitter->GetLayers()[i]->GetForces().size();
+        int32 forceCount = emitter->GetLayers()[i]->forces.size();
         if(forceCount > 0)
             fprintf(file, "\n    forceCount: %d\n", forceCount);
         
         for(int j = 0; j < forceCount; j++)
         {
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->GetForces()[j].Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->GetForces()[j].Get());
+            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->forces[j].Get());
+            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->forces[j].Get());
             if(vk)
                 PrintPropKFValue(file, Format("force%d", j), vk);
             else if(vv)
                 PrintPropValue(file, Format("force%d", j), vv);
             
             
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->GetForcesVariation()[j].Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->GetForcesVariation()[j].Get());
+            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
+            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
             if(vk)
                 PrintPropKFValue(file, Format("forceVariation%d", j), vk);
             else if(vv)
                 PrintPropValue(file, Format("forceVariation%d", j), vv);
             
             
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetForcesOverLife()[j].Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetForcesOverLife()[j].Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->forcesOverLife[j].Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->forcesOverLife[j].Get());
             if(pk)
                 PrintPropKFValue(file, Format("force%d", j), pk);
             else if(pv)
@@ -2036,49 +2036,24 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex += 3;
         fprintf(file, "\n");
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetSpin().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetSpin().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->spin.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->spin.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetSpinVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetSpinVariation().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->spinVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->spinVariation.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetSpinOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetSpinOverLife().Get());
-        if(pk)
-            PrintPropKFValue(file, layerProps[propIndex], pk);
-        else if(pv)
-            PrintPropValue(file, layerProps[propIndex], pv);
-        propIndex++;
-        fprintf(file, "\n");
-        
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetMotionRandom().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetMotionRandom().Get());
-        if(pk)
-            PrintPropKFValue(file, layerProps[propIndex], pk);
-        else if(pv)
-            PrintPropValue(file, layerProps[propIndex], pv);
-        propIndex++;
-        
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetMotionRandomVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetMotionRandomVariation().Get());
-        if(pk)
-            PrintPropKFValue(file, layerProps[propIndex], pk);
-        else if(pv)
-            PrintPropValue(file, layerProps[propIndex], pv);
-        propIndex++;
-        
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetMotionRandomOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetMotionRandomOverLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->spinOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->spinOverLife.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
@@ -2086,24 +2061,24 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex++;
         fprintf(file, "\n");
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetBounce().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetBounce().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->motionRandom.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->motionRandom.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetBounceVariation().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetBounceVariation().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->motionRandomVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->motionRandomVariation.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetBounceOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetBounceOverLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->motionRandomOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->motionRandomOverLife.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
@@ -2111,24 +2086,49 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         propIndex++;
         fprintf(file, "\n");
         
-        ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers()[i]->GetColorRandom().Get());
-        cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers()[i]->GetColorRandom().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->bounce.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->bounce.Get());
+        if(pk)
+            PrintPropKFValue(file, layerProps[propIndex], pk);
+        else if(pv)
+            PrintPropValue(file, layerProps[propIndex], pv);
+        propIndex++;
+        
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->bounceVariation.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->bounceVariation.Get());
+        if(pk)
+            PrintPropKFValue(file, layerProps[propIndex], pk);
+        else if(pv)
+            PrintPropValue(file, layerProps[propIndex], pv);
+        propIndex++;
+        
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->bounceOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->bounceOverLife.Get());
+        if(pk)
+            PrintPropKFValue(file, layerProps[propIndex], pk);
+        else if(pv)
+            PrintPropValue(file, layerProps[propIndex], pv);
+        propIndex++;
+        fprintf(file, "\n");
+        
+        ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers()[i]->colorRandom.Get());
+        cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers()[i]->colorRandom.Get());
         if(ck)
             PrintPropKFValue(file, layerProps[propIndex], ck);
         else if(cv)
             PrintPropValue(file, layerProps[propIndex], cv);
         propIndex++;
         
-        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->GetAlphaOverLife().Get());
-        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->GetAlphaOverLife().Get());
+        pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->alphaOverLife.Get());
+        pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->alphaOverLife.Get());
         if(pk)
             PrintPropKFValue(file, layerProps[propIndex], pk);
         else if(pv)
             PrintPropValue(file, layerProps[propIndex], pv);
         propIndex++;
         
-        ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers()[i]->GetColorOverLife().Get());
-        cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers()[i]->GetColorOverLife().Get());
+        ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->GetLayers()[i]->colorOverLife.Get());
+        cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->GetLayers()[i]->colorOverLife.Get());
         if(ck)
             PrintPropKFValue(file, layerProps[propIndex], ck);
         else if(cv)

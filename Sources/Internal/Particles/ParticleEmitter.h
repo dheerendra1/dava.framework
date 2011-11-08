@@ -269,6 +269,7 @@ protected:
 	bool	isAutorestart;
 	bool	particlesFollow;
 
+public:
 	RefPtr< PropertyLine<float32> > emissionAngle;
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
@@ -276,12 +277,7 @@ protected:
 
 	Color currentColor;
 
-public:
 	bool GetCurrentColor(Color * currentColor);
-    RefPtr< PropertyLine<float32> > GetEmissionAngle();
-    RefPtr< PropertyLine<float32> > GetEmissionRange();
-    RefPtr< PropertyLine<float32> > GetRadius();
-    RefPtr< PropertyLine<Color> > GetColorOverLife();
 	// RefPtr< PropertyLine<float32> > number;
 	
 	friend class ParticleLayer;
@@ -319,26 +315,6 @@ inline void ParticleEmitter::SetParticlesFollow(bool follow)
 {
 	particlesFollow = follow;
 }
-
-    inline RefPtr< PropertyLine<float32> > ParticleEmitter::GetEmissionAngle()
-    {
-        return emissionAngle;
-    }
-    
-    inline RefPtr< PropertyLine<float32> > ParticleEmitter::GetEmissionRange()
-    {
-        return emissionRange;
-    }
-    
-    inline RefPtr< PropertyLine<float32> > ParticleEmitter::GetRadius()
-    {
-        return radius;
-    }
-    
-    inline RefPtr< PropertyLine<Color> > ParticleEmitter::GetColorOverLife()
-    {
-        return colorOverLife;
-    }
 };
 
 #endif // __DAVAENGINE_PARTICLE_EMITTER_H__
