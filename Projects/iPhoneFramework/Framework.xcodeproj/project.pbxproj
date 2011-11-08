@@ -412,6 +412,11 @@
 		FED7B17B1346F91C0032144E /* FileList.h in Headers */ = {isa = PBXBuildFile; fileRef = FED7B1791346F91C0032144E /* FileList.h */; };
 		FED7B17E1346F92A0032144E /* MD5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FED7B17C1346F92A0032144E /* MD5.cpp */; };
 		FED7B17F1346F92A0032144E /* MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = FED7B17D1346F92A0032144E /* MD5.h */; };
+		FEE98EFB146948C000EEAEFC /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE98EFA146948C000EEAEFC /* Material.cpp */; };
+		FEE98EFF146948C900EEAEFC /* UberShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE98EFD146948C900EEAEFC /* UberShader.cpp */; };
+		FEE98F00146948C900EEAEFC /* UberShader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE98EFE146948C900EEAEFC /* UberShader.h */; };
+		FEE98F03146948EB00EEAEFC /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEE98F01146948EB00EEAEFC /* Data.cpp */; };
+		FEE98F04146948EB00EEAEFC /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE98F02146948EB00EEAEFC /* Data.h */; };
 		FEEB6EBA131BC67400958ACB /* Replay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEEB6EB8131BC67400958ACB /* Replay.cpp */; };
 		FEEB6EBB131BC67400958ACB /* Replay.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEB6EB9131BC67400958ACB /* Replay.h */; };
 		FEF4D44812C92F57004B850E /* libBox2D_iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEF4D38612C91A3A004B850E /* libBox2D_iPhone.a */; };
@@ -842,6 +847,11 @@
 		FED7B1791346F91C0032144E /* FileList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileList.h; sourceTree = "<group>"; };
 		FED7B17C1346F92A0032144E /* MD5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MD5.cpp; sourceTree = "<group>"; };
 		FED7B17D1346F92A0032144E /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
+		FEE98EFA146948C000EEAEFC /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		FEE98EFD146948C900EEAEFC /* UberShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UberShader.cpp; sourceTree = "<group>"; };
+		FEE98EFE146948C900EEAEFC /* UberShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UberShader.h; sourceTree = "<group>"; };
+		FEE98F01146948EB00EEAEFC /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
+		FEE98F02146948EB00EEAEFC /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		FEEB6EB8131BC67400958ACB /* Replay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Replay.cpp; sourceTree = "<group>"; };
 		FEEB6EB9131BC67400958ACB /* Replay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Replay.h; sourceTree = "<group>"; };
 		FEF4D38112C91A3A004B850E /* Box2D_iPhone.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Box2D_iPhone.xcodeproj; path = ../../Libs/Box2D/Projects/Box2D_iPhone/Box2D_iPhone.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -1036,6 +1046,8 @@
 				FECFB34F12E5904400C71562 /* RefPtr.h */,
 				FECFB35012E5904400C71562 /* Singleton.h */,
 				FECFB35112E5904400C71562 /* StaticSingleton.h */,
+				FEE98F01146948EB00EEAEFC /* Data.cpp */,
+				FEE98F02146948EB00EEAEFC /* Data.h */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1258,6 +1270,9 @@
 				FECFB3F112E5904400C71562 /* LibPngHelpers.h */,
 				FECFB3F212E5904400C71562 /* Light.h */,
 				FECFB3F312E5904400C71562 /* Material.h */,
+				FEE98EFA146948C000EEAEFC /* Material.cpp */,
+				FEE98EFD146948C900EEAEFC /* UberShader.cpp */,
+				FEE98EFE146948C900EEAEFC /* UberShader.h */,
 				FECFB3F612E5904400C71562 /* RenderEffect.cpp */,
 				FECFB3F712E5904400C71562 /* RenderEffect.h */,
 				FECFB3F812E5904400C71562 /* RenderGrayscaleEffect.cpp */,
@@ -1744,6 +1759,8 @@
 				FE57C488142BD33600060A75 /* NeonMath.h in Headers */,
 				FE127708144444E80082901E /* UIScrollBar.h in Headers */,
 				FE879F5914504A1800F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */,
+				FEE98F00146948C900EEAEFC /* UberShader.h in Headers */,
+				FEE98F04146948EB00EEAEFC /* Data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2004,6 +2021,9 @@
 				FE57C487142BD33600060A75 /* NeonMath.cpp in Sources */,
 				FE127707144444E80082901E /* UIScrollBar.cpp in Sources */,
 				FE879F5814504A1800F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */,
+				FEE98EFB146948C000EEAEFC /* Material.cpp in Sources */,
+				FEE98EFF146948C900EEAEFC /* UberShader.cpp in Sources */,
+				FEE98F03146948EB00EEAEFC /* Data.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -80,8 +80,8 @@ void LandscapeTestScreen::LoadResources()
     
     SceneFile * file = new SceneFile();
     file->SetDebugLog(true);
-    file->LoadScene("~res:/Scenes/level0/scene.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level0/scene.sce"));
+    file->LoadScene("~res:/Scenes/level1/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/scene.sce"));
     SafeRelease(file);
 
 	inTouch = false;

@@ -310,7 +310,7 @@ bool SceneFile::ReadMaterial()
     
     if (strlen(materialDef.lightmapTexture))
     {
-        mat->textures[Material::TEXTURE_DIFFUSE] = Texture::CreateFromFile(scenePath + String(materialDef.lightmapTexture));
+        //mat->textures[Material::TEXTURE_DIFFUSE] = Texture::CreateFromFile(scenePath + String(materialDef.lightmapTexture));
     }
 	if (debugLogEnabled)Logger::Debug("- Material: %s %d diffuseTexture: %s hasOpacity: %s\n", materialDef.name, materialDef.id, diffuseTextureName.c_str(), (materialDef.hasOpacity) ? ("yes") : ("no"));
 	
@@ -369,7 +369,7 @@ bool SceneFile::ReadStaticMesh()
             if (polygonGroup->GetFormat() & EVF_NORMAL)
                 polygonGroup->SetNormal(v, normal);
             if (polygonGroup->GetFormat() & EVF_TEXCOORD0)
-                polygonGroup->SetTexcoord(0, v, texCoords1);
+                polygonGroup->SetTexcoord(0, v, texCoords0);
 		}
 		
         polygonGroup->BuildVertexBuffer();

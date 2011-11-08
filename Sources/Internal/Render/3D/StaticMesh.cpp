@@ -85,15 +85,14 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
     PolygonGroup * group = polygroups[index];
     
     RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
-#if 0 // old material code
+    RenderManager::Instance()->SetRenderData(group->renderDataObject);
+#if 1 // old material code
     if (material)
 	{
 
 		if (material->textures[Material::TEXTURE_DIFFUSE])
 		{
 			RenderManager::Instance()->SetTexture(material->textures[Material::TEXTURE_DIFFUSE]);
-            RenderManager::Instance()->SetRenderData(group->renderDataObject);
-
         }
         
         if (material->hasOpacity)
