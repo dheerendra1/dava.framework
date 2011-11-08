@@ -95,11 +95,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	viewMappingDrawOffset = Vector2(0, 0);
 	viewMappingDrawScale = Vector2(1, 1);
 
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-
 	currentDrawOffset = Vector2(0, 0);
 	currentDrawScale = Vector2(1, 1);
+    mappingMatrixChanged = true;
 	
 	isInsideDraw = false;
 
@@ -196,11 +194,9 @@ void RenderManager::Reset()
 	userDrawOffset = Vector2(0, 0);
 	userDrawScale = Vector2(1, 1);
 	
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-	
 	currentDrawOffset = Vector2(0, 0);
 	currentDrawScale = Vector2(1, 1);
+    mappingMatrixChanged = true;
 	
 //	glLoadIdentity();
 }
@@ -492,18 +488,21 @@ int32 RenderManager::GetFPS()
 	
 void RenderManager::SetDrawTranslate(const Vector2 &offset)
 {
+    mappingMatrixChanged = true;
 	userDrawOffset.x += offset.x * userDrawScale.x;
 	userDrawOffset.y += offset.y * userDrawScale.y;
 }
 	
 void RenderManager::SetDrawScale(const Vector2 &scale)
 {
+    mappingMatrixChanged = true;
 	userDrawScale.x *= scale.x;
 	userDrawScale.y *= scale.y;
 }
 	
 void RenderManager::IdentityDrawMatrix()
 {
+    mappingMatrixChanged = true;
 	userDrawScale.x = 1.0f;
 	userDrawScale.y = 1.0f;
 
@@ -511,46 +510,48 @@ void RenderManager::IdentityDrawMatrix()
 	userDrawOffset.y = 0.0f;
 }
 
-void RenderManager::IdentityTotalMatrix()
+void RenderManager::IdentityMappingMatrix()
 {
-	userDrawOffset = Vector2(0, 0);
-	userDrawScale = Vector2(1, 1);
-	
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset = Vector2(0, 0);
 	viewMappingDrawScale = Vector2(1, 1);
-	
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-	
-// 	currentDrawOffset = Vector2(0, 0);
-// 	currentDrawScale = Vector2(1, 1);
 }
 	
+void RenderManager::IdentityModelMatrix()
+{
+    mappingMatrixChanged = true;
+    RenderManager::Instance()->SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
+	currentDrawOffset = Vector2(0, 0);
+    currentDrawScale = Vector2(1, 1);
+}
+    
 	
 	
 void RenderManager::SetPhysicalViewScale()
 {
-//	Logger::Info("Set physical view scale");
+    mappingMatrixChanged = true;
 	viewMappingDrawScale.x = 1.0f;
 	viewMappingDrawScale.y = 1.0f;
 }
 
 void RenderManager::SetPhysicalViewOffset()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset = Core::Instance()->GetPhysicalDrawOffset();
 }
 
 void RenderManager::SetVirtualViewScale()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawScale.x = Core::GetVirtualToPhysicalFactor();
 	viewMappingDrawScale.y = Core::GetVirtualToPhysicalFactor();
 }
 
 void RenderManager::SetVirtualViewOffset()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset.x -= Core::Instance()->GetVirtualScreenXMin() * viewMappingDrawScale.x;
 	viewMappingDrawOffset.y -= Core::Instance()->GetVirtualScreenYMin() * viewMappingDrawScale.y;
-//	viewMappingDrawOffset = Core::Instance()->GetPhysicalDrawOffset();
 }
 	
 void RenderManager::PushDrawMatrix()
@@ -580,7 +581,7 @@ void RenderManager::PushMappingMatrix()
 
 void RenderManager::PopMappingMatrix()
 {
-	IdentityDrawMatrix();
+	IdentityMappingMatrix();
 	DrawMatrix dm = mappingMatrixStack.top();
 	mappingMatrixStack.pop();
 	viewMappingDrawOffset = dm.userDrawOffset;

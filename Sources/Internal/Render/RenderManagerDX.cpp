@@ -572,7 +572,7 @@ void RenderManager::SetRenderOrientation(int32 orientation)
 	projection.BuildOrthoLH(0.0f, (float32)frameBufferWidth, (float32)frameBufferHeight, 0.0f, 0.0f, 1.0f);
 	direct3DDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&projection);
 
-	IdentityTotalMatrix();
+	IdentityMappingMatrix();
 	SetVirtualViewScale();
 	SetVirtualViewOffset();
 
@@ -1277,7 +1277,7 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&identity));
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&identity));
 
-		IdentityTotalMatrix();
+		IdentityMappingMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
 		viewMappingDrawScale.y = renderTarget->GetResourceToPhysicalFactor();
 		RemoveClip();
@@ -1295,23 +1295,27 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 
 void RenderManager::PrepareRealMatrix()
 {
-	realDrawScale.x = viewMappingDrawScale.x * userDrawScale.x;
-	realDrawScale.y = viewMappingDrawScale.y * userDrawScale.y;
-		
-	realDrawOffset.x = viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x;
-	realDrawOffset.y = viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y;
-	if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
-	{
-		currentDrawScale = realDrawScale;
-		currentDrawOffset = realDrawOffset;
-		
-		Matrix4 m1;
-		m1.CreateTranslation(Vector3(currentDrawOffset.x, currentDrawOffset.y, 0));
-		Matrix4 m2;
-		m2.CreateScale(Vector3(currentDrawScale.x, currentDrawScale.y, 0));
-		m2 *= m1;
-		direct3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&m2);
-	}
+    if (mappingMatrixChanged)
+    {
+        mappingMatrixChanged = false;
+        Vector2 realDrawScale(viewMappingDrawScale.x * userDrawScale.x, viewMappingDrawScale.y * userDrawScale.y);
+        Vector2 realDrawOffset(viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x, viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y);
+        
+        if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
+        {
+            
+            currentDrawScale = realDrawScale;
+            currentDrawOffset = realDrawOffset;
+            
+            
+            Matrix4 m1;
+            m1.CreateTranslation(Vector3(currentDrawOffset.x, currentDrawOffset.y, 0));
+            Matrix4 m2;
+            m2.CreateScale(Vector3(currentDrawScale.x, currentDrawScale.y, 0));
+            m2 *= m1;
+            direct3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&m2);
+        }
+    }
 }
 
 void RenderManager::SetMatrix(eMatrixType type, const Matrix4 & matrix)

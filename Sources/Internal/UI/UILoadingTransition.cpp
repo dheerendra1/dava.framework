@@ -99,6 +99,10 @@ void UILoadingTransition::StartTransition(UIScreen * _prevScreen, UIScreen * _ne
 
 int32 UILoadingTransition::GetGroupId()
 {
+    if (!nextScreen || !thread) 
+    {
+        return UIScreen::GetGroupId();
+    }
 	return nextScreen->GetGroupId();
 }
 	
@@ -106,7 +110,9 @@ void UILoadingTransition::ThreadMessage(BaseObject * obj, void * userData, void 
 {
 	//RenderManager::Instance()->
 	if (prevScreen->GetGroupId() != nextScreen->GetGroupId())
+    {
 		nextScreen->LoadGroup();
+    }
 }
 
 void UILoadingTransition::DidAppear()
@@ -124,6 +130,10 @@ void UILoadingTransition::Update(float32 timeElapsed)
 	if ((thread) && (thread->GetState() == Thread::STATE_ENDED))
 	{
 		UIControlSystem::Instance()->SetScreen(nextScreen, outTransition);
+        if (!inTransition) 
+        {
+            UIControlSystem:: Instance()->UnlockInput();//need to call this because once its calls on loading start
+        }
 		SafeRelease(thread);
 	}
 	float32 elapsedTime = SystemTimer::FrameDelta();
@@ -173,6 +183,7 @@ void UILoadingTransition::WillDisappear()
 	if(Replay::Instance())
 	{
 		Replay::Instance()->PauseReplay(false);
+		SystemTimer::Instance()->SetFrameDelta(0.33f);//TODO: this is temporary solution for "first frame after loading" issue
 	}
 }
 

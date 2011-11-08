@@ -150,40 +150,26 @@ void RenderManager::BeginFrame()
 
 void RenderManager::PrepareRealMatrix()
 {
-	/*
-		Boroda To Hottych: Не проще ли ставить где-то флаг что были данные изменены? И только в этом случае пересчитывать? 
-		Так получается сначала считаем, потом проверки сравнения, вообщем по моему проще сделать один флаг. Что думаешь? 
-
-		Hottych: 
-		Код не оптимизировался ваааще. Задача была заставить это работать и она достигнута, 
-		а ты все равно все на матрицы перепишешь.
-	 */
-	realDrawScale.x = viewMappingDrawScale.x * userDrawScale.x;
-	realDrawScale.y = viewMappingDrawScale.y * userDrawScale.y;
-	
-	realDrawOffset.x = viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x;
-	realDrawOffset.y = viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y;
-	if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
-	{
-//		Logger::Info("Matrix recalculated: Scale %.4f,    Offset: %.4f, %.4f", realDrawScale.x, realDrawOffset.x, realDrawOffset.y);
-
-		currentDrawScale = realDrawScale;
-		currentDrawOffset = realDrawOffset;
-
-//		RENDER_VERIFY(
-//					  glLoadIdentity();
-//					  glTranslatef(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
-//					  glScalef(currentDrawScale.x, currentDrawScale.y, 1.0f);
-//					  );
+    if (mappingMatrixChanged)
+    {
+        mappingMatrixChanged = false;
+        Vector2 realDrawScale(viewMappingDrawScale.x * userDrawScale.x, viewMappingDrawScale.y * userDrawScale.y);
+        Vector2 realDrawOffset(viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x, viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y);
         
-        
-        Matrix4 glTranslate, glScale;
-        glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
-        glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
-        
-        glTranslate = glScale * glTranslate;
-        // todo replace with offset calculations
-        SetMatrix(MATRIX_MODELVIEW, glTranslate);
+        if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
+        {
+            
+            currentDrawScale = realDrawScale;
+            currentDrawOffset = realDrawOffset;
+            
+            
+            Matrix4 glTranslate, glScale;
+            glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
+            glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
+            
+            glTranslate = glScale * glTranslate;
+            SetMatrix(MATRIX_MODELVIEW, glTranslate);
+        }
     }
 }
 	
@@ -313,11 +299,12 @@ void RenderManager::SetRenderOrientation(int32 orientation)
     //glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	
-    RenderManager::Instance()->SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
+
+    IdentityModelMatrix();
     
 	RENDER_VERIFY();
 
-	IdentityTotalMatrix();
+	IdentityMappingMatrix();
 	SetVirtualViewScale();
 	SetVirtualViewOffset();
 
@@ -739,9 +726,8 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		//RENDER_VERIFY(glMatrixMode(GL_MODELVIEW));
 		//RENDER_VERIFY(glLoadIdentity());
         
-        SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
-        
-		IdentityTotalMatrix();
+        IdentityModelMatrix();
+		IdentityMappingMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
 		viewMappingDrawScale.y = renderTarget->GetResourceToPhysicalFactor();
 //		Logger::Info("Sets with render target: Scale %.4f,    Offset: %.4f, %.4f", viewMappingDrawScale.x, viewMappingDrawOffset.x, viewMappingDrawOffset.y);
