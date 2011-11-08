@@ -183,6 +183,7 @@ void UILoadingTransition::WillDisappear()
 	if(Replay::Instance())
 	{
 		Replay::Instance()->PauseReplay(false);
+		SystemTimer::Instance()->SetFrameDelta(0.33f);//TODO: this is temporary solution for "first frame after loading" issue
 	}
 }
 
