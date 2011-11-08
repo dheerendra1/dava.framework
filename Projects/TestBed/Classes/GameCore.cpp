@@ -43,6 +43,7 @@
 #include "CollisionTestScreen.h"
 #include "ImageUsageScreen.h"
 #include "LandscapeTestScreen.h"
+#include "TextinputTestScreen.h"
 
 using namespace DAVA;
 
@@ -78,24 +79,40 @@ void GameCore::OnAppStarted()
  	stScreen = new StaticTextScreen();
 // 	collisionTestScreen = new CollisionTestScreen();
 	imageUsageScreen = new ImageUsageScreen();
-    landscapeTestScreen = new LandscapeTestScreen();
+#if defined(__DAVAENGINE_WIN32__) //Dizz: cause LandscapeTestScreen doesn't work on Windows, similar #ifdef in LandscapeTestScreen.cpp
+	landscapeTestScreen = 0;
+#else
+	landscapeTestScreen = new LandscapeTestScreen();
+#endif
+	
+	textinputTestScreen1 = new TextinputTestScreen(L"textinputTestScreen 1");
+	textinputTestScreen2 = new TextinputTestScreen(L"textinputTestScreen 2");
     
 //	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
- 	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
- 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE_BASICS, spriteBasicsScreen);
+//	UIScreenManager::Instance()->RegisterScreen(SCREEN_ANIM_3D, anim3dScreen);
+// 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE_BASICS, spriteBasicsScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_CLIP_TEST, clipTestScreen);
- 	UIScreenManager::Instance()->RegisterScreen(SCREEN_RENDERTARGET_TEST, renderTargetTestScreen);
+// 	UIScreenManager::Instance()->RegisterScreen(SCREEN_RENDERTARGET_TEST, renderTargetTestScreen);
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_PARTICLE_TEST, particleTestScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_SPRITE_PERF_TEST, spritePerfScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_GAME_OBJECTS_TEST, gameObjectTestScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_FONT_USAGE, fontUsageScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_BOX2D_GAME_OBJECTS_TEST, box2dGameObjectTestScreen);
- 	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
+// 	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
+<<<<<<< HEAD
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
-    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
+//   UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
+	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_1, textinputTestScreen1);   
+	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_2, textinputTestScreen2);
+
+	UIScreenManager::Instance()->SetFirst(SCREEN_TEXTINPUT_TEST_1);
+=======
+//	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
+//    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_LANDSCAPE_TEST);
+	UIScreenManager::Instance()->SetFirst(SCREEN_PARTICLE_TEST);
+>>>>>>> ParticleEditor
 	cursor = 0;
 }
 
@@ -103,6 +120,8 @@ void GameCore::OnAppFinished()
 {
 	SafeRelease(cursor);
 
+	SafeRelease(textinputTestScreen1);
+	SafeRelease(textinputTestScreen2);
     SafeRelease(landscapeTestScreen);
 //	SafeRelease(collisionTestScreen);
 // 	SafeRelease(stScreen);
