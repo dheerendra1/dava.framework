@@ -189,6 +189,7 @@ protected:
     
     static const int32 RENDER_QUAD_WIDTH = 129;
     static const int32 RENDER_QUAD_AND = RENDER_QUAD_WIDTH - 2;
+    static const int32 INDEX_ARRAY_COUNT = RENDER_QUAD_WIDTH * RENDER_QUAD_WIDTH * 6;
     
 
     void RecursiveBuild(QuadTreeNode<LandscapeQuad> * currentNode, int32 level, int32 maxLevels);
@@ -245,7 +246,12 @@ protected:
     int32 uniformTexture1;
     int32 uniformTextureMask;
     
+    int8 queueRdoQuad;
+    int32 queueRenderCount;
+    uint16 * queueDrawIndices;
     
+    void FlushQueue();
+    void ClearQueue();
 };
 
 	
