@@ -814,15 +814,18 @@ void RenderManager::AttachRenderData(Shader * shader)
     }
     else
     {
-        if (oldVertexArrayEnabled)
+        if (GetRenderer() == Core::RENDERER_OPENGL)
         {
-            EnableVertexArray(false);
-            pointerArraysRendererState = 0;
-        }
-        if (oldTextureCoordArrayEnabled)
-        {
-            EnableTextureCoordArray(false);
-            pointerArraysRendererState = 0;
+            if (oldVertexArrayEnabled)
+            {
+                EnableVertexArray(false);
+                pointerArraysRendererState = 0;
+            }
+            if (oldTextureCoordArrayEnabled)
+            {
+                EnableTextureCoordArray(false);
+                pointerArraysRendererState = 0;
+            }
         }
 
         int32 currentEnabledAttribCount = 0;
