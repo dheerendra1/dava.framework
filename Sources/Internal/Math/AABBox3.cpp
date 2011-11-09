@@ -103,8 +103,8 @@ void AABBox3::GetTransformedBox(const Matrix4 & transform, AABBox3 & result)
     {
         for (int32 j = 0; j < 3; ++j)
         {
-            float32 a = transform._data[i][j] * min.data[j];
-            float32 b = transform._data[i][j] * max.data[j];
+            float32 a = transform._data[j][i] * min.data[j];
+            float32 b = transform._data[j][i] * max.data[j];
             
             if( a < b ) 
             { 
