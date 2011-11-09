@@ -426,7 +426,6 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
             
             if (pTexCoordSource1)
             {
-
                 if (!FLOAT_EQUAL_EPS( tvi->texCoords[1].x, tvj->texCoords[1].x, EPS))
                 {
                     equalIJ = false;

@@ -46,7 +46,6 @@ void AnimationTestScreen::LoadResources()
 //    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 //    cam->SetDirection(Vector3(1.0f, 0.0f, 0.0f));
 //    cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
-//
 //    scene->SetCurrentCamera(cam);
 
 	SceneFile * file = new SceneFile();
