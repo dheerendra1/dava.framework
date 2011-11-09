@@ -159,7 +159,12 @@ public:
         \param[in] isRecursive do you want to set flags recursively
      
      */
-	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);        
+	void SetDebugFlags(uint32 debugFlags, bool isRecursive = false);  
+    /**
+        \brief function returns debug flags of specific node
+        \returns flags of this specific scene node
+     */
+    uint32 GetDebugFlags() const;
 	
 protected:
 
@@ -246,13 +251,16 @@ inline void SceneNode::SetDefaultLocalTransform(const Matrix4 & newMatrix)
     defaultLocalTransform = newMatrix;
 }
     
-
-
 inline void SceneNode::SetTag(int32 _tag)
 {
     tag = _tag;
 }
     
+inline uint32 SceneNode::GetDebugFlags() const
+{
+    return debugFlags;
+}
+
 };
 
 #endif // __DAVAENGINE_SCENENODE_H__

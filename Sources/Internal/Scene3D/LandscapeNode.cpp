@@ -35,6 +35,7 @@
 #include "Render/Texture.h"
 #include "Scene3D/Scene.h"
 #include "Render/Shader.h"
+#include "Platform/SystemTimer.h"
 
 namespace DAVA
 {
@@ -156,7 +157,15 @@ void LandscapeNode::ReleaseAllRDOQuads()
 
 void LandscapeNode::SetLods(const Vector4 & lods)
 {
+    lodLevelsCount = 4;
     
+    lodDistance[0] = lods.x;
+    lodDistance[1] = lods.y;
+    lodDistance[2] = lods.z;
+    lodDistance[3] = lods.w;
+    
+    for (int32 ll = 0; ll < lodLevelsCount; ++ll)
+        lodSqDistance[ll] = lodDistance[ll] * lodDistance[ll];
 }
 
 void LandscapeNode::BuildLandscapeFromHeightmapImage(eRenderingMode _renderingMode, const String & heightmapPathname, const AABBox3 & _box)
@@ -182,26 +191,13 @@ void LandscapeNode::BuildLandscapeFromHeightmapImage(eRenderingMode _renderingMo
     quadTreeHead.data.size = heightmap->GetWidth() - 1; 
     quadTreeHead.data.rdoQuad = -1;
     
-    lodLevelsCount = 4;
-//    lodDistance[0] = 400;
-//    lodDistance[1] = 800;
-//    lodDistance[2] = 1500;
-//    lodDistance[3] = 3000;
-    
-    lodDistance[0] = 60;
-    lodDistance[1] = 120;
-    lodDistance[2] = 240;
-    lodDistance[3] = 480;
-    
-    
-    for (int32 ll = 0; ll < lodLevelsCount; ++ll)
-        lodSqDistance[ll] = lodDistance[ll] * lodDistance[ll];
+    SetLods(Vector4(60.0f, 120.0f, 240.0f, 480.0f));
     
     allocatedMemoryForQuads = 0;
     RecursiveBuild(&quadTreeHead, 0, lodLevelsCount);
     FindNeighbours(&quadTreeHead);
     
-    indices = new uint16[RENDER_QUAD_WIDTH * RENDER_QUAD_WIDTH * 6];
+    indices = new uint16[INDEX_ARRAY_COUNT];
     
     Logger::Debug("Allocated indices: %d KB", RENDER_QUAD_WIDTH * RENDER_QUAD_WIDTH * 6 * 2 / 1024);
     Logger::Debug("Allocated memory for quads: %d KB", allocatedMemoryForQuads / 1024);
@@ -417,6 +413,24 @@ void LandscapeNode::SetTexture(eTextureLevel level, Texture * texture)
     SafeRelease(textures[level]);
     textures[level] = SafeRetain(texture);
 }
+    
+void LandscapeNode::FlushQueue()
+{
+    if (queueRenderCount == 0)return;
+    
+    RenderManager::Instance()->SetRenderData(landscapeRDOArray[queueRdoQuad]);
+    RenderManager::Instance()->FlushState();
+    RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, queueRenderCount, EIF_16, indices); 
+
+    ClearQueue();
+}
+    
+void LandscapeNode::ClearQueue()
+{
+    queueRenderCount = 0;
+    queueRdoQuad = -1;
+    queueDrawIndices = indices;
+}
 
 void LandscapeNode::DrawQuad(QuadTreeNode<LandscapeQuad> * currentNode, int8 lod)
 {
@@ -434,27 +448,32 @@ void LandscapeNode::DrawQuad(QuadTreeNode<LandscapeQuad> * currentNode, int8 lod
         MarkFrames(currentNode, newdepth2);
     }
     
-    uint16 * drawIndices = indices;
     int32 step = (1 << lod);
     
+    
+    if ((currentNode->data.rdoQuad != queueRdoQuad) && (queueRdoQuad != -1))
+    {
+        FlushQueue();
+    }
+    
+    queueRdoQuad = currentNode->data.rdoQuad;
+    
     //int16 width = heightmap->GetWidth();
-    int32 cnt = 0;
     for (uint16 y = (currentNode->data.y & RENDER_QUAD_AND); y < (currentNode->data.y & RENDER_QUAD_AND) + currentNode->data.size; y += step)
         for (uint16 x = (currentNode->data.x & RENDER_QUAD_AND); x < (currentNode->data.x & RENDER_QUAD_AND) + currentNode->data.size; x += step)
         {
-            *drawIndices++ = x + y * RENDER_QUAD_WIDTH;
-            *drawIndices++ = (x + step) + y * RENDER_QUAD_WIDTH;
-            *drawIndices++ = x + (y + step) * RENDER_QUAD_WIDTH;
+            *queueDrawIndices++ = x + y * RENDER_QUAD_WIDTH;
+            *queueDrawIndices++ = (x + step) + y * RENDER_QUAD_WIDTH;
+            *queueDrawIndices++ = x + (y + step) * RENDER_QUAD_WIDTH;
             
-            *drawIndices++ = (x + step) + y * RENDER_QUAD_WIDTH;
-            *drawIndices++ = (x + step) + (y + step) * RENDER_QUAD_WIDTH;
-            *drawIndices++ = x + (y + step) * RENDER_QUAD_WIDTH;     
+            *queueDrawIndices++ = (x + step) + y * RENDER_QUAD_WIDTH;
+            *queueDrawIndices++ = (x + step) + (y + step) * RENDER_QUAD_WIDTH;
+            *queueDrawIndices++ = x + (y + step) * RENDER_QUAD_WIDTH;     
  
-            cnt += 6;
+            queueRenderCount += 6;
         }
-    RenderManager::Instance()->SetRenderData(landscapeRDOArray[currentNode->data.rdoQuad]);
-    RenderManager::Instance()->FlushState();
-    RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, cnt, EIF_16, indices); 
+    
+    DVASSERT(queueRenderCount < INDEX_ARRAY_COUNT);
 }
     
 void LandscapeNode::DrawFans()
@@ -462,6 +481,90 @@ void LandscapeNode::DrawFans()
     uint32 currentFrame = Core::Instance()->GetGlobalFrameIndex();;
     int16 width = RENDER_QUAD_WIDTH;//heightmap->GetWidth();
     
+    ClearQueue();
+    
+    List<QuadTreeNode<LandscapeQuad>*>::const_iterator end = fans.end();
+    for (List<QuadTreeNode<LandscapeQuad>*>::iterator t = fans.begin(); t != end; ++t)
+    {
+        //uint16 * drawIndices = indices;
+        QuadTreeNode<LandscapeQuad>* node = *t;
+        
+        //RenderManager::Instance()->SetRenderData(landscapeRDOArray[node->data.rdoQuad]);
+        
+        if ((node->data.rdoQuad != queueRdoQuad) && (queueRdoQuad != -1))
+        {
+            
+            FlushQueue();
+        }
+        queueRdoQuad = node->data.rdoQuad;
+        
+        //int32 count = 0;
+        int16 halfSize = (node->data.size >> 1);
+        int16 xbuf = node->data.x & RENDER_QUAD_AND;
+        int16 ybuf = node->data.y & RENDER_QUAD_AND;
+        
+        
+#define ADD_VERTEX(index) queueDrawIndices[queueRenderCount++] = (index);
+        
+        //drawIndices[count++] = (xbuf + halfSize) + (ybuf + halfSize) * width;
+        //drawIndices[count++] = (xbuf) + (ybuf) * width;
+
+        ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+        ADD_VERTEX((xbuf) + (ybuf) * width);
+        
+        if ((node->neighbours[TOP]) && (node->neighbours[TOP]->data.frame == currentFrame))
+        {
+            ADD_VERTEX((xbuf + halfSize) + (ybuf) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf) * width);
+        }
+        
+        ADD_VERTEX((xbuf + node->data.size) + (ybuf) * width);
+        ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+        ADD_VERTEX((xbuf + node->data.size) + (ybuf) * width);
+
+        
+        if ((node->neighbours[RIGHT]) && (node->neighbours[RIGHT]->data.frame == currentFrame))
+        {
+            ADD_VERTEX((xbuf + node->data.size) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf + node->data.size) + (ybuf + halfSize) * width);
+        }
+
+        ADD_VERTEX((xbuf + node->data.size) + (ybuf + node->data.size) * width);
+        ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+        ADD_VERTEX((xbuf + node->data.size) + (ybuf + node->data.size) * width);
+        
+        if ((node->neighbours[BOTTOM]) && (node->neighbours[BOTTOM]->data.frame == currentFrame))
+        {
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + node->data.size) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + node->data.size) * width);
+        }
+        
+        ADD_VERTEX((xbuf) + (ybuf + node->data.size) * width);
+        ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+        ADD_VERTEX((xbuf) + (ybuf + node->data.size) * width);
+        
+        if ((node->neighbours[LEFT]) && (node->neighbours[LEFT]->data.frame == currentFrame))
+        {
+            ADD_VERTEX((xbuf) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf + halfSize) + (ybuf + halfSize) * width);
+            ADD_VERTEX((xbuf) + (ybuf + halfSize) * width);
+        }
+
+        ADD_VERTEX((xbuf) + (ybuf) * width);
+        
+#undef ADD_VERTEX
+        //RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+//        RenderManager::Instance()->SetRenderData(landscapeRDOArray[node->data.rdoQuad]);
+//        RenderManager::Instance()->FlushState();
+//        RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLELIST, count, EIF_16, indices); 
+    }
+    
+    FlushQueue();
+    
+/*  DRAW TRIANGLE FANS
     List<QuadTreeNode<LandscapeQuad>*>::const_iterator end = fans.end();
     for (List<QuadTreeNode<LandscapeQuad>*>::iterator t = fans.begin(); t != end; ++t)
     {
@@ -470,7 +573,6 @@ void LandscapeNode::DrawFans()
         
         RenderManager::Instance()->SetRenderData(landscapeRDOArray[node->data.rdoQuad]);
 
-        
         int32 count = 0;
         int16 halfSize = (node->data.size >> 1);
         int16 xbuf = node->data.x & RENDER_QUAD_AND;
@@ -503,13 +605,16 @@ void LandscapeNode::DrawFans()
         RenderManager::Instance()->FlushState();
         RenderManager::Instance()->HWDrawElements(PRIMITIVETYPE_TRIANGLEFAN, count, EIF_16, indices); 
     }
-}
+ */
+}  
     
 void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 {
     //Frustum * frustum = scene->GetClipCamera()->GetFrustum();
-    if (!frustum->IsInside(currentNode->data.bbox))return;
-
+    // if (!frustum->IsInside(currentNode->data.bbox))return;
+    Frustum::eFrustumResult frustumRes = frustum->Classify(currentNode->data.bbox);
+    if (frustumRes == Frustum::EFR_OUTSIDE)return;
+    
     /*
         If current quad do not have geometry just traverse it childs. 
         Magic starts when we have a geometry
@@ -562,9 +667,9 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
     
     for (int32 k = 0; k < lodLevelsCount; ++k)
     {
-        if (minDist > lodDistance[k])
+        if (minDist > lodSqDistance[k])
             minLod = k + 1;
-        if (maxDist > lodDistance[k])
+        if (maxDist > lodSqDistance[k])
             maxLod = k + 1;
     }
     
@@ -584,7 +689,7 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 //    }
     
     
-    if ((minLod == maxLod) && (frustum->IsFullyInside(currentNode->data.bbox) || currentNode->data.size <= (1 << maxLod) + 1) )
+    if ((minLod == maxLod) && (/*frustum->IsFullyInside(currentNode->data.bbox)*/(frustumRes == Frustum::EFR_INSIDE) || currentNode->data.size <= (1 << maxLod) + 1) )
     {
         //Logger::Debug("lod: %d depth: %d pos(%d, %d)", minLod, currentNode->data.lod, currentNode->data.x, currentNode->data.y);
         
@@ -639,6 +744,8 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 
 void LandscapeNode::Draw()
 {
+    uint64 time = SystemTimer::Instance()->AbsoluteMS();
+
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
     {
@@ -647,6 +754,8 @@ void LandscapeNode::Draw()
 #endif
     
     RenderManager::Instance()->ResetColor();
+
+    ClearQueue();
 
     
     
@@ -711,6 +820,7 @@ void LandscapeNode::Draw()
     }
     
     Draw(&quadTreeHead);
+    FlushQueue();
     DrawFans();
     
 #if defined(__DAVAENGINE_MACOS__)
@@ -755,7 +865,8 @@ void LandscapeNode::Draw()
 //#endif
     
     //RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
-
+    uint64 drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
+    Logger::Debug("landscape draw time: %lld", drawTime);
 }
     
     
