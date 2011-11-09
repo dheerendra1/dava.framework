@@ -444,6 +444,7 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	
 void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 {
+    RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 	int saveId;
 	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
@@ -486,6 +487,7 @@ void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 
 
 #endif 
+    RenderManager::Instance()->UnlockNonMain();
 }
 	
 bool Texture::isMipmapGenerationEnabled = false;

@@ -115,6 +115,7 @@ uint32 RenderDataObject::GetResultFormat()
     
 void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
 {
+    RenderManager::Instance()->LockNonMain();
 //#if !defined(__DAVAENGINE_MACOS__)
     
 #if defined (__DAVAENGINE_OPENGL__)
@@ -162,7 +163,7 @@ void RenderDataObject::BuildVertexBuffer(int32 vertexCount)
 #endif // #if defined (__DAVAENGINE_OPENGL__)
     
 //#endif // #if !defined(__DAVAENGINE_MACOS__)
-    
+    RenderManager::Instance()->UnlockNonMain();
 } 
 
 }
