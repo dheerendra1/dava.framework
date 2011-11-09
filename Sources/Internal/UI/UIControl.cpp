@@ -1409,7 +1409,7 @@ namespace DAVA
 		YamlNode * colorInheritNode = node->Get("colorInherit");
         
         YamlNode * drawTypeNode = node->Get("drawType");
-        YamlNode * leftRightStretchCapNode = node->Get("leftRightStrechCap");
+        YamlNode * leftRightStretchCapNode = node->Get("leftRightStretchCap");
         YamlNode * topBottomStretchCapNode = node->Get("topBottomStretchCap");
 		
 		YamlNode * angleNode = node->Get("angle");

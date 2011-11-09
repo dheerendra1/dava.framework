@@ -617,7 +617,7 @@ namespace DAVA
 				UIControlBackground::eDrawType type = (UIControlBackground::eDrawType)loader->GetDrawTypeFromNode(stateDrawTypeNode);
                 SetStateDrawType(stateArray[k],type);
                 
-                YamlNode * leftRightStretchCapNode = node->Get(Format("leftRightStrechCap%s", statePostfix[k].c_str()));
+                YamlNode * leftRightStretchCapNode = node->Get(Format("leftRightStretchCap%s", statePostfix[k].c_str()));
                 YamlNode * topBottomStretchCapNode = node->Get(Format("topBottomStretchCap%s", statePostfix[k].c_str()));
 
                 if(leftRightStretchCapNode)
