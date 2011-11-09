@@ -36,5 +36,10 @@ Debug/
 /ipch
 ipch/
 /ipch/
-
-Projects/TemplateProject/TemplateProjectiPhone.xcodeproj/project.xcworkspace/xcuserdata/vitaliy.xcuserdatad/UserInterfaceState.xcuserstate
+#android
+/bin
+bin/
+/bin/
+/gen
+gen/
+/gen/

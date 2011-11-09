@@ -31,7 +31,6 @@
 #ifndef __DAVAENGINE_SCROLL_HELPER__
 #define __DAVAENGINE_SCROLL_HELPER__
 
-#include "UI/ScrollHelper.h"
 #include "Base/BaseObject.h"
 #include "Base/BaseTypes.h"
 

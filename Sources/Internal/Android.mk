@@ -107,6 +107,7 @@ LOCAL_SRC_FILES :=  \
                     \
                     Render/Effects/ColorOnlyEffect.cpp \
                     Render/Effects/MultiTextureEffect.cpp \
+                    Render/Effects/TextureMulColorAlphaTestEffect.cpp \
                     Render/Effects/TextureMulColorEffect.cpp \
                     \
                     Render/DynamicIndexBuffer.cpp \

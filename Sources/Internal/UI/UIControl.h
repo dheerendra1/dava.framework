@@ -186,7 +186,6 @@ public:
 		STATE_SELECTED			= 1 << 4,//!<Just a state for base control, nothing more.
 		STATE_HOVER				= 1 << 5,//!<This bit is rise then mouse is over the control.
 		
-		STATE_LAST,
 		STATE_COUNT				=	6
 	};
 	/**
