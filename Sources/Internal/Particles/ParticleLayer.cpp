@@ -58,7 +58,7 @@ ParticleLayer::ParticleLayer()
 	velocityVariation = 0;	
 	velocityOverLife = 0;
 
-	spin = 0;				
+	spin = 0;			
 	spinVariation = 0;
 	spinOverLife = 0;
 
@@ -68,7 +68,7 @@ ParticleLayer::ParticleLayer()
 
 	bounce = 0;				
 	bounceVariation = 0;
-	bounceOverLife = 0;	
+	bounceOverLife = 0;
 	
 	colorOverLife = 0;
 	colorRandom = 0;
