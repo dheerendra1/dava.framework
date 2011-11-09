@@ -56,6 +56,11 @@ public:
 	virtual void SetMaxSprite(Sprite * sprite, int32 frame);
 	virtual void SetMaxSprite(const String & spriteName, int32 frame);
 	
+	inline float32 GetMinValue();
+	inline float32 GetMaxValue();
+	void SetMinValue(float32 value);
+	void SetMaxValue(float32 value);	
+	
 	virtual void Draw(const UIGeometricData &geometricData);
 	
 	inline bool IsEventsContinuos();
@@ -113,6 +118,16 @@ inline void UISlider::SetEventsContinuos(bool _isEventsContinuos)
 inline float32 UISlider::GetValue()
 {
 	return currentValue;
+}
+
+inline float32 UISlider::GetMinValue()
+{
+	return minValue;
+}
+	
+inline float32 UISlider::GetMaxValue()
+{
+	return maxValue;
 }
 
 };
