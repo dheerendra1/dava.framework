@@ -93,7 +93,7 @@ public:
 		float32 t;
 		T value;
 	};
-	std::vector<PropertyKey> keys;
+	std::vector<PropertyKey> 	keys;
 	T resultValue;
 	
 	const T & GetValue(float32 t) 
@@ -110,10 +110,8 @@ public:
 				float ti = (t - keys[0].t) / (keys[1].t - keys[0].t);
 				resultValue = keys[0].value + (keys[1].value - keys[0].value) * ti;
 				return resultValue;
-			}
-            else 
-			{
-                return keys[1].value;
+			}else 
+			{	
 			}
 		}
 		else if (keys.size() == 1) return keys[0].value; 
