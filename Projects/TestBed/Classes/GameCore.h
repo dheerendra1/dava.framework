@@ -46,6 +46,7 @@ class StaticTextScreen;
 class CollisionTestScreen;
 class ImageUsageScreen;
 class LandscapeTestScreen;
+class TextinputTestScreen;
 
 class GameCore : public DAVA::ApplicationCore
 {
@@ -80,6 +81,8 @@ private:
 	CollisionTestScreen * collisionTestScreen;
 	ImageUsageScreen * imageUsageScreen;
     LandscapeTestScreen * landscapeTestScreen;
+	TextinputTestScreen * textinputTestScreen1;
+	TextinputTestScreen * textinputTestScreen2;
 };
 
 

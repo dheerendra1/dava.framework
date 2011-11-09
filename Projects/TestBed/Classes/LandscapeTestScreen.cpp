@@ -80,8 +80,8 @@ void LandscapeTestScreen::LoadResources()
     
     SceneFile * file = new SceneFile();
     file->SetDebugLog(true);
-    file->LoadScene("~res:/Scenes/level0/scene.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level0/scene.sce"));
+    file->LoadScene("~res:/Scenes/level1/scene.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/scene.sce"));
     SafeRelease(file);
 
 	inTouch = false;
@@ -105,7 +105,7 @@ void LandscapeTestScreen::LoadResources()
     angleJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
     angleJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
 	AddControl(angleJoypad);
-}  
+}
 
 void LandscapeTestScreen::UnloadResources()
 {

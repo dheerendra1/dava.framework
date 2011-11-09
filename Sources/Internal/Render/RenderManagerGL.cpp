@@ -479,7 +479,7 @@ void RenderManager::FlushState()
                 // if alpha test enabled set alpha func values
                 if ((alphaFunc != oldAlphaFunc) || (alphaTestCmpValue != oldAlphaTestCmpValue))
                 {
-                    RENDER_VERIFY(glAlphaFunc(alphaFunc, alphaTestCmpValue) );
+                    RENDER_VERIFY(glAlphaFunc(ALPHA_TEST_MODE_MAP[alphaFunc], alphaTestCmpValue) );
                     oldAlphaFunc = alphaFunc;
                     oldAlphaTestCmpValue = alphaTestCmpValue;
                 }
@@ -769,6 +769,16 @@ void RenderManager::AttachRenderData(Shader * shader)
 #elif defined(__DAVAENGINE_DIRECTX9__)
         DVASSERT(currentRenderData->vboBuffer == 0);
 #endif
+        if (enabledAttribCount != 0)
+        {
+            for (int32 p = 0; p < enabledAttribCount; ++p)
+            {
+                glDisableVertexAttribArray(p);
+            }
+            enabledAttribCount = 0;
+            pointerArraysRendererState = 0;
+        }
+        
         pointerArraysCurrentState = 0;
         int32 size = (int32)currentRenderData->streamArray.size();
         for (int32 k = 0; k < size; ++k)
@@ -801,26 +811,34 @@ void RenderManager::AttachRenderData(Shader * shader)
         }
         pointerArraysRendererState = pointerArraysCurrentState;
         
-        for (int32 p = 0; p < (int32)enabledAttribCount; ++p)
-        {
-            glDisableVertexAttribArray(p);
-        }
     }
     else
     {
+        if (oldVertexArrayEnabled)
+        {
+            EnableVertexArray(false);
+            pointerArraysRendererState = 0;
+        }
+        if (oldTextureCoordArrayEnabled)
+        {
+            EnableTextureCoordArray(false);
+            pointerArraysRendererState = 0;
+        }
+
         int32 currentEnabledAttribCount = 0;
         //glDisableVertexAttribArray(0);
         //glDisableVertexAttribArray(1);
-        
         pointerArraysCurrentState = 0;
         
         //if (currentRenderData->vboBuffer != 0)
         //{
+#if defined(__DAVAENGINE_OPENGL__)
 #if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
 #else
         glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
 #endif
+#endif 
         //}
         
         int32 size = (int32)currentRenderData->streamArray.size();
@@ -834,7 +852,7 @@ void RenderManager::AttachRenderData(Shader * shader)
             {
                 glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
                 
-                if (attribIndex >= (int32)enabledAttribCount)  // enable only if it was not enabled on previous step
+                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
                 {
                     glEnableVertexAttribArray(attribIndex);
                 }
@@ -845,11 +863,11 @@ void RenderManager::AttachRenderData(Shader * shader)
             }
         };
         
-        for (int32 p = currentEnabledAttribCount; p < (int32)enabledAttribCount; ++p)
+        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
         {
             glDisableVertexAttribArray(p);
         }
-        
+        enabledAttribCount = currentEnabledAttribCount;
         //        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
         //        
         //        if (!(difference & EVF_VERTEX))

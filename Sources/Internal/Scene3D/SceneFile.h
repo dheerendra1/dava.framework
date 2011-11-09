@@ -133,6 +133,7 @@ public:
 		uint32	diffuseTextureId;	
 		char8	diffuseTexture[512];
 		char8	reflectiveTexture[512];
+        char8   lightmapTexture[512];
         
         uint8   hasOpacity;                 // means material has opacity and have to be sorted from back to front
 	};

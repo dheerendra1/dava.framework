@@ -88,5 +88,25 @@ int32 Shader::GetAttributeIndex(eVertexFormat vertexFormat)
 	return 0;
 }
 
+void Shader::SetDefines(const String & defines)
+{
+
+}
+
+void Shader::SetDefineList(const String & enableDefinesList)
+{
+
+}
+
+bool Shader::Recompile()
+{
+	return false;
+}
+
+Shader * Shader::RecompileNewInstance(const String & combination)
+{
+	return 0;
+}
+
 #endif 
 }

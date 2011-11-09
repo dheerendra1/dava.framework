@@ -894,6 +894,12 @@
     <ClInclude Include="..\..\Sources\Internal\Render\Effects\TextureMulColorAlphaTestEffect.h">
       <Filter>Internal\Render\Effects</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Base\Data.h">
+      <Filter>Internal\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Render\UberShader.h">
+      <Filter>Internal\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2BroadPhase.cpp">
@@ -1531,6 +1537,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorAlphaTestEffect.cpp">
       <Filter>Internal\Render\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\Material.cpp">
+      <Filter>Internal\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Base\Data.cpp">
+      <Filter>Internal\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Render\UberShader.cpp">
+      <Filter>Internal\Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

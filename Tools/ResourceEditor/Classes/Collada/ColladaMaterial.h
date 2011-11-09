@@ -45,6 +45,10 @@ public:
 	fm::string		reflectiveTextureName;
 	bool			hasReflectiveTexture;
 
+    ColladaTexture* lightmapTexture;
+	fm::string		lightmapTextureName;
+	bool			hasLightmapTexture;
+
 	// pointer to texture transparent
 	ColladaTexture* transparentTexture;
 	bool			hasTransparentTexture;

@@ -92,6 +92,7 @@ private:
 	AABBox3						bbox;
 
 	fstring						materialSemantic;
+    int32                       vertexFormat;
 };
 
 };

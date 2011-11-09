@@ -193,7 +193,6 @@ public:
 	RefPtr< PropertyLine<Color> > colorOverLife;	
 	RefPtr< PropertyLine<float32> > frameOverLife;				// in frame index
 
-protected:	
 	float32		alignToMotion;
 	bool		additive;
 	float32		startTime;
@@ -207,8 +206,6 @@ inline int32 ParticleLayer::GetParticleCount()
 {
 	return count;
 }
-
-
 };
 
 #endif // __DAVAENGINE_PARTICLE_LAYER_H__
