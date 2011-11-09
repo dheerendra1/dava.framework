@@ -572,7 +572,7 @@ void RenderManager::SetRenderOrientation(int32 orientation)
 	projection.BuildOrthoLH(0.0f, (float32)frameBufferWidth, (float32)frameBufferHeight, 0.0f, 0.0f, 1.0f);
 	direct3DDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&projection);
 
-	IdentityTotalMatrix();
+	IdentityMappingMatrix();
 	SetVirtualViewScale();
 	SetVirtualViewOffset();
 
@@ -1277,7 +1277,9 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&identity));
 		RENDER_VERIFY(direct3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&identity));
 
-		IdentityTotalMatrix();
+		currentDrawOffset = Vector2(0, 0);
+		currentDrawScale = Vector2(1, 1); 
+		IdentityMappingMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
 		viewMappingDrawScale.y = renderTarget->GetResourceToPhysicalFactor();
 		RemoveClip();

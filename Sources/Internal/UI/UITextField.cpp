@@ -44,6 +44,7 @@ namespace DAVA
 
 REGISTER_CLASS(UITextField);
 
+UITextField * UITextField::focus = 0;
 
 UITextField::UITextField(const Rect &rect, bool rectInAbsoluteCoordinates/*= false*/)
 :	UIControl(rect, rectInAbsoluteCoordinates)
@@ -147,18 +148,25 @@ void UITextField::Update(float32 timeElapsed)
         needRedraw = true;
     }
 
-    if (needRedraw)
-    {
-        WideString txt = text;
+	if(this == focus)
+	{
+		if(needRedraw)
+		{
+			WideString txt = text;
 
-        if (showCursor)
-            txt += L"_";
-        else
-            txt += L" ";
+			if (showCursor)
+				txt += L"_";
+			else
+				txt += L" ";
 
-        staticText->SetText(txt);
-        needRedraw = false;
-    }
+			staticText->SetText(txt);
+			needRedraw = false;
+		}
+	}
+	else
+	{
+		staticText->SetText(text);
+	}
 
 #endif
 }
@@ -166,6 +174,10 @@ void UITextField::Update(float32 timeElapsed)
 
 void UITextField::WillAppear()
 {
+	if(0 == focus)
+	{
+		focus = this;
+	}
 }
 
 void UITextField::DidAppear()
@@ -181,7 +193,10 @@ void UITextField::WillDisappear()
 #ifdef __DAVAENGINE_IPHONE__
 	textFieldiPhone->HideField();
 #endif
-	
+	if(this == focus)
+	{
+		focus = 0;
+	}
 }
 
 void UITextField::SetDelegate(UITextFieldDelegate * _delegate)
@@ -250,10 +265,17 @@ void UITextField::Input(UIEvent *currentInput)
     // nothing to do
 #else
 
+	if(currentInput->phase == UIEvent::PHASE_BEGAN)
+	{
+		focus = this;
+	}
+
+	if(this != focus)
+		return;
+
+
     if (currentInput->phase == UIEvent::PHASE_KEYCHAR)
-    {
-		Logger::Debug("keypress!");
-		
+    {	
         /// macos
 #ifdef __DAVAENGINE_MACOS__
         const int32 backSpaceKeyCode = 127;

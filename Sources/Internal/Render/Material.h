@@ -33,26 +33,46 @@
 #include "Base/BaseTypes.h"
 #include "Base/BaseMath.h"
 #include "Scene3D/SceneNode.h"
-#include "Render/Texture.h"
 
 namespace DAVA
 {
 
+
+class UberShader;
+class Shader;
+class Texture;    
 // TODO: move Material to Scene3D
 class Material : public SceneNode
 {
 public:
-
-/*
-    enum
+    enum eType
     {
-        MATERIAL_TEXTURE, 
-        MATERIAL_LIGHTMAPPED_TEXTURE,   
-        MATERIAL_NORMAL_MAPPED, 
-        MATERIAL_VERTEX_LIGHTING, // flag
+        // Normal Materials
+        MATERIAL_UNLIT = 0,                 // single texture
+        MATERIAL_UNLIT_DETAIL,              // single texture * detail texture * 2.0
+        MATERIAL_UNLIT_DECAL,               // single texture * lightmap 
+        
+        MATERIAL_VERTEX_LIT,                // single texture with vertex lighting
+        MATERIAL_VERTEX_LIT_DETAIL,         // single texture * detail texture * 2.0 with vertex lighting
+        MATERIAL_VERTEX_LIT_DECAL,
+        
+        MATERIAL_NORMAL_MAPPED_DIFFUSE,     // single texture + diffuse light normal mapping
+        MATERIAL_NORMAL_MAPPED_SPECULAR,    // single texture + diffuse + specular normal mapping
+        
+        // MATERIAL_TEXTURE, 
+        // MATERIAL_LIGHTMAPPED_TEXTURE,   
+        // MATERIAL_VERTEX_LIGHTING,       // flag
+        // MATERIAL_NORMAL_MAPPED,         // flag
     };
-*/
-    Material(Scene * sc) : SceneNode(sc) {};
+
+    Material(Scene * sc);
+    ~Material();
+    
+    static const char * GetTypeName();
+    
+    void SetType(eType _type);
+    
+    eType   type;
 
 	Vector4 ambient;
 	Vector4 diffuse;
@@ -67,12 +87,35 @@ public:
 	float	transparency; 
 	float	indexOfRefraction;
 
-	Texture	* diffuseTexture;   
+    enum
+    {
+        TEXTURE_DIFFUSE = 0,
+        TEXTURE_LIGHTMAP = 1,
+        TEXTURE_NORMALMAP = 1,
+        TEXTURE_DECAL = 1,
+        
+        TEXTURE_COUNT, 
+    };
+    Texture * textures[TEXTURE_COUNT];    
+    
+
+    
+//    union
+//    {
+//        Texture * detailTexture;
+//        Texture * decalTexture;
+//    };
+//    Texture * normalMap;
+    
+    
+    
     uint8    hasOpacity;         // require sorting
     
 	char	* reflectiveTexture;
-
 	char	* shaderName;
+    
+    Shader  * shader;
+    static UberShader * uberShader;
 };
 
 };

@@ -36,10 +36,3 @@ Debug/
 /ipch
 ipch/
 /ipch/
-#android
-/bin
-bin/
-/bin/
-/gen
-gen/
-/gen/

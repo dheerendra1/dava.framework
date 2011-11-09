@@ -34,6 +34,7 @@
 #include "Render/RenderResource.h"
 #include "Render/VertexBuffer.h"
 #include "Base/BaseMath.h"
+#include "Base/Data.h"
 
 #ifdef __DAVAENGINE_ANDROID__
 #if !defined(GLchar)
@@ -45,12 +46,8 @@ typedef char             GLchar;
 namespace DAVA
 {
     
-class ShaderParam
-{
-public:
+class Data;
     
-    ShaderParam * next;
-};
 
 /*	
     \brief Class to use low-level shaders
@@ -70,10 +67,16 @@ public:
     Shader();
     virtual ~Shader();
     
+    Shader * Clone();
+    
     // virtual void SetActiveShader(const String & string);
     virtual void SetDefines(const String & defines);
+    // comma ';' sepated define list
+    virtual void SetDefineList(const String & enableDefinesList);
+    
     virtual bool LoadFromYaml(const String & pathname);
     virtual bool Recompile();
+    virtual Shader * RecompileNewInstance(const String & combination);
     
     virtual void Bind();
     static void Unbind();
@@ -122,12 +125,15 @@ private:
     static GLuint activeProgram;
     String defines;
     
-    uint8 * vertexShaderBytes;
+    Data * vertexShaderData;
+    Data * fragmentShaderData;
+    String vertexShaderPath, fragmentShaderPath;
+/*  uint8 * vertexShaderBytes;
     uint32 vertexShaderSize;
     uint8 * fragmentShaderBytes;
-    uint32 fragmentShaderSize;
+    uint32 fragmentShaderSize;*/
 #endif
 };
 };
 
-#endif // __DAVAENGINE_RENDERSTATEBLOCK_H__
+#endif // __DAVAENGINE_SHADER_H__

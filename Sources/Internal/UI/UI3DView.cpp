@@ -57,7 +57,7 @@ void UI3DView::SetScene(Scene * _scene)
     //
     for (int32 k = 0; k < scene->GetCameraCount(); ++k)
     {
-        scene->GetCamera(k)->SetAspect(size.dx / size.dy);
+        scene->GetCamera(k)->SetAspect(size.dy / size.dx);
     }
 }
 

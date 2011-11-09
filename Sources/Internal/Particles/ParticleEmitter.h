@@ -188,7 +188,7 @@ public:
 	/**
 		\brief Function to get layers of this emitter
 	 */
-	const Vector<ParticleLayer*> & GetLayers();
+	Vector<ParticleLayer*> & GetLayers();
 	/**
 		\brief Function to update particle emitter
 		If you using ParticleEmitter directly you should call this function and pass time elapsed fromp previous frame to it.
@@ -268,13 +268,15 @@ protected:
 	bool	isPaused;
 	bool	isAutorestart;
 	bool	particlesFollow;
-	
+
+public:
 	RefPtr< PropertyLine<float32> > emissionAngle;
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
 	RefPtr< PropertyLine<Color> > colorOverLife;
 
 	Color currentColor;
+
 	bool GetCurrentColor(Color * currentColor);
 	// RefPtr< PropertyLine<float32> > number;
 	
@@ -313,8 +315,6 @@ inline void ParticleEmitter::SetParticlesFollow(bool follow)
 {
 	particlesFollow = follow;
 }
-
-	
 };
 
 #endif // __DAVAENGINE_PARTICLE_EMITTER_H__

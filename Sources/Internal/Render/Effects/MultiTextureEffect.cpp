@@ -65,6 +65,7 @@ MultiTextureEffectGL20::MultiTextureEffectGL20()
 {
     shader = new Shader();
     shader->LoadFromYaml("~res:/Shaders/Default/fixed_func_multi_texture.shader");
+    shader->Recompile();
 }
 
 MultiTextureEffectGL20::~MultiTextureEffectGL20()

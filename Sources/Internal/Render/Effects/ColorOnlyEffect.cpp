@@ -72,6 +72,7 @@ ColorOnlyEffectGL20::ColorOnlyEffectGL20()
 {
     shader = new Shader();
     shader->LoadFromYaml("~res:/Shaders/Default/fixed_func_color_only.shader");
+    shader->Recompile();
 }
     
 ColorOnlyEffectGL20::~ColorOnlyEffectGL20()

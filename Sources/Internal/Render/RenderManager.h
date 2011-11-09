@@ -535,7 +535,7 @@ protected:
     
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;
-    uint32 enabledAttribCount;
+    int32 enabledAttribCount;
 
     
     

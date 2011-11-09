@@ -18,6 +18,10 @@ echo "Copy Data"
 ditto -v `pwd`/../Data `pwd`/assets/Data
 echo "Copy Done"
 
+echo "Remove .svn"
+find ./assets/Data -name "*.svn*" -exec rm -rf {} \;
+echo "Remove .svn Done"
+
 
 SDK_ROOT=`pwd`/../../dava.framework/Sources
 

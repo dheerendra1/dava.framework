@@ -337,7 +337,7 @@ int32 ParticleEmitter::GetEmitPointsCount()
 	return emitPointsCount;
 }
 	
-const Vector<ParticleLayer*> & ParticleEmitter::GetLayers()
+Vector<ParticleLayer*> & ParticleEmitter::GetLayers()
 {
 	return layers;
 }

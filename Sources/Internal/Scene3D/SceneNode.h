@@ -60,6 +60,8 @@ public:
 	virtual int32 GetChildrenCount();
 	virtual void	RemoveAllChilds();
     
+	virtual bool FindNodesByNamePart(const String & namePart, List<SceneNode *> &outNodeList);
+    
     /**
         \brief 
      */
