@@ -323,6 +323,7 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _d
 
 Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint32 _width, uint32 _height)
 {
+    RenderManager::Instance()->LockNonMain();
 	Texture * texture = new Texture();
 	if (!texture)return 0;
 	
@@ -439,6 +440,8 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	SafeDeleteArray(mipMapData);
 
 #endif 
+    
+    RenderManager::Instance()->UnlockNonMain();
 	return texture;
 }		
 	
