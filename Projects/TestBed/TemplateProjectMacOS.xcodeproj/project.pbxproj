@@ -35,6 +35,7 @@
 		FEF4E25F12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF4E25D12CD3CC0004B850E /* Box2DGameObjectTestScreen.cpp */; };
 		FEFCD2F712A99FB80060A1A1 /* PropertyLineEditControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEFCD2F512A99FB80060A1A1 /* PropertyLineEditControl.cpp */; };
 		FEFCD5EE12AE50860060A1A1 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = FEFCD5E712AE50860060A1A1 /* Data */; };
+		FEFD174A146C2CAC00C64374 /* TextinputTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEFD1748146C2CAC00C64374 /* TextinputTestScreen.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,8 @@
 		FEFCD2F512A99FB80060A1A1 /* PropertyLineEditControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PropertyLineEditControl.cpp; path = Classes/PropertyLineEditControl.cpp; sourceTree = "<group>"; };
 		FEFCD2F612A99FB80060A1A1 /* PropertyLineEditControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyLineEditControl.h; path = Classes/PropertyLineEditControl.h; sourceTree = "<group>"; };
 		FEFCD5E712AE50860060A1A1 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		FEFD1748146C2CAC00C64374 /* TextinputTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextinputTestScreen.cpp; path = Classes/TextinputTestScreen.cpp; sourceTree = "<group>"; };
+		FEFD1749146C2CAC00C64374 /* TextinputTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextinputTestScreen.h; path = Classes/TextinputTestScreen.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +202,8 @@
 		FE445A961153C27800F5EFD6 /* User classes */ = {
 			isa = PBXGroup;
 			children = (
+				FEFD1748146C2CAC00C64374 /* TextinputTestScreen.cpp */,
+				FEFD1749146C2CAC00C64374 /* TextinputTestScreen.h */,
 				EAA3DF0A1446FA3B009132AA /* LandscapeTestScreen.cpp */,
 				EAA3DF0B1446FA3B009132AA /* LandscapeTestScreen.h */,
 				FEC3CA6F1283557F00541220 /* FrameworkMain.cpp */,
@@ -380,6 +385,7 @@
 				FEA02A8912E39D8900935314 /* CollisionTestScreen.cpp in Sources */,
 				FE044F75140EEC6D002A6D27 /* ImageUsageScreen.cpp in Sources */,
 				EAA3DF0C1446FA3B009132AA /* LandscapeTestScreen.cpp in Sources */,
+				FEFD174A146C2CAC00C64374 /* TextinputTestScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
