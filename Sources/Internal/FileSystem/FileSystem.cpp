@@ -63,7 +63,7 @@ namespace DAVA
 	NSString * FilepathRelativeToBundleObjC(NSString * relativePathname)
 	{
 		NSString * filePath;
-		if(virtualBundlePath == "")
+		if(virtualBundlePath.empty())
 		{
 				//		NSString * bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @""];
 			NSString * bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/Data"];
@@ -80,8 +80,18 @@ namespace DAVA
 #elif defined(__DAVAENGINE_MACOS__)
 	NSString * FilepathRelativeToBundleObjC(NSString * relativePathname)
 	{
-		NSString * bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/Contents/Resources/Data"];
-		NSString * filePath = [bundlePath stringByAppendingString: relativePathname];
+        NSString * filePath;
+        if(virtualBundlePath.empty())
+        {
+            NSString * bundlePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/Contents/Resources/Data"];
+            filePath = [bundlePath stringByAppendingString: relativePathname];
+        }
+        else
+        {
+            NSString * bundlePath = [NSString stringWithUTF8String: virtualBundlePath.c_str()];
+            filePath = [bundlePath stringByAppendingString: relativePathname];
+        }
+		
 		return filePath;
 	}
 #endif	
