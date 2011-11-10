@@ -76,7 +76,7 @@ void LandscapeTestScreen::LoadResources()
     node->SetName("landscapeNode");
     scene->AddNode(node);
     SafeRelease(node);
-//    
+    
 //    SceneFile * file = new SceneFile();
 //    file->SetDebugLog(true);
 //    file->LoadScene("~res:/Scenes/hungar/hungar.sce", scene);
