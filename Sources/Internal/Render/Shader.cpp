@@ -197,6 +197,7 @@ bool Shader::LoadFromYaml(const String & pathname)
     
 Shader::~Shader()
 {
+    SafeDeleteArray(attributeNames);
     SafeDeleteArray(uniformNames);
     SafeDeleteArray(uniformIDs);
     SafeDeleteArray(uniformLocations);
