@@ -92,6 +92,9 @@ public:
     
     // Node preview information
     SceneNode * selectedNode;
+    Matrix4 selectedNodeLocalTransform;
+    Matrix4 selectedNodeWorldTransform;
+
     PropertyPanel * activePropertyPanel;
     EditMatrixControl * localMatrixControl;
     EditMatrixControl * worldMatrixControl;
@@ -102,9 +105,12 @@ public:
     UIStaticText * nodeBoundingBoxMax;
     UIButton * lookAtButton;
     UIButton * removeNodeButton;
+    UIButton * enableDebugFlagsButton;
+    
     void OnLookAtButtonPressed(BaseObject * obj, void *, void *);
     void OnRemoveNodeButtonPressed(BaseObject * obj, void *, void *);
-    
+    void OnEnableDebugFlagsPressed(BaseObject * obj, void *, void *);
+
     UIFileSystemDialog * fileSystemDialog;
     enum {
         DIALOG_OPERATION_CONVERT_DAE = 1,
@@ -119,6 +125,8 @@ public:
     
     WASDCameraController * cameraController;
     UIStaticText * cameraInfo;
+    UIStaticText * clipCameraInfo;
+        
 };
 
 #endif // __SCENE_EDITOR_SCREEN_H__

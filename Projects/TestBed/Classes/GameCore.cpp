@@ -100,19 +100,14 @@ void GameCore::OnAppStarted()
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_BOX2D_GAME_OBJECTS_TEST, box2dGameObjectTestScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_STATIC_TEXT, stScreen);
 // 	UIScreenManager::Instance()->RegisterScreen(SCREEN_COLLISION_TEST, collisionTestScreen); 
-<<<<<<< HEAD
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
-//   UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
+    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_1, textinputTestScreen1);   
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEXTINPUT_TEST_2, textinputTestScreen2);
 
-	UIScreenManager::Instance()->SetFirst(SCREEN_TEXTINPUT_TEST_1);
-=======
-//	UIScreenManager::Instance()->RegisterScreen(SCREEN_IMAGE_USAGE, imageUsageScreen);
-//    UIScreenManager::Instance()->RegisterScreen(SCREEN_LANDSCAPE_TEST, landscapeTestScreen);    
+//	UIScreenManager::Instance()->SetFirst(SCREEN_TEXTINPUT_TEST_1);
     
-	UIScreenManager::Instance()->SetFirst(SCREEN_PARTICLE_TEST);
->>>>>>> ParticleEditor
+	UIScreenManager::Instance()->SetFirst(SCREEN_LANDSCAPE_TEST);
 	cursor = 0;
 }
 

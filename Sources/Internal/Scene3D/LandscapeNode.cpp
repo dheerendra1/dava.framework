@@ -744,7 +744,7 @@ void LandscapeNode::Draw(QuadTreeNode<LandscapeQuad> * currentNode)
 
 void LandscapeNode::Draw()
 {
-    uint64 time = SystemTimer::Instance()->AbsoluteMS();
+    //uint64 time = SystemTimer::Instance()->AbsoluteMS();
 
 #if defined(__DAVAENGINE_MACOS__)
     if (debugFlags & DEBUG_DRAW_ALL)
@@ -865,8 +865,8 @@ void LandscapeNode::Draw()
 //#endif
     
     //RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
-    uint64 drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
-//    Logger::Debug("landscape draw time: %lld", drawTime);
+    //uint64 drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
+    //Logger::Debug("landscape draw time: %lld", drawTime);
 }
     
     

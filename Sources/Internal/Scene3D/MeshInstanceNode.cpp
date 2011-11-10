@@ -72,10 +72,18 @@ void MeshInstanceNode::Update(float32 timeElapsed)
 void MeshInstanceNode::Draw()
 {
 	if (!visible)return;
-    
+        
+//    if (GetFullName() == String("MaxScene->node-Cylinder01->VisualSceneNode14->instance_0"))
+//    {
+//        RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+//        RenderHelper::Instance()->DrawBox(transformedBox);
+//        RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+//    }    
 
-    if (!scene->GetClipCamera()->GetFrustum()->IsInside(transformedBox))return;
-    
+    if (!scene->GetClipCamera()->GetFrustum()->IsInside(transformedBox))
+    {
+        return;
+    }
 		
 	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
 	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
@@ -105,7 +113,7 @@ void MeshInstanceNode::Draw()
 	
 	if (debugFlags != DEBUG_DRAW_NONE)
 	{
-		glDisable(GL_DEPTH_TEST);
+        RenderManager::Instance()->EnableDepthTest(false);
 		RenderManager::Instance()->EnableTexturing(false);
 		RenderManager::Instance()->FlushState();
 		
@@ -115,7 +123,11 @@ void MeshInstanceNode::Draw()
 			RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 			RenderHelper::Instance()->DrawBox(bbox);
 		
+			//RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+            //bbox.GetTransformedBox(worldTransform, transformedBox);
+			//RenderHelper::Instance()->DrawBox(transformedBox);
 		}
+        
 		if (debugFlags & DEBUG_DRAW_LOCAL_AXIS)
 		{
 			RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f); 
@@ -127,12 +139,21 @@ void MeshInstanceNode::Draw()
 			RenderManager::Instance()->SetColor(0.0f, 0.0f, 1.0f, 1.0f);
 			RenderHelper::Instance()->DrawLine(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 50.0f));
 		}
-		glEnable(GL_DEPTH_TEST);
+        
+        RenderManager::Instance()->EnableDepthTest(true);
 		RenderManager::Instance()->EnableTexturing(true);
         RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	//glPopMatrix();
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
+    
+    if (debugFlags & DEBUG_DRAW_AABBOX)
+    {
+        RenderManager::Instance()->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
+        RenderHelper::Instance()->DrawBox(transformedBox);
+        RenderManager::Instance()->ResetColor();
+    }
+
 }
 
 

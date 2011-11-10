@@ -440,15 +440,18 @@ void RenderManager::FlushState()
 	}   
 	if(newTextureEnabled != oldTextureEnabled)
 	{
-		if(newTextureEnabled)
-		{
-			RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
-		}
-		else
-		{
-			RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
-		}
-		oldTextureEnabled = newTextureEnabled;
+        if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+        {
+            if(newTextureEnabled)
+            {
+                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
+            }
+            else
+            {
+                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+            }
+            oldTextureEnabled = newTextureEnabled;
+        }
 	}
     
     if (cullingEnabled != oldCullingEnabled)

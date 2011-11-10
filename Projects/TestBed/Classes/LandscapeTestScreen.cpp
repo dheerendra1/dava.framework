@@ -35,14 +35,12 @@ void LandscapeTestScreen::LoadResources()
     RenderManager::Instance()->SetFPS(30.0);
 	scene = new Scene();
     
-    
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
     //scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
-    
     
     camera = new Camera(scene);
     scene->AddCamera(camera);
@@ -52,36 +50,37 @@ void LandscapeTestScreen::LoadResources()
     camera->SetUp(Vector3(0.0f, 0.0f, 1.0f));
     camera->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
     scene->SetCurrentCamera(camera);
+    scene->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
  
-    LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
-    
-    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-#if 1
-    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
-    
-    Texture::EnableMipmapGeneration();
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
-    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
-    Texture::DisableMipmapGeneration();
-#else
-    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
-    
-    Texture::EnableMipmapGeneration();
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
-    Texture::DisableMipmapGeneration();
-#endif
-    
-    node->SetName("landscapeNode");
-    scene->AddNode(node);
-    SafeRelease(node);
-    
+//    LandscapeNode * node = new LandscapeNode(scene);
+//    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
+//    
+//    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+//#if 1
+//    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
+//    
+//    Texture::EnableMipmapGeneration();
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
+//    Texture::DisableMipmapGeneration();
+//#else
+//    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
+//    
+//    Texture::EnableMipmapGeneration();
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
+//    Texture::DisableMipmapGeneration();
+//#endif
+//    
+//    node->SetName("landscapeNode");
+//    scene->AddNode(node);
+//    SafeRelease(node);
+//    
     SceneFile * file = new SceneFile();
     file->SetDebugLog(true);
-    file->LoadScene("~res:/Scenes/level1/scene.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level1/scene.sce"));
+    file->LoadScene("~res:/Scenes/hungar/hungar.sce", scene);
+    scene->AddNode(scene->GetRootNode("~res:/Scenes/hungar/hungar.sce"));
     SafeRelease(file);
 
 	inTouch = false;
