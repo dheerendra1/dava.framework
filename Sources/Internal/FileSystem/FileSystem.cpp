@@ -135,12 +135,19 @@ namespace DAVA
 #if defined(__DAVAENGINE_WIN32__)
 	const char * FilepathRelativeToBundle(const char * relativePathname)
 	{
-		return Format("./Data/%s", relativePathname);
+		if(virtualBundlePath.empty())
+		{
+			return Format("./Data/%s", relativePathname);
+		}
+		else
+		{
+			return Format("%s/Data/%s", virtualBundlePath.c_str(), relativePathname);
+		}
 	}
 	
 	const char * FilepathRelativeToBundle(const String & relativePathname)
 	{
-		return Format("./Data/%s", relativePathname.c_str());
+		return FilepathRelativeToBundle(relativePathname.c_str());
 	}
 	
 	const char * FilepathInDocuments(const char * relativePathname)
@@ -150,7 +157,7 @@ namespace DAVA
 	
 	const char * FilepathInDocuments(const String & relativePathname)
 	{
-		return Format("./Documents/%s", relativePathname.c_str());
+		return FilepathInDocuments(relativePathname.c_str());
 	}
 	
 #endif
