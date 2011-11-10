@@ -192,16 +192,11 @@ void UISlider::SetValue(float32 value)
 	RecalcButtonPos();
 }
 
-void UISlider::SetMinValue(float32 value)
+void UISlider::SetMinMaxValue(float32 _minValue, float32 _maxValue)
 {
-	minValue = value;
-	RecalcButtonPos();
-}
-	
-void UISlider::SetMaxValue(float32 value)
-{
-	maxValue = value;
-	RecalcButtonPos();
+	minValue = _minValue;
+	maxValue = _maxValue;
+	SetValue((minValue + maxValue) / 2.0);
 }
 
 void UISlider::Input(UIEvent *currentInput)

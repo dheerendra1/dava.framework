@@ -866,7 +866,7 @@ void LandscapeNode::Draw()
     
     //RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
     uint64 drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
-    Logger::Debug("landscape draw time: %lld", drawTime);
+//    Logger::Debug("landscape draw time: %lld", drawTime);
 }
     
     

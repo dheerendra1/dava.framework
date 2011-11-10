@@ -58,8 +58,7 @@ public:
 	
 	inline float32 GetMinValue();
 	inline float32 GetMaxValue();
-	void SetMinValue(float32 value);
-	void SetMaxValue(float32 value);	
+	void SetMinMaxValue(float32 _minValue, float32 _maxValue);
 	
 	virtual void Draw(const UIGeometricData &geometricData);
 	
