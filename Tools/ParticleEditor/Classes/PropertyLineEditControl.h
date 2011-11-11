@@ -45,10 +45,13 @@ public:
 	virtual void Draw(const UIGeometricData &geometricData);
 	
 	virtual void Input(UIEvent * touch);
-	
+    
     void DeletePoint(float32 t);
     void AddPoint(float32 t, float32 value);
     void MovePoint(float32 lastT, float32 newT, float32 newV, bool changeV);
+    
+    void SetMinY(float32 value);
+    void SetMaxY(float32 value);
     
 	class PropertyRect
 	{

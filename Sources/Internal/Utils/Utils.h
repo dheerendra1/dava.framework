@@ -59,7 +59,7 @@ void EnableSleepTimer();
 //int SplitString(const String& input, const String& delimiter, std::vector<String>& results, bool includeEmpties = true);
 void Split(const String & inputString, const String & delims, Vector<String> & tokens);
 
-//void ReplaceBundleName(const String &newBundlePath);
+void ReplaceBundleName(const String &newBundlePath);
 	
 //implementation
 

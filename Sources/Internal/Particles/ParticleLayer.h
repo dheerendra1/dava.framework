@@ -124,6 +124,7 @@ public:
 	 */
 	Particle * GetHeadParticle();
 
+    float32 GetLayerTime();
 
 private:	
 	void GenerateNewParticle(int32 emitIndex);

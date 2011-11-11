@@ -35,7 +35,7 @@
 
 using namespace DAVA;
 
-class TestScreen : public UIScreen, public UIListDelegate, public FileSystemDialogDelegate, public PropertyLineEditControlDelegate
+class TestScreen : public UIScreen, public UIListDelegate, public FileSystemDialogDelegate, public PropertyLineEditControlDelegate, public UITextFieldDelegate
 {
 public:
     class PropListCell : public UIListCell
@@ -72,12 +72,20 @@ public:
     
     struct Layer
     {
-        Layer(String names[], int32 count, String spritePath)
+        String spritePath;
+        UIStaticText *curLayerTime;
+        
+        Layer(String names[], int32 count, String _spritePath, Font *f)
         {
             for(int i = 0; i < count; i++)
             {
                 props.push_back(Property(names[i], true, i));
             }
+            spritePath = _spritePath;
+            
+            curLayerTime = new UIStaticText();
+            curLayerTime->SetAlign(DAVA::ALIGN_LEFT);
+            curLayerTime->SetFont(f);
         }
         struct Property
         {
@@ -86,13 +94,17 @@ public:
                 name = sName;
                 isDefault = isDef;
                 id = _id;
+                minValue = 0;
+                maxValue = 1;
             }
             String name;
             int32 id;
             bool isDefault;
+            int32 minValue;
+            int32 maxValue;
         };
+        
         Vector<Property> props;
-        String spritePath;
     };
     
 	virtual void LoadResources();
@@ -119,6 +131,8 @@ protected:
     virtual void OnPointDelete(PropertyLineEditControl *forControl, float32 t);
     virtual void OnPointMove(PropertyLineEditControl *forControl, float32, float32, float32);
     virtual void OnMouseMove(float32 t);
+	virtual void TextFieldShouldReturn(UITextField * textField);
+	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString);
     
     void ButtonPressed(BaseObject *obj, void *data, void *callerData);
     void SetLayerProps(Layer *layerProps, ParticleLayer *layer);
@@ -127,20 +141,20 @@ protected:
     
     void SliderChanged(BaseObject *obj, void *data, void *callerData);
     
-    void GetEmitterPropValue(int32 id);
+    void GetEmitterPropValue(int32 id, bool getLimits = false);
     void SetEmitterPropValue(int32 id, bool def = 0);
-    void GetLayerPropValue(int32 id);
+    void GetLayerPropValue(int32 id, bool getLimits = false);
     void SetLayerPropValue(int32 id, bool def = 0);
     void ResetEmitterPropValue(int32 id);
     void ResetLayerPropValue(int32 id);
     void GetForcesValue(int32 id);
     
-    bool GetProp(PropertyLineValue<float32> *pv);
-    bool GetProp(PropertyLineKeyframes<float32> *pk);
-    bool GetProp(PropertyLineValue<Vector2> *vv);
-    bool GetProp(PropertyLineKeyframes<Vector2> *vk);    
-    bool GetProp(PropertyLineValue<Color> *cv);
-    bool GetProp(PropertyLineKeyframes<Color> *cv);
+    bool GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimits = false);
+    bool GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getLimits = false);
+    bool GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimits = false);
+    bool GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getLimits = false);    
+    bool GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits = false);
+    bool GetProp(PropertyLineKeyframes<Color> *cv, int32 id, bool getLimits = false);
     
     void HideAndResetEditFields();
     void HideForcesList();
@@ -163,7 +177,7 @@ protected:
     
     float32 cellH;
     
-    String defSpriteFile;
+    //String defSpriteFile;
     
     UIButton *loadEmitter;
     UIButton *saveEmitter;
@@ -179,26 +193,32 @@ protected:
     UIButton *spriteSelect;
     UIButton *addForce;
     UIButton *delForce;
+    UIButton *chooseProject;
     
     UIStaticText *valueText[4];
     UIStaticText *spriteInfo;
+    UIStaticText *particleCountText;
     
     UIList *emitterList;
     UIList *propList;
     UIList *addPropList;
     UIList *forcesList;
     
+    UITextField *tf[2];
     UISlider *vSliders[4];
     
     PropertyLineEditControl *propEdit[4];
     
     FileSystemDialog *fsDlg;
     FileSystemDialog *fsDlgSprite;
+    FileSystemDialog *fsDlgProject;
     
     UIControl *spritePanel;
     UIControl *spriteControl;
     
     Sprite *sprite;
+    
+    UIControl *colorView;
     
     PreviewControl *preview;
     

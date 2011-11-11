@@ -180,7 +180,7 @@ bool TextBlock::GetMultiline()
 	return isMultilineEnabled;
 }
 
-int32 TextBlock::GetFittingOption(int32 _fittingType)
+int32 TextBlock::GetFittingOption()
 {
 	return fittingType;
 }

@@ -347,6 +347,11 @@ float32 ParticleEmitter::GetLifeTime()
 	return lifeTime;
 }
 
+float32 ParticleEmitter::GetTime()
+{
+    return time;
+}
+    
 void ParticleEmitter::Pause(bool _isPaused)
 {
 	isPaused = _isPaused;

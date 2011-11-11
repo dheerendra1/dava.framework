@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		C7F49E9E14697F2F00035926 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F49E9D14697F1000035926 /* libFramework.a */; };
+		C7A6ADF6146999EE00EF2264 /* libFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7F49E9D14697F1000035926 /* libFramework.a */; };
 		C7F49EA71469806E00035926 /* FileSystemDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49E9F1469806E00035926 /* FileSystemDialog.cpp */; };
 		C7F49EA81469806E00035926 /* ForcePreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49EA11469806E00035926 /* ForcePreviewControl.cpp */; };
 		C7F49EA91469806E00035926 /* PreviewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F49EA31469806E00035926 /* PreviewControl.cpp */; };
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7F49E9E14697F2F00035926 /* libFramework.a in Frameworks */,
+				C7A6ADF6146999EE00EF2264 /* libFramework.a in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FE444EEB1153A1D500F5EFD6 /* OpenGL.framework in Frameworks */,
 				FE5288A5132FA5EB000FE4F0 /* OpenAL.framework in Frameworks */,

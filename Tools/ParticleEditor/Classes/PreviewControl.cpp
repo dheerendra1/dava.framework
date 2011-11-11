@@ -39,7 +39,6 @@ void PreviewControl::Input(DAVA::UIEvent *touch)
 
 void PreviewControl::SetEmitter(ParticleEmitter *emitt)
 {
-    //SafeRelease(emitter);
     emitter = emitt;
     emitter->SetPosition(Vector2(GetRect().x + GetRect().dx/2, GetRect().y + GetRect().dy/2));
 }

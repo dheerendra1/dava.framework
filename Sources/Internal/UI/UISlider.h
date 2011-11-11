@@ -56,13 +56,21 @@ public:
 	virtual void SetMaxSprite(Sprite * sprite, int32 frame);
 	virtual void SetMaxSprite(const String & spriteName, int32 frame);
 	
+	inline float32 GetMinValue();
+	inline float32 GetMaxValue();
+	void SetMinMaxValue(float32 _minValue, float32 _maxValue);
+	
 	virtual void Draw(const UIGeometricData &geometricData);
 	
 	inline bool IsEventsContinuos();
 	inline void SetEventsContinuos(bool isEventsContinuos);
 	inline float32 GetValue();
+    
+    void SetMaxValue(float32 value);
+    void SetMinValue(float32 value);
 	void SetValue(float32 value);
 
+    
     void SetThumb(UIControl *newThumb);
     inline UIControl *GetThumb();
 
@@ -113,6 +121,16 @@ inline void UISlider::SetEventsContinuos(bool _isEventsContinuos)
 inline float32 UISlider::GetValue()
 {
 	return currentValue;
+}
+
+inline float32 UISlider::GetMinValue()
+{
+	return minValue;
+}
+	
+inline float32 UISlider::GetMaxValue()
+{
+	return maxValue;
 }
 
 };
