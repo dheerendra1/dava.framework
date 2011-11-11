@@ -160,8 +160,6 @@ protected:
     void HideForcesList();
     void ShowForcesList();
     
-    void ChooseProject();
-    
     void SaveToYaml(const String &pathToFile);
     
     void PrintPropValue(FILE *file, String propName, PropertyLineValue<float32> *pv);

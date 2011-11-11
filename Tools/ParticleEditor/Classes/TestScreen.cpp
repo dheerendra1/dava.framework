@@ -54,7 +54,6 @@ void TestScreen::LoadResources()
     float32 thumbSliderW = cellH/4;
 
     sprite = 0;
-    //defSpriteFile = String("~res:/Gfx/Sparkles/linda_1");
 
     cellFont = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     cellFont->SetSize((int32)cellH/2);
@@ -361,12 +360,6 @@ void TestScreen::LoadResources()
     HideAddProps();    
 }
 
-void TestScreen::ChooseProject()
-{
-    SetDisabled(true);
-    fsDlgProject->Show(this);
-}
-
 void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
 {
     for(int i = 0; i < 4; i++)
@@ -430,6 +423,7 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
         GetLayerPropValue(selectedPropElement);
     }    
 }
+
 bool TestScreen::TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString)
 {
     int v;
@@ -489,7 +483,6 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     if(obj == addLayer)
     {        
         ParticleLayer *layer = new ParticleLayer();
-        //layer->SetSprite(Sprite::Create(defSpriteFile));
         layer->endTime = 100000000.0f;
         emitter->AddLayer(layer);
         
@@ -640,7 +633,8 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == chooseProject)
     {
-        ChooseProject();
+        SetDisabled(true);
+        fsDlgProject->Show(this);
     }
 }
 
@@ -694,6 +688,7 @@ bool TestScreen::GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimit
     curPropType = false;
     return true;
 }
+
 bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getLimits)
 {
     if(pk)
@@ -742,6 +737,7 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
     curPropType = true;
     return true;
 }
+
 bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimits)
 {
     if(vv)
@@ -797,6 +793,7 @@ bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimit
     curPropType = false;
     return true;
 }
+
 bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getLimits)
 {
     if(vk)
@@ -1757,6 +1754,7 @@ void TestScreen::OnMouseMove(float32 t)
         colorView->GetBackground()->SetColor(c);
     }
 }
+
 void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathToFile)
 {
     if(forDialog == fsDlg)
@@ -1822,9 +1820,8 @@ void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathT
     }
     if(forDialog == fsDlgProject)
     {
+        ReplaceBundleName(pathToFile + "/Data");
         SetDisabled(false);
-        
-        
     }
 }
 
@@ -1832,7 +1829,7 @@ void TestScreen::OnFileSytemDialogCanceled(FileSystemDialog *forDialog)
 {
     if(forDialog == fsDlgProject)
     {
-        exit(0);
+        
     }
 }
 
