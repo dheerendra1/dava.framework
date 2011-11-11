@@ -45,18 +45,22 @@ float32 curPropEditTime;
 float32 buttonW;
 Rect tfPosSlider[2], tfPosKFEdit[2];
 Rect colorViewPosSlider, colorViewPosKFEdit;
+Rect kfValueTextPos[4], tfkfPos[4][2], tfkfTextPos[4][2];
 PropertyLineKeyframes<Color> *curColorProp;
+PropertyLineKeyframes<float32> *cur1DimProp;
+PropertyLineKeyframes<Vector2> *cur2DimProp;
+int32 activeKFEdit;
 
 void TestScreen::LoadResources()
 {
-    cellH = GetScreenHeight() / 30;
+    cellH = GetScreenHeight() / 25;
     buttonW = GetScreenWidth() / 6;
     float32 thumbSliderW = cellH/4;
 
     sprite = 0;
 
     cellFont = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
-    cellFont->SetSize((int32)cellH/2);
+    cellFont->SetSize((int32)(cellH/2.5f));
     cellFont->SetColor(Color(1, 1, 1, 1));
 
     selectedPropElement = -1;
@@ -243,25 +247,59 @@ void TestScreen::LoadResources()
         vSliders[i]->SetEventsContinuos(false);
         vSliders[i]->SetValue(0);
         vSliders[i]->AddEvent(UIControl::EVENT_VALUE_CHANGED, Message(this, &TestScreen::SliderChanged));
+        AddControl(vSliders[i]);
         
-        valueText[i] = new UIStaticText(Rect(buttonW*4/3, cellH*(9+i), buttonW/2, cellH/2));
+        tfv[i] = new UITextField(Rect(buttonW*11/8, cellH*(9+i), buttonW/4, cellH/2));
+        tfv[i]->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+        tfv[i]->GetBackground()->SetColor(Color(0.25, 0.25, 0.25, 0.75));
+        tfv[i]->SetFont(cellFont);
+        tfv[i]->SetDelegate(this);
+        AddControl(tfv[i]);
+        
+        valueText[i] = new UIStaticText(Rect(buttonW*10/8, cellH*(9+i), buttonW/8, cellH/2));
         valueText[i]->SetFont(cellFont);
         valueText[i]->SetAlign(DAVA::ALIGN_LEFT);
-        
         AddControl(valueText[i]);
-        AddControl(vSliders[i]);
         
         propEdit[i] = new PropertyLineEditControl();
         propEdit[i]->SetRect(Rect(buttonW, cellH*(9+i*3), buttonW*5/6, cellH*3));
         propEdit[i]->SetDelegate(this);
         AddControl(propEdit[i]);
+        
+        kfValueTextPos[i] = Rect(buttonW, cellH*(12.5f+i*3), buttonW, cellH/2);
+        tfkfPos[i][0] = Rect(buttonW*9/8, cellH*(12+i*3), buttonW/4, cellH/2);
+        tfkfPos[i][1] = Rect(buttonW*12/8, cellH*(12+i*3), buttonW/4, cellH/2);
+        tfkfTextPos[i][0] = Rect(buttonW, cellH*(12+i*3), buttonW/8, cellH/2);
+        tfkfTextPos[i][1] = Rect(buttonW*11/8, cellH*(12+i*3), buttonW/8, cellH/2);
     }
     
-    tfPosSlider[0] = Rect(buttonW, cellH*(9.4f), buttonW/6, cellH*0.6f);
-    tfPosSlider[1] = Rect(buttonW*11/6, cellH*(9.4f), buttonW/6, cellH*0.6f);
+    kfValueText = new UIStaticText(kfValueTextPos[0]);
+    kfValueText->SetFont(cellFont);
+    kfValueText->SetAlign(DAVA::ALIGN_LEFT);
+    AddControl(kfValueText);
     
-    tfPosKFEdit[0] = Rect(buttonW*11/6, cellH*(11.4f), buttonW/6, cellH*0.6f);
-    tfPosKFEdit[1] = Rect(buttonW*11/6, cellH*(9), buttonW/6, cellH*0.6f);
+    for(int i = 0; i < 2; i++)
+    {
+        tfkf[i] = new UITextField(tfkfPos[0][i]);
+        tfkf[i]->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+        tfkf[i]->GetBackground()->SetColor(Color(0.25, 0.25, 0.25, 0.75));
+        tfkf[i]->SetFont(cellFont);
+        tfkf[i]->SetDelegate(this);
+        AddControl(tfkf[i]);
+        
+        tfkfText[i] = new UIStaticText(tfkfTextPos[0][i]);
+        tfkfText[i]->SetFont(cellFont);
+        AddControl(tfkfText[i]); 
+    }
+    
+    tfkfText[0]->SetText(L"T:");
+    tfkfText[1]->SetText(L"V:");
+    
+    tfPosSlider[0] = Rect(buttonW, cellH*(9.5f), buttonW/6, cellH/2);
+    tfPosSlider[1] = Rect(buttonW*11/6, cellH*(9.5f), buttonW/6, cellH/2);
+    
+    tfPosKFEdit[0] = Rect(buttonW*11/6, cellH*(11.5f), buttonW/6, cellH/2);
+    tfPosKFEdit[1] = Rect(buttonW*11/6, cellH*(9), buttonW/6, cellH/2);
     
     for(int i = 0; i < 2; i++)
     {
@@ -273,7 +311,7 @@ void TestScreen::LoadResources()
         AddControl(tf[i]);
     }
     
-    fsDlg = new FileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
+    fsDlg = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
     fsDlg->SetDelegate(this);
     Vector<String> filter;
     filter.push_back(".yaml");
@@ -282,7 +320,7 @@ void TestScreen::LoadResources()
     fsDlg->SetTitle(L"Loading from .yaml file");
     fsDlg->SetCurrentDir("~res:/");
     
-    fsDlgSprite = new FileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
+    fsDlgSprite = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
     fsDlgSprite->SetDelegate(this);
     Vector<String> filter2;
     filter2.push_back(".txt");
@@ -291,9 +329,9 @@ void TestScreen::LoadResources()
     fsDlgSprite->SetTitle(L"Selecte Sprite");
     fsDlgSprite->SetCurrentDir("~res:/");
 
-    fsDlgProject = new FileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
+    fsDlgProject = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
     fsDlgProject->SetDelegate(this);
-    fsDlgProject->SetOperationType(FileSystemDialog::OPERATION_CHOOSE_DIR);
+    fsDlgProject->SetOperationType(UIFileSystemDialog::OPERATION_CHOOSE_DIR);
     fsDlgProject->SetTitle(L"Choose Project Folder");
 
     spritePanel = new UIControl(Rect(buttonW, cellH*8, buttonW, buttonW + cellH));
@@ -336,12 +374,12 @@ void TestScreen::LoadResources()
     layers[0].props[1].maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
-    forcePreview->SetRect(Rect(buttonW*2, cellH*2, buttonW, buttonW*1.125f));
+    forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
     forcePreview->SetValue(Vector2(0, 0));
     AddControl(forcePreview);
     
     colorViewPosSlider = Rect(buttonW, cellH*13.5f, buttonW, cellH);
-    colorViewPosKFEdit = Rect(buttonW, cellH*21.5f, buttonW, cellH);
+    colorViewPosKFEdit = Rect(buttonW, cellH*22.5f, buttonW, cellH);
     
     colorView = new UIControl();
     colorView->SetRect(colorViewPosSlider);
@@ -395,6 +433,8 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
             vSliders[i]->SetMinValue(value);
             propEdit[i]->SetMinY(value);
         }
+        swscanf(textField->GetText().c_str(), L"%d", &value);
+        layers[selectedEmitterElement].props[selectedPropElement].minValue = value;
     }
     if(textField == tf[1])
     {
@@ -404,13 +444,43 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
             vSliders[i]->SetMaxValue(value);
             propEdit[i]->SetMaxY(value);
         }
+        swscanf(textField->GetText().c_str(), L"%d", &value);
+        layers[selectedEmitterElement].props[selectedPropElement].maxValue = value;
+    }
+    
+    for(int i = 0; i < 4; i++)
+    {
+        if(textField == tfv[i])
+        {
+            float32 v = 0;
+            swscanf(textField->GetText().c_str(), L"%f", &v);
+            vSliders[i]->SetValue(v);
+        }
+    }
+    
+    if(textField == tfkf[0])
+    {
+        float32 val = 0;
+        swscanf(textField->GetText().c_str(), L"%f", &val);
+        if(val > 1.0f)
+            val = 1.0f;
+        if(val < 0.0f)
+            val = 0.0f;
+        Vector2 v2;
+        propEdit[activeKFEdit]->GetSelectedValue(v2);
+        v2.x = val;
+        propEdit[activeKFEdit]->SetSelectedValue(v2);
     }
 
-    swscanf(textField->GetText().c_str(), L"%d", &value);
-    if(textField == tf[0])
-        layers[selectedEmitterElement].props[selectedPropElement].minValue = value;
-    if(textField == tf[1])
-        layers[selectedEmitterElement].props[selectedPropElement].maxValue = value;
+    if(textField == tfkf[1])
+    {
+        float32 val = 0;
+        swscanf(textField->GetText().c_str(), L"%f", &val);
+        Vector2 v2;
+        propEdit[activeKFEdit]->GetSelectedValue(v2);
+        v2.y = val;
+        propEdit[activeKFEdit]->SetSelectedValue(v2);
+    }
     
     if(selectedEmitterElement == 0)
     {
@@ -472,12 +542,12 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == loadEmitter)
     {
-        fsDlg->SetOperationType(FileSystemDialog::OPERATION_LOAD);
+        fsDlg->SetOperationType(UIFileSystemDialog::OPERATION_LOAD);
         fsDlg->Show(this);
     }
     if(obj == saveEmitter)
     {
-        fsDlg->SetOperationType(FileSystemDialog::OPERATION_SAVE);
+        fsDlg->SetOperationType(UIFileSystemDialog::OPERATION_SAVE);
         fsDlg->Show(this);
     }
     if(obj == addLayer)
@@ -671,6 +741,7 @@ bool TestScreen::GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimit
         
         vSliders[0]->SetVisible(true);
         valueText[0]->SetVisible(true);
+        tfv[0]->SetVisible(true);
         vSliders[0]->SetMaxValue(max);
         vSliders[0]->SetMinValue(min);
         vSliders[0]->SetValue(pv->GetValue(0));
@@ -682,7 +753,8 @@ bool TestScreen::GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimit
         tf[0]->SetText(StringToWString(Format("%d", min)));
         tf[1]->SetText(StringToWString(Format("%d", max)));
         
-        valueText[0]->SetText(StringToWString(Format("X: %.2f", pv->GetValue(0))));
+        tfv[0]->SetText(StringToWString(Format("%.2f", pv->GetValue(0))));
+        valueText[0]->SetText(L"X:");
     }
     else return false;
     curPropType = false;
@@ -721,6 +793,17 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
         }
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetRect(tfkfPos[0][i]);
+            tfkfText[i]->SetRect(tfkfTextPos[0][i]);
+        }
+        kfValueText->SetVisible(true);
+        kfValueText->SetRect(kfValueTextPos[0]);
+        kfValueText->SetText(StringToWString(Format(" t = 0.00 : %.2f", pk->GetValue(0))));
+        cur1DimProp = pk;
+        
         tf[0]->SetText(StringToWString(Format("%d", min)));
         tf[1]->SetText(StringToWString(Format("%d", max)));
         
@@ -768,6 +851,7 @@ bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimit
         for(int i = 0; i < 2; i++)
         {
             vSliders[i]->SetVisible(true);
+            tfv[i]->SetVisible(true);
             valueText[i]->SetVisible(true);
         }
         for(int i = 0; i < 2; i++)
@@ -786,8 +870,12 @@ bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimit
         
         vSliders[0]->SetValue(vv->GetValue(0).x);
         vSliders[1]->SetValue(vv->GetValue(0).y);
-        valueText[0]->SetText(StringToWString(Format("X: %.2f", vv->GetValue(0).x)));
-        valueText[1]->SetText(StringToWString(Format("Y: %.2f", vv->GetValue(0).y)));
+        
+        tfv[0]->SetText(StringToWString(Format("X: %.2f", vv->GetValue(0).x)));
+        tfv[1]->SetText(StringToWString(Format("Y: %.2f", vv->GetValue(0).y)));
+        
+        valueText[0]->SetText(L"X:");
+        valueText[1]->SetText(L"Y:");
     }
     else return false;
     curPropType = false;
@@ -826,6 +914,18 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
         }
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetRect(tfkfPos[1][i]);
+            tfkfText[i]->SetRect(tfkfTextPos[1][i]);
+        }
+        
+        kfValueText->SetVisible(true);
+        kfValueText->SetRect(kfValueTextPos[1]);
+        kfValueText->SetText(StringToWString(Format(" t = 0.00 : (%.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y)));
+        cur2DimProp = vk;
+        
         tf[0]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].minValue)));
         tf[1]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].maxValue)));
         
@@ -857,6 +957,7 @@ bool TestScreen::GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits)
         for(int i = 0; i < 4; i++)
         {
             vSliders[i]->SetVisible(true);
+            tfv[i]->SetVisible(true);
             valueText[i]->SetVisible(true);
         }
         colorView->SetVisible(true);
@@ -882,10 +983,16 @@ bool TestScreen::GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits)
         vSliders[2]->SetValue(cv->GetValue(0).b);
         vSliders[1]->SetValue(cv->GetValue(0).g);
         vSliders[0]->SetValue(cv->GetValue(0).r);
-        valueText[0]->SetText(StringToWString(Format("R: %.2f", cv->GetValue(0).r)));
-        valueText[1]->SetText(StringToWString(Format("G: %.2f", cv->GetValue(0).g)));
-        valueText[2]->SetText(StringToWString(Format("B: %.2f", cv->GetValue(0).b)));
-        valueText[3]->SetText(StringToWString(Format("A: %.2f", cv->GetValue(0).a)));
+        
+        tfv[0]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).r)));
+        tfv[1]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).g)));
+        tfv[2]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).b)));
+        tfv[3]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).a)));
+        
+        valueText[0]->SetText(L"R:");
+        valueText[1]->SetText(L"G:");
+        valueText[2]->SetText(L"B:");
+        valueText[3]->SetText(L"A:");
     }
     else return false;
     curPropType = false;
@@ -913,6 +1020,16 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Color> *ck, int32 id, bool getLim
         c.a = 1.0f;
         colorView->GetBackground()->SetColor(c);
         curColorProp = ck;
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetRect(tfkfPos[3][i]);
+            tfkfText[i]->SetRect(tfkfTextPos[3][i]);
+        }
+        
+        kfValueText->SetVisible(true);
+        kfValueText->SetRect(kfValueTextPos[3]);
+        kfValueText->SetText(StringToWString(Format(" t = 0.00 : (%.2f, %.2f, %.2f, %.2f)", ck->GetValue(0).r, ck->GetValue(0).g, ck->GetValue(0).b, ck->GetValue(0).a)));
         
         tf[0]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].minValue)));
         tf[1]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].maxValue)));
@@ -946,6 +1063,8 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
     KFBut->SetVisible(true);
     
     curColorProp = 0;
+    cur1DimProp = 0;
+    cur2DimProp = 0;
     
     PropertyLineValue<float32> *pv;
     PropertyLineKeyframes<float32> *pk;
@@ -1209,6 +1328,8 @@ void TestScreen::GetLayerPropValue(int32 id, bool getLimits)
     }
     
     curColorProp = 0;
+    cur1DimProp = 0;
+    cur2DimProp = 0;
     
     PropertyLineValue<float32> *pv;
     PropertyLineKeyframes<float32> *pk;
@@ -1739,7 +1860,42 @@ void TestScreen::OnPointMove(PropertyLineEditControl *forControl, float32 lastT,
     }
 }
 
-void TestScreen::OnMouseMove(float32 t)
+void TestScreen::OnPointSelected(PropertyLineEditControl *forControl, int32 index, Vector2 value)
+{
+    if(index == -1)
+    {
+        for(int i = 0; i < 4; i++)
+            if(forControl != propEdit[i])
+                propEdit[i]->DeselectPoint();
+            else
+                activeKFEdit = i;
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetVisible(false);
+            tfkfText[i]->SetVisible(false);
+        }
+    }
+    else
+    {
+        for(int i = 0; i < 4; i++)
+            if(forControl != propEdit[i])
+                propEdit[i]->DeselectPoint();
+            else
+                activeKFEdit = i;
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetVisible(true);
+            tfkfText[i]->SetVisible(true);
+        }
+        
+        tfkf[0]->SetText(StringToWString(Format("%.2f", value.x)));
+        tfkf[1]->SetText(StringToWString(Format("%.2f", value.y)));
+    }
+}
+
+void TestScreen::OnMouseMove(PropertyLineEditControl *forControl, float32 t)
 {
     curPropEditTime = t;
     if(selectedPropElement == 11)
@@ -1747,19 +1903,34 @@ void TestScreen::OnMouseMove(float32 t)
     if(selectedPropElement == 12)
         forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forcesVariation[selectedForceElement].Get()->GetValue(curPropEditTime));
     
+    if(cur1DimProp)
+    {
+        kfValueText->SetText(StringToWString(Format(" t = %.2f : %.2f", t, cur1DimProp->GetValue(t))));
+    }
+    
+    if(cur2DimProp)
+    {
+        kfValueText->SetText(StringToWString(Format(" t = %.2f : (%.2f, %.2f)", t, cur2DimProp->GetValue(t).x, cur2DimProp->GetValue(t).y)));
+    }
+    
     if(curColorProp)
     {
         Color c = curColorProp->GetValue(t);
+        kfValueText->SetText(StringToWString(Format(" t = %.2f : (%.2f, %.2f, %.2f, %.2f)", t, c.r, c.g, c.b, c.a)));
         c.a = 1.0f;
         colorView->GetBackground()->SetColor(c);
     }
+    
+    for(int i = 0; i < 4; i++)
+        if(forControl != propEdit[i])
+            propEdit[i]->SetCurTime(t);
 }
 
-void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathToFile)
+void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile)
 {
     if(forDialog == fsDlg)
     {
-        if(forDialog->GetOperationType() == FileSystemDialog::OPERATION_LOAD)
+        if(forDialog->GetOperationType() == UIFileSystemDialog::OPERATION_LOAD)
         {
             selectedEmitterElement = -1;
             selectedPropElement = -1;
@@ -1802,7 +1973,7 @@ void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathT
             emitterList->RefreshList();
             propList->RefreshList();
         }
-        if(forDialog->GetOperationType() == FileSystemDialog::OPERATION_SAVE)
+        if(forDialog->GetOperationType() == UIFileSystemDialog::OPERATION_SAVE)
         {
             SaveToYaml(pathToFile);
         }
@@ -1825,7 +1996,7 @@ void TestScreen::OnFileSelected(FileSystemDialog *forDialog, const String &pathT
     }
 }
 
-void TestScreen::OnFileSytemDialogCanceled(FileSystemDialog *forDialog)
+void TestScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
 {
     if(forDialog == fsDlgProject)
     {
@@ -1856,6 +2027,7 @@ void TestScreen::HideAndResetEditFields()
     {
         propEdit[i]->SetVisible(false);
         vSliders[i]->SetVisible(false);
+        tfv[i]->SetVisible(false);
         valueText[i]->SetVisible(false);
         vSliders[i]->SetValue(0.0f);
         propEdit[i]->Reset();
@@ -1868,6 +2040,11 @@ void TestScreen::HideAndResetEditFields()
     spritePanel->SetVisible(false);
     
     colorView->SetVisible(false);
+    kfValueText->SetVisible(false);
+    tfkf[0]->SetVisible(false);
+    tfkf[1]->SetVisible(false);
+    tfkfText[0]->SetVisible(false);
+    tfkfText[1]->SetVisible(false);
 }
 
 void TestScreen::ShowAddProps()
@@ -1919,6 +2096,7 @@ void TestScreen::UnloadResources()
     
     for(int i = 0 ;i < 4; i++)
     {
+        SafeRelease(tfv[i]);
         SafeRelease(valueText[i]);
         SafeRelease(vSliders[i]);
         SafeRelease(propEdit[i]);

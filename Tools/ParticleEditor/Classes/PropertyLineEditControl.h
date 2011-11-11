@@ -31,8 +31,9 @@ class PropertyLineEditControlDelegate
 public:
     virtual void OnPointAdd(PropertyLineEditControl *forControl, float32 t, float32 value) = 0;
     virtual void OnPointDelete(PropertyLineEditControl *forControl, float32 t) = 0;
-    virtual void OnPointMove(PropertyLineEditControl *forControl, float32, float32, float32) = 0;
-    virtual void OnMouseMove(float32 t) = 0;
+    virtual void OnPointMove(PropertyLineEditControl *forControl, float32 lastT, float32 newT, float32 newV) = 0;
+    virtual void OnMouseMove(PropertyLineEditControl *forControl, float32 t) = 0;
+    virtual void OnPointSelected(PropertyLineEditControl *forControl, int32 index, Vector2 value) = 0;
 };
 
 class PropertyLineEditControl : public UIControl
@@ -49,6 +50,8 @@ public:
     void DeletePoint(float32 t);
     void AddPoint(float32 t, float32 value);
     void MovePoint(float32 lastT, float32 newT, float32 newV, bool changeV);
+    
+    void DeselectPoint();
     
     void SetMinY(float32 value);
     void SetMaxY(float32 value);
@@ -71,12 +74,17 @@ public:
 		}
 	};
 	
+    void SetCurTime(float32 t);
+    float32 GetCurTime();
+    
 	Vector<PropertyRect> & GetValues();
     PropertyLineKeyframes<float32> * GetPropertyLine();
     void SetText(WideString string);
     void SetByPropertyLine(PropertyLineKeyframes<float32> *props);
     void SetDelegate(PropertyLineEditControlDelegate *controlDelegate);
     void Reset();
+    bool GetSelectedValue(Vector2 &v);
+    void SetSelectedValue(Vector2 v);
     
 private:
 	
@@ -97,7 +105,10 @@ private:
 	float32 windowX;
 	float32 windowY;
 	
+    float32 curTime;
+    
 	int32 activeValueIndex;
+    int32 selectedValueIndex;
 	
 	Vector<PropertyRect> values;
     

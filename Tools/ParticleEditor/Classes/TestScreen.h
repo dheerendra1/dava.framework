@@ -29,13 +29,12 @@
 =====================================================================================*/
 #include "DAVAEngine.h"
 #include "PropertyLineEditControl.h"
-#include "FileSystemDialog.h"
 #include "PreviewControl.h"
 #include "ForcePreviewControl.h"
 
 using namespace DAVA;
 
-class TestScreen : public UIScreen, public UIListDelegate, public FileSystemDialogDelegate, public PropertyLineEditControlDelegate, public UITextFieldDelegate
+class TestScreen : public UIScreen, public UIListDelegate, public UIFileSystemDialogDelegate, public PropertyLineEditControlDelegate, public UITextFieldDelegate
 {
 public:
     class PropListCell : public UIListCell
@@ -125,12 +124,13 @@ protected:
 	virtual int32 CellHeight(UIList *forList, int32 index);//calls only for vertical orientation
 	virtual void OnCellSelected(UIList *forList, UIListCell *selectedCell);
     
-    virtual void OnFileSelected(FileSystemDialog *forDialog, const String &pathToFile);
-    virtual void OnFileSytemDialogCanceled(FileSystemDialog *forDialog);
+    virtual void OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile);
+    virtual void OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog);
     virtual void OnPointAdd(PropertyLineEditControl *forControl, float32 t, float32 value);
     virtual void OnPointDelete(PropertyLineEditControl *forControl, float32 t);
-    virtual void OnPointMove(PropertyLineEditControl *forControl, float32, float32, float32);
-    virtual void OnMouseMove(float32 t);
+    virtual void OnPointMove(PropertyLineEditControl *forControl, float32 lastT, float32 newT, float32 newV);
+    virtual void OnMouseMove(PropertyLineEditControl *forControl, float32 t);
+    virtual void OnPointSelected(PropertyLineEditControl *forControl, int32 index, Vector2 value);
 	virtual void TextFieldShouldReturn(UITextField * textField);
 	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString);
     
@@ -195,6 +195,8 @@ protected:
     UIButton *delForce;
     UIButton *chooseProject;
     
+    UIStaticText *tfkfText[2];
+    UIStaticText *kfValueText;
     UIStaticText *valueText[4];
     UIStaticText *spriteInfo;
     UIStaticText *particleCountText;
@@ -204,14 +206,16 @@ protected:
     UIList *addPropList;
     UIList *forcesList;
     
+    UITextField *tfkf[2];
+    UITextField *tfv[4];
     UITextField *tf[2];
     UISlider *vSliders[4];
     
     PropertyLineEditControl *propEdit[4];
     
-    FileSystemDialog *fsDlg;
-    FileSystemDialog *fsDlgSprite;
-    FileSystemDialog *fsDlgProject;
+    UIFileSystemDialog *fsDlg;
+    UIFileSystemDialog *fsDlgSprite;
+    UIFileSystemDialog *fsDlgProject;
     
     UIControl *spritePanel;
     UIControl *spriteControl;
