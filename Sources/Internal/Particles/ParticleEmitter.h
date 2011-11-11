@@ -249,6 +249,8 @@ public:
 	 \returns Animation object
 	 */
 	Animation * SizeAnimation(const Vector2 & newSize, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
+    
+    float32 GetTime();
 	
 protected:
 	void PrepareEmitterParameters(Particle * particle, float32 velocity, int32 emitIndex);

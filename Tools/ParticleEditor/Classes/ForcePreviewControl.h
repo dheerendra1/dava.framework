@@ -23,10 +23,13 @@ public:
 	
 	virtual void Input(UIEvent * touch);
     
+    void SetRect(const DAVA::Rect &rect);
+    
     void SetValue(Vector2 _value);
     
 protected:
     Vector2 value;
+    UIStaticText *powerText;
 };
 
 #endif

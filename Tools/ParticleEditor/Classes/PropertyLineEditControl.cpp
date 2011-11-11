@@ -39,6 +39,15 @@ PropertyLineEditControl::~PropertyLineEditControl()
 	
 }
 
+void PropertyLineEditControl::SetMaxY(float32 max)
+{
+    maxY = max;
+}
+
+void PropertyLineEditControl::SetMinY(float32 min)
+{
+    minY = min;
+}
 const Rect & PropertyLineEditControl::GetWorkZone()
 {
 	workZone = GetRect();
@@ -291,12 +300,15 @@ void PropertyLineEditControl::Draw(const UIGeometricData &geometricData)
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 0.3f);
 	RenderHelper::Instance()->FillRect(geometricData.GetUnrotatedRect());
     
+    const Rect & cRect = GetWorkZone();
+    
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 0.9f);
-	RenderHelper::Instance()->DrawRect(GetWorkZone());
-    RenderHelper::Instance()->DrawLine(CalcRealPosition(PropertyRect(0.5f, 1.05f)), CalcRealPosition(PropertyRect(0.5f, 0.95f)));
-    RenderHelper::Instance()->DrawLine(CalcRealPosition(PropertyRect(0.5f, -0.05f)), CalcRealPosition(PropertyRect(0.5f, 0.05f)));
-    RenderHelper::Instance()->DrawLine(CalcRealPosition(PropertyRect(1.05f, 0.5f)), CalcRealPosition(PropertyRect(0.95f, 0.5f)));
-    RenderHelper::Instance()->DrawLine(CalcRealPosition(PropertyRect(-0.05f, 0.5f)), CalcRealPosition(PropertyRect(0.05f, 0.5f)));
+	RenderHelper::Instance()->DrawRect(cRect);
+    
+    RenderHelper::Instance()->DrawLine(Vector2(cRect.x - 3, cRect.y + cRect.dy/2), Vector2(cRect.x + 3, cRect.y + cRect.dy/2));
+    RenderHelper::Instance()->DrawLine(Vector2(cRect.x + cRect.dx - 3, cRect.y + cRect.dy/2), Vector2(cRect.x + cRect.dx + 3, cRect.y + cRect.dy/2));
+    RenderHelper::Instance()->DrawLine(Vector2(cRect.x + cRect.dx/2, cRect.y - 3), Vector2(cRect.x + cRect.dx/2, cRect.y + 3));
+    RenderHelper::Instance()->DrawLine(Vector2(cRect.x + cRect.dx/2, cRect.y + cRect.dy - 3), Vector2(cRect.x + cRect.dx/2, cRect.y + cRect.dy + 3));
     
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
