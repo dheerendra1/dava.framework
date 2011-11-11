@@ -202,6 +202,7 @@ void ParticleLayer::SetEmitter(ParticleEmitter * _emitter)
 
 void ParticleLayer::SetSprite(Sprite * _sprite)
 {
+    DeleteAllParticles();
 	SafeRelease(sprite);
 	sprite = SafeRetain(_sprite);
 	if(sprite)
@@ -215,6 +216,11 @@ Sprite * ParticleLayer::GetSprite()
 	return sprite;
 }
 
+float32 ParticleLayer::GetLayerTime()
+{
+    return layerTime;
+}
+    
 void ParticleLayer::DeleteAllParticles()
 {
 	if(TYPE_SINGLE_PARTICLE == type)

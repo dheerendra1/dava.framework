@@ -65,8 +65,12 @@ public:
 	inline bool IsEventsContinuos();
 	inline void SetEventsContinuos(bool isEventsContinuos);
 	inline float32 GetValue();
+    
+    void SetMaxValue(float32 value);
+    void SetMinValue(float32 value);
 	void SetValue(float32 value);
 
+    
     void SetThumb(UIControl *newThumb);
     inline UIControl *GetThumb();
 
