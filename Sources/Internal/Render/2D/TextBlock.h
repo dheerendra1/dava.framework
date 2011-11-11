@@ -77,7 +77,7 @@ public:
 	virtual Font * GetFont();
 	virtual const WideString & GetText();
 	virtual bool GetMultiline();
-	virtual int32 GetFittingOption(int32 fittingType);
+	virtual int32 GetFittingOption();
 	
 	Sprite * GetSprite();
 	bool IsSpriteReady();

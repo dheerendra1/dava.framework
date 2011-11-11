@@ -197,6 +197,7 @@ bool Shader::LoadFromYaml(const String & pathname)
     
 Shader::~Shader()
 {
+    SafeDeleteArray(attributeNames);
     SafeDeleteArray(uniformNames);
     SafeDeleteArray(uniformIDs);
     SafeDeleteArray(uniformLocations);
@@ -208,6 +209,7 @@ Shader::~Shader()
     
 bool Shader::Recompile()
 {
+    RenderManager::Instance()->LockNonMain();
     if (!CompileShader(&vertexShader, GL_VERTEX_SHADER, vertexShaderData->GetSize(), (GLchar*)vertexShaderData->GetPtr()))
     {
         Logger::Error("Failed to compile vertex shader: %s", vertexShaderPath.c_str());
@@ -268,6 +270,8 @@ bool Shader::Recompile()
         uniformIDs[k] = uniform;
         //Logger::Debug("shader known uniform: %s size: %d type: %s", uniformNames[k].c_str(), size, VertexTypeStringFromEnum(type).c_str());
     }
+    
+    RenderManager::Instance()->UnlockNonMain();
     return true;
 }
     
@@ -297,16 +301,22 @@ int32 Shader::GetAttributeIndex(eVertexFormat vertexFormat)
 
 void Shader::DeleteShaders()
 {
+    RenderManager::Instance()->LockNonMain();
+
     RENDER_VERIFY(glDetachShader(program, vertexShader));
     RENDER_VERIFY(glDetachShader(program, fragmentShader));
     RENDER_VERIFY(glDeleteShader(vertexShader));
     RENDER_VERIFY(glDeleteShader(fragmentShader));
     RENDER_VERIFY(glDeleteProgram(program));
+
+    RenderManager::Instance()->UnlockNonMain();
 }
 
 /* Link a program with all currently attached shaders */
 GLint Shader::LinkProgram(GLuint prog)
 {
+    RenderManager::Instance()->LockNonMain();
+
     GLint status;
     
     glLinkProgram(prog);
@@ -325,12 +335,16 @@ GLint Shader::LinkProgram(GLuint prog)
     if (status == GL_FALSE)
         Logger::Debug("Failed to link program %d", prog);
     
+    RenderManager::Instance()->UnlockNonMain();
+
     return status;
 }
     
 /* Create and compile a shader from the provided source(s) */
 GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLchar * sources)
 {
+    RenderManager::Instance()->LockNonMain();
+
     GLint status;
     //const GLchar *sources;
         
@@ -373,7 +387,8 @@ GLint Shader::CompileShader(GLuint *shader, GLenum type, GLint count, const GLch
     {
         //Logger::Debug("Failed to compile shader:\n");
     }
-    
+    RenderManager::Instance()->UnlockNonMain();
+
     return status;
 }
     
@@ -381,7 +396,7 @@ void Shader::Unbind()
 {
     if (activeProgram != 0)
     {
-        glUseProgram(0);
+        RENDER_VERIFY(glUseProgram(0));
         activeProgram = 0;
     }
 }
@@ -390,7 +405,7 @@ void Shader::Bind()
 {
     if (activeProgram != program)
     {
-        glUseProgram(program);
+        RENDER_VERIFY(glUseProgram(program));
         activeProgram = program;
     }
     

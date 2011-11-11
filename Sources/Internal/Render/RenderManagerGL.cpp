@@ -440,15 +440,18 @@ void RenderManager::FlushState()
 	}   
 	if(newTextureEnabled != oldTextureEnabled)
 	{
-		if(newTextureEnabled)
-		{
-			RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
-		}
-		else
-		{
-			RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
-		}
-		oldTextureEnabled = newTextureEnabled;
+        if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+        {
+            if(newTextureEnabled)
+            {
+                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
+            }
+            else
+            {
+                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+            }
+            oldTextureEnabled = newTextureEnabled;
+        }
 	}
     
     if (cullingEnabled != oldCullingEnabled)
@@ -814,15 +817,18 @@ void RenderManager::AttachRenderData(Shader * shader)
     }
     else
     {
-        if (oldVertexArrayEnabled)
+        if (GetRenderer() == Core::RENDERER_OPENGL)
         {
-            EnableVertexArray(false);
-            pointerArraysRendererState = 0;
-        }
-        if (oldTextureCoordArrayEnabled)
-        {
-            EnableTextureCoordArray(false);
-            pointerArraysRendererState = 0;
+            if (oldVertexArrayEnabled)
+            {
+                EnableVertexArray(false);
+                pointerArraysRendererState = 0;
+            }
+            if (oldTextureCoordArrayEnabled)
+            {
+                EnableTextureCoordArray(false);
+                pointerArraysRendererState = 0;
+            }
         }
 
         int32 currentEnabledAttribCount = 0;
