@@ -196,7 +196,7 @@ void UISlider::SetMinMaxValue(float32 _minValue, float32 _maxValue)
 {
 	minValue = _minValue;
 	maxValue = _maxValue;
-	SetValue((minValue + maxValue) / 2.0);
+	SetValue((minValue + maxValue) / 2.0f);
 }
 
 void UISlider::Input(UIEvent *currentInput)
