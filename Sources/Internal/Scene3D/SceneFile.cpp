@@ -253,6 +253,7 @@ bool SceneFile::ReadTexture()
         texture = Texture::CreateFromData(Texture::FORMAT_RGBA8888, textureData, 8, 8);
         scene->AddTexture(texture);
         texture->GenerateMipmaps();
+        SafeDeleteArray(textureData);
 	}
 	
 	if (debugLogEnabled)Logger::Debug("- Texture: %s %d hasOpacity: %s %s\n", textureDef.name, textureDef.id, (hasOpacity) ? ("yes") : ("no"), Texture::GetPixelFormatString(texture->format));

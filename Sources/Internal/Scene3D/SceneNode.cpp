@@ -44,6 +44,7 @@ SceneNode::SceneNode(Scene * _scene)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
+    defaultLocalTransform.Identity();
 	//animation = 0;
     debugFlags = DEBUG_DRAW_NONE;
     flags = 0;
