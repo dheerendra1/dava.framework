@@ -73,6 +73,16 @@ namespace DAVA
 
 		x = i;
     }
+
+    template<typename T> 
+    inline T Sign(T val)
+    {
+        if(val == 0)
+        {
+            return 0;
+        }
+        return val > 0 ? 1 : -1;
+    }
 	
 } // end of namespace DAVA
 
