@@ -1,9 +1,9 @@
 /*
  *  TestScreen.cpp
- *  TemplateProjectMacOS
+ *  ParticlesEditor
  *
- *  Created by Vitaliy  Borodovsky on 3/21/10.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Created by Igor Solovey on 11/2/11.
+ *  Copyright 2010 DAVA Consulting. All rights reserved.
  *
  */
 
@@ -33,6 +33,7 @@ PropertyLineEditControl::PropertyLineEditControl()
     font->SetColor(Color(1,1,1,1));
     text->SetFont(font);
     AddControl(text);
+    SafeRelease(font);
 }
 
 PropertyLineEditControl::~PropertyLineEditControl()
@@ -136,7 +137,19 @@ void PropertyLineEditControl::MovePoint(float32 lastT, float32 newT, float32 new
         {
             values.at(i).x = newT;
             if(changeV)
+            {
                 values.at(i).y = newV;
+            }
+            if(i < values.size() - 1 && values.at(i+1).x == newT)
+            {
+                values.erase(values.begin()+i+1);
+                selectedValueIndex = -1;
+            }
+            if(i > 0 && values.at(i-1).x == newT)
+            {
+                values.erase(values.begin()+i-1);
+                selectedValueIndex = -1;
+            }
             break;
         }
     }
@@ -144,8 +157,6 @@ void PropertyLineEditControl::MovePoint(float32 lastT, float32 newT, float32 new
 
 void PropertyLineEditControl::Input(UIEvent * touch)
 {
-	//UIGeometricData geoData = GetGeometricData();
-	//relativePoint -= geoData.position;
 	Vector2 absolutePoint = touch->point;
 	
 	if (touch->tid == UIEvent::BUTTON_1)

@@ -30,7 +30,7 @@
 #include "TestScreen.h"
 #include <sys/time.h>
 
-String emitterProps[] = {"emissionAngle", "emissionRage", "radius", "colorOverLife"};
+String emitterProps[] = {"emissionDir", "emissionRage", "radius", "colorOverLife"};
 String layerProps[] = {"sprite", "life", "lifeVariation", "number", "numberVariation", "size","sizeVariation", "sizeOverLife", "velocity", "velocityVariation", "velocityOverLife", "forces","forcesVariation", "forcesOverLife", "spin", "spinVariation", "spinOverLife", "motionRandom","motionRandomVariation", "motionRandomOverLife", "bounce", "bounceVariation", "bounceOverLife","colorRandom", "alphaOverLife", "colorOverLife"};
 
 int32 emitterPropsCount = 4;
@@ -49,6 +49,7 @@ Rect kfValueTextPos[4], tfkfPos[4][2], tfkfTextPos[4][2];
 PropertyLineKeyframes<Color> *curColorProp;
 PropertyLineKeyframes<float32> *cur1DimProp;
 PropertyLineKeyframes<Vector2> *cur2DimProp;
+PropertyLineKeyframes<Vector3> *cur3DimProp;
 int32 activeKFEdit;
 
 void TestScreen::LoadResources()
@@ -70,7 +71,7 @@ void TestScreen::LoadResources()
     f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     f->SetSize(18);
     f->SetColor(Color(1,1,1,1));
-
+    
     chooseProject = new UIButton(Rect(0, 0, buttonW/2, cellH));
     chooseProject->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     chooseProject->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
@@ -121,6 +122,26 @@ void TestScreen::LoadResources()
 	addLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(addLayer);
     
+    cloneLayer = new UIButton(Rect(0, cellH*2, buttonW/2, cellH));
+    cloneLayer->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    cloneLayer->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    cloneLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    cloneLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    cloneLayer->SetStateFont(UIControl::STATE_NORMAL, f);
+    cloneLayer->SetStateText(UIControl::STATE_NORMAL, L"copy L");
+	cloneLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
+    AddControl(cloneLayer);
+    
+    disableLayer = new UIButton(Rect(buttonW/2, cellH*2, buttonW/2, cellH));
+    disableLayer->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    disableLayer->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
+    disableLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    disableLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
+    disableLayer->SetStateFont(UIControl::STATE_NORMAL, f);
+    disableLayer->SetStateText(UIControl::STATE_NORMAL, L"on/off L");
+	disableLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
+    AddControl(disableLayer);
+    
     delLayer = new UIButton(Rect(buttonW/2, cellH, buttonW/2, cellH));
     delLayer->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     delLayer->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
@@ -130,7 +151,7 @@ void TestScreen::LoadResources()
     delLayer->SetStateText(UIControl::STATE_NORMAL, L"- Layer");
 	delLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(delLayer);
-
+    
     addProp = new UIButton(Rect(0, cellH*8, buttonW/2, cellH));
     addProp->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     addProp->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
@@ -191,7 +212,7 @@ void TestScreen::LoadResources()
 	delForce->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(delForce);
 
-    emitterList = new UIList(Rect(0, cellH*2, buttonW, cellH*6), UIList::ORIENTATION_VERTICAL);
+    emitterList = new UIList(Rect(0, cellH*3, buttonW, cellH*5), UIList::ORIENTATION_VERTICAL);
     emitterList->SetDelegate(this);
     emitterList->GetBackground()->SetColor(Color(0.2, 0.2, 0.2, 0.5));
     emitterList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
@@ -214,6 +235,16 @@ void TestScreen::LoadResources()
     forcesList->GetBackground()->SetColor(Color(0.3, 0.3, 0.3, 0.5));
     forcesList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     AddControl(forcesList);
+
+    emitter3D = new UIButton(Rect(buttonW - cellH*2/3, cellH*3, cellH*2/3, cellH*2/3));
+    emitter3D->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
+    emitter3D->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.5, 0.5, 0.5, 0.0));
+    emitter3D->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
+    emitter3D->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.35, 0.35, 0.35, 1.0));
+    emitter3D->SetStateFont(UIControl::STATE_NORMAL, cellFont);
+    emitter3D->SetStateText(UIControl::STATE_NORMAL, L"3D");
+	emitter3D->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
+    AddControl(emitter3D);
     
     OKBut = new UIButton(Rect(buttonW, cellH, buttonW/2, cellH));
     OKBut->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
@@ -375,7 +406,7 @@ void TestScreen::LoadResources()
     
     forcePreview = new ForcePreviewControl();
     forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
-    forcePreview->SetValue(Vector2(0, 0));
+    forcePreview->SetValue(Vector3(0, 0, 0));
     AddControl(forcePreview);
     
     colorViewPosSlider = Rect(buttonW, cellH*13.5f, buttonW, cellH);
@@ -392,6 +423,11 @@ void TestScreen::LoadResources()
     particleCountText->SetFont(cellFont);
     particleCountText->SetAlign(DAVA::ALIGN_LEFT);
     AddControl(particleCountText);
+    
+    if(emitter->GetIs3D())
+        emitter3D->SetStateText(UIControl::STATE_NORMAL, L"3D");
+    else
+        emitter3D->SetStateText(UIControl::STATE_NORMAL, L"2D");
     
     HideAndResetEditFields();
     HideForcesList();
@@ -510,6 +546,7 @@ bool TestScreen::TextFieldKeyPressed(UITextField * textField, int32 replacementL
     
     return true;
 }
+
 void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
 {
     if(obj == newEmitter)
@@ -517,7 +554,7 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         selectedEmitterElement = -1;
         selectedPropElement = -1;
         selectedForceElement = -1;
-        forcePreview->SetValue(Vector2(0, 0));
+        forcePreview->SetValue(Vector3(0, 0, 0));
         
         SafeRelease(emitter);
         emitter = new ParticleEmitter();
@@ -537,7 +574,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         layers[0].props[1].minValue = 0;
         layers[0].props[1].maxValue = 360;
         emitterList->RefreshList();
-        propList->RefreshList();        
+        propList->RefreshList();    
+        
+        if(emitter->GetIs3D())
+            emitter3D->SetStateText(UIControl::STATE_NORMAL, L"3D");
+        else
+            emitter3D->SetStateText(UIControl::STATE_NORMAL, L"2D");
+        
         HideAndResetEditFields();
     }
     if(obj == loadEmitter)
@@ -550,11 +593,23 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         fsDlg->SetOperationType(UIFileSystemDialog::OPERATION_SAVE);
         fsDlg->Show(this);
     }
+    if(obj == emitter3D)
+    {
+        emitter->Set3D(!emitter->GetIs3D());
+        
+        if(emitter->GetIs3D())
+            emitter3D->SetStateText(UIControl::STATE_NORMAL, L"3D");
+        else
+            emitter3D->SetStateText(UIControl::STATE_NORMAL, L"2D");
+        
+        HideAndResetEditFields();
+    }
     if(obj == addLayer)
     {        
         ParticleLayer *layer = new ParticleLayer();
         layer->endTime = 100000000.0f;
         emitter->AddLayer(layer);
+        SafeRelease(layer);
         
         layers.push_back(Layer(layerProps, layerPropsCount, "", cellFont));
         layers.at(layers.size()-1).spritePath = "";
@@ -575,6 +630,35 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
             emitter->GetLayers().erase(emitter->GetLayers().begin()+selectedEmitterElement-1);
             selectedEmitterElement = -1;
         }
+        emitterList->RefreshList();
+        propList->RefreshList();
+    }
+    if(obj == cloneLayer)
+    {
+        if(selectedEmitterElement > 0)
+        {
+            ParticleLayer *layer = emitter->GetLayers()[selectedEmitterElement-1]->Clone();
+            emitter->AddLayer(layer);
+            
+            Layer l = layers[selectedEmitterElement].Clone();
+            layers.push_back(l);
+            layers.at(layers.size()-1).spritePath = "";
+            layers.at(layers.size()-1).curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, cellH*(layers.size()-1), buttonW, cellH));
+            AddControl(layers.at(layers.size()-1).curLayerTime);
+        }
+        selectedEmitterElement = -1;
+        emitterList->RefreshList();
+        propList->RefreshList();
+    }
+    if(obj == disableLayer)
+    {
+        if(selectedEmitterElement > 0)
+        {
+            bool disabled = emitter->GetLayers()[selectedEmitterElement-1]->isDisabled;
+            layers[selectedEmitterElement].isDisabled = !disabled;
+            emitter->GetLayers()[selectedEmitterElement-1]->isDisabled = !disabled;
+        }
+        selectedEmitterElement = -1;
         emitterList->RefreshList();
         propList->RefreshList();
     }
@@ -662,43 +746,31 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == addForce)
     {
-        if(selectedPropElement == 11)
+        if(selectedPropElement == 11 || selectedPropElement == 12 || selectedPropElement == 13)
         {
-            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector2> >(0));
-        }
-        if(selectedPropElement == 12)
-        {
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector2> >(0));
-        }
-        if(selectedPropElement == 13)
-        {
+            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(0));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(0));
             emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(0));
         }
         HideAndResetEditFields();
         selectedForceElement = -1;
-        forcePreview->SetValue(Vector2(0, 0));
+        forcePreview->SetValue(Vector3(0, 0, 0));
         forcesList->RefreshList();
     }
     if(obj == delForce)
     {
         if(selectedForceElement >= 0)
         {
-            if(selectedPropElement == 11)
+            if(selectedPropElement == 11 || selectedPropElement == 12 || selectedPropElement == 13)
             {
                 emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
-            }
-            if(selectedPropElement == 12)
-            {
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
-            }
-            if(selectedPropElement == 13)
-            {
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
             }
             HideAndResetEditFields();
             forcesList->RefreshList();
             selectedForceElement = -1;
-            forcePreview->SetValue(Vector2(0, 0));
+            forcePreview->SetValue(Vector3(0, 0, 0));
         }
     }
     if(obj == chooseProject)
@@ -750,10 +822,10 @@ bool TestScreen::GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimit
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosSlider[i]);
         }
-        tf[0]->SetText(StringToWString(Format("%d", min)));
-        tf[1]->SetText(StringToWString(Format("%d", max)));
+        tf[0]->SetText(Format(L"%d", min));
+        tf[1]->SetText(Format(L"%d", max));
         
-        tfv[0]->SetText(StringToWString(Format("%.2f", pv->GetValue(0))));
+        tfv[0]->SetText(Format(L"%.2f", pv->GetValue(0)));
         valueText[0]->SetText(L"X:");
     }
     else return false;
@@ -801,11 +873,11 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
         }
         kfValueText->SetVisible(true);
         kfValueText->SetRect(kfValueTextPos[0]);
-        kfValueText->SetText(StringToWString(Format(" t = 0.00 : %.2f", pk->GetValue(0))));
+        kfValueText->SetText(Format(L" t = 0.00 : %.2f", pk->GetValue(0)));
         cur1DimProp = pk;
         
-        tf[0]->SetText(StringToWString(Format("%d", min)));
-        tf[1]->SetText(StringToWString(Format("%d", max)));
+        tf[0]->SetText(Format(L"%d", min));
+        tf[1]->SetText(Format(L"%d", max));
         
         propEdit[0]->SetMinY(min);
         propEdit[0]->SetMaxY(max);
@@ -859,8 +931,8 @@ bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimit
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosSlider[i]);
         }
-        tf[0]->SetText(StringToWString(Format("%d", min)));
-        tf[1]->SetText(StringToWString(Format("%d", max)));
+        tf[0]->SetText(Format(L"%d", min));
+        tf[1]->SetText(Format(L"%d", max));
         
         for(int i = 0; i < 2; i++)
         {
@@ -871,8 +943,8 @@ bool TestScreen::GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimit
         vSliders[0]->SetValue(vv->GetValue(0).x);
         vSliders[1]->SetValue(vv->GetValue(0).y);
         
-        tfv[0]->SetText(StringToWString(Format("X: %.2f", vv->GetValue(0).x)));
-        tfv[1]->SetText(StringToWString(Format("Y: %.2f", vv->GetValue(0).y)));
+        tfv[0]->SetText(Format(L"%.2f", vv->GetValue(0).x));
+        tfv[1]->SetText(Format(L"%.2f", vv->GetValue(0).y));
         
         valueText[0]->SetText(L"X:");
         valueText[1]->SetText(L"Y:");
@@ -923,11 +995,11 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
         
         kfValueText->SetVisible(true);
         kfValueText->SetRect(kfValueTextPos[1]);
-        kfValueText->SetText(StringToWString(Format(" t = 0.00 : (%.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y)));
+        kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y));
         cur2DimProp = vk;
         
-        tf[0]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].minValue)));
-        tf[1]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].maxValue)));
+        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
+        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
         
         for(int i = 0; i < 2; i++)
         {
@@ -942,6 +1014,146 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
         }
         propEdit[0]->SetText(L"X");
         propEdit[1]->SetText(L"Y");
+    }
+    else return false;
+    curPropType = true;
+    return true;
+}
+
+bool TestScreen::GetProp(PropertyLineValue<Vector3> *vv, int32 id, bool getLimits)
+{
+    if(vv)
+    {
+        if(getLimits)
+        {
+            float32 max = Max(vv->GetValue(0).x, vv->GetValue(0).y);
+            float32 min = Min(vv->GetValue(0).x, vv->GetValue(0).y);
+            if(max >= 0)
+            {
+                if(min > 0)
+                    layers[selectedEmitterElement].props[id].minValue = 0;
+                else
+                    layers[selectedEmitterElement].props[id].minValue = min*2;
+                layers[selectedEmitterElement].props[id].maxValue = max*2 + 1;
+            }
+            else
+            {
+                layers[selectedEmitterElement].props[id].minValue = min*2;
+                layers[selectedEmitterElement].props[id].maxValue = 0;
+            }
+            curPropType = false;
+            return true;
+        }
+        
+        int32 min = layers[selectedEmitterElement].props[id].minValue;
+        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        
+        int n = 2;
+        if(emitter->GetIs3D())
+            n = 3;
+        for(int i = 0; i < n; i++)
+        {
+            vSliders[i]->SetVisible(true);
+            tfv[i]->SetVisible(true);
+            valueText[i]->SetVisible(true);
+        }
+        for(int i = 0; i < 2; i++)
+        {
+            tf[i]->SetVisible(true);
+            tf[i]->SetRect(tfPosSlider[i]);
+        }
+        tf[0]->SetText(Format(L"%d", min));
+        tf[1]->SetText(Format(L"%d", max));
+        
+        for(int i = 0; i < 3; i++)
+        {
+            vSliders[i]->SetMinValue(min);
+            vSliders[i]->SetMaxValue(max);
+        }
+        
+        vSliders[0]->SetValue(vv->GetValue(0).x);
+        vSliders[1]->SetValue(vv->GetValue(0).y);
+        vSliders[2]->SetValue(vv->GetValue(0).z);
+        
+        tfv[0]->SetText(Format(L"%.2f", vv->GetValue(0).x));
+        tfv[1]->SetText(Format(L"%.2f", vv->GetValue(0).y));
+        tfv[2]->SetText(Format(L"%.2f", vv->GetValue(0).z));
+        
+        valueText[0]->SetText(L"X:");
+        valueText[1]->SetText(L"Y:");
+        valueText[2]->SetText(L"Z:");
+    }
+    else return false;
+    curPropType = false;
+    return true;
+}
+
+bool TestScreen::GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getLimits)
+{
+    if(vk)
+    {
+        if(getLimits)
+        {
+            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0;
+            for(int i = 0; i < vk->keys.size(); i++)
+            {
+                minV1 = Min(minV1, vk->keys[i].value.x);
+                minV2 = Min(minV2, vk->keys[i].value.x);
+                maxV1 = Min(maxV1, vk->keys[i].value.y);
+                maxV2 = Min(maxV2, vk->keys[i].value.y);
+            }
+            layers[selectedEmitterElement].props[id].minValue = Min(minV1, minV2);
+            layers[selectedEmitterElement].props[id].maxValue = Max(maxV1, maxV2);
+            
+            curPropType = false;
+            return true;
+        }
+        int32 min = layers[selectedEmitterElement].props[id].minValue;
+        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        
+        int n = 2;
+        if(emitter->GetIs3D())
+            n = 3;
+        
+        for(int i = 0; i < n; i++)
+        {
+            propEdit[i]->SetVisible(true);
+        }
+        for(int i = 0; i < 2; i++)
+        {
+            tf[i]->SetVisible(true);
+            tf[i]->SetRect(tfPosKFEdit[i]);
+        }
+        
+        for(int i = 0; i < 2; i++)
+        {
+            tfkf[i]->SetRect(tfkfPos[n-1][i]);
+            tfkfText[i]->SetRect(tfkfTextPos[n-1][i]);
+        }
+        
+        kfValueText->SetVisible(true);
+        kfValueText->SetRect(kfValueTextPos[n-1]);
+        kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y, vk->GetValue(0).z));
+        cur3DimProp = vk;
+        
+        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
+        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
+        
+        for(int i = 0; i < 3; i++)
+        {
+            propEdit[i]->GetValues().clear();
+            propEdit[i]->SetMaxY(max);
+            propEdit[i]->SetMinY(min);
+        }
+        for(int i = 0; i < vk->keys.size(); i++)
+        {
+            propEdit[0]->GetValues().push_back(PropertyLineEditControl::PropertyRect(vk->keys.at(i).t, vk->keys.at(i).value.x));
+            propEdit[1]->GetValues().push_back(PropertyLineEditControl::PropertyRect(vk->keys.at(i).t, vk->keys.at(i).value.y));
+            propEdit[2]->GetValues().push_back(PropertyLineEditControl::PropertyRect(vk->keys.at(i).t, vk->keys.at(i).value.z));
+        }
+        propEdit[0]->SetText(L"X");
+        propEdit[1]->SetText(L"Y");
+        propEdit[2]->SetText(L"Z");
     }
     else return false;
     curPropType = true;
@@ -970,8 +1182,8 @@ bool TestScreen::GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits)
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosSlider[i]);
         }
-        tf[0]->SetText(StringToWString(Format("%d", min)));
-        tf[1]->SetText(StringToWString(Format("%d", max)));
+        tf[0]->SetText(Format(L"%d", min));
+        tf[1]->SetText(Format(L"%d", max));
         
         for(int i = 0; i < 4; i++)
         {
@@ -984,10 +1196,10 @@ bool TestScreen::GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits)
         vSliders[1]->SetValue(cv->GetValue(0).g);
         vSliders[0]->SetValue(cv->GetValue(0).r);
         
-        tfv[0]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).r)));
-        tfv[1]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).g)));
-        tfv[2]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).b)));
-        tfv[3]->SetText(StringToWString(Format("%.2f", cv->GetValue(0).a)));
+        tfv[0]->SetText(Format(L"%.2f", cv->GetValue(0).r));
+        tfv[1]->SetText(Format(L"%.2f", cv->GetValue(0).g));
+        tfv[2]->SetText(Format(L"%.2f", cv->GetValue(0).b));
+        tfv[3]->SetText(Format(L"%.2f", cv->GetValue(0).a));
         
         valueText[0]->SetText(L"R:");
         valueText[1]->SetText(L"G:");
@@ -1029,10 +1241,10 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Color> *ck, int32 id, bool getLim
         
         kfValueText->SetVisible(true);
         kfValueText->SetRect(kfValueTextPos[3]);
-        kfValueText->SetText(StringToWString(Format(" t = 0.00 : (%.2f, %.2f, %.2f, %.2f)", ck->GetValue(0).r, ck->GetValue(0).g, ck->GetValue(0).b, ck->GetValue(0).a)));
+        kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f, %.2f, %.2f)", ck->GetValue(0).r, ck->GetValue(0).g, ck->GetValue(0).b, ck->GetValue(0).a));
         
-        tf[0]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].minValue)));
-        tf[1]->SetText(StringToWString(Format("%d", layers[selectedEmitterElement].props[id].maxValue)));
+        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
+        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
         
         for(int i = 0; i < 4; i++)
         {
@@ -1062,23 +1274,24 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
     valueBut->SetVisible(true);
     KFBut->SetVisible(true);
     
-    curColorProp = 0;
     cur1DimProp = 0;
     cur2DimProp = 0;
+    cur3DimProp = 0;
+    curColorProp = 0;
     
     PropertyLineValue<float32> *pv;
     PropertyLineKeyframes<float32> *pk;
-    //PropertyLineValue<Vector2> *vv;
-    //PropertyLineKeyframes<Vector2> *vk;
+    PropertyLineValue<Vector3> *vv;
+    PropertyLineKeyframes<Vector3> *vk;
     PropertyLineValue<Color> *cv;
     PropertyLineKeyframes<Color> *ck;
     switch (id) {
         case 0:
-            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
-            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
+            vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
+            vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
             layers.at(0).props.at(id).isDefault = false;
-            if(!GetProp(pk, id, getLimits))
-                if(!GetProp(pv, id, getLimits))
+            if(!GetProp(vk, id, getLimits))
+                if(!GetProp(vv, id, getLimits))
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
@@ -1132,17 +1345,20 @@ void TestScreen::SetEmitterPropValue(int32 id, bool def)
     }
     PropertyLine<float32> *valueDim1;
     PropertyLine<Vector2> *valueDim2;
+    PropertyLine<Vector3> *valueDim3;
     PropertyLine<Color> *valueDim4;
     if(!curPropType)
     {
         valueDim1 = new PropertyLineValue<float32>(value[0]);
         valueDim2 = new PropertyLineValue<Vector2>(Vector2(value[0],value[1]));
+        valueDim3 = new PropertyLineValue<Vector3>(Vector3(value[0], value[1], value[2]));
         valueDim4 = new PropertyLineValue<Color>(Color(value[0], value[1], value[2], value[3]));
     }
     else
     {
         PropertyLineKeyframes<float32> *value1 = new PropertyLineKeyframes<float32>();
         PropertyLineKeyframes<Vector2> *value2 = new PropertyLineKeyframes<Vector2>();
+        PropertyLineKeyframes<Vector3> *value3 = new PropertyLineKeyframes<Vector3>();
         PropertyLineKeyframes<Color> *value4 = new PropertyLineKeyframes<Color>();
     
         PropertyLineKeyframes<float32> *KFValues[4];
@@ -1156,27 +1372,46 @@ void TestScreen::SetEmitterPropValue(int32 id, bool def)
             float32 t = KFValues[activePropEdit]->keys.at(i).t;
             value1->AddValue(t, KFValues[0]->GetValue(t));
             value2->AddValue(t, Vector2(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t)));
+            value3->AddValue(t, Vector3(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t), KFValues[2]->GetValue(t)));
             value4->AddValue(t, Color(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t), KFValues[2]->GetValue(t), KFValues[3]->GetValue(t)));
+        }
+        
+        for(int i = 0; i < 4; i++)
+        {
+            SafeRelease(KFValues[i]);
         }
         
         valueDim1 = value1;
         valueDim2 = value2;
+        valueDim3 = value3;
         valueDim4 = value4;
     }
     switch (id) {
         case 0:
-            emitter->emissionAngle.Set(valueDim1);
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim4);
+            emitter->emissionAngle.Set(valueDim3);
             break;
             
         case 1:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim4);
+            SafeRelease(valueDim3);
             emitter->emissionRange.Set(valueDim1);      
             break;
            
         case 2:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->radius.Set(valueDim1);
             break;
             
         case 3:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim3);
             emitter->colorOverLife.Set(valueDim4);
             break;
             
@@ -1345,7 +1580,7 @@ void TestScreen::GetLayerPropValue(int32 id, bool getLimits)
                 layers.at(selectedEmitterElement).props.at(id).isDefault = false;
             spritePanel->SetVisible(true);
             if(sprite)
-                spriteInfo->SetText(StringToWString(Format("%.0fx%.0f@%d", sprite->GetWidth(), sprite->GetHeight(), sprite->GetFrameCount())));
+                spriteInfo->SetText(Format(L"%.0fx%.0f@%d", sprite->GetWidth(), sprite->GetHeight(), sprite->GetFrameCount()));
             else
                 spriteInfo->SetText(L"");
             break;
@@ -1581,17 +1816,20 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
     }
     PropertyLine<float32> *valueDim1;
     PropertyLine<Vector2> *valueDim2;
+    PropertyLine<Vector3> *valueDim3;
     PropertyLine<Color> *valueDim4;
     if(!curPropType)
     {
         valueDim1 = new PropertyLineValue<float32>(value[0]);
         valueDim2 = new PropertyLineValue<Vector2>(Vector2(value[0],value[1]));
+        valueDim3 = new PropertyLineValue<Vector3>(Vector3(value[0],value[1], value[2]));
         valueDim4 = new PropertyLineValue<Color>(Color(value[0], value[1], value[2], value[3]));
     }
     else
     {
         PropertyLineKeyframes<float32> *value1 = new PropertyLineKeyframes<float32>();
         PropertyLineKeyframes<Vector2> *value2 = new PropertyLineKeyframes<Vector2>();
+        PropertyLineKeyframes<Vector3> *value3 = new PropertyLineKeyframes<Vector3>();
         PropertyLineKeyframes<Color> *value4 = new PropertyLineKeyframes<Color>();
         
         PropertyLineKeyframes<float32> *KFValues[4];
@@ -1605,11 +1843,18 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
             float32 t = KFValues[activePropEdit]->keys.at(i).t;
             value1->AddValue(t, KFValues[0]->GetValue(t));
             value2->AddValue(t, Vector2(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t)));
+            value3->AddValue(t, Vector3(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t), KFValues[2]->GetValue(t)));
             value4->AddValue(t, Color(KFValues[0]->GetValue(t), KFValues[1]->GetValue(t), KFValues[2]->GetValue(t), KFValues[3]->GetValue(t)));
+        }
+        
+        for(int i = 0; i < 4; i++)
+        {
+            SafeRelease(KFValues[i]);
         }
         
         valueDim1 = value1;
         valueDim2 = value2;
+        valueDim3 = value3;
         valueDim4 = value4;
     }
     switch (id) {
@@ -1618,103 +1863,186 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
             break;
             
         case 1:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->life.Set(valueDim1);
             break;
             
         case 2:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->lifeVariation.Set(valueDim1);       
             break;
             
         case 3:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->number.Set(valueDim1);     
             break;
             
         case 4:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->numberVariation.Set(valueDim1);
             break;
             
         case 5:
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->size.Set(valueDim2);
             break;
             
         case 6:
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->sizeVariation.Set(valueDim2);      
             break;
             
         case 7:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->sizeOverLife.Set(valueDim1);     
             break;
             
         case 8:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->velocity.Set(valueDim1);      
             break;
             
         case 9:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->velocityVariation.Set(valueDim1);      
             break;
             
         case 10:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->velocityOverLife.Set(valueDim1);     
             break;
             
         case 11:
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim4);
             if(selectedForceElement >= 0)
-                emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Set(valueDim2);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Set(valueDim3);
+            else
+                SafeRelease(valueDim3);
             break;
             
         case 12:
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim4);
             if(selectedForceElement >= 0)
-                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Set(valueDim2);
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Set(valueDim3);
+            else
+                SafeRelease(valueDim3);
             break;
             
         case 13:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             if(selectedForceElement >= 0)
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Set(valueDim1);
+            else
+                SafeRelease(valueDim1);
             break;
             
         case 14:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->spin.Set(valueDim1);    
             break;
             
         case 15:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->spinVariation.Set(valueDim1);
             break;
             
         case 16:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Set(valueDim1);     
             break;
             
         case 17:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->motionRandom.Set(valueDim1);    
             break;
             
         case 18:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomVariation.Set(valueDim1);     
             break;
             
         case 19:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->motionRandomOverLife.Set(valueDim1);      
             break;
             
         case 20:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->bounce.Set(valueDim1);       
             break;
             
         case 21:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->bounceVariation.Set(valueDim1);      
             break;
             
-        case 22:emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Set(valueDim1);    
+        case 22:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
+            emitter->GetLayers().at(selectedEmitterElement-1)->bounceOverLife.Set(valueDim1);    
             break;
             
-        case 23:emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Set(valueDim4);      
+        case 23:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim1);
+            emitter->GetLayers().at(selectedEmitterElement-1)->colorRandom.Set(valueDim4);      
             break;
             
         case 24:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim4);
             emitter->GetLayers().at(selectedEmitterElement-1)->alphaOverLife.Set(valueDim1);      
             break;
             
         case 25:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim3);
+            SafeRelease(valueDim1);
             emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife.Set(valueDim4);  
             break;
             
@@ -1729,8 +2057,8 @@ void TestScreen::GetForcesValue(int32 id)
     ShowForcesList();
     if (selectedPropElement == 11)
     {
-        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Get());
-        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(selectedForceElement).Get());
+        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
+        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
         if(vv)
         {
             GetProp(vv, 11);
@@ -1744,8 +2072,8 @@ void TestScreen::GetForcesValue(int32 id)
     }
     if (selectedPropElement == 12)
     {
-        PropertyLineKeyframes<Vector2> *vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Get());
-        PropertyLineValue<Vector2> *vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(selectedForceElement).Get());
+        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
+        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
         if(vv)
         {
             GetProp(vv, 12);
@@ -1759,8 +2087,8 @@ void TestScreen::GetForcesValue(int32 id)
     }
     if (selectedPropElement == 13)
     {
-        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Get());
-        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(selectedForceElement).Get());
+        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
+        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
         if(vv)
         {
             GetProp(vv, 13);
@@ -1782,7 +2110,11 @@ void TestScreen::OnPointAdd(PropertyLineEditControl *forControl, float32 t, floa
             propEdit[i]->AddPoint(t, value);
         }
         else
-            propEdit[i]->AddPoint(t, propEdit[i]->GetPropertyLine()->GetValue(t));
+        {
+            PropertyLineKeyframes<float32> *p = propEdit[i]->GetPropertyLine();
+            propEdit[i]->AddPoint(t, p->GetValue(t));
+            SafeRelease(p);
+        }
     }
     if(selectedEmitterElement == 0)
     {
@@ -1890,8 +2222,8 @@ void TestScreen::OnPointSelected(PropertyLineEditControl *forControl, int32 inde
             tfkfText[i]->SetVisible(true);
         }
         
-        tfkf[0]->SetText(StringToWString(Format("%.2f", value.x)));
-        tfkf[1]->SetText(StringToWString(Format("%.2f", value.y)));
+        tfkf[0]->SetText(Format(L"%.2f", value.x));
+        tfkf[1]->SetText(Format(L"%.2f", value.y));
     }
 }
 
@@ -1905,18 +2237,23 @@ void TestScreen::OnMouseMove(PropertyLineEditControl *forControl, float32 t)
     
     if(cur1DimProp)
     {
-        kfValueText->SetText(StringToWString(Format(" t = %.2f : %.2f", t, cur1DimProp->GetValue(t))));
+        kfValueText->SetText(Format(L" t = %.2f : %.2f", t, cur1DimProp->GetValue(t)));
     }
     
     if(cur2DimProp)
     {
-        kfValueText->SetText(StringToWString(Format(" t = %.2f : (%.2f, %.2f)", t, cur2DimProp->GetValue(t).x, cur2DimProp->GetValue(t).y)));
+        kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f)", t, cur2DimProp->GetValue(t).x, cur2DimProp->GetValue(t).y));
+    }
+    
+    if(cur3DimProp)
+    {
+        kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f, %.2f)", t, cur3DimProp->GetValue(t).x, cur3DimProp->GetValue(t).y, cur3DimProp->GetValue(t).z));
     }
     
     if(curColorProp)
     {
         Color c = curColorProp->GetValue(t);
-        kfValueText->SetText(StringToWString(Format(" t = %.2f : (%.2f, %.2f, %.2f, %.2f)", t, c.r, c.g, c.b, c.a)));
+        kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f, %.2f, %.2f)", t, c.r, c.g, c.b, c.a));
         c.a = 1.0f;
         colorView->GetBackground()->SetColor(c);
     }
@@ -1935,7 +2272,7 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
             selectedEmitterElement = -1;
             selectedPropElement = -1;
             selectedForceElement = -1;
-            forcePreview->SetValue(Vector2(0, 0));
+            forcePreview->SetValue(Vector3(0, 0, 0));
             
             SafeRelease(emitter);
             emitter = new ParticleEmitter();
@@ -1970,8 +2307,14 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
             selectedEmitterElement = -1;
             selectedPropElement = -1;
             HideAndResetEditFields();
+            HideForcesList();
             emitterList->RefreshList();
             propList->RefreshList();
+            
+            if(emitter->GetIs3D())
+                emitter3D->SetStateText(UIControl::STATE_NORMAL, L"3D");
+            else
+                emitter3D->SetStateText(UIControl::STATE_NORMAL, L"2D");
         }
         if(forDialog->GetOperationType() == UIFileSystemDialog::OPERATION_SAVE)
         {
@@ -1992,15 +2335,28 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
     if(forDialog == fsDlgProject)
     {
         ReplaceBundleName(pathToFile + "/Data");
+        
+        ExecutePacker(pathToFile + "/DataSource");
+        
         SetDisabled(false);
     }
+}
+
+void TestScreen::ExecutePacker(const String &path)
+{
+    FileList fl(path);
+    for(int i = 0; i < fl.GetCount(); i++)
+        if(fl.IsDirectory(i) && !fl.IsNavigationDirectory(i))
+            ExecutePacker(fl.GetPathname(i));
+    
+    FileSystem::Instance()->Spawn("./ResourcePacker " + path);
 }
 
 void TestScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
 {
     if(forDialog == fsDlgProject)
     {
-        
+        SetDisabled(false);
     }
 }
 
@@ -2060,6 +2416,8 @@ void TestScreen::ShowAddProps()
     delLayer->SetDisabled(true);
     addProp->SetDisabled(true);
     delProp->SetDisabled(true);
+    cloneLayer->SetDisabled(true);
+    disableLayer->SetDisabled(true);
 }
 
 void TestScreen::HideAddProps()
@@ -2075,6 +2433,8 @@ void TestScreen::HideAddProps()
     delLayer->SetDisabled(false);
     addProp->SetDisabled(false);
     delProp->SetDisabled(false);
+    cloneLayer->SetDisabled(false);
+    disableLayer->SetDisabled(false);
 }
 
 void TestScreen::UnloadResources()
@@ -2093,6 +2453,7 @@ void TestScreen::UnloadResources()
     SafeRelease(spriteSelect);
     SafeRelease(addForce);
     SafeRelease(delForce);
+    SafeRelease(chooseProject);
     
     for(int i = 0 ;i < 4; i++)
     {
@@ -2102,9 +2463,16 @@ void TestScreen::UnloadResources()
         SafeRelease(propEdit[i]);
     }
     
-    SafeRelease(spriteInfo);
+    for(int i = 0; i < 2; i++)
+    {
+        SafeRelease(tfkfText[i]);
+        SafeRelease(tfkf[i]);
+        SafeRelease(tf[i]);
+    }
     
+    SafeRelease(spriteInfo);
     SafeRelease(particleCountText);
+    SafeRelease(kfValueText);
     
     SafeRelease(emitterList);
     SafeRelease(propList);
@@ -2113,14 +2481,14 @@ void TestScreen::UnloadResources()
     
     SafeRelease(fsDlg);
     SafeRelease(fsDlgSprite);
+    SafeRelease(fsDlgProject);
     
     SafeRelease(spritePanel);
     SafeRelease(spriteControl);
     
     SafeRelease(sprite);
-    
+    SafeRelease(colorView);
     SafeRelease(preview);
-    
     SafeRelease(forcePreview);
     
     SafeRelease(cellFont);
@@ -2193,7 +2561,7 @@ int32 TestScreen::ElementsCount(UIList *forList)
 
 int32 TestScreen::CellHeight(UIList *forList, int32 index)
 {
-    return 20;
+    return cellH*2/3;
 }
 
 UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
@@ -2211,7 +2579,14 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         }
         else
         {
-            c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(Format("Layer %d", index)));
+            if(layers[index].isDisabled)
+            {
+                c->SetStateText(UIListCell::STATE_NORMAL, Format(L"Layer %d /Disabled", index));
+            }
+            else
+            {
+                c->SetStateText(UIListCell::STATE_NORMAL, Format(L"Layer %d", index));
+            }
         }
         
         if (index == selectedEmitterElement) 
@@ -2264,15 +2639,15 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         c->GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));
         if(selectedPropElement == 11)
         {
-            c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(Format("Force %d", index)));
+            c->SetStateText(UIListCell::STATE_NORMAL, Format(L"Force %d", index));
         }
         if(selectedPropElement == 12)
         {
-            c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(Format("ForceVariation %d", index)));
+            c->SetStateText(UIListCell::STATE_NORMAL, Format(L"ForceVariation %d", index));
         }
         if(selectedPropElement == 13)
         {
-            c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(Format("ForceOverLife %d", index)));
+            c->SetStateText(UIListCell::STATE_NORMAL, Format(L"ForceOverLife %d", index));
         }
         if(selectedForceElement == index)
         {
@@ -2286,7 +2661,6 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
 void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
 {
     forList->SetSelected(false);
-    
     if(forList == emitterList)
     {
         selectedEmitterElement = selectedCell->GetIndex();
@@ -2295,7 +2669,7 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         deltaIndex = 0;
         selectedPropElement = -1;
         selectedForceElement = -1;
-        forcePreview->SetValue(Vector2(0, 0));
+        forcePreview->SetValue(Vector3(0, 0, 0));
         
         if(selectedEmitterElement == 0)
         {
@@ -2312,6 +2686,7 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
             }
         }
         
+        
         HideAndResetEditFields();
         HideForcesList();
     }
@@ -2323,7 +2698,7 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         HideAndResetEditFields();
         HideForcesList();
         selectedForceElement = -1;
-        forcePreview->SetValue(Vector2(0, 0));
+        forcePreview->SetValue(Vector3(0, 0, 0));
         if(selectedEmitterElement == 0)
         {
             GetEmitterPropValue(selectedPropElement);
@@ -2384,11 +2759,7 @@ void TestScreen::WillDisappear()
 
 void TestScreen::Input(UIEvent * event)
 {
-	if (event->phase == UIEvent::PHASE_KEYCHAR)
-		if (event->keyChar == '1')
-		{
-			//Core::Instance()->ToggleFullscreen();
-		}
+    
 }
 
 void TestScreen::Update(float32 timeElapsed)
@@ -2405,15 +2776,15 @@ void TestScreen::Update(float32 timeElapsed)
             spriteControl->GetSprite()->SetFrame(curSpriteFrame);
         }
     }
-
-    layers[0].curLayerTime->SetText(StringToWString(Format("Emitter Time: %.2f", emitter->GetTime())));
-    for(int i = 1; i < layers.size(); i++)
-    {
-        if(emitter->GetLayers()[i])
-            layers[i].curLayerTime->SetText(StringToWString(Format("Layer %d Time: %.2f", i, emitter->GetLayers()[i-1]->GetLayerTime())));
-    }
-
-    particleCountText->SetText(StringToWString(Format("Particle Count: %d", emitter->GetParticleCount())));
+    
+//    layers[0].curLayerTime->SetText(Format(L"Emitter Time: %.2f", emitter->GetTime()));
+//    for(int i = 1; i < layers.size(); i++)
+//    {
+//        if(emitter->GetLayers()[i])
+//            layers[i].curLayerTime->SetText(Format(L"Layer %d Time: %.2f", i, emitter->GetLayers()[i-1]->GetLayerTime()));
+//    }
+//
+//    particleCountText->SetText(Format(L"Particle Count: %d", emitter->GetParticleCount()));
 }
 
 void TestScreen::Draw(const UIGeometricData &geometricData)
@@ -2429,16 +2800,18 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     PropertyLineKeyframes<float32> *pk;
     PropertyLineValue<Vector2> *vv;
     PropertyLineKeyframes<Vector2> *vk;
+    PropertyLineValue<Vector3> *v3v;
+    PropertyLineKeyframes<Vector3> *v3k;
     PropertyLineValue<Color> *cv;
     PropertyLineKeyframes<Color> *ck;
     
     fprintf(file, "emitter:\n");
-    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
-    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
-    if(pk)
-        PrintPropKFValue(file, emitterProps[0], pk);
-    else if(pv)
-        PrintPropValue(file, emitterProps[0], pv);
+    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
+    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
+    if(v3k)
+        PrintPropKFValue(file, emitterProps[0], v3k);
+    else if(v3v)
+        PrintPropValue(file, emitterProps[0], v3v);
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
@@ -2564,20 +2937,20 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         
         for(int j = 0; j < forceCount; j++)
         {
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->forces[j].Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->forces[j].Get());
-            if(vk)
-                PrintPropKFValue(file, Format("force%d", j), vk);
-            else if(vv)
-                PrintPropValue(file, Format("force%d", j), vv);
+            v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers()[i]->forces[j].Get());
+            v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers()[i]->forces[j].Get());
+            if(v3k)
+                PrintPropKFValue(file, Format("force%d", j), v3k);
+            else if(v3v)
+                PrintPropValue(file, Format("force%d", j), v3v);
             
             
-            vk = dynamic_cast< PropertyLineKeyframes<Vector2> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
-            vv = dynamic_cast< PropertyLineValue<Vector2> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
-            if(vk)
-                PrintPropKFValue(file, Format("forceVariation%d", j), vk);
-            else if(vv)
-                PrintPropValue(file, Format("forceVariation%d", j), vv);
+            v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
+            v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
+            if(v3k)
+                PrintPropKFValue(file, Format("forceVariation%d", j), v3k);
+            else if(v3v)
+                PrintPropValue(file, Format("forceVariation%d", j), v3v);
             
             
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->forcesOverLife[j].Get());
@@ -2707,6 +3080,11 @@ void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<V
     fprintf(file, "    %s: [%f, %f]\n", propName.c_str(), value.x, value.y);
 }
 
+void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<Vector3> *pv)
+{
+    Vector3 value = pv->GetValue(0);
+    fprintf(file, "    %s: [%f, %f, %f]\n", propName.c_str(), value.x, value.y, value.z);
+}
 void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<Color> *pv)
 {
     Color value = pv->GetValue(0);
@@ -2733,6 +3111,20 @@ void TestScreen::PrintPropKFValue(FILE *file, String propName, PropertyLineKeyfr
     for(int i = 0; i < pv->keys.size(); i++)
     {
         fprintf(file, "%f, [%f, %f], ", pv->keys[i].t, pv->keys[i].value.x, pv->keys[i].value.y);
+    }
+    fpos_t pos;
+    fgetpos(file, &pos);
+    pos -= 2;
+    fsetpos(file, &pos);
+    fprintf(file, "]\n");
+}
+
+void TestScreen::PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Vector3> *pv)
+{
+    fprintf(file, "    %s: [", propName.c_str());
+    for(int i = 0; i < pv->keys.size(); i++)
+    {
+        fprintf(file, "%f, [%f, %f, %f], ", pv->keys[i].t, pv->keys[i].value.x, pv->keys[i].value.y, pv->keys[i].value.z);
     }
     fpos_t pos;
     fgetpos(file, &pos);

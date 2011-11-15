@@ -1,9 +1,9 @@
 //
 //  ForcePreviewControl.h
-//  TemplateProjectMacOS
+//  ParticlesEditor
 //
-//  Created by Dmitry Shpakov on 11/4/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Created by Igor Solovey on 11/4/11.
+//  Copyright (c) 2011 DAVA Consulting. All rights reserved.
 //
 
 #ifndef TemplateProjectMacOS_ForcePreviewControl_h
@@ -25,10 +25,10 @@ public:
     
     void SetRect(const DAVA::Rect &rect);
     
-    void SetValue(Vector2 _value);
+    void SetValue(Vector3 _value);
     
 protected:
-    Vector2 value;
+    Vector3 value;
     UIStaticText *powerText;
 };
 
