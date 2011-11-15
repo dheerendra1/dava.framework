@@ -270,11 +270,13 @@ void GameObjectManager::Draw()
 	eBlendMode srcMode = RenderManager::Instance()->GetSrcBlend();
 	eBlendMode destMode = RenderManager::Instance()->GetDestBlend();
 	
-	for (List<GameObject*>::iterator currentPos = objects.begin(); currentPos != objects.end(); ++currentPos)
+	for(List<GameObject*>::iterator currentObj = objects.begin(); currentObj != objects.end(); ++currentObj)
 	{
-		GameObject * object = *currentPos;
-		if (object->dead)continue;
-		object->Draw();
+		GameObject *object = *currentObj;
+		if(object->dead)
+            continue;
+        else
+		    object->Draw();
 	}
 	
 	RenderManager::Instance()->SetBlendMode(srcMode, destMode);
@@ -288,9 +290,11 @@ void GameObjectManager::SetCameraPosition(float32 _cameraPositionX, float32 _cam
 	
 void GameObjectManager::SetCameraScale(float32 cameraScale)
 {
-	drawState.scale.x = cameraScale;
-	drawState.scale.y = cameraScale;
+	drawState.scale.x = drawState.scale.y = cameraScale;
 }
 
-	
+float32 GameObjectManager::GetCameraScale() const
+{
+    return drawState.scale.x;
+}
 };
