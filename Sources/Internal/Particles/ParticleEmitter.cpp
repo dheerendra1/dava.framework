@@ -201,7 +201,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 
 	float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
 	
-	float32 particleAngle = DegToRad(emissionAngle->GetValue(time) + angle);
+	float32 particleAngle = DegToRad(emissionAngle->GetValue(time)) + angle;
 	float32 range = DegToRad(emissionRange->GetValue(time));
 	
 	if (emitPointsCount == -1)
