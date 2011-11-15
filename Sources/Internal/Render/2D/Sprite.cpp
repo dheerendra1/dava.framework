@@ -669,10 +669,11 @@ void Sprite::SetAngle(float32 angleInRadians)
 	
 void Sprite::SetScale(float32 xScale, float32 yScale)
 {
-	scale.x = xScale;
-	scale.y = yScale;
-	if(xScale != 1.0 || yScale != 1.0)
+	if(xScale != 1.f || yScale != 1.f)
 	{
+        scale.x = xScale;
+        scale.y = yScale;
+
 		flags = flags | EST_SCALE;
 	}
 	else
@@ -683,9 +684,9 @@ void Sprite::SetScale(float32 xScale, float32 yScale)
 	
 void Sprite::SetScale(const Vector2 &newScale)
 {
-	scale = newScale;
-	if(newScale.x != 1.0 || newScale.y != 1.0)
+	if(newScale.x != 1.f || newScale.y != 1.f)
 	{
+        scale = newScale;
 		flags = flags | EST_SCALE;
 	}
 	else
@@ -756,48 +757,43 @@ void Sprite::ResetModification()
 	
 void Sprite::ResetScale()
 {
-	scale.x = 1.0f;
-	scale.y = 1.0f;
+	scale.x = 1.f;
+	scale.y = 1.f;
 	flags = flags & ~EST_SCALE;
 }
-
     
 inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
 {
     float32 x, y;
     
-    if (state)
+    if(state)
     {
         flags = 0;
         if (state->flags != 0)
         {
             flags |= EST_MODIFICATION;
         }
-        if(state->scale.x != 1.0f || state->scale.y != 1.0f)
+
+        if(state->scale.x != 1.f || state->scale.y != 1.f)
         {
-            flags |=  EST_SCALE;
+            flags |= EST_SCALE;
             scale.x = state->scale.x;
             scale.y = state->scale.y;
         }
-        if (state->angle != 0.0f)flags |= EST_ROTATE; 
-            
+
+        if(state->angle != 0.f) flags |= EST_ROTATE; 
             
         frame = Max(0, Min(state->frame, frameCount - 1));	
         
-        x = state->position.x;
-        y = state->position.y;
-        
-        x -= (state->pivotPoint.x) * state->scale.x;
-        y -= (state->pivotPoint.y) * state->scale.y;
-    }else
-    {
-       	x = drawCoord.x;
-        y = drawCoord.y;
-        x -= pivotPoint.x * scale.x;
-        y -= pivotPoint.y * scale.y;
+        x = state->position.x - state->pivotPoint.x * scale.x;
+        y = state->position.y - state->pivotPoint.y * scale.y;
     }
-    
-    
+    else
+    {
+       	x = drawCoord.x - pivotPoint.x * scale.x;
+        y = drawCoord.y - pivotPoint.y * scale.y;
+    }
+        
     if(flags & EST_MODIFICATION)
 	{
 		if((modification & (ESM_HFLIP | ESM_VFLIP)) == (ESM_HFLIP | ESM_VFLIP))

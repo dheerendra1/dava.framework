@@ -71,7 +71,7 @@ void TestScreen::LoadResources()
     f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     f->SetSize(18);
     f->SetColor(Color(1,1,1,1));
-
+    
     chooseProject = new UIButton(Rect(0, 0, buttonW/2, cellH));
     chooseProject->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     chooseProject->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
@@ -2349,7 +2349,7 @@ void TestScreen::ExecutePacker(const String &path)
         if(fl.IsDirectory(i) && !fl.IsNavigationDirectory(i))
             ExecutePacker(fl.GetPathname(i));
     
-    //swap
+    FileSystem::Instance()->Spawn("./ResourcePacker " + path);
 }
 
 void TestScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
