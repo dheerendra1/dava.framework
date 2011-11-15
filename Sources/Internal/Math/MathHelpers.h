@@ -81,7 +81,7 @@ namespace DAVA
         {
             return 0;
         }
-        return val > 0 ? 1 : -1;
+        return T(val > 0 ? 1 : -1);
     }
 	
 } // end of namespace DAVA
