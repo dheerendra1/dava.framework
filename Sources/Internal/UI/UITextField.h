@@ -43,6 +43,9 @@ namespace DAVA
 {
 
 class UITextField;
+/**
+    \brief  The UITextFieldDelegate interface defines the messages sent to a text field delegate as part of the sequence of editing its text. 
+ */
 class UITextFieldDelegate
 {
 public:
@@ -56,17 +59,22 @@ public:
 	
 	virtual void TextFieldShouldReturn(UITextField * textField) = 0;
 
-	/*
-	 \brief Asks the delegate if the specified text should be changed.
-	 \param[in] textField The text field containing the text.
-	 \param[in] replacementLocation starting position of range of characters to be replaced
-	 \param[in] replacementLength ending position of range of characters to be replaced
-	 \param[in] replacementString the replacement string.
-	 \returns true if the specified text range should be replaced; otherwise, false to keep the old text.
+	/**
+        \brief Asks the delegate if the specified text should be changed.
+        \param[in] textField The text field containing the text.
+        \param[in] replacementLocation starting position of range of characters to be replaced
+        \param[in] replacementLength ending position of range of characters to be replaced
+        \param[in] replacementString the replacement string.
+        \returns true if the specified text range should be replaced; otherwise, false to keep the old text.
 	 */
 	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString) = 0;
 };
-
+    
+/**
+    \brief  A UITextField object is a control that displays editable text and sends an action message to a target object when the user presses the return button. 
+            You typically use this class to gather small amounts of text from the user and perform some immediate action, such as a search operation, based on that text.
+            A text field object supports the use of a delegate object to handle editing-related notifications. 
+ */
 class UITextField : public UIControl 
 {
 public:
