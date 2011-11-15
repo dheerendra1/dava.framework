@@ -378,6 +378,8 @@ public:
 	 \param[in] offset
 	 */
 	virtual void SetDrawTranslate(const Vector2 &offset);
+    
+	virtual void SetDrawTranslate(const Vector3 &offset);
 
 	/** 
 	 \brief 
