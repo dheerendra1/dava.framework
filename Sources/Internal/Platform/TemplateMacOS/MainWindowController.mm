@@ -220,7 +220,7 @@ namespace DAVA
 //			  backing:NSBackingStoreBuffered
 //			  defer:NO];
     
-    fullscreenWindow = [ [FullscreenWindow alloc]
+    fullscreenWindow = [ [NSFullScreenWindow alloc]
                         initWithContentRect:[[NSScreen mainScreen] frame]
                         styleMask:NSBorderlessWindowMask
                         backing:NSBackingStoreBuffered

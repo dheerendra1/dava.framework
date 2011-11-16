@@ -30,7 +30,7 @@
 #import <Cocoa/Cocoa.h>
 #import "OpenGLView.h"
 #import "AppDelegate.h"
-#import "FullscreenWindow.h"
+#import "NSFullScreenWindow.h"
 
 
 @interface MainWindowController : NSWindowController <NSWindowDelegate>
@@ -40,7 +40,7 @@
 	OpenGLView * openGLView;
 	NSWindow * mainWindow;
 	//NSWindow * fullscreenWindow;
-	FullscreenWindow * fullscreenWindow;
+	NSFullScreenWindow * fullscreenWindow;
     
 	NSOpenGLContext * fullScreenContext;
 
