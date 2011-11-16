@@ -163,7 +163,7 @@ protected:
     void SetLayerPropValue(int32 id, bool def = 0);
     void ResetEmitterPropValue(int32 id);
     void ResetLayerPropValue(int32 id);
-    void GetForcesValue(int32 id);
+    void GetForcesValue(int32 id, bool getLimits = false);
     
     bool GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimits = false);
     bool GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getLimits = false);

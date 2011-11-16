@@ -764,10 +764,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         {
             if(selectedPropElement == 11) 
                 emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
+            
             if(selectedPropElement == 12) 
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
+            
             if(selectedPropElement == 13)
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
+            
             HideAndResetEditFields();
             forcesList->RefreshList();
             selectedForceElement = -1;
@@ -1027,8 +1030,8 @@ bool TestScreen::GetProp(PropertyLineValue<Vector3> *vv, int32 id, bool getLimit
     {
         if(getLimits)
         {
-            float32 max = Max(vv->GetValue(0).x, vv->GetValue(0).y);
-            float32 min = Min(vv->GetValue(0).x, vv->GetValue(0).y);
+            float32 max = Max(Max(vv->GetValue(0).x, vv->GetValue(0).y), vv->GetValue(0).z);
+            float32 min = Min(Min(vv->GetValue(0).x, vv->GetValue(0).y), vv->GetValue(0).z);
             if(max >= 0)
             {
                 if(min > 0)
@@ -1095,16 +1098,18 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getL
     {
         if(getLimits)
         {
-            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0;
+            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0, maxV3 = 1, minV3 = 0;
             for(int i = 0; i < vk->keys.size(); i++)
             {
                 minV1 = Min(minV1, vk->keys[i].value.x);
-                minV2 = Min(minV2, vk->keys[i].value.x);
-                maxV1 = Min(maxV1, vk->keys[i].value.y);
+                minV2 = Min(minV2, vk->keys[i].value.y);
+                minV3 = Min(minV3, vk->keys[i].value.z);
+                maxV1 = Min(maxV1, vk->keys[i].value.x);
                 maxV2 = Min(maxV2, vk->keys[i].value.y);
+                maxV3 = Min(maxV3, vk->keys[i].value.z);
             }
-            layers[selectedEmitterElement].props[id].minValue = Min(minV1, minV2);
-            layers[selectedEmitterElement].props[id].maxValue = Max(maxV1, maxV2);
+            layers[selectedEmitterElement].props[id].minValue = Min(Min(minV1, minV2), minV3);
+            layers[selectedEmitterElement].props[id].maxValue = Max(Max(maxV1, maxV2), minV3);
             
             curPropType = false;
             return true;
@@ -1681,7 +1686,8 @@ void TestScreen::GetLayerPropValue(int32 id, bool getLimits)
         case 12:
             
         case 13:
-            GetForcesValue(id);
+            if(selectedForceElement >= 0)
+                GetForcesValue(selectedForceElement, getLimits);
             break;
             
         case 14:
@@ -2052,70 +2058,60 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
     
 }
 
-void TestScreen::GetForcesValue(int32 id)
+void TestScreen::GetForcesValue(int32 id, bool getLimits)
 {
-    if (id == 11)
+    ShowForcesList();
+    if (selectedPropElement == 11)
     {
-        layers.at(selectedEmitterElement).props.at(11).isDefault = true;
-        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forces.size(); i++)
+        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
+        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
+        if(!GetProp(vk, 11, getLimits))
         {
-            PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(i).Get());
-            PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(i).Get());
-            if(!GetProp(vk, 11))
+            if(GetProp(vv, 11, getLimits))
             {
-                if(GetProp(vv, 11))
-                {
-                    forcePreview->SetValue(vv->GetValue(0));
-                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
-                }
-            }
-            else
-            {
-                forcePreview->SetValue(vk->GetValue(0));
-                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+                forcePreview->SetValue(vv->GetValue(0));
+                layers.at(selectedEmitterElement).props.at(11).isDefault = false;
             }
         }
-    }
-    if (id == 12)
-    {
-        layers.at(selectedEmitterElement).props.at(12).isDefault = true;
-        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.size(); i++)
+        else
         {
-            PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(i).Get());
-            PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(i).Get());
-            if(!GetProp(vk, 12))
-            {
-                if(GetProp(vv, 12))
-                {
-                    forcePreview->SetValue(vv->GetValue(0));
-                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
-                }
-            }
-            else
-            {
-                forcePreview->SetValue(vk->GetValue(0));
-                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
-            }
+            forcePreview->SetValue(vk->GetValue(0));
+            layers.at(selectedEmitterElement).props.at(11).isDefault = false;
         }
     }
-    if (id == 13)
-    {       
-        layers.at(selectedEmitterElement).props.at(13).isDefault = true;
-        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.size(); i++)
+    if (selectedPropElement == 12)
+    {
+        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
+        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
+        if(!GetProp(vk, 12, getLimits))
         {
-            PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(i).Get());
-            PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(i).Get());
-            if(!GetProp(vk, 13))
+            if(GetProp(vv, 12, getLimits))
             {
-                if(GetProp(vv, 13))
-                {
-                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
-                }
+                forcePreview->SetValue(vv->GetValue(0));
+                layers.at(selectedEmitterElement).props.at(12).isDefault = false;
             }
-            else
+        }
+        else
+        {
+            forcePreview->SetValue(vk->GetValue(0));
+            layers.at(selectedEmitterElement).props.at(12).isDefault = false;
+        }    
+    }
+    if (selectedPropElement == 13)
+    {   
+        forcePreview->SetVisible(false);
+        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
+        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
+        if(!GetProp(vk, 13, getLimits))
+        {
+            if(GetProp(vv, 13, getLimits))
             {
-                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+                layers.at(selectedEmitterElement).props.at(13).isDefault = false;
             }
+        }
+        else
+        {
+            layers.at(selectedEmitterElement).props.at(13).isDefault = false;
         }
     }
 }
@@ -2259,18 +2255,15 @@ void TestScreen::OnMouseMove(PropertyLineEditControl *forControl, float32 t)
     {
         kfValueText->SetText(Format(L" t = %.2f : %.2f", t, cur1DimProp->GetValue(t)));
     }
-    
-    if(cur2DimProp)
+    else if(cur2DimProp)
     {
         kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f)", t, cur2DimProp->GetValue(t).x, cur2DimProp->GetValue(t).y));
     }
-    
-    if(cur3DimProp)
+    else if(cur3DimProp)
     {
         kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f, %.2f)", t, cur3DimProp->GetValue(t).x, cur3DimProp->GetValue(t).y, cur3DimProp->GetValue(t).z));
     }
-    
-    if(curColorProp)
+    else if(curColorProp)
     {
         Color c = curColorProp->GetValue(t);
         kfValueText->SetText(Format(L" t = %.2f : (%.2f, %.2f, %.2f, %.2f)", t, c.r, c.g, c.b, c.a));
@@ -2321,7 +2314,26 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
                 for(int j = 0; j < layerPropsCount; j++)
                 {
                     selectedEmitterElement = i + 1;
-                    GetLayerPropValue(j, true);
+                    selectedPropElement = j;
+                    if(j == 11)
+                    {
+                        for(int k = 0; k < emitter->GetLayers()[i]->forces.size(); k++)
+                            GetForcesValue(k, true);
+                    }
+                    else if(j == 12)
+                    {
+                        for(int k = 0; k < emitter->GetLayers()[i]->forcesVariation.size(); k++)
+                            GetForcesValue(k, true);
+                    }
+                    else if(j == 13)
+                    {
+                        for(int k = 0; k < emitter->GetLayers()[i]->forcesOverLife.size(); k++)
+                            GetForcesValue(k, true);
+                    }
+                    else
+                    {
+                        GetLayerPropValue(j, true);
+                    }
                 }
             }
             selectedEmitterElement = -1;
@@ -2729,7 +2741,7 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
             
             if(selectedPropElement == 11 || selectedPropElement == 12|| selectedPropElement == 13)
             {
-                //HideAndResetEditFields();
+                HideAndResetEditFields();
                 ShowForcesList();
             }
             if(selectedPropElement == 13)
