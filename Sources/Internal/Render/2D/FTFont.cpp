@@ -393,6 +393,7 @@ Size2i FTInternalFont::DrawString(const WideString& str, void * buffer, int32 bu
 		FT_Done_Glyph(image);
 	}
 
+	SafeDeleteArray(advances);
 	drawStringMutex.Unlock();
 	
 	if(contentScaleIncluded) 
