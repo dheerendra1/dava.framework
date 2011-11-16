@@ -746,12 +746,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == addForce)
     {
-        if(selectedPropElement == 11 || selectedPropElement == 12 || selectedPropElement == 13)
-        {
+        if(selectedPropElement == 11) 
             emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(0));
+        if(selectedPropElement == 12) 
             emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(0));
+        if(selectedPropElement == 13)
             emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(0));
-        }
+        
         HideAndResetEditFields();
         selectedForceElement = -1;
         forcePreview->SetValue(Vector3(0, 0, 0));
@@ -761,12 +762,12 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedForceElement >= 0)
         {
-            if(selectedPropElement == 11 || selectedPropElement == 12 || selectedPropElement == 13)
-            {
+            if(selectedPropElement == 11) 
                 emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
+            if(selectedPropElement == 12) 
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
+            if(selectedPropElement == 13)
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
-            }
             HideAndResetEditFields();
             forcesList->RefreshList();
             selectedForceElement = -1;
@@ -1680,8 +1681,7 @@ void TestScreen::GetLayerPropValue(int32 id, bool getLimits)
         case 12:
             
         case 13:
-            if(selectedForceElement >= 0)
-                GetForcesValue(selectedForceElement);
+            GetForcesValue(id);
             break;
             
         case 14:
@@ -2054,48 +2054,68 @@ void TestScreen::SetLayerPropValue(int32 id, bool def)
 
 void TestScreen::GetForcesValue(int32 id)
 {
-    ShowForcesList();
-    if (selectedPropElement == 11)
+    if (id == 11)
     {
-        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
-        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(id).Get());
-        if(vv)
+        layers.at(selectedEmitterElement).props.at(11).isDefault = true;
+        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forces.size(); i++)
         {
-            GetProp(vv, 11);
-            forcePreview->SetValue(vv->GetValue(0));
+            PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(i).Get());
+            PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forces.at(i).Get());
+            if(!GetProp(vk, 11))
+            {
+                if(GetProp(vv, 11))
+                {
+                    forcePreview->SetValue(vv->GetValue(0));
+                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+                }
+            }
+            else
+            {
+                forcePreview->SetValue(vk->GetValue(0));
+                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+            }
         }
-        else if(vk)
-        {
-            GetProp(vk, 11);
-            forcePreview->SetValue(vk->GetValue(0));
-        }    
     }
-    if (selectedPropElement == 12)
+    if (id == 12)
     {
-        PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
-        PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(id).Get());
-        if(vv)
+        layers.at(selectedEmitterElement).props.at(12).isDefault = true;
+        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.size(); i++)
         {
-            GetProp(vv, 12);
-            forcePreview->SetValue(vv->GetValue(0));
+            PropertyLineKeyframes<Vector3> *vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(i).Get());
+            PropertyLineValue<Vector3> *vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.at(i).Get());
+            if(!GetProp(vk, 12))
+            {
+                if(GetProp(vv, 12))
+                {
+                    forcePreview->SetValue(vv->GetValue(0));
+                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+                }
+            }
+            else
+            {
+                forcePreview->SetValue(vk->GetValue(0));
+                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+            }
         }
-        else if(vk)
-        {
-            GetProp(vk, 12);
-            forcePreview->SetValue(vk->GetValue(0));
-        }   
     }
-    if (selectedPropElement == 13)
-    {
-        PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
-        PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(id).Get());
-        if(vv)
+    if (id == 13)
+    {       
+        layers.at(selectedEmitterElement).props.at(13).isDefault = true;
+        for(int i = 0; i < emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.size(); i++)
         {
-            GetProp(vv, 13);
-        }
-        else if(vk)
-        {
-            GetProp(vk, 13);
+            PropertyLineKeyframes<float32> *vk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(i).Get());
+            PropertyLineValue<float32> *vv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.at(i).Get());
+            if(!GetProp(vk, 13))
+            {
+                if(GetProp(vv, 13))
+                {
+                    layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+                }
+            }
+            else
+            {
+                layers.at(selectedEmitterElement).props.at(id).isDefault = false;
+            }
         }
     }
 }
@@ -2709,9 +2729,11 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
             
             if(selectedPropElement == 11 || selectedPropElement == 12|| selectedPropElement == 13)
             {
-                HideAndResetEditFields();
+                //HideAndResetEditFields();
                 ShowForcesList();
             }
+            if(selectedPropElement == 13)
+                forcePreview->SetVisible(false);
         }
     }
     
@@ -2806,6 +2828,12 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     PropertyLineKeyframes<Color> *ck;
     
     fprintf(file, "emitter:\n");
+    
+    if(emitter->GetIs3D())
+        fprintf(file, "    3d: true\n");
+    else
+        fprintf(file, "    3d: false\n");
+    
     v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
     v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
     if(v3k)
@@ -2943,16 +2971,18 @@ void TestScreen::SaveToYaml(const String &pathToFile)
                 PrintPropKFValue(file, Format("force%d", j), v3k);
             else if(v3v)
                 PrintPropValue(file, Format("force%d", j), v3v);
-            
-            
+        }
+        for(int j = 0; j < emitter->GetLayers()[i]->forcesVariation.size(); j++)
+        {   
             v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
             v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->GetLayers()[i]->forcesVariation[j].Get());
             if(v3k)
                 PrintPropKFValue(file, Format("forceVariation%d", j), v3k);
             else if(v3v)
                 PrintPropValue(file, Format("forceVariation%d", j), v3v);
-            
-            
+        }
+        for(int j = 0; j < emitter->GetLayers()[i]->forcesOverLife.size(); j++)
+        {    
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers()[i]->forcesOverLife[j].Get());
             pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers()[i]->forcesOverLife[j].Get());
             if(pk)

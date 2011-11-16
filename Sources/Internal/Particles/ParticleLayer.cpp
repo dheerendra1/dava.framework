@@ -623,10 +623,14 @@ void ParticleLayer::LoadFromYaml(YamlNode * node)
 	{
 		RefPtr< PropertyLine<Vector3> > force = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(node, Format("force%d", k) );	
 		RefPtr< PropertyLine<Vector3> > forceVariation = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(node, Format("forceVariation%d", k));	
-		RefPtr< PropertyLine<float32> > forceOverLife = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(node, Format("forceOverLife%d", k));	
-		forces.push_back(force);
-		forcesVariation.push_back(forceVariation);
-		forcesOverLife.push_back(forceOverLife);
+		RefPtr< PropertyLine<float32> > forceOverLife = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(node, Format("forceOverLife%d", k));
+        
+        if(force.Get())
+            forces.push_back(force);
+        if(forceVariation.Get())
+            forcesVariation.push_back(forceVariation);
+        if(forceOverLife.Get())
+            forcesOverLife.push_back(forceOverLife);
 	}
 
 	

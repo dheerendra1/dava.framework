@@ -124,7 +124,13 @@ RefPtr< PropertyLine<Vector2> > PropertyLineYamlReader::CreateVector2PropertyLin
         }
         else if (node->GetType() == YamlNode::TYPE_ARRAY)
         {
-            if (node->GetCount() == 3 || node->GetCount() == 2) // == 2 for 2D forces compatibility
+            if(node->GetCount() == 2) // for 2D forces compatibility
+            {
+                Vector3 res(node->AsVector2());
+                res.z = 0.0f;
+                return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(res));
+            }
+            if (node->GetCount() == 3 || node->GetCount() == 2) 
             {
                 Vector3 res(0.0f, 0.0f, 0.0f);
                 res = node->AsVector3();
