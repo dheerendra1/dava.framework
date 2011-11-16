@@ -182,16 +182,16 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
     else if (type == EMITTER_LINE)
 	{
 		// TODO: add emitter angle support
-		float32 rand1 = (float32)Rand()/UINT32_MAX * 2 - 1.0f; // [-0.5f, 0.5f]
+		float32 rand1 = Random::Instance()->RandFloat() * 2 - 1.0f; // [-0.5f, 0.5f]
 		Vector3 lineDirection = size*rand1;
 		particle->position = tempPosition + lineDirection;
 	}
     else if (type == EMITTER_RECT)
 	{
 		// TODO: add emitter angle support
-		float32 rand05_x = (float32)Rand()/UINT32_MAX - 0.5f; // [-0.5f, 0.5f]
-		float32 rand05_y = (float32)Rand()/UINT32_MAX - 0.5f; // [-0.5f, 0.5f]
-		float32 rand05_z = (float32)Rand()/UINT32_MAX - 0.5f; // [-0.5f, 0.5f]
+		float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+		float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+		float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
 		Vector3 lineDirection(size.x * rand05_x, size.y * rand05_y, size.z * rand05_z);
 		particle->position = tempPosition + lineDirection;
 	}
@@ -204,7 +204,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 	Vector3 vel = emissionAngle->GetValue(time);
     
     Vector3 rotVect(0, 0, 1);
-    float32 phi = PI*2*Rand()/UINT32_MAX;
+    float32 phi = PI*2*Random::Instance()->RandFloat();
     if(vel.x != 0)
     {
         rotVect.y = sinf(phi);
@@ -226,7 +226,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
     rotVect.Normalize();
     
 	float32 range = DegToRad(emissionRange->GetValue(time));
-	float32 rand05 = (float32)Rand()/UINT32_MAX - 0.5f;
+	float32 rand05 = Random::Instance()->RandFloat() - 0.5f;
     
     Vector3 q_v(rotVect*sinf(range*rand05/2));
     float32 q_w = cosf(range*rand05/2);
