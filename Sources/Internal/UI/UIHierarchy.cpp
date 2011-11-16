@@ -289,14 +289,14 @@ void UIHierarchy::Update(float32 timeElapsed)
         scrollContainer->relativePosition.y = newY;
 
         List<UIControl*>::const_iterator it;
-        Rect viewRect = GetRect(TRUE);
+        Rect viewRect = GetGeometricData().GetUnrotatedRect();//GetRect(TRUE);
         const List<UIControl*> &scrollList = scrollContainer->GetChildren();
         List<UIControl*> removeList;
         
             //removing invisible elements
         for(it = scrollList.begin(); it != scrollList.end(); it++)
         {
-            Rect crect = (*it)->GetRect(TRUE);
+            Rect crect = (*it)->GetGeometricData().GetUnrotatedRect();//GetRect(TRUE);
             if(crect.y <= viewRect.y - viewRect.dy || crect.y > viewRect.y + viewRect.dy*2)
             {
                 removeList.push_back(*it);

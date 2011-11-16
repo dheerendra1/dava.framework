@@ -1,9 +1,9 @@
 //
 //  ForcePreviewControl.cpp
-//  TemplateProjectMacOS
+//  ParticlesEditor
 //
-//  Created by Dmitry Shpakov on 11/4/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Created by Igor Solovey on 11/4/11.
+//  Copyright (c) 2011 DAVA Consulting. All rights reserved.
 //
 
 #include "ForcePreviewControl.h"
@@ -21,6 +21,7 @@ ForcePreviewControl::ForcePreviewControl()
     powerText = new UIStaticText();
     powerText->SetFont(f);
     AddControl(powerText);
+    SafeRelease(f);
 }
 
 void ForcePreviewControl::SetRect(const DAVA::Rect &rect)
@@ -39,10 +40,10 @@ void ForcePreviewControl::Update(float32 timeElapsed)
     
 }
 
-void ForcePreviewControl::SetValue(Vector2 _value)
+void ForcePreviewControl::SetValue(Vector3 _value)
 {
     value = _value;
-    powerText->SetText(StringToWString(Format("Force Power: %.2f", value.Length())));
+    powerText->SetText(Format(L"Force Power: %.2f", value.Length()));
 }
 
 void ForcePreviewControl::Draw(const DAVA::UIGeometricData &geometricData)
@@ -52,11 +53,7 @@ void ForcePreviewControl::Draw(const DAVA::UIGeometricData &geometricData)
     Rect controlRect = GetRect();
     Vector2 center = Vector2(controlRect.x + controlRect.dx/2, controlRect.y + 11*controlRect.dy/20);
     float32 l = value.Length();
-    RenderHelper::Instance()->DrawLine(center, center + value/l*controlRect.dx*0.45f);
+    RenderHelper::Instance()->DrawLine(center, center + Vector2(value.x, value.y)/l*controlRect.dx*0.45f);
     
-//    controlRect.x += controlRect.dx*0.05f;
-//    controlRect.y += controlRect.dy*0.05f + controlRect.dy/10;
-//    controlRect.dx *= 0.9f;
-//    controlRect.dy *= 0.8f;
     RenderHelper::Instance()->DrawCircle(center, controlRect.dx*0.5f);
 }

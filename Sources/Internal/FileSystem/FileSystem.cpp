@@ -534,6 +534,15 @@ void FileSystem::AttachArchive(const String & archiveName, const String & attach
 	resourceArchiveList.push_back(item);
 }
 
+int32 FileSystem::Spawn(const String& command)
+{
+#if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_WIN32__) 
+	return std::system(command.c_str());
+#else
+	return 0;
+#endif
+}
+
 }
 
 

@@ -177,7 +177,7 @@ void UIJoypad::Input(UIEvent *currentInput)
 	}
 	else 
 	{
-		Rect r = GetRect(true);
+		Rect r = GetGeometricData().GetUnrotatedRect();//GetRect(true);
 		currentPos = currentInput->point - r.GetPosition();
 		
 		currentPos -= Vector2(r.dx * 0.5f, r.dy * 0.5f);

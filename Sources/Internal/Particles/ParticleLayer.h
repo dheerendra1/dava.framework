@@ -173,8 +173,8 @@ public:
 	RefPtr< PropertyLine<float32> > velocityVariation;	
 	RefPtr< PropertyLine<float32> > velocityOverLife;
 	
-	Vector< RefPtr< PropertyLine<Vector2> > > forces;				// weight property from 
-	Vector< RefPtr< PropertyLine<Vector2> > > forcesVariation;
+	Vector< RefPtr< PropertyLine<Vector3> > > forces;				// weight property from 
+	Vector< RefPtr< PropertyLine<Vector3> > > forcesVariation;
 	Vector< RefPtr< PropertyLine<float32> > > forcesOverLife;
 	
 	RefPtr< PropertyLine<float32> > spin;				// spin of angle / second
@@ -201,6 +201,8 @@ public:
 	int32		frameStart;
 	int32		frameEnd;
 	eType		type;
+
+    bool isDisabled;
 };
 
 inline int32 ParticleLayer::GetParticleCount()

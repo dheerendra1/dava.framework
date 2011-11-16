@@ -1,9 +1,9 @@
 /*
  *  FileSystemDialog.h
- *  SniperEditorMacOS
+ *  Particles
  *
  *  Created by Alexey Prosin on 8/25/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
+ *  Copyright 2011 DAVA Consulting. All rights reserved.
  *
  */
 

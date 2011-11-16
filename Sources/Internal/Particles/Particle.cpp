@@ -36,10 +36,12 @@ namespace DAVA
 
 Particle::Particle()
 {
+    
 }
 
 Particle::~Particle()
 {
+    
 }
 
 bool Particle::Update(float32 timeElapsed)
@@ -52,7 +54,8 @@ bool Particle::Update(float32 timeElapsed)
 
 	position += velocity * timeElapsed * velocityOverLife;
 	angle += spin * timeElapsed * spinOverLife;
-	velocity += force0 * forceOverLife0 * timeElapsed;
+    for(int i = 0; i < Min(forces.size(), forcesOverLife.size()); i++)
+        velocity += forces[i] * forcesOverLife[i] * timeElapsed;
 	return true;
 }
 

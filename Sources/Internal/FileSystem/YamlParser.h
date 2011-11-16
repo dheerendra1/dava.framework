@@ -75,6 +75,7 @@ public:
 	 */
 	Vector2			AsPoint();//Dizz: this one exists cause of Boroda
 	Vector2			AsVector2();
+	Vector3			AsVector3();
 	Rect			AsRect();	
 	
 	YamlNode *		Get(const String & name);
