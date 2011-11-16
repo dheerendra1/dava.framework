@@ -38,6 +38,8 @@
 		FE76D9F81163F304009E83B6 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9F61163F304009E83B6 /* CoreAudio.framework */; };
 		FE76D9FF1163F316009E83B6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76D9FE1163F316009E83B6 /* AudioToolbox.framework */; };
 		FE76DA041163F32F009E83B6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE76DA031163F32F009E83B6 /* QuartzCore.framework */; };
+		FE91391614699D83002CFB99 /* .DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = FE91391314699D83002CFB99 /* .DS_Store */; };
+		FE91391714699D83002CFB99 /* TextinputTestScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE91391414699D83002CFB99 /* TextinputTestScreen.cpp */; };
 		FEFB01D311C8F28A00B65B8B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEFB01D211C8F28A00B65B8B /* GameKit.framework */; };
 		FEFCD63412AE78D90060A1A1 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = FEFCD63312AE78D90060A1A1 /* Data */; };
 /* End PBXBuildFile section */
@@ -115,6 +117,9 @@
 		FE76D9F61163F304009E83B6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		FE76D9FE1163F316009E83B6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		FE76DA031163F32F009E83B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		FE91391314699D83002CFB99 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = .DS_Store; sourceTree = "<group>"; };
+		FE91391414699D83002CFB99 /* TextinputTestScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextinputTestScreen.cpp; sourceTree = "<group>"; };
+		FE91391514699D83002CFB99 /* TextinputTestScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextinputTestScreen.h; sourceTree = "<group>"; };
 		FE9895531163F13500500198 /* Framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Framework.xcodeproj; path = ../iPhoneFramework/Framework.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEFB01D211C8F28A00B65B8B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		FEFCD63312AE78D90060A1A1 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
@@ -144,6 +149,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE91391314699D83002CFB99 /* .DS_Store */,
+				FE91391414699D83002CFB99 /* TextinputTestScreen.cpp */,
+				FE91391514699D83002CFB99 /* TextinputTestScreen.h */,
 				FE0740371445E5AE00CCCE66 /* LandscapeTestScreen.cpp */,
 				FE0740381445E5AE00CCCE66 /* LandscapeTestScreen.h */,
 				FE1276CB144320D50082901E /* AnimationTestScreen.cpp */,
@@ -323,6 +331,7 @@
 			files = (
 				FEFCD63412AE78D90060A1A1 /* Data in Resources */,
 				EAA3DF501447364A009132AA /* MainWindow.xib in Resources */,
+				FE91391614699D83002CFB99 /* .DS_Store in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +379,7 @@
 				FE127703144320D50082901E /* TestScreen.cpp in Sources */,
 				FE127704144320D50082901E /* TouchEffectsControl.cpp in Sources */,
 				FE0740391445E5AF00CCCE66 /* LandscapeTestScreen.cpp in Sources */,
+				FE91391714699D83002CFB99 /* TextinputTestScreen.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +398,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dizz Err (JTJF5T2XFF)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -397,7 +407,7 @@
 				GCC_THUMB_SUPPORT = YES;
 				INFOPLIST_FILE = "TemplateProjectiPhone-Info.plist";
 				PRODUCT_NAME = TemplateProjectiPhone;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "39F4825F-EFA3-478B-B2FE-05D32EE5A8D8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 			};
 			name = Debug;
 		};

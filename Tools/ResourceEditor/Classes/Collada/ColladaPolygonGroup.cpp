@@ -117,23 +117,43 @@ bool sortFunc(const ColladaVertex & a, const ColladaVertex & b)
 
 ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryPolygons * _polygons, ColladaVertexWeight * vertexWeightArray)
 {
+    vertexFormat = EVF_VERTEX | EVF_NORMAL;
 	parentMesh = _parentMesh;
 	polygons = _polygons;
 	materialSemantic = polygons->GetMaterialSemantic();
 	skinAnimation = (vertexWeightArray != 0);
 
+    
 
 	FCDGeometryPolygonsInput* pVertexInput = polygons->FindInput(FUDaeGeometryInput::POSITION);
-	FCDGeometryPolygonsInput* pTexCoordInput = polygons->FindInput(FUDaeGeometryInput::TEXCOORD);
+	FCDGeometryPolygonsInput* pTexCoordInput0 = polygons->FindInput(FUDaeGeometryInput::TEXCOORD);
 	FCDGeometryPolygonsInput* pNormalInput = polygons->FindInput(FUDaeGeometryInput::NORMAL);
 
 	FCDGeometrySource* pVertexSource = polygons->GetParent()->FindSourceByType(FUDaeGeometryInput::POSITION);
-	FCDGeometrySource* pTexCoordSource = polygons->GetParent()->FindSourceByType(FUDaeGeometryInput::TEXCOORD);
+	FCDGeometrySource* pTexCoordSource0 = polygons->GetParent()->FindSourceByType(FUDaeGeometryInput::TEXCOORD);
 	FCDGeometrySource* pNormalSource = polygons->GetParent()->FindSourceByType(FUDaeGeometryInput::NORMAL);
 
-	int faceCount = (int)polygons->GetFaceCount();
-	int polyType = (int)polygons->TestPolyType();
-	int inputCount = (int)polygons->GetInputCount();
+    if (pTexCoordInput0 && pTexCoordSource0)
+        vertexFormat |= EVF_TEXCOORD0;
+    
+    FCDGeometryPolygonsInputList texCoordInputList;
+    polygons->FindInputs(FUDaeGeometryInput::TEXCOORD, texCoordInputList);
+    FCDGeometrySourceList texCoordSourcesList;
+    polygons->GetParent()->FindSourcesByType(FUDaeGeometryInput::TEXCOORD, texCoordSourcesList);
+
+    FCDGeometryPolygonsInput* pTexCoordInput1 = 0;
+    FCDGeometrySource* pTexCoordSource1 = 0;   
+    if (texCoordInputList.size() == 2 && texCoordSourcesList.size() == 2)
+    {
+        pTexCoordInput1 = texCoordInputList[1];
+        pTexCoordSource1 = texCoordSourcesList[1];
+        vertexFormat |= EVF_TEXCOORD1;
+    }
+    
+    
+//	int faceCount = (int)polygons->GetFaceCount();
+//	int polyType = (int)polygons->TestPolyType();
+//	int inputCount = (int)polygons->GetInputCount();
 
 //	printf("faceCount: %d polyType: %d inputCount: %d\n", faceCount, polyType, inputCount);
 //	printf("primitive: %d\n", polygons->GetPrimitiveType());
@@ -152,9 +172,10 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 //	printf("vertexCount: %d texCount: %d normalCount: %d\n", vertCount, texCount, normalCount);
 
 	int vertexIndexCount = -1; 
-	int texIndexCount = -1; 
+	int texIndexCount0 = -1; 
+    int texIndexCount1 = -1;
 	int normalIndexCount = -1; 
-	uint32 * vertexIndeces = 0, * normalIndeces = 0, * texIndeces = 0;
+	uint32 * vertexIndeces = 0, * normalIndeces = 0, * texIndices0 = 0, * texIndices1 = 0;
 
 	if (pVertexInput)
 	{
@@ -162,11 +183,17 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 		vertexIndeces = (uint32*)pVertexInput->GetIndices();
 	}
 
-	if (pTexCoordInput)	
+	if (pTexCoordInput0)	
 	{
-		texIndexCount = (int)pTexCoordInput->GetIndexCount();
-		texIndeces = (uint32*)pTexCoordInput->GetIndices();
-	}	
+		texIndexCount0 = (int)pTexCoordInput0->GetIndexCount();
+		texIndices0 = (uint32*)pTexCoordInput0->GetIndices();
+	}
+	
+    if (pTexCoordInput1)	
+	{
+		texIndexCount1 = (int)pTexCoordInput1->GetIndexCount();
+		texIndices1 = (uint32*)pTexCoordInput1->GetIndices();
+	}
 
 	if (pNormalInput)	
 	{
@@ -177,9 +204,9 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 	triangleCount = vertexIndexCount / 3;
 	unoptimizedVerteces.resize(vertexIndexCount);	
 
-	printf("- submesh verteces:%d indeces: %d %d %d\n", pVertexSource->GetDataCount(), vertexIndexCount, texIndexCount, normalIndexCount);
+	printf("- submesh verteces:%d indeces: %d %d %d\n", pVertexSource->GetDataCount(), vertexIndexCount, texIndexCount0, normalIndexCount);
 	
-	if ((vertexIndexCount != texIndexCount) || (texIndexCount != normalIndexCount))
+	if ((vertexIndexCount != texIndexCount0) || (texIndexCount0 != normalIndexCount) || (texIndexCount1 != normalIndexCount))
 	{	
 		//printf("*** ERROR: Index count is different for different sources\n");
 	}
@@ -207,14 +234,25 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 			tv.normal.x=p[0]; tv.normal.y=p[1]; tv.normal.z=p[2];
 		}
 	
-		if (pTexCoordSource)
+		if (pTexCoordSource0)
 		{
-			int texIndex = texIndeces[v];
-			int stride = pTexCoordSource->GetStride();
+			int texIndex = texIndices0[v];
+			int stride = pTexCoordSource0->GetStride();
 
-			p = &pTexCoordSource->GetData()[texIndex * stride];
-			tv.texCoords[0].x=p[0]; 
-			tv.texCoords[0].y=p[1]; 
+			p = &pTexCoordSource0->GetData()[texIndex * stride];
+			tv.texCoords[0].x = p[0]; 
+			tv.texCoords[0].y = p[1]; 
+			//if (stride == 3)tv.texCoords[0].z=p[2];
+		}
+        
+        if (pTexCoordSource1)
+		{
+			int texIndex = texIndices1[v];
+			int stride = pTexCoordSource1->GetStride();
+            
+			p = &pTexCoordSource1->GetData()[texIndex * stride];
+			tv.texCoords[1].x = p[0]; 
+			tv.texCoords[1].y = p[1]; 
 			//if (stride == 3)tv.texCoords[0].z=p[2];
 		}
 		
@@ -336,7 +374,7 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 			ColladaVertex * tvi = &optVertexArray[oIndex];
 			
  			bool equalIJ = true;
- 			if (tvi->position != tvj->position)
+ 			/*if (tvi->position != tvj->position)
 			{
 				equalIJ = false;
 			}
@@ -348,11 +386,63 @@ ColladaPolygonGroup::ColladaPolygonGroup(ColladaMesh * _parentMesh, FCDGeometryP
 			if (tvi->texCoords[0] != tvj->texCoords[0])
 			{
 				equalIJ = false;
-			}
+			}*/
+            const float32 EPS = 0.00001f;
+            
+            if (!FLOAT_EQUAL_EPS( tvi->position.x, tvj->position.x, EPS))
+            {
+                equalIJ = false;
+            }
+            if (!FLOAT_EQUAL_EPS( tvi->position.y, tvj->position.y, EPS))
+            {
+                equalIJ = false;
+            }
+            if (!FLOAT_EQUAL_EPS( tvi->position.z, tvj->position.z, EPS))
+            {
+                equalIJ = false;
+            }
+            
+            /*if (!FLOAT_EQUAL_EPS( tvi->normal.x, tvj->normal.x, EPS))
+            {
+                equalIJ = false;
+            }
+            if (!FLOAT_EQUAL_EPS( tvi->normal.y, tvj->normal.y, EPS))
+            {
+                equalIJ = false;
+            }
+            if (!FLOAT_EQUAL_EPS( tvi->normal.z, tvj->normal.z, EPS))
+            {
+                equalIJ = false;
+            }*/
+            
+            if (!FLOAT_EQUAL_EPS( tvi->texCoords[0].x, tvj->texCoords[0].x, EPS))
+            {
+                equalIJ = false;
+            }
+            if (!FLOAT_EQUAL_EPS( tvi->texCoords[0].y, tvj->texCoords[0].y, EPS))
+            {
+                equalIJ = false;
+            }
+            
+            if (pTexCoordSource1)
+            {
+                if (!FLOAT_EQUAL_EPS( tvi->texCoords[1].x, tvj->texCoords[1].x, EPS))
+                {
+                    equalIJ = false;
+                }
+                if (!FLOAT_EQUAL_EPS( tvi->texCoords[1].y, tvj->texCoords[1].y, EPS))
+                {
+                    equalIJ = false;
+                }
+            }
+
 			if (equalIJ)break;
 		}		
 		if (oIndex == optSize)
 		{
+//            Logger::Debug("vertex added: (%f, %f, %f) - (%f, %f)", 
+//                          tvj->position.x, tvj->position.y, tvj->position.z, 
+//                          tvj->texCoords[0].x, tvj->texCoords[0].y);
 			indexArray[index] = optSize;
 			optVertexArray.push_back(*tvj);
 		}else

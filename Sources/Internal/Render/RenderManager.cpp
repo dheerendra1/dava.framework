@@ -95,11 +95,9 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	viewMappingDrawOffset = Vector2(0, 0);
 	viewMappingDrawScale = Vector2(1, 1);
 
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-
 	currentDrawOffset = Vector2(0, 0);
 	currentDrawScale = Vector2(1, 1);
+    mappingMatrixChanged = true;
 	
 	isInsideDraw = false;
 
@@ -131,6 +129,7 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	
 RenderManager::~RenderManager()
 {
+    SafeRelease(currentRenderData);
     SafeRelease(FLAT_COLOR);
     SafeRelease(TEXTURE_MUL_FLAT_COLOR);
     SafeRelease(TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST);
@@ -196,11 +195,9 @@ void RenderManager::Reset()
 	userDrawOffset = Vector2(0, 0);
 	userDrawScale = Vector2(1, 1);
 	
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-	
 	currentDrawOffset = Vector2(0, 0);
 	currentDrawScale = Vector2(1, 1);
+    mappingMatrixChanged = true;
 	
 //	glLoadIdentity();
 }
@@ -279,17 +276,27 @@ void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
 #if defined(__DAVAENGINE_OPENGL__)
             RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
             if (textureLevel != 0)
-                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
+            {
+                // todo: boroda: fix that for OpenGL ES because glDisable / glEnable is deprecated
+                // fix it pizdato
+                if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+                    RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
+            }
             RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, texture->id));
 #elif defined(__DAVAENGINE_DIRECTX9__)
             RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, texture->id));
-#endif 
+#endif
 		}else
         {
 #if defined(__DAVAENGINE_OPENGL__)
             RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
             if (textureLevel != 0)
-                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+            {
+                // todo: boroda: fix that for OpenGL ES because glDisable / glEnable is deprecated
+                // fix it pizdato
+                if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+                    RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+            }
 #endif
         }
 	}
@@ -315,7 +322,8 @@ Shader * RenderManager::GetShader()
 
 void RenderManager::SetRenderData(RenderDataObject * object)
 {
-    currentRenderData = object;
+    SafeRelease(currentRenderData);
+    currentRenderData = SafeRetain(object);
 }
 
 void RenderManager::EnableTexturing(bool isEnabled)
@@ -492,18 +500,28 @@ int32 RenderManager::GetFPS()
 	
 void RenderManager::SetDrawTranslate(const Vector2 &offset)
 {
+    mappingMatrixChanged = true;
 	userDrawOffset.x += offset.x * userDrawScale.x;
 	userDrawOffset.y += offset.y * userDrawScale.y;
 }
-	
+
+void RenderManager::SetDrawTranslate(const Vector3 &offset)
+{
+    mappingMatrixChanged = true;
+    userDrawOffset.x += offset.x * userDrawScale.x;
+    userDrawOffset.y += offset.y * userDrawScale.y;
+}
+    
 void RenderManager::SetDrawScale(const Vector2 &scale)
 {
+    mappingMatrixChanged = true;
 	userDrawScale.x *= scale.x;
 	userDrawScale.y *= scale.y;
 }
 	
 void RenderManager::IdentityDrawMatrix()
 {
+    mappingMatrixChanged = true;
 	userDrawScale.x = 1.0f;
 	userDrawScale.y = 1.0f;
 
@@ -511,46 +529,48 @@ void RenderManager::IdentityDrawMatrix()
 	userDrawOffset.y = 0.0f;
 }
 
-void RenderManager::IdentityTotalMatrix()
+void RenderManager::IdentityMappingMatrix()
 {
-	userDrawOffset = Vector2(0, 0);
-	userDrawScale = Vector2(1, 1);
-	
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset = Vector2(0, 0);
 	viewMappingDrawScale = Vector2(1, 1);
-	
-	realDrawOffset = Vector2(0, 0);
-	realDrawScale = Vector2(1, 1);
-	
-// 	currentDrawOffset = Vector2(0, 0);
-// 	currentDrawScale = Vector2(1, 1);
 }
 	
+void RenderManager::IdentityModelMatrix()
+{
+    mappingMatrixChanged = true;
+    RenderManager::Instance()->SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
+	currentDrawOffset = Vector2(0, 0);
+    currentDrawScale = Vector2(1, 1);
+}
+    
 	
 	
 void RenderManager::SetPhysicalViewScale()
 {
-//	Logger::Info("Set physical view scale");
+    mappingMatrixChanged = true;
 	viewMappingDrawScale.x = 1.0f;
 	viewMappingDrawScale.y = 1.0f;
 }
 
 void RenderManager::SetPhysicalViewOffset()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset = Core::Instance()->GetPhysicalDrawOffset();
 }
 
 void RenderManager::SetVirtualViewScale()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawScale.x = Core::GetVirtualToPhysicalFactor();
 	viewMappingDrawScale.y = Core::GetVirtualToPhysicalFactor();
 }
 
 void RenderManager::SetVirtualViewOffset()
 {
+    mappingMatrixChanged = true;
 	viewMappingDrawOffset.x -= Core::Instance()->GetVirtualScreenXMin() * viewMappingDrawScale.x;
 	viewMappingDrawOffset.y -= Core::Instance()->GetVirtualScreenYMin() * viewMappingDrawScale.y;
-//	viewMappingDrawOffset = Core::Instance()->GetPhysicalDrawOffset();
 }
 	
 void RenderManager::PushDrawMatrix()
@@ -580,7 +600,7 @@ void RenderManager::PushMappingMatrix()
 
 void RenderManager::PopMappingMatrix()
 {
-	IdentityDrawMatrix();
+	IdentityMappingMatrix();
 	DrawMatrix dm = mappingMatrixStack.top();
 	mappingMatrixStack.pop();
 	viewMappingDrawOffset = dm.userDrawOffset;

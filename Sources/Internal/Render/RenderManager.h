@@ -378,6 +378,8 @@ public:
 	 \param[in] offset
 	 */
 	virtual void SetDrawTranslate(const Vector2 &offset);
+    
+	virtual void SetDrawTranslate(const Vector3 &offset);
 
 	/** 
 	 \brief 
@@ -386,7 +388,8 @@ public:
 	virtual void SetDrawScale(const Vector2 &scale);
 
 	virtual void IdentityDrawMatrix();
-	virtual void IdentityTotalMatrix();
+	virtual void IdentityMappingMatrix();
+	virtual void IdentityModelMatrix();
 	
 	/*
 		TODO:	Hottych - напиши пожалуйста что делают эти функции детально, 
@@ -464,11 +467,10 @@ protected:
 	Vector2 viewMappingDrawOffset;
 	Vector2 viewMappingDrawScale;
 
-	Vector2 realDrawOffset;
-	Vector2 realDrawScale;
-	
 	Vector2 currentDrawOffset;
 	Vector2 currentDrawScale;
+    
+    bool mappingMatrixChanged;
 	
 	void PrepareRealMatrix();
 
@@ -535,7 +537,7 @@ protected:
     
     uint32 pointerArraysCurrentState;
     uint32 pointerArraysRendererState;
-    uint32 enabledAttribCount;
+    int32 enabledAttribCount;
 
     
     

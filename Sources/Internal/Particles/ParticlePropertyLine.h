@@ -50,6 +50,7 @@ class PropertyLineYamlReader
 public:
 	static RefPtr<PropertyLine<float32> > CreateFloatPropertyLineFromYamlNode(YamlNode * parentNode, const String & propertyName, RefPtr<PropertyLine<float32> > defaultPropertyLine = RefPtr< PropertyLine<float32> >());
 	static RefPtr<PropertyLine<Vector2> > CreateVector2PropertyLineFromYamlNode(YamlNode * parentNode, const String & propertyName, RefPtr<PropertyLine<Vector2> > defaultPropertyLine = RefPtr< PropertyLine<Vector2> >());
+    static RefPtr<PropertyLine<Vector3> > CreateVector3PropertyLineFromYamlNode(YamlNode * parentNode, const String & propertyName, RefPtr<PropertyLine<Vector3> > defaultPropertyLine = RefPtr< PropertyLine<Vector3> >());
 	static RefPtr<PropertyLine<Color> >  CreateColorPropertyLineFromYamlNode(YamlNode * parentNode, const String & propertyName, RefPtr<PropertyLine<Color> > defaultPropertyLine = RefPtr< PropertyLine<Color> >());
 };
 
@@ -93,7 +94,7 @@ public:
 		float32 t;
 		T value;
 	};
-	std::vector<PropertyKey> 	keys;
+	std::vector<PropertyKey> keys;
 	T resultValue;
 	
 	const T & GetValue(float32 t) 
@@ -110,8 +111,10 @@ public:
 				float ti = (t - keys[0].t) / (keys[1].t - keys[0].t);
 				resultValue = keys[0].value + (keys[1].value - keys[0].value) * ti;
 				return resultValue;
-			}else 
-			{	
+			}
+            else 
+			{
+                return keys[1].value;
 			}
 		}
 		else if (keys.size() == 1) return keys[0].value; 

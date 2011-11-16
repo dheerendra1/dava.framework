@@ -39,7 +39,7 @@ namespace DAVA
 ParticleEmitter::ParticleEmitter()
 {
 	type = EMITTER_POINT;
-	emissionAngle = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(0.0f));
+	emissionAngle = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0.0f, 0.0f, 0.0f)));
 	emissionRange = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(360.0f));
 	colorOverLife = 0;
 	radius = 0;
@@ -53,6 +53,7 @@ ParticleEmitter::ParticleEmitter()
 	angle = 0.f;
 	isAutorestart = true;
 	particlesFollow = false;
+    is3D = false;
 }
 
 ParticleEmitter::~ParticleEmitter()
@@ -149,83 +150,112 @@ void ParticleEmitter::Draw()
 {
 	eBlendMode srcMode = RenderManager::Instance()->GetSrcBlend();
 	eBlendMode destMode = RenderManager::Instance()->GetDestBlend();
-
+    
 	if(particlesFollow)
 	{
 		RenderManager::Instance()->PushDrawMatrix();
 		RenderManager::Instance()->SetDrawTranslate(position);
 	}
+    
 	Vector<ParticleLayer*>::iterator it;
 	for(it = layers.begin(); it != layers.end(); ++it)
 	{
-		(*it)->Draw();
+        if(!(*it)->isDisabled)
+            (*it)->Draw();
 	}
-	if(particlesFollow)
+	
+    if(particlesFollow)
 	{
 		RenderManager::Instance()->PopDrawMatrix();
 	}
-
+    
 	RenderManager::Instance()->SetBlendMode(srcMode, destMode);
 }
 
 void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velocity, int32 emitIndex)
 {
-	Vector2 tempPosition = particlesFollow ? Vector2() : position;
+	Vector3 tempPosition = particlesFollow ? Vector3() : position;
 	if (type == EMITTER_POINT)
 	{
 		particle->position = tempPosition;
-	}else if (type == EMITTER_LINE)
+	}
+    else if (type == EMITTER_LINE)
 	{
 		// TODO: add emitter angle support
-		float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-		Vector2 lineDirection(size.x * rand05, 0);
+		float32 rand1 = Random::Instance()->RandFloat() * 2 - 1.0f; // [-0.5f, 0.5f]
+		Vector3 lineDirection = size*rand1;
 		particle->position = tempPosition + lineDirection;
-	}else if (type == EMITTER_RECT)
+	}
+    else if (type == EMITTER_RECT)
 	{
 		// TODO: add emitter angle support
-		float32 rand05_x = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-		float32 rand05_y = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-		Vector2 lineDirection(size.x * rand05_x, size.y * rand05_y);
+		float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+		float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+		float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+		Vector3 lineDirection(size.x * rand05_x, size.y * rand05_y, size.z * rand05_z);
 		particle->position = tempPosition + lineDirection;
-	}else if (type == EMITTER_ONCIRCLE)
+	}
+    else if (type == EMITTER_ONCIRCLE)
 	{
 		// here just set particle position
 		particle->position = tempPosition;
-		//if (
 	}
 	
-	Vector2 vel;
-	//vel.x = (float32)((rand() & 255) - 128);
-	//vel.y = (float32)((rand() & 255) - 128);
-	//vel.Normalize();
-
-	float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-	
-	float32 particleAngle = DegToRad(emissionAngle->GetValue(time) + angle);
+	Vector3 vel = emissionAngle->GetValue(time);
+    
+    Vector3 rotVect(0, 0, 1);
+    float32 phi = PI*2*Random::Instance()->RandFloat();
+    if(vel.x != 0)
+    {
+        rotVect.y = sinf(phi);
+        rotVect.z = cosf(phi);
+        rotVect.x = - rotVect.y*vel.y/vel.x - rotVect.z*vel.z/vel.x;
+    }
+    else if(vel.y != 0)
+    {
+        rotVect.x = cosf(phi);
+        rotVect.z = sinf(phi);
+        rotVect.y = - rotVect.z*vel.z/vel.y;
+    }
+    else if(vel.z != 0)
+    {
+        rotVect.x = cosf(phi);
+        rotVect.y = sinf(phi);
+        rotVect.z = 0;
+    }
+    rotVect.Normalize();
+    
 	float32 range = DegToRad(emissionRange->GetValue(time));
-	
-	if (emitPointsCount == -1)
+	float32 rand05 = Random::Instance()->RandFloat() - 0.5f;
+    
+    Vector3 q_v(rotVect*sinf(range*rand05/2));
+    float32 q_w = cosf(range*rand05/2);
+
+    Vector3 q1_v(q_v);
+    float32 q1_w = -q_w;
+    q1_v /= (q_v.SquareLength() + q_w*q_w);
+    q1_w /= (q_v.SquareLength() + q_w*q_w);
+    
+    Vector3 v_v(vel);
+    
+    Vector3 qv_v = q_v.CrossProduct(v_v) + q_w*v_v;
+    float32 qv_w = - q_v.DotProduct(v_v);
+    
+    Vector3 qvq1_v = qv_v.CrossProduct(q1_v) + qv_w*q1_v + q1_w*qv_v;
+    
+	qvq1_v *= velocity;
+	particle->velocity = qvq1_v;
+
+    if (type == EMITTER_ONCIRCLE)
 	{
-		// if emitAtPoints property is not set just emit randomly in range
-		particleAngle += range * rand05;
-	}else {
-		particleAngle += range * (float32)emitIndex / (float32)emitPointsCount;
+        qvq1_v.Normalize();
+		particle->position += qvq1_v * radius->GetValue(time);
 	}
-
-
-	vel.x = cosf(particleAngle);
-	vel.y = sinf(particleAngle);
-	
-	// reuse particle velocity we've calculated 
-	if (type == EMITTER_ONCIRCLE)
-	{
-		particle->position += vel * radius->GetValue(time);
-	}
-
-	vel *= velocity;
-	particle->velocity.x = vel.x;
-	particle->velocity.y = vel.y;
-	particle->angle = particleAngle;
+    
+    if(is3D)
+        particle->angle = 0.0f;
+    else
+        particle->angle = atan2f(qvq1_v.y, qvq1_v.x);
 }
 
 void ParticleEmitter::LoadFromYaml(const String & filename)
@@ -255,7 +285,7 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
 	if (emitterNode)
 	{		
 		if (emitterNode->Get("emissionAngle"))
-			emissionAngle = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(emitterNode, "emissionAngle");
+			emissionAngle = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(emitterNode, "emissionAngle");
 		if (emitterNode->Get("emissionRange"))
 			emissionRange = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(emitterNode, "emissionRange");
 		if (emitterNode->Get("colorOverLife"))
@@ -276,7 +306,14 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
 		{
 			lifeTime = 1000000000.0f;
 		}
-		
+        
+        is3D = false;
+		YamlNode * _3dNode = emitterNode->Get("3d");
+		if (_3dNode)
+		{	
+			is3D = _3dNode->AsBool();
+		}
+        
 		YamlNode * typeNode = emitterNode->Get("type");
 		if (typeNode)
 		{	
@@ -337,7 +374,7 @@ int32 ParticleEmitter::GetEmitPointsCount()
 	return emitPointsCount;
 }
 	
-const Vector<ParticleLayer*> & ParticleEmitter::GetLayers()
+Vector<ParticleLayer*> & ParticleEmitter::GetLayers()
 {
 	return layers;
 }
@@ -347,6 +384,11 @@ float32 ParticleEmitter::GetLifeTime()
 	return lifeTime;
 }
 
+float32 ParticleEmitter::GetTime()
+{
+    return time;
+}
+    
 void ParticleEmitter::Pause(bool _isPaused)
 {
 	isPaused = _isPaused;
@@ -366,7 +408,7 @@ bool ParticleEmitter::GetAutorestart()
 	return isAutorestart;
 }
 
-Vector2 ParticleEmitter::GetSize()
+Vector3 ParticleEmitter::GetSize()
 {
 	return size;
 }
@@ -376,9 +418,9 @@ void ParticleEmitter::SetSize(const Vector2& _size)
 	size = _size;
 }
 
-Animation * ParticleEmitter::SizeAnimation(const Vector2 & newSize, float32 time, Interpolation::FuncType interpolationFunc /*= Interpolation::LINEAR*/, int32 track /*= 0*/)
+Animation * ParticleEmitter::SizeAnimation(const Vector3 & newSize, float32 time, Interpolation::FuncType interpolationFunc /*= Interpolation::LINEAR*/, int32 track /*= 0*/)
 {
-	LinearAnimation<Vector2> * animation = new LinearAnimation<Vector2>(this, &size, newSize, time, interpolationFunc);
+	LinearAnimation<Vector3> * animation = new LinearAnimation<Vector3>(this, &size, newSize, time, interpolationFunc);
 	animation->Start(track);
 	return animation;
 }

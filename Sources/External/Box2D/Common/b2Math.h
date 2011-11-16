@@ -389,7 +389,7 @@ struct b2Sweep
 {
 	/// Get the interpolated transform at a specific time.
 	/// @param beta is a factor in [0,1], where 0 indicates alpha0.
-	void GetTransform(b2Transform* xfb, b2_float32 beta) const;
+	void GetTransform(b2Transform* xfb, const b2_float32 beta) const;
 
 	/// Advance the sweep forward, yielding a new initial state.
 	/// @param alpha the new initial time.
@@ -615,7 +615,7 @@ inline b2Transform b2MulT(const b2Transform& A, const b2Transform& B)
 }
 
 template <typename T>
-inline T b2Abs(T a)
+inline T b2Abs(const T &a)
 {
 	return a > T(0) ? a : -a;
 }
@@ -631,7 +631,7 @@ inline b2Mat22 b2Abs(const b2Mat22& A)
 }
 
 template <typename T>
-inline T b2Min(T a, T b)
+inline T b2Min(const T &a, const T &b)
 {
 	return a < b ? a : b;
 }
@@ -642,7 +642,7 @@ inline b2Vec2 b2Min(const b2Vec2& a, const b2Vec2& b)
 }
 
 template <typename T>
-inline T b2Max(T a, T b)
+inline T b2Max(const T &a, const T &b)
 {
 	return a > b ? a : b;
 }
@@ -653,7 +653,7 @@ inline b2Vec2 b2Max(const b2Vec2& a, const b2Vec2& b)
 }
 
 template <typename T>
-inline T b2Clamp(T a, T low, T high)
+inline T b2Clamp(const T &a, const T &low, const T &high)
 {
 	return b2Max(low, b2Min(a, high));
 }
@@ -665,7 +665,7 @@ inline b2Vec2 b2Clamp(const b2Vec2& a, const b2Vec2& low, const b2Vec2& high)
 
 template<typename T> inline void b2Swap(T& a, T& b)
 {
-	T tmp = a;
+	const T tmp = a;
 	a = b;
 	b = tmp;
 }
@@ -691,20 +691,20 @@ inline bool b2IsPowerOfTwo(b2_uint32 x)
 	return result;
 }
 
-inline void b2Sweep::GetTransform(b2Transform* xf, b2_float32 beta) const
+inline void b2Sweep::GetTransform(b2Transform* xf, const b2_float32 beta) const
 {
-	xf->p = (1.0f - beta) * c0 + beta * c;
-	b2_float32 angle = (1.0f - beta) * a0 + beta * a;
-	xf->q.Set(angle);
+    const b2_float32 dbeta(1.0f - beta);
+	xf->p  =  dbeta * c0 + beta * c;
+	xf->q.Set(dbeta * a0 + beta * a);
 
 	// Shift to origin
 	xf->p -= b2Mul(xf->q, localCenter);
 }
 
-inline void b2Sweep::Advance(b2_float32 alpha)
+inline void b2Sweep::Advance(const b2_float32 alpha)
 {
 	b2Assert(alpha0 < 1.0f);
-	b2_float32 beta = (alpha - alpha0) / (1.0f - alpha0);
+	const b2_float32 beta = (alpha - alpha0) / (1.0f - alpha0);
 	c0 = (1.0f - beta) * c0 + beta * c;
 	a0 = (1.0f - beta) * a0 + beta * a;
 	alpha0 = alpha;
@@ -713,8 +713,8 @@ inline void b2Sweep::Advance(b2_float32 alpha)
 /// Normalize an angle in radians to be between -pi and pi
 inline void b2Sweep::Normalize()
 {
-	b2_float32 twoPi = 2.0f * b2_pi;
-	b2_float32 d =  twoPi * floorf(a0 / twoPi);
+	const b2_float32 twoPi = 2.0f * b2_pi;
+	const b2_float32 d =  twoPi * floorf(a0 / twoPi);
 	a0 -= d;
 	a -= d;
 }

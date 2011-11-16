@@ -323,6 +323,7 @@ void Texture::TexImage(int32 level, uint32 width, uint32 height, const void * _d
 
 Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint32 _width, uint32 _height)
 {
+    RenderManager::Instance()->LockNonMain();
 	Texture * texture = new Texture();
 	if (!texture)return 0;
 	
@@ -439,11 +440,14 @@ Texture * Texture::CreateFromData(PixelFormat _format, const uint8 *_data, uint3
 	SafeDeleteArray(mipMapData);
 
 #endif 
+    
+    RenderManager::Instance()->UnlockNonMain();
 	return texture;
 }		
 	
 void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 {
+    RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 	int saveId;
 	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
@@ -486,6 +490,7 @@ void Texture::SetWrapMode(TextureWrap wrapS, TextureWrap wrapT)
 
 
 #endif 
+    RenderManager::Instance()->UnlockNonMain();
 }
 	
 bool Texture::isMipmapGenerationEnabled = false;
@@ -502,6 +507,7 @@ void Texture::DisableMipmapGeneration()
 
 void Texture::GenerateMipmaps()
 {
+	RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 
 	int saveId;
@@ -527,10 +533,12 @@ void Texture::GenerateMipmaps()
 #elif defined(__DAVAENGINE_DIRECTX9__)
 
 #endif // #if defined(__DAVAENGINE_OPENGL__)
+	RenderManager::Instance()->UnlockNonMain();
 }
 
 void Texture::UsePvrMipmaps()
 {
+	RenderManager::Instance()->LockNonMain();
 #if defined(__DAVAENGINE_OPENGL__)
 	int saveId;
 	RENDER_VERIFY(glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveId));
@@ -549,6 +557,8 @@ void Texture::UsePvrMipmaps()
 
 
 #endif
+    RenderManager::Instance()->UnlockNonMain();
+
 }
 	
 	

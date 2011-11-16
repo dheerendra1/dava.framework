@@ -192,9 +192,28 @@ void UISlider::SetValue(float32 value)
 	RecalcButtonPos();
 }
 
+void UISlider::SetMinValue(float32 value)
+{
+    minValue = value;
+    RecalcButtonPos();
+}
+    
+void UISlider::SetMaxValue(float32 value)
+{
+    maxValue = value;
+    RecalcButtonPos();
+}
+    
+void UISlider::SetMinMaxValue(float32 _minValue, float32 _maxValue)
+{
+	minValue = _minValue;
+	maxValue = _maxValue;
+	SetValue((minValue + maxValue) / 2.0f);
+}
+
 void UISlider::Input(UIEvent *currentInput)
 {
-#ifndef __DAVAENGINE_IPHONE__
+#if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 	if (currentInput->phase == UIEvent::PHASE_MOVE || currentInput->phase == UIEvent::PHASE_KEYCHAR)
 		return;
 #endif

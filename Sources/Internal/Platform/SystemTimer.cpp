@@ -194,7 +194,7 @@ uint64 SystemTimer::AbsoluteMS()
 
 void SystemTimer::SetFrameDelta(float32 _delta)
 {
-	DVASSERT(Replay::IsPlayback());
+	DVASSERT(Replay::IsPlayback() || Replay::IsRecord());
 	delta = _delta;
 }
 

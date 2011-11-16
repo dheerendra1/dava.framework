@@ -150,41 +150,27 @@ void RenderManager::BeginFrame()
 
 void RenderManager::PrepareRealMatrix()
 {
-	/*
-		Boroda To Hottych: Не проще ли ставить где-то флаг что были данные изменены? И только в этом случае пересчитывать? 
-		Так получается сначала считаем, потом проверки сравнения, вообщем по моему проще сделать один флаг. Что думаешь? 
-
-		Hottych: 
-		Код не оптимизировался ваааще. Задача была заставить это работать и она достигнута, 
-		а ты все равно все на матрицы перепишешь.
-	 */
-	realDrawScale.x = viewMappingDrawScale.x * userDrawScale.x;
-	realDrawScale.y = viewMappingDrawScale.y * userDrawScale.y;
+    if (mappingMatrixChanged)
+    {
+        mappingMatrixChanged = false;
+        Vector2 realDrawScale(viewMappingDrawScale.x * userDrawScale.x, viewMappingDrawScale.y * userDrawScale.y);
+        Vector2 realDrawOffset(viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x, viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y);
 	
-	realDrawOffset.x = viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x;
-	realDrawOffset.y = viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y;
 	if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
 	{
-//		Logger::Info("Matrix recalculated: Scale %.4f,    Offset: %.4f, %.4f", realDrawScale.x, realDrawOffset.x, realDrawOffset.y);
 
 		currentDrawScale = realDrawScale;
 		currentDrawOffset = realDrawOffset;
 
-//		RENDER_VERIFY(
-//					  glLoadIdentity();
-//					  glTranslatef(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
-//					  glScalef(currentDrawScale.x, currentDrawScale.y, 1.0f);
-//					  );
-        
         
         Matrix4 glTranslate, glScale;
         glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
         glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
         
         glTranslate = glScale * glTranslate;
-        // todo replace with offset calculations
         SetMatrix(MATRIX_MODELVIEW, glTranslate);
     }
+}
 }
 	
 
@@ -313,13 +299,12 @@ void RenderManager::SetRenderOrientation(int32 orientation)
     //glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	
-    RenderManager::Instance()->SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
-    currentDrawScale = Vector2(1,1);
-    currentDrawOffset = Vector2(0,0);
+
+    IdentityModelMatrix();
     
 	RENDER_VERIFY();
 
-	IdentityTotalMatrix();
+	IdentityMappingMatrix();
 	SetVirtualViewScale();
 	SetVirtualViewOffset();
 
@@ -455,6 +440,8 @@ void RenderManager::FlushState()
 	}   
 	if(newTextureEnabled != oldTextureEnabled)
 	{
+        if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
+        {
 		if(newTextureEnabled)
 		{
 			RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
@@ -464,6 +451,7 @@ void RenderManager::FlushState()
 			RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
 		}
 		oldTextureEnabled = newTextureEnabled;
+	}
 	}
     
     if (cullingEnabled != oldCullingEnabled)
@@ -494,7 +482,7 @@ void RenderManager::FlushState()
                 // if alpha test enabled set alpha func values
                 if ((alphaFunc != oldAlphaFunc) || (alphaTestCmpValue != oldAlphaTestCmpValue))
                 {
-                    RENDER_VERIFY(glAlphaFunc(alphaFunc, alphaTestCmpValue) );
+                    RENDER_VERIFY(glAlphaFunc(ALPHA_TEST_MODE_MAP[alphaFunc], alphaTestCmpValue) );
                     oldAlphaFunc = alphaFunc;
                     oldAlphaTestCmpValue = alphaTestCmpValue;
                 }
@@ -741,11 +729,8 @@ void RenderManager::SetHWRenderTarget(Sprite *renderTarget)
 		//RENDER_VERIFY(glMatrixMode(GL_MODELVIEW));
 		//RENDER_VERIFY(glLoadIdentity());
         
-        SetMatrix(MATRIX_MODELVIEW, Matrix4::IDENTITY);
-        currentDrawScale = Vector2(1,1);
-        currentDrawOffset = Vector2(0,0);
-        
-		IdentityTotalMatrix();
+        IdentityModelMatrix();
+		IdentityMappingMatrix();
 		viewMappingDrawScale.x = renderTarget->GetResourceToPhysicalFactor();
 		viewMappingDrawScale.y = renderTarget->GetResourceToPhysicalFactor();
 //		Logger::Info("Sets with render target: Scale %.4f,    Offset: %.4f, %.4f", viewMappingDrawScale.x, viewMappingDrawOffset.x, viewMappingDrawOffset.y);
@@ -787,6 +772,16 @@ void RenderManager::AttachRenderData(Shader * shader)
 #elif defined(__DAVAENGINE_DIRECTX9__)
         DVASSERT(currentRenderData->vboBuffer == 0);
 #endif
+        if (enabledAttribCount != 0)
+        {
+            for (int32 p = 0; p < enabledAttribCount; ++p)
+            {
+                glDisableVertexAttribArray(p);
+            }
+            enabledAttribCount = 0;
+            pointerArraysRendererState = 0;
+        }
+        
         pointerArraysCurrentState = 0;
         int32 size = (int32)currentRenderData->streamArray.size();
         for (int32 k = 0; k < size; ++k)
@@ -819,26 +814,37 @@ void RenderManager::AttachRenderData(Shader * shader)
         }
         pointerArraysRendererState = pointerArraysCurrentState;
         
-        for (int32 p = 0; p < (int32)enabledAttribCount; ++p)
-        {
-            glDisableVertexAttribArray(p);
-        }
     }
     else
     {
+        if (GetRenderer() == Core::RENDERER_OPENGL)
+        {
+            if (oldVertexArrayEnabled)
+        {
+                EnableVertexArray(false);
+                pointerArraysRendererState = 0;
+            }
+            if (oldTextureCoordArrayEnabled)
+            {
+                EnableTextureCoordArray(false);
+                pointerArraysRendererState = 0;
+        }
+    }
+
         int32 currentEnabledAttribCount = 0;
         //glDisableVertexAttribArray(0);
         //glDisableVertexAttribArray(1);
-        
         pointerArraysCurrentState = 0;
         
         //if (currentRenderData->vboBuffer != 0)
         //{
+#if defined(__DAVAENGINE_OPENGL__)
 #if defined(__DAVAENGINE_OPENGL_ARB_VBO__)
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentRenderData->vboBuffer);
 #else
         glBindBuffer(GL_ARRAY_BUFFER, currentRenderData->vboBuffer);
 #endif
+#endif 
         //}
         
         int32 size = (int32)currentRenderData->streamArray.size();
@@ -852,7 +858,7 @@ void RenderManager::AttachRenderData(Shader * shader)
             {
                 glVertexAttribPointer(attribIndex, stream->size, VERTEX_DATA_TYPE_TO_GL[stream->type], normalized, stream->stride, stream->pointer);
                 
-                if (attribIndex >= (int32)enabledAttribCount)  // enable only if it was not enabled on previous step
+                if (attribIndex >= enabledAttribCount)  // enable only if it was not enabled on previous step
                 {
                     glEnableVertexAttribArray(attribIndex);
                 }
@@ -863,11 +869,11 @@ void RenderManager::AttachRenderData(Shader * shader)
             }
         };
         
-        for (int32 p = currentEnabledAttribCount; p < (int32)enabledAttribCount; ++p)
+        for (int32 p = currentEnabledAttribCount; p < enabledAttribCount; ++p)
         {
             glDisableVertexAttribArray(p);
         }
-        
+        enabledAttribCount = currentEnabledAttribCount;
         //        uint32 difference = pointerArraysCurrentState ^ pointerArraysRendererState;
         //        
         //        if (!(difference & EVF_VERTEX))

@@ -124,6 +124,7 @@ public:
 	 */
 	Particle * GetHeadParticle();
 
+    float32 GetLayerTime();
 
 private:	
 	void GenerateNewParticle(int32 emitIndex);
@@ -172,8 +173,8 @@ public:
 	RefPtr< PropertyLine<float32> > velocityVariation;	
 	RefPtr< PropertyLine<float32> > velocityOverLife;
 	
-	Vector< RefPtr< PropertyLine<Vector2> > > forces;				// weight property from 
-	Vector< RefPtr< PropertyLine<Vector2> > > forcesVariation;
+	Vector< RefPtr< PropertyLine<Vector3> > > forces;				// weight property from 
+	Vector< RefPtr< PropertyLine<Vector3> > > forcesVariation;
 	Vector< RefPtr< PropertyLine<float32> > > forcesOverLife;
 	
 	RefPtr< PropertyLine<float32> > spin;				// spin of angle / second
@@ -193,7 +194,6 @@ public:
 	RefPtr< PropertyLine<Color> > colorOverLife;	
 	RefPtr< PropertyLine<float32> > frameOverLife;				// in frame index
 
-protected:	
 	float32		alignToMotion;
 	bool		additive;
 	float32		startTime;
@@ -201,14 +201,14 @@ protected:
 	int32		frameStart;
 	int32		frameEnd;
 	eType		type;
+
+    bool isDisabled;
 };
 
 inline int32 ParticleLayer::GetParticleCount()
 {
 	return count;
 }
-
-
 };
 
 #endif // __DAVAENGINE_PARTICLE_LAYER_H__

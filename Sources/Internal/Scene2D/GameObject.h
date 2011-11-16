@@ -74,27 +74,27 @@ public:
 	// public properties of the object
     typedef List<GameObject*> GameObjectsList;	
 	
-	static GameObject	* Create(const String & _pathToSprite, int32 frame = 0);
-	static GameObject	* Create(Sprite * sprite, int32 frame = 0);
+	static GameObject* Create(const String & _pathToSprite, int32 frame = 0);
+	static GameObject* Create(Sprite * sprite, int32 frame = 0);
 	
 	inline void		SetPosition(const Vector2 & position);
 	inline void		SetPosition(float32 x, float32 y);
-	inline Vector2 & GetPosition();
+	inline const Vector2& GetPosition() const;
 
 	inline void		SetScale(const Vector2 & scale);
 	inline void		SetScale(float32 x, float32 y);
-	inline Vector2 & GetScale();
+	inline const Vector2& GetScale() const;
 	
 		   void		SetPivotPoint(int32 alignFlags);
 	inline void		SetPivotPoint(const Vector2 &newPivotPoint);
 	inline void		SetPivotPoint(float32 x, float32 y);
-	inline Vector2 & GetPivotPoint();
+	inline const Vector2& GetPivotPoint() const;
 	
 	inline Vector2	GetSize() const;
 	
 	inline void		SetSprite(Sprite * sprite);
 	inline void		SetSprite(const String &spriteName);
-	inline Sprite	* GetSprite();
+	inline Sprite*  GetSprite() const;
 
 	/**
 		\brief Function changes priority of object. 
@@ -292,7 +292,7 @@ inline void GameObject::SetSprite(const String &spriteName)
 }
 
 	
-inline Sprite * GameObject::GetSprite()
+inline Sprite* GameObject::GetSprite() const
 {
 	return sprite;
 }
@@ -330,7 +330,7 @@ inline void GameObject::SetPivotPoint(float32 x, float32 y)
 	localDrawState.pivotPoint.y = y;
 }
 	
-inline Vector2 & GameObject::GetPivotPoint()
+inline const Vector2& GameObject::GetPivotPoint() const
 {
 	return localDrawState.pivotPoint;
 }
@@ -352,7 +352,7 @@ inline void	GameObject::SetPosition(float32 x, float32 y)
 	localDrawState.position.y = y;
 }
 	
-inline Vector2 & GameObject::GetPosition()
+inline const Vector2& GameObject::GetPosition() const
 {
 	return localDrawState.position;
 }
@@ -368,7 +368,7 @@ inline void	 GameObject::SetScale(float32 x, float32 y)
 	localDrawState.scale.y = y;
 }
 	
-inline Vector2 & GameObject::GetScale() 
+inline const Vector2& GameObject::GetScale() const
 {
 	return localDrawState.scale;
 }

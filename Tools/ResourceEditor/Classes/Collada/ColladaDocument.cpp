@@ -282,7 +282,7 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
 		material.specular.w = colladaMaterial->diffuse.w;
 		
 		material.diffuseTextureId = -1;
-
+ 
         material.hasOpacity = false;
 		
 		for (uint32 textureIndex = 0; textureIndex < header.textureCount; ++textureIndex)
@@ -293,6 +293,23 @@ void ColladaDocument::SaveScene( const String & scenePath, const String & sceneN
                 break;
 			}
         
+        if ((colladaMaterial->lightmapTexture) && (colladaMaterial->hasLightmapTexture))
+        {
+            String textureRelativePathName = String(colladaMaterial->lightmapTexture->texturePathName.c_str());
+            CommandLineParser::RemoveFromPath(textureRelativePathName, scenePath);
+            
+            if (textureRelativePathName.c_str()[0] == '/')
+                textureRelativePathName.erase(0, 1);
+            
+            if (textureRelativePathName.substr(0, 2) == "./")
+                textureRelativePathName.erase(0,2);
+
+            
+            strcpy(material.lightmapTexture, textureRelativePathName.c_str()); 
+        }else
+        {
+            strcpy(material.lightmapTexture,"");
+        }
         
 		printf("- material: %s diffuse texture: %d idx:%d\n", material.name, material.diffuseTextureId, materialIndex); 
 		WriteMaterial(&material);
@@ -353,7 +370,7 @@ void ColladaDocument::WriteTexture(SceneFile::TextureDef * texture)
 {
 	fwrite(&texture->id, sizeof(texture->id), 1, sceneFP);
 	fwrite(texture->name, strlen(texture->name) + 1, 1, sceneFP);
-    if (header.version == 101)
+    if (header.version >= 101)
     {
         fwrite(&texture->hasOpacity, sizeof(texture->hasOpacity), 1, sceneFP);
     }
@@ -376,9 +393,11 @@ void ColladaDocument::WriteMaterial(SceneFile::MaterialDef * material)
 	fwrite(&material->transparency, sizeof(material->transparency), 1, sceneFP);
 	fwrite(&material->transparent, sizeof(material->transparent), 1, sceneFP);
 	
-    if (header.version == 101)
+    if (header.version >= 101)
         fwrite(&material->hasOpacity, sizeof(material->hasOpacity), 1, sceneFP);
     
+    if (header.version >= 102)
+        fwrite(material->lightmapTexture, strlen(material->lightmapTexture) + 1, 1, sceneFP);
     
 	// TODO diffuseTexture ? refl texture?
 

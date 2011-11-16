@@ -114,7 +114,7 @@ void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bo
 
 void Camera::Recalc()
 {
-	ymax = znear * tanf(fovy* PI / 360.0f);
+	ymax = znear * tanf(fovy * PI / 360.0f);
 	ymin = -ymax;
 	
     float32 realAspect = aspect;
@@ -125,6 +125,7 @@ void Camera::Recalc()
     
 	xmin = ymin * realAspect;
 	xmax = ymax * realAspect;
+    CalculateZoomFactor();
 }
 
 Vector2 Camera::GetOnScreenPosition(const Vector3 &forPoint)
@@ -404,6 +405,8 @@ SceneNode* Camera::Clone(SceneNode *dstNode)
     cnd->rotation = rotation;
     cnd->cameraTransform = cameraTransform;
     cnd->flags = flags;
+    
+    cnd->zoomFactor = zoomFactor;
     return dstNode;
 }
     
@@ -411,6 +414,18 @@ Frustum * Camera::GetFrustum() const
 {
     return currentFrustum;
 }
+    
+void Camera::CalculateZoomFactor()
+{
+    zoomFactor = tanf(DegToRad(fovy * 0.5f));
+}
+
+float32 Camera::GetZoomFactor() const
+{
+    return zoomFactor;
+}
+
+
     
 void Camera::Draw()
 {

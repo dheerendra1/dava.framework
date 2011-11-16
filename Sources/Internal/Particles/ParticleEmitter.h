@@ -119,7 +119,7 @@ public:
 		\brief Function to get current position of emitter.
 		\returns current position of emitter
 	 */
-	inline Vector2 & GetPosition();
+	inline Vector3 & GetPosition();
 
 	/** 
 		\brief Function to get current particle count in all emitter layers.
@@ -188,7 +188,7 @@ public:
 	/**
 		\brief Function to get layers of this emitter
 	 */
-	const Vector<ParticleLayer*> & GetLayers();
+	Vector<ParticleLayer*> & GetLayers();
 	/**
 		\brief Function to update particle emitter
 		If you using ParticleEmitter directly you should call this function and pass time elapsed fromp previous frame to it.
@@ -221,7 +221,7 @@ public:
 	 Valid only for emitter with type 'rect'.
 	 \returns emitter's width and height in Vector2 form.
 	 */
-	Vector2 GetSize();
+	Vector3 GetSize();
 
 	/**
 	 \brief Set width and height.
@@ -248,18 +248,23 @@ public:
 	 \param[in] track animation track. 0 by default.
 	 \returns Animation object
 	 */
-	Animation * SizeAnimation(const Vector2 & newSize, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
+	Animation * SizeAnimation(const Vector3 & newSize, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
+    
+    float32 GetTime();
 	
+    inline void Set3D(bool is3D);
+    inline bool GetIs3D();
+    
 protected:
 	void PrepareEmitterParameters(Particle * particle, float32 velocity, int32 emitIndex);
 
 	String name;
 	
 	Vector<ParticleLayer*> layers;
-	Vector2 position;
+	Vector3 position;
 	float32 angle;
 	eType	type;
-	Vector2 size;
+	Vector3 size;
 	
 	float32	lifeTime;
 	int32	repeatCount;
@@ -268,13 +273,16 @@ protected:
 	bool	isPaused;
 	bool	isAutorestart;
 	bool	particlesFollow;
-	
-	RefPtr< PropertyLine<float32> > emissionAngle;
+    bool    is3D;
+
+public:
+	RefPtr< PropertyLine<Vector3> > emissionAngle;
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
 	RefPtr< PropertyLine<Color> > colorOverLife;
 
 	Color currentColor;
+
 	bool GetCurrentColor(Color * currentColor);
 	// RefPtr< PropertyLine<float32> > number;
 	
@@ -286,11 +294,21 @@ inline void ParticleEmitter::SetPosition(Vector2 _position)
 	position = _position;
 }
 
-inline Vector2 & ParticleEmitter::GetPosition()
+inline Vector3 & ParticleEmitter::GetPosition()
 {
 	return position;
 }
-	
+    
+inline void ParticleEmitter::Set3D(bool _is3D)
+{
+    is3D = _is3D;
+}
+    
+inline bool ParticleEmitter::GetIs3D()
+{
+    return is3D;
+}
+    
 inline void ParticleEmitter::SetAngle(float32 _angle)
 {
 	angle = _angle;
@@ -313,8 +331,6 @@ inline void ParticleEmitter::SetParticlesFollow(bool follow)
 {
 	particlesFollow = follow;
 }
-
-	
 };
 
 #endif // __DAVAENGINE_PARTICLE_EMITTER_H__

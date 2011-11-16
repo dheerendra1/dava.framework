@@ -133,6 +133,7 @@
     <ClInclude Include="..\..\Sources\External\Yaml\config.h" />
     <ClInclude Include="..\..\Sources\External\Yaml\yaml.h" />
     <ClInclude Include="..\..\Sources\External\Yaml\yaml_private.h" />
+    <ClInclude Include="..\..\Sources\Internal\Base\Data.h" />
     <ClInclude Include="..\..\Sources\Internal\DAVAConfig.h" />
     <ClInclude Include="..\..\Sources\Internal\DAVAEngine.h" />
     <ClInclude Include="..\..\Sources\Internal\DoxygenDocumenation.h" />
@@ -267,6 +268,7 @@
     <ClInclude Include="..\..\Sources\Internal\Render\StaticIndexBuffer.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\StaticVertexBuffer.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\Texture.h" />
+    <ClInclude Include="..\..\Sources\Internal\Render\UberShader.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\VertexBuffer.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\2D\Font.h" />
     <ClInclude Include="..\..\Sources\Internal\Render\2D\FontManager.h" />
@@ -403,6 +405,7 @@
     <ClCompile Include="..\..\Sources\External\Yaml\reader.c" />
     <ClCompile Include="..\..\Sources\External\Yaml\scanner.c" />
     <ClCompile Include="..\..\Sources\External\Yaml\writer.c" />
+    <ClCompile Include="..\..\Sources\Internal\Base\Data.cpp" />
     <ClCompile Include="..\..\Sources\Internal\DAVAEngine.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Animation\AnimatedObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Animation\Animation.cpp" />
@@ -475,6 +478,7 @@
     <ClCompile Include="..\..\Sources\Internal\Render\Effects\TextureMulColorEffect.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\Image.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\LibPngHelpers.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\Material.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderBase.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderDataObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\RenderEffect.cpp" />
@@ -502,6 +506,7 @@
     <ClCompile Include="..\..\Sources\Internal\Render\3D\AnimatedMesh.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\3D\PolygonGroup.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Render\3D\StaticMesh.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Render\UberShader.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene2D\Box2DDebugDraw.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene2D\Box2DGameObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene2D\Box2DGameObjectManager.cpp" />

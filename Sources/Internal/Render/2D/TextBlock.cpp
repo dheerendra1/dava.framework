@@ -180,7 +180,7 @@ bool TextBlock::GetMultiline()
 	return isMultilineEnabled;
 }
 
-int32 TextBlock::GetFittingOption(int32 fittingType)
+int32 TextBlock::GetFittingOption()
 {
 	return fittingType;
 }
@@ -789,7 +789,7 @@ void TextBlock::DrawToBuffer(int16 *buf)
         
 		if (buf)
 		{
-			realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, 0, text, true);
+			realSize = font->DrawStringToBuffer(buf, cacheDx, cacheDy, 0, 0, 0, 0, drawText, true);
 		}
 		else
 		{

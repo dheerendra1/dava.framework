@@ -381,6 +381,7 @@ public:
 	bool IsTiled() const;
 		//added for tiles end
 	
+    b2Vec2 GetForces() const { return m_force; }
 
 private:
 

@@ -35,14 +35,12 @@ void LandscapeTestScreen::LoadResources()
     RenderManager::Instance()->SetFPS(30.0);
 	scene = new Scene();
     
-    
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(0, 0, 480, 320));
     //scene3dView->SetDebugDraw(true);
     scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
-    
     
     camera = new Camera(scene);
     scene->AddCamera(camera);
@@ -52,6 +50,7 @@ void LandscapeTestScreen::LoadResources()
     camera->SetUp(Vector3(0.0f, 0.0f, 1.0f));
     camera->SetPosition(Vector3(0.0f, 0.0f, 10.0f));
     scene->SetCurrentCamera(camera);
+    scene->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
  
     LandscapeNode * node = new LandscapeNode(scene);
     AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
@@ -78,11 +77,11 @@ void LandscapeTestScreen::LoadResources()
     scene->AddNode(node);
     SafeRelease(node);
     
-    SceneFile * file = new SceneFile();
-    file->SetDebugLog(true);
-    file->LoadScene("~res:/Scenes/level0/scene.sce", scene);
-    scene->AddNode(scene->GetRootNode("~res:/Scenes/level0/scene.sce"));
-    SafeRelease(file);
+//    SceneFile * file = new SceneFile();
+//    file->SetDebugLog(true);
+//    file->LoadScene("~res:/Scenes/hungar/hungar.sce", scene);
+//    scene->AddNode(scene->GetRootNode("~res:/Scenes/hungar/hungar.sce"));
+//    SafeRelease(file);
 
 	inTouch = false;
     
@@ -105,7 +104,7 @@ void LandscapeTestScreen::LoadResources()
     angleJoypad->GetBackground()->SetSprite("~res:/Gfx/Joypad/joypad", 0);
     angleJoypad->SetStickSprite("~res:/Gfx/Joypad/joypad", 1);
 	AddControl(angleJoypad);
-}  
+}
 
 void LandscapeTestScreen::UnloadResources()
 {

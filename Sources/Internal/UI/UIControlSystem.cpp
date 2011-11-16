@@ -172,10 +172,32 @@ void UIControlSystem::ProcessScreenLogic()
 				loadingTransition->StartTransition(currentScreen, nextScreen);
 				
 				// Manage transfer to loading transition through InTransition of LoadingTransition
-				loadingTransition->GetInTransition()->StartTransition(currentScreen, loadingTransition);
-				currentScreen = SafeRetain(loadingTransition->GetInTransition());
+                if (loadingTransition->GetInTransition())
+                {
+                    loadingTransition->GetInTransition()->StartTransition(currentScreen, loadingTransition);
+                    currentScreen = SafeRetain(loadingTransition->GetInTransition());
+                }
+                else 
+                {
+                    if(currentScreen)
+                    {
+                        currentScreen->SystemWillDisappear();
+                        if ((nextScreen == 0) || (currentScreen->GetGroupId() != nextScreen->GetGroupId()))
+                        {
+                            currentScreen->UnloadGroup();
+                        }
+                        currentScreen->SystemDidDisappear();
+                    }
+                        // if we have next screen we load new resources, if it equal to zero we just remove screen
+                    loadingTransition->LoadGroup();
+                    loadingTransition->SystemWillAppear();
+                    currentScreen = loadingTransition;
+                    loadingTransition->SystemDidAppear();
+                }
+
 			}
-		}else	// if there is no transition do change immediatelly
+		}
+        else	// if there is no transition do change immediatelly
 		{	
 			// if we have current screen we call events, unload resources for it group
 			if(currentScreen)
@@ -192,9 +214,12 @@ void UIControlSystem::ProcessScreenLogic()
 			{
 				nextScreen->LoadGroup();
 				nextScreen->SystemWillAppear();
-				nextScreen->SystemDidAppear();
 			}
 			currentScreen = nextScreen;
+            if (nextScreen) 
+            {
+				nextScreen->SystemDidAppear();
+            }
 			
 			UnlockInput();
 		}

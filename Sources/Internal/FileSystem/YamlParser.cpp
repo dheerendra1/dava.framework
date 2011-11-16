@@ -148,6 +148,26 @@ Vector2	YamlNode::AsPoint()
 	return result;
 }
 
+Vector3 YamlNode::AsVector3()
+{
+	Vector3 result(0, 0, 0);
+	if (type == TYPE_ARRAY)
+	{
+		YamlNode * x = Get(0);
+		if (x)
+            result.x = x->AsFloat();
+        
+		YamlNode * y = Get(1);
+		if (y)
+            result.y = y->AsFloat();
+        
+		YamlNode * z = Get(2);
+		if (z)
+            result.z = z->AsFloat();
+	}
+	return result;        
+}
+    
 Vector2 YamlNode::AsVector2()
 {
 	return AsPoint();

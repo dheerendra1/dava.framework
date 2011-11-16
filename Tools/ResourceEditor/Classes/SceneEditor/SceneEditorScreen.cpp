@@ -30,12 +30,10 @@
 
 void SceneEditorScreen::LoadResources()
 {
-    //RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
-
+    RenderManager::Instance()->EnableOutputDebugStatsEveryNFrame(30);
     GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     GetBackground()->SetColor(Color(0.7f, 0.7f, 0.7f, 1.0f));
 
-    
     scene = new Scene();
 
     
@@ -44,56 +42,69 @@ void SceneEditorScreen::LoadResources()
 //    scene->AddNode(scene->GetRootNode("~res:/Scenes/vit/scene.sce"));
 //	SafeRelease(file);
         
-    
+
 	scene3dView = 0;
     scene3dView = new UI3DView(Rect(200, 100, 480, 320));
     scene3dView->SetDebugDraw(true);
-    scene3dView->SetScene(scene);
     scene3dView->SetInputEnabled(false);
     AddControl(scene3dView);
 
-/*
+    // Camera setup
+    cameraController = new WASDCameraController(40);
     Camera * cam = new Camera(scene);
-    scene->AddCamera(cam);
-    cam->Setup(70.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
-    scene->SetCurrentCamera(cam);
+    cam->SetName("editor-camera");
     cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
     cam->SetUp(Vector3(0.0f, 0.0f, 1.0f));
-    
-//    Camera * cam = scene->GetCamera(0);
-//    cam->Setup(83.0f, 480.0f / 320.0f, 1.0f, 5000.0f); 
-//    scene->SetCurrentCamera(cam);
-//    //cam->SetFOV(90.0f);
-//    cam->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
-//    
-//    Camera * cam2 = scene->GetCamera(0);
-//    scene->SetClipCamera(cam2);
-    
-    // 483, -2000, 119
-    LandscapeNode * node = new LandscapeNode(scene);
-    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 22.7f));
-    
-    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
-#if 0
-    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
+    cam->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+    cam->SetTarget(Vector3(1.0f, 0.0f, 0.0f));
 
-    Texture::EnableMipmapGeneration();
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
-    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
-    Texture::DisableMipmapGeneration();
-#else
-    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
+    cam->Setup(70.0f, 320.0f / 480.0f, 1.0f, 5000.0f); 
+
+    scene->AddNode(cam);
+    scene->AddCamera(cam);
+    scene->SetCurrentCamera(cam);
+    cameraController->SetCamera(cam);
+
+    Camera * cam2 = new Camera(scene);
+    cam2->SetName("editor-top-camera");
+    cam2->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
+    cam2->SetUp(Vector3(1.0f, 0.0f, 0.0f));
+    cam2->SetPosition(Vector3(0.0f, 0.0f, 200.0f));
+    cam2->SetTarget(Vector3(0.0f, 0.0f, 0.0f));
     
-    Texture::EnableMipmapGeneration();
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
-    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
-    Texture::DisableMipmapGeneration();
-#endif
+    cam2->Setup(70.0f, 320.0f / 480.0f, 1.0f, 5000.0f); 
     
-    node->SetName("landscapeNode");
-    scene->AddNode(node);
-    */
+    scene->AddNode(cam2);
+    scene->AddCamera(cam2);
+//    
+//    
+//    
+//    // 483, -2000, 119
+//    LandscapeNode * node = new LandscapeNode(scene);
+//    node->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL);
+//    AABBox3 box(Vector3(198, 201, 0), Vector3(-206, -203, 13.7f));
+//    
+//    //node->SetDebugFlags(LandscapeNode::DEBUG_DRAW_ALL);
+//#if 1
+//    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_DETAIL_SHADER, "~res:/Landscape/hmp2_1.png", box);
+//
+//    Texture::EnableMipmapGeneration();
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/tex3.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_DETAIL, "~res:/Landscape/detail_gravel.png");
+//    Texture::DisableMipmapGeneration();
+//#else  
+//    node->BuildLandscapeFromHeightmapImage(LandscapeNode::RENDERING_MODE_BLENDED_SHADER, "~res:/Landscape/hmp2_1.png", box);
+//    
+//    Texture::EnableMipmapGeneration();
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE0, "~res:/Landscape/blend/d.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTURE1, "~res:/Landscape/blend/s.png");
+//    node->SetTexture(LandscapeNode::TEXTURE_TEXTUREMASK, "~res:/Landscape/blend/mask.png");
+//    Texture::DisableMipmapGeneration();
+//#endif
+//    
+//    node->SetName("landscapeNode");
+//    scene->AddNode(node);
+    
     
     sceneTree = new UIHierarchy(Rect(0, 100, 200, size.y - 120));
     sceneTree->SetCellHeight(20);
@@ -106,8 +117,6 @@ void SceneEditorScreen::LoadResources()
     
     selectedNode = 0;
     
-    cameraController = new WASDCameraController(40);
-    // cameraController->SetCamera(cam);
     
     
     activePropertyPanel = 0;
@@ -130,14 +139,19 @@ void SceneEditorScreen::LoadResources()
     lookAtButton->GetStateBackground(UIControl::STATE_DISABLED)->SetColor(Color(0.2, 0.2, 0.2, 0.2));
     lookAtButton->SetStateFont(UIControl::STATE_NORMAL, f);
     lookAtButton->SetStateText(UIControl::STATE_NORMAL, L"Look At Object");
-    
+        
     removeNodeButton = dynamic_cast<UIButton*>(lookAtButton->Clone());
     removeNodeButton->SetStateFont(UIControl::STATE_NORMAL, f);
     removeNodeButton->SetStateText(UIControl::STATE_NORMAL, L"Remove Object");
+
+    enableDebugFlagsButton = dynamic_cast<UIButton*>(lookAtButton->Clone());
+    enableDebugFlagsButton->SetStateFont(UIControl::STATE_NORMAL, f);
+    enableDebugFlagsButton->SetStateText(UIControl::STATE_NORMAL, L"Debug Flags");
     SafeRelease(f);
     
     lookAtButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnLookAtButtonPressed));
     removeNodeButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnRemoveNodeButtonPressed));
+    enableDebugFlagsButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnEnableDebugFlagsPressed));
 
     
     activePropertyPanel = new PropertyPanel(Rect(720, 100, 300, size.y - 120));
@@ -152,6 +166,7 @@ void SceneEditorScreen::LoadResources()
     nodeBoundingBoxMax = SafeRetain(activePropertyPanel->AddHeader(L"-"));
     activePropertyPanel->AddPropertyControl(lookAtButton);
     activePropertyPanel->AddPropertyControl(removeNodeButton);
+    activePropertyPanel->AddPropertyControl(enableDebugFlagsButton);
     
     AddControl(activePropertyPanel);
     
@@ -160,10 +175,36 @@ void SceneEditorScreen::LoadResources()
     fileSystemDialog->SetCurrentDir("/Sources/dava.framework/Tools/Bin");
     
     CreateTopMenu();
+    
+    // Camera info
+    {
+        FTFont * font = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
+        font->SetSize(12.0f);
+        font->SetColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
+        
+        cameraInfo = new UIStaticText(Rect(10, 21, 600, 20));
+        cameraInfo->SetAlign(ALIGN_LEFT | ALIGN_VCENTER);
+        cameraInfo->SetFont(font);
+        cameraInfo->SetText(L"");
+        
+        
+        clipCameraInfo = new UIStaticText(Rect(10, 41, 600, 20));
+        clipCameraInfo->SetAlign(ALIGN_LEFT | ALIGN_VCENTER);
+        clipCameraInfo->SetFont(font);
+        clipCameraInfo->SetText(L"");
+        SafeRelease(font);
+        
+        AddControl(cameraInfo);
+        AddControl(clipCameraInfo);
+    }
+    scene3dView->SetScene(scene);
 }
 
 void SceneEditorScreen::UnloadResources()
 {
+    SafeRelease(clipCameraInfo);
+    SafeRelease(cameraInfo);
+    
     ReleaseTopMenu();
     
     SafeRelease(nodeName);
@@ -171,6 +212,7 @@ void SceneEditorScreen::UnloadResources()
     SafeRelease(nodeBoundingBoxMax);
     SafeRelease(lookAtButton);
     SafeRelease(removeNodeButton);
+    SafeRelease(enableDebugFlagsButton);
     
     
     SafeRelease(cameraController);
@@ -186,7 +228,7 @@ void SceneEditorScreen::CreateTopMenu()
     f->SetSize(12);
     f->SetColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
     
-    openButton = new UIButton(Rect(0, 0, 150, 30));
+    openButton = new UIButton(Rect(0, 0, 150, 20));
     openButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     openButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
     openButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
@@ -199,7 +241,7 @@ void SceneEditorScreen::CreateTopMenu()
     
     AddControl(openButton);
     
-    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 30));
+    convertButton = new UIButton(Rect(openButton->GetRect().x + openButton->GetRect().dx + 4.0f, 0, 150, 20));
     convertButton->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     convertButton->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.0, 0.0, 0.0, 0.5));
     convertButton->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
@@ -211,6 +253,7 @@ void SceneEditorScreen::CreateTopMenu()
     convertButton->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &SceneEditorScreen::OnTopMenuConvertPressed));
     
     AddControl(convertButton);
+    
     SafeRelease(f);
 }  
 
@@ -271,10 +314,10 @@ void SceneEditorScreen::OnFileSytemDialogCanceled(UIFileSystemDialog *forDialog)
 
 void SceneEditorScreen::WillAppear()
 {
-    for (int32 k = 0; k < 32; ++k)
-    {
-        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
-    }
+//    for (int32 k = 0; k < 32; ++k)
+//    {
+//        Logger::Debug("%d clz: %d", k, CountLeadingZeros ( 1 << k));  
+//    }
 }
 
 void SceneEditorScreen::WillDisappear()
@@ -337,6 +380,37 @@ void SceneEditorScreen::Input(UIEvent * event)
 
 void SceneEditorScreen::Update(float32 timeElapsed)
 {
+    Camera * cam = scene->GetCurrentCamera();
+    Camera * frustumCam = scene->GetClipCamera();
+    
+    if (!cam)
+    {
+        cameraInfo->SetText(L"no active camera");
+    }else
+    {
+        WideString cameraInfoString = Format(L"cam: %s pos(%f, %f, %f) dir(%f, %f, %f) up(%f, %f, %f)", 
+                                             cam->GetName().c_str(), 
+                                             cam->GetPosition().x, cam->GetPosition().y, cam->GetPosition().z, 
+                                             cam->GetDirection().x, cam->GetDirection().y, cam->GetDirection().z, 
+                                             cam->GetUp().x, cam->GetUp().y, cam->GetUp().z);
+        cameraInfo->SetText(cameraInfoString);
+    }
+    
+    if (!frustumCam)
+    {
+        clipCameraInfo->SetText(L"no clip camera");
+    }else if (frustumCam == cam)
+    {
+        clipCameraInfo->SetText(L"same camera");
+    }else
+    {
+        WideString cameraInfoString = Format(L"cam: %s pos(%f, %f, %f) dir(%f, %f, %f) up(%f, %f, %f)", 
+                                             frustumCam->GetName().c_str(), 
+                                             frustumCam->GetPosition().x, frustumCam->GetPosition().y, frustumCam->GetPosition().z, 
+                                             frustumCam->GetDirection().x, frustumCam->GetDirection().y, frustumCam->GetDirection().z, 
+                                             frustumCam->GetUp().x, frustumCam->GetUp().y, frustumCam->GetUp().z);
+        clipCameraInfo->SetText(cameraInfoString);
+    }
     
 //    Camera * cam = scene->GetCamera(0);
 //    Vector3 pos = cam->GetPosition();
@@ -477,9 +551,13 @@ void SceneEditorScreen::OnCellSelected(UIHierarchy *forHierarchy, UIHierarchyCel
 //        //    turretN->localTransform.CreateScale(Vector3(0.7, 0.7, 0.7));
 //        turretN->localTransform.CreateRotation(Vector3(0,0,1), DegToRad(90));
 //        turretN->SetDebugFlags();
+
         
-        //localMatrixControl->SetMatrix(&selectedNode->GetLocalTransform());
-        //worldMatrixControl->SetMatrix(&selectedNode->GetWorldTransform());
+        selectedNodeLocalTransform = selectedNode->GetLocalTransform();
+        selectedNodeWorldTransform = selectedNode->GetWorldTransform();
+        
+        localMatrixControl->SetMatrix(&selectedNodeLocalTransform);
+        worldMatrixControl->SetMatrix(&selectedNodeWorldTransform);
         
         nodeName->SetText(StringToWString(selectedNode->GetFullName()));
     }
@@ -508,6 +586,20 @@ void SceneEditorScreen::OnRemoveNodeButtonPressed(BaseObject * obj, void *, void
             parentNode->RemoveNode(selectedNode);
             selectedNode = 0;
             sceneTree->Refresh();
+        }
+    }
+}
+
+void SceneEditorScreen::OnEnableDebugFlagsPressed(BaseObject * obj, void *, void *)
+{
+    if (selectedNode)
+    {
+        if (selectedNode->GetDebugFlags() & SceneNode::DEBUG_DRAW_ALL)
+        {
+            selectedNode->SetDebugFlags(0, true);
+        }else
+        {
+            selectedNode->SetDebugFlags(SceneNode::DEBUG_DRAW_ALL, true);
         }
     }
 }
