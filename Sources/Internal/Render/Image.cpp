@@ -428,6 +428,58 @@ Image * Image::CreateFromFile(const String & pathName)
 
 #endif //	
 
+void Image::Resize(int32 newWidth, int32 newHeight)
+{
+    if(newWidth>0 && newHeight>0)
+    {
+        uint8 * newData = NULL;
+        uint8 formatSize = GetFormatSize(format);
+        
+        if(formatSize>0)
+        {
+            newData = new uint8[newWidth * newHeight * formatSize];
+            
+            int32 currentLine = 0;
+            int32 indexOnLine = 0;
+            int32 indexInOldData = 0;
+            
+            for(int32 i = 0; i < newWidth * newHeight * formatSize; ++i)
+            {
+                if((currentLine+1)*newWidth*formatSize<=i)
+                {
+                    currentLine++;
+                }
+                
+                indexOnLine = i - currentLine*newWidth*formatSize;
+
+                if(currentLine<height)
+                {
+                    // within height of old image
+                    if(indexOnLine<width*formatSize)
+                    {
+                        // we have data in old image for new image
+                        indexInOldData = currentLine*width*formatSize + indexOnLine;
+                        newData[i] = data[indexInOldData];
+                    }
+                    else
+                    {
+                        newData[i] = 0;
+                    }
+                }
+                else
+                {
+                    newData[i] = 0;
+                }
+            }
+            
+            // resized data
+            width = newWidth;
+            height = newHeight;
+            SafeDelete(data);
+            data = newData;
+        }
+    }
+}
 
 void Image::Save(const String & filename)
 {

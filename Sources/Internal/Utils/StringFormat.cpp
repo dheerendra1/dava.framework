@@ -34,8 +34,6 @@
 
 namespace DAVA
 {
-
-
 static const int32 FORMAT_STRING_SIZE = 2048;
 static const int32 FORMAT_STRING_MAX_LEN = 256;
 
@@ -45,7 +43,7 @@ static int32 formatString8Position = 0;
 static int32 formatString16Position = 0;
 
 //! formatting function (use printf syntax)
-const char8 * Format(const char8 * text, ...)
+const char8* Format(const char8 * text, ...)
 {
 	if (formatString8Position + FORMAT_STRING_MAX_LEN >= FORMAT_STRING_SIZE)
 	{
@@ -63,8 +61,8 @@ const char8 * Format(const char8 * text, ...)
 
 	return &formatString8[formatString8Position  - (len + 1)];
 }
-	
-const char8 * GetIndentString(char8 indentChar, int32 level)
+
+const char8* GetIndentString(char8 indentChar, int32 level)
 {
 	if (formatString8Position + FORMAT_STRING_MAX_LEN >= FORMAT_STRING_SIZE)
 	{
@@ -80,13 +78,13 @@ const char8 * GetIndentString(char8 indentChar, int32 level)
 	formatString8Position += (level + 1);
 	return &formatString8[formatString8Position  - (level + 1)];
 }
-	
-	
-	
 
+//  Format(L"") use case with WideString parameter:
+//         WideString info( Format(L"%ls", tank->GetName().c_str()) ); // tank->GetName() -> WideString&
+//         activeTankInfo->SetText(info);
 
-//! formatting function (use printf syntax)
-const char16 * Format(const char16 * text, ...)
+//! formatting function (use printf syntax (%ls for WideString))
+const char16* Format(const char16 * text, ...)
 {
 	if (formatString16Position + FORMAT_STRING_MAX_LEN >= FORMAT_STRING_SIZE)
 	{
@@ -108,7 +106,7 @@ const char16 * Format(const char16 * text, ...)
 	return &formatString16[formatString16Position - (len + 1)];
 }
 
-const char8 * FormatVL(const char8 * text, va_list ll)
+const char8* FormatVL(const char8 * text, va_list ll)
 {
 	if (formatString8Position + FORMAT_STRING_MAX_LEN >= FORMAT_STRING_SIZE)
 	{
@@ -122,7 +120,7 @@ const char8 * FormatVL(const char8 * text, va_list ll)
 	return &formatString8[formatString8Position  - (len + 1)];
 }
 
-const char16 * FormatVL(const char16 * text, va_list ll)
+const char16* FormatVL(const char16 * text, va_list ll)
 {
 	if (formatString16Position + FORMAT_STRING_MAX_LEN >= FORMAT_STRING_SIZE)
 	{
@@ -138,7 +136,4 @@ const char16 * FormatVL(const char16 * text, va_list ll)
 	formatString16Position += (len + 1);
 	return &formatString16[formatString16Position - (len + 1)];
 }
-	
-	
-
 }; // end of namespace Log

@@ -81,6 +81,8 @@ public:
 	
 	void Save(const String & filename);
     
+    // changes size of image to required size, if new size is bigger, sets 0 to all new pixels
+    void Resize(int32 newWidth, int32 newHeight);
     
     /*
         \todo extract all image format conversion functions to separate functions to allow to use them in different places, like textures.

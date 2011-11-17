@@ -155,22 +155,22 @@ void RenderManager::PrepareRealMatrix()
         mappingMatrixChanged = false;
         Vector2 realDrawScale(viewMappingDrawScale.x * userDrawScale.x, viewMappingDrawScale.y * userDrawScale.y);
         Vector2 realDrawOffset(viewMappingDrawOffset.x + userDrawOffset.x * viewMappingDrawScale.x, viewMappingDrawOffset.y + userDrawOffset.y * viewMappingDrawScale.y);
+	
+	if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
+	{
+
+		currentDrawScale = realDrawScale;
+		currentDrawOffset = realDrawOffset;
+
         
-        if (realDrawScale != currentDrawScale || realDrawOffset != currentDrawOffset) 
-        {
-            
-            currentDrawScale = realDrawScale;
-            currentDrawOffset = realDrawOffset;
-            
-            
-            Matrix4 glTranslate, glScale;
-            glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
-            glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
-            
-            glTranslate = glScale * glTranslate;
-            SetMatrix(MATRIX_MODELVIEW, glTranslate);
-        }
+        Matrix4 glTranslate, glScale;
+        glTranslate.glTranslate(currentDrawOffset.x, currentDrawOffset.y, 0.0f);
+        glScale.glScale(currentDrawScale.x, currentDrawScale.y, 1.0f);
+        
+        glTranslate = glScale * glTranslate;
+        SetMatrix(MATRIX_MODELVIEW, glTranslate);
     }
+}
 }
 	
 
@@ -442,16 +442,16 @@ void RenderManager::FlushState()
 	{
         if (GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
         {
-            if(newTextureEnabled)
-            {
-                RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
-            }
-            else
-            {
-                RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
-            }
-            oldTextureEnabled = newTextureEnabled;
-        }
+		if(newTextureEnabled)
+		{
+			RENDER_VERIFY(glEnable(GL_TEXTURE_2D));
+		}
+		else
+		{
+			RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
+		}
+		oldTextureEnabled = newTextureEnabled;
+	}
 	}
     
     if (cullingEnabled != oldCullingEnabled)
@@ -820,7 +820,7 @@ void RenderManager::AttachRenderData(Shader * shader)
         if (GetRenderer() == Core::RENDERER_OPENGL)
         {
             if (oldVertexArrayEnabled)
-            {
+        {
                 EnableVertexArray(false);
                 pointerArraysRendererState = 0;
             }
@@ -828,8 +828,8 @@ void RenderManager::AttachRenderData(Shader * shader)
             {
                 EnableTextureCoordArray(false);
                 pointerArraysRendererState = 0;
-            }
         }
+    }
 
         int32 currentEnabledAttribCount = 0;
         //glDisableVertexAttribArray(0);

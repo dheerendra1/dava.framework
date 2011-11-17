@@ -295,6 +295,7 @@ public:
 	void SystemProcessFrame();
 	void SystemAppFinished();
 
+    inline bool IsActive();
 	void SetIsActive(bool isActive);
 	
 	virtual void GoBackground();	
@@ -342,6 +343,11 @@ private:
 
 float32 GetScreenWidth();
 float32 GetScreenHeight();
+    
+inline bool Core::IsActive()
+{
+    return isActive;
+}
 
 };
 
