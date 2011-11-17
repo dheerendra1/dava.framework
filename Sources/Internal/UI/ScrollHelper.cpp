@@ -214,14 +214,9 @@ namespace DAVA
 				}
 			}
 			
-
-			
-			
 			moves.clear();
 			totalDeltaTime = 0;
 			totalDeltaMove = 0;
-            
-            Logger::Debug("ScrollHelper::GetPosition positionDelta=%f position=%f",positionDelta, position);
 		}
 		
 		return position;
