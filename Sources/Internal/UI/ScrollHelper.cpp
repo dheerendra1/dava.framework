@@ -143,7 +143,6 @@ namespace DAVA
 				speed = totalDeltaMove / totalDeltaTime;
 				speed = Min(speed, virtualViewSize * 2);
 				speed = Max(speed, -virtualViewSize * 2);
-				Logger::Info("inertion speed = %f", speed);
 			}
 			
 			if(position > 0)
