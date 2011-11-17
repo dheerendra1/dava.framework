@@ -288,6 +288,7 @@
     <ClInclude Include="..\..\Sources\Internal\Scene2D\GameObject.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene2D\GameObjectAnimations.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene2D\GameObjectManager.h" />
+    <ClInclude Include="..\..\Sources\Internal\Scene2D\TextGameObject.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\BoneNode.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\Camera.h" />
     <ClInclude Include="..\..\Sources\Internal\Scene3D\Frustum.h" />
@@ -515,6 +516,7 @@
     <ClCompile Include="..\..\Sources\Internal\Scene2D\GameObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene2D\GameObjectAnimations.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene2D\GameObjectManager.cpp" />
+    <ClCompile Include="..\..\Sources\Internal\Scene2D\TextGameObject.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\BoneNode.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\Camera.cpp" />
     <ClCompile Include="..\..\Sources\Internal\Scene3D\Frustum.cpp" />
