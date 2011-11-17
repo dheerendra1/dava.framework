@@ -52,9 +52,9 @@ public:
 
 	Color color;
 	Color drawColor;
-	Vector2 position;
+	Vector3 position;
 	Vector2 size;
-	Vector2 velocity;
+	Vector3 velocity;
 	float32 angle;
 	float32 spin;
 
@@ -65,8 +65,8 @@ public:
 	float32 velocityOverLife;
 	float32 spinOverLife;
 
-	Vector2 force0;
-	float32 forceOverLife0;
+	Vector<Vector3> forces;
+	Vector<float32> forcesOverLife;
 	int32	frame;
 	
 	friend class ParticleEmitter;

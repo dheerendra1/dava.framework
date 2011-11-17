@@ -146,11 +146,19 @@
 {
 
 	DAVA::RenderManager::Instance()->Lock();
-	[renderer startRendering];
-	
+    
+    if(DAVA::Core::Instance()->IsActive())
+    {
+        [renderer startRendering];
+	}
+        
 	DAVA::Core::Instance()->SystemProcessFrame();
 	
-	[renderer endRendering];
+    if(DAVA::Core::Instance()->IsActive())
+    {
+        [renderer endRendering];
+    }
+    
 	DAVA::RenderManager::Instance()->Unlock();
 	
 	if(currFPS != DAVA::RenderManager::Instance()->GetFPS())

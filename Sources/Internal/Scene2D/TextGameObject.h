@@ -25,50 +25,38 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Kiryl Polyakov 
 =====================================================================================*/
-#include "Render/2D/Sprite.h"
-#include "Render/RenderManager.h"
-#include "Particles/Particle.h"
+#ifndef __TEXT_GAME_OBJECT__
+#define __TEXT_GAME_OBJECT__
 
-namespace DAVA 
+#include "Scene2D/GameObject.h"
+
+namespace DAVA
 {
-
-Particle::Particle()
+    class Font;
+    struct TextBlock;
+/**
+	\ingroup scene2d
+	\brief represent text as game object
+ */
+class TextGameObject : public GameObject
 {
-    
-}
+public: // from UIStaticText
+    TextGameObject(const Rect &rect);
+    TextGameObject(const Rect &rect, Font *font, const WideString &string);
 
-Particle::~Particle()
-{
-    
-}
+    void SetText(const WideString &string, const Vector2 &requestedTextRectSize = Vector2(0,0));
+    void SetFont(Font *font, bool prepareSprite = true);
+    void SetMultiline(bool isMultilineEnabled);
+    void SetFittingOption(int32 fittingType);
+    void SetAlign(int32 alignment);
 
-bool Particle::Update(float32 timeElapsed)
-{
-	life += timeElapsed;
-	if (life >= lifeTime)
-	{
-		return false;
-	}
+protected:
+    void PrepareSprite();
 
-	position += velocity * timeElapsed * velocityOverLife;
-	angle += spin * timeElapsed * spinOverLife;
-    for(int i = 0; i < Min(forces.size(), forcesOverLife.size()); i++)
-        velocity += forces[i] * forcesOverLife[i] * timeElapsed;
-	return true;
-}
-
-void Particle::Draw()
-{
-	if (IsDead())return;
-	RenderManager::Instance()->SetColor(drawColor.r, drawColor.g, drawColor.b, drawColor.a);
-	sprite->SetAngle(angle);
-	sprite->SetPosition(position.x, position.y);
-	sprite->SetScale(size.x * sizeOverLife, size.y * sizeOverLife);
-	sprite->SetFrame(frame);
-	sprite->Draw();
-}
-
+protected:
+    TextBlock *textBlock;
 };
-
+};
+#endif // __TEXT_GAME_OBJECT__

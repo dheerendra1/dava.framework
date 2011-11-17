@@ -1,9 +1,9 @@
 /*
  *  TestScreen.cpp
- *  TemplateProjectMacOS
+ *  ParticlesEditor
  *
- *  Created by Vitaliy  Borodovsky on 3/21/10.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Created by Igor Solovey on 11/2/11.
+ *  Copyright 2010 DAVA Consulting. All rights reserved.
  *
  */
 
@@ -25,6 +25,7 @@ PropertyLineEditControl::PropertyLineEditControl()
 	SetClipContents(true);
 	
 	activeValueIndex = -1;
+    selectedValueIndex = -1;
     
     text = new UIStaticText(Rect(0, 0, 10, 15));
     Font *font = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
@@ -32,6 +33,7 @@ PropertyLineEditControl::PropertyLineEditControl()
     font->SetColor(Color(1,1,1,1));
     text->SetFont(font);
     AddControl(text);
+    SafeRelease(font);
 }
 
 PropertyLineEditControl::~PropertyLineEditControl()
@@ -48,6 +50,17 @@ void PropertyLineEditControl::SetMinY(float32 min)
 {
     minY = min;
 }
+
+void PropertyLineEditControl::SetMinX(float32 value)
+{
+    minX = value;
+}
+
+void PropertyLineEditControl::SetMaxX(float32 value)
+{
+    maxX = value;
+}
+
 const Rect & PropertyLineEditControl::GetWorkZone()
 {
 	workZone = GetRect();
@@ -64,6 +77,8 @@ void PropertyLineEditControl::Reset()
 	values.push_back(PropertyRect(0.0f, 0.5f));
 	values.push_back(PropertyRect(1.0f, 0.5f));
 	activeValueIndex = -1;
+    selectedValueIndex = -1;
+    delegate->OnPointSelected(this, -1, Vector2(0, 0));
 }
 
 int32 PropertyLineEditControl::FindActiveValueFromPosition(const Vector2 & absolutePoint)
@@ -121,6 +136,8 @@ void PropertyLineEditControl::DeletePoint(float32 t)
     {
         values.erase( values.begin() + k );
     }
+    selectedValueIndex = -1;
+    delegate->OnPointSelected(this, -1, Vector2(0, 0));
 }
 
 void PropertyLineEditControl::MovePoint(float32 lastT, float32 newT, float32 newV, bool changeV)
@@ -131,7 +148,19 @@ void PropertyLineEditControl::MovePoint(float32 lastT, float32 newT, float32 new
         {
             values.at(i).x = newT;
             if(changeV)
+            {
                 values.at(i).y = newV;
+            }
+            if(i < values.size() - 1 && values.at(i+1).x == newT)
+            {
+                values.erase(values.begin()+i+1);
+                selectedValueIndex = -1;
+            }
+            if(i > 0 && values.at(i-1).x == newT)
+            {
+                values.erase(values.begin()+i-1);
+                selectedValueIndex = -1;
+            }
             break;
         }
     }
@@ -139,8 +168,6 @@ void PropertyLineEditControl::MovePoint(float32 lastT, float32 newT, float32 new
 
 void PropertyLineEditControl::Input(UIEvent * touch)
 {
-	//UIGeometricData geoData = GetGeometricData();
-	//relativePoint -= geoData.position;
 	Vector2 absolutePoint = touch->point;
 	
 	if (touch->tid == UIEvent::BUTTON_1)
@@ -150,6 +177,8 @@ void PropertyLineEditControl::Input(UIEvent * touch)
 		if (touch->phase == UIEvent::PHASE_BEGAN)
 		{
 			activeValueIndex = FindActiveValueFromPosition(absolutePoint);
+            selectedValueIndex = activeValueIndex;
+            delegate->OnPointSelected(this, activeValueIndex, Vector2(values[activeValueIndex].x, values[activeValueIndex].y));
             lastX = values[activeValueIndex].x;
             lastY = values[activeValueIndex].y;
 		}
@@ -172,6 +201,7 @@ void PropertyLineEditControl::Input(UIEvent * touch)
                 values[activeValueIndex].y = lastY;
                 
                 delegate->OnPointMove(this, lastX, tx, ty);
+                delegate->OnPointSelected(this, activeValueIndex, Vector2(values[activeValueIndex].x, values[activeValueIndex].y));
             }
 			activeValueIndex = -1;
 		}
@@ -201,9 +231,21 @@ void PropertyLineEditControl::Input(UIEvent * touch)
     {
         PropertyRect r(0, 0);
         FromMouseToPoint(absolutePoint, r);
-        delegate->OnMouseMove(r.x);
+        curTime = r.x;
+        delegate->OnMouseMove(this, r.x);
     }
 }
+
+void PropertyLineEditControl::SetCurTime(float32 t)
+{
+    curTime = t;
+}
+
+float32 PropertyLineEditControl::GetCurTime()
+{
+    return curTime;
+}
+
 
 void PropertyLineEditControl::Update(float32 timeElapsed)
 {
@@ -232,6 +274,28 @@ void PropertyLineEditControl::SetByPropertyLine(PropertyLineKeyframes<float32> *
 Vector<PropertyLineEditControl::PropertyRect> & PropertyLineEditControl::GetValues()
 {
     return values;
+}
+
+bool PropertyLineEditControl::GetSelectedValue(Vector2 &v)
+{
+    if(selectedValueIndex != -1)
+        v = Vector2(values[selectedValueIndex].x, values[selectedValueIndex].y);
+    else
+        return false;
+    return true;
+}
+
+void PropertyLineEditControl::SetSelectedValue(Vector2 v)
+{
+    if(selectedValueIndex != -1)
+    {
+        delegate->OnPointMove(this, values[selectedValueIndex].x, v.x, v.y);
+    }
+}
+
+void PropertyLineEditControl::DeselectPoint()
+{
+    selectedValueIndex = -1;
 }
 
 void PropertyLineEditControl::FromMouseToPoint(Vector2 vec, PropertyRect & rect)
@@ -302,6 +366,9 @@ void PropertyLineEditControl::Draw(const UIGeometricData &geometricData)
     
     const Rect & cRect = GetWorkZone();
     
+    RenderManager::Instance()->SetColor(0.8f, 0.6f, 0.6f, 1.0f);
+    RenderHelper::Instance()->DrawLine(CalcRealPosition(PropertyRect(curTime, maxY)), CalcRealPosition(PropertyRect(curTime, minY)));
+    
 	RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 0.9f);
 	RenderHelper::Instance()->DrawRect(cRect);
     
@@ -326,6 +393,20 @@ void PropertyLineEditControl::Draw(const UIGeometricData &geometricData)
 	for (int32 k = 0; k < (int32)values.size(); ++k)
 	{
 		Vector2 pos = CalcRealPosition(values[k]);
-		RenderHelper::Instance()->DrawRect(RectFromPosition(pos));
+        if(activeValueIndex == k)
+        {
+            RenderManager::Instance()->SetColor(0.6f, 0.6f, 0.6f, 1.0f);
+            RenderHelper::Instance()->FillRect(RectFromPosition(pos));
+        }
+        else if(selectedValueIndex == k)
+        {
+            RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+            RenderHelper::Instance()->FillRect(RectFromPosition(pos));
+        }
+        else
+        {
+            RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+            RenderHelper::Instance()->DrawRect(RectFromPosition(pos));
+        }
 	}
 }
