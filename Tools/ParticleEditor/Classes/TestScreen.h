@@ -196,6 +196,7 @@ protected:
     int32 selectedPropElement;
     int32 selectedAddPropElement;
     int32 selectedForceElement;
+    int32 selectedEmitterTypeElement;
     
     float32 cellH;
     
@@ -229,6 +230,7 @@ protected:
     UIList *propList;
     UIList *addPropList;
     UIList *forcesList;
+    UIList *emitterTypeList;
     
     UITextField *tfkf[2];
     UITextField *tfv[4];
