@@ -45,6 +45,7 @@ namespace DAVA
 class UITextField;
 /**
     \brief  The UITextFieldDelegate interface defines the messages sent to a text field delegate as part of the sequence of editing its text. 
+            All the methods of the interface is optional.
  */
 class UITextFieldDelegate
 {
@@ -53,11 +54,14 @@ public:
 	virtual void TextFieldDidBeginEditing(UITextField * textField);
 	virtual void TextFieldShouldEndEditing(UITextField * textField);
 	virtual void TextFieldShouldDidEditing(UITextField * textField);*/
-	/*
-	 
-	 */
 	
-	virtual void TextFieldShouldReturn(UITextField * textField) = 0;
+    /**
+        \brief Asks the delegate if the text field should process the pressing of the return button.
+        In this function you can check what you want to do with UITextField when return button pressed. 
+     */
+	virtual void TextFieldShouldReturn(UITextField * textField)
+    {
+    };
 
 	/**
         \brief Asks the delegate if the specified text should be changed.
@@ -65,9 +69,12 @@ public:
         \param[in] replacementLocation starting position of range of characters to be replaced
         \param[in] replacementLength ending position of range of characters to be replaced
         \param[in] replacementString the replacement string.
-        \returns true if the specified text range should be replaced; otherwise, false to keep the old text.
+        \returns true if the specified text range should be replaced; otherwise, false to keep the old text. Default implementation returns true.
 	 */
-	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString) = 0;
+	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString)
+    {
+        return true;
+    };
 };
     
 /**
