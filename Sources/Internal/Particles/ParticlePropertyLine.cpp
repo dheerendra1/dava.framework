@@ -103,7 +103,74 @@ RefPtr< PropertyLine<Vector2> > PropertyLineYamlReader::CreateVector2PropertyLin
 
 	return RefPtr< PropertyLine<Vector2> >();
 }
-
+    RefPtr< PropertyLine<Vector3> > PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode( YamlNode * parentNode, const String & propertyName, RefPtr< PropertyLine<Vector3> > defaultPropertyLine /*= 0*/ )
+    {
+        YamlNode * node = parentNode->Get(propertyName);
+        if (!node)return defaultPropertyLine;
+        
+        if (node->GetType() == YamlNode::TYPE_STRING)
+        {
+            if(propertyName == "emissionAngle") // for old emissionAngle compatibility
+            {
+                Vector3 res(0, 0, 0);
+                float32 angle = DegToRad(node->AsFloat());
+                res.x = cosf(angle);
+                res.y = sinf(angle);
+                return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(res));
+            }
+            
+            float32 v = node->AsFloat();
+            return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(Vector3(v, v, v)));
+        }
+        else if (node->GetType() == YamlNode::TYPE_ARRAY)
+        {
+            if(node->GetCount() == 2) // for 2D forces compatibility
+            {
+                Vector3 res(node->AsVector2());
+                res.z = 0.0f;
+                return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(res));
+            }
+            if (node->GetCount() == 3 || node->GetCount() == 2) 
+            {
+                Vector3 res(0.0f, 0.0f, 0.0f);
+                res = node->AsVector3();
+                return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(res));
+            }
+            
+            RefPtr< PropertyLineKeyframes<Vector3> > keyframes (new PropertyLineKeyframes<Vector3>());
+            
+            for (int k = 0; k < node->GetCount() / 2; ++k)
+            {
+                YamlNode * time = node->Get(k * 2);
+                YamlNode * value = node->Get(k * 2 + 1);
+                
+                if (time && value)
+                {
+                    if (value->GetType() == YamlNode::TYPE_ARRAY)
+                    {
+                        keyframes->AddValue(time->AsFloat(), value->AsVector3());
+                    }
+                    else 
+                    {
+                        Vector3 v = value->AsVector3();
+                        if(propertyName == "emissionAngle") // for old emissionAngle compatibility
+                        {
+                            float32 angle = DegToRad(value->AsFloat());
+                            v.x = cosf(angle);
+                            v.y = sinf(angle);
+                            v.z = 0.0f;
+                        }
+                        keyframes->AddValue(time->AsFloat(), v);
+                    }
+                }
+            }
+            return keyframes;
+        }
+        
+        return RefPtr< PropertyLine<Vector3> >();
+    }
+    
+    
 Color ColorFromYamlNode(YamlNode * node)
 {
 	Color c;

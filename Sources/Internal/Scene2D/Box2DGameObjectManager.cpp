@@ -130,9 +130,11 @@ void Box2DGameObjectManager::Update(float32 timeElapsed)
 void Box2DGameObjectManager::Draw()
 {
 	GameObjectManager::Draw();
-	if (debugDraw)
+
+	if(debugDraw)
 	{
 		debugDraw->SetCameraPos(drawState.position);
+        debugDraw->SetPTDRatio(pixelsInMeterRatio * GetCameraScale());
 		box2DWorld->SetDebugDraw(debugDraw);
 		box2DWorld->DrawDebugData();
 	}

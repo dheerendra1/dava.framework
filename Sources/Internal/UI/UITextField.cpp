@@ -135,7 +135,7 @@ void UITextField::SetReturnKey(int32 returnType)
 void UITextField::Update(float32 timeElapsed)
 {
 #ifdef __DAVAENGINE_IPHONE__
-	Rect rect = GetRect(true);
+	Rect rect = GetGeometricData().GetUnrotatedRect();//GetRect(true);
 	textFieldiPhone->UpdateRect(rect);
 #else
 

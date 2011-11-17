@@ -1,9 +1,9 @@
 /*
  *  FileSystemDialog.cpp
- *  SniperEditorMacOS
+ *  ParticlesEditor
  *
  *  Created by Alexey Prosin on 8/25/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
+ *  Copyright 2011 DAVA Consulting. All rights reserved.
  *
  */
 
@@ -396,7 +396,7 @@ UIListCell *FileSystemDialog::CellAtIndex(UIList *forList, int32 index)
         c->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     }
 
-    return c;//returns cell
+    return c;
 }
 
 int32 FileSystemDialog::CellHeight(UIList *forList, int32 index)
