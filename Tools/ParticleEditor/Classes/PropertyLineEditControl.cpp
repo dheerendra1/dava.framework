@@ -50,6 +50,17 @@ void PropertyLineEditControl::SetMinY(float32 min)
 {
     minY = min;
 }
+
+void PropertyLineEditControl::SetMinX(float32 value)
+{
+    minX = value;
+}
+
+void PropertyLineEditControl::SetMaxX(float32 value)
+{
+    maxX = value;
+}
+
 const Rect & PropertyLineEditControl::GetWorkZone()
 {
 	workZone = GetRect();

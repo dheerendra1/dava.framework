@@ -55,6 +55,8 @@ public:
     
     void SetMinY(float32 value);
     void SetMaxY(float32 value);
+    void SetMinX(float32 value);
+    void SetMaxX(float32 value);
     
 	class PropertyRect
 	{

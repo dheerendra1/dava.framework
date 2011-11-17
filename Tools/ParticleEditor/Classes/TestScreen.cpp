@@ -30,10 +30,12 @@
 #include "TestScreen.h"
 #include <sys/time.h>
 
-String emitterProps[] = {"emissionDir", "emissionRage", "radius", "colorOverLife"};
+String emitterProps[] = {"type", "emissionAngle", "emissionRage", "radius", "colorOverLife", "size", "life"};
 String layerProps[] = {"sprite", "life", "lifeVariation", "number", "numberVariation", "size","sizeVariation", "sizeOverLife", "velocity", "velocityVariation", "velocityOverLife", "forces","forcesVariation", "forcesOverLife", "spin", "spinVariation", "spinOverLife", "motionRandom","motionRandomVariation", "motionRandomOverLife", "bounce", "bounceVariation", "bounceOverLife","colorRandom", "alphaOverLife", "colorOverLife"};
+String emitterTypes[] = {"POINT", "LINE", "RECT", "ONCIRCLE"};
 
-int32 emitterPropsCount = 4;
+int32 emitterPropsCount = 7;
+int32 emitterTypesCount = 4;
 int32 layerPropsCount = 26;
 int32 deltaIndex = 0;
 bool curPropType = 0; //0 - value, 1 - Keyframed
@@ -55,7 +57,7 @@ int32 activeKFEdit;
 void TestScreen::LoadResources()
 {
     cellH = GetScreenHeight() / 25;
-    buttonW = GetScreenWidth() / 6;
+    buttonW = GetScreenWidth() / 5;
     float32 thumbSliderW = cellH/4;
 
     sprite = 0;
@@ -67,6 +69,7 @@ void TestScreen::LoadResources()
     selectedPropElement = -1;
     selectedEmitterElement = -1;
     selectedForceElement = -1;
+    selectedEmitterTypeElement = -1;
 
     f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     f->SetSize(18);
@@ -78,7 +81,7 @@ void TestScreen::LoadResources()
     chooseProject->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     chooseProject->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     chooseProject->SetStateFont(UIControl::STATE_NORMAL, f);
-    chooseProject->SetStateText(UIControl::STATE_NORMAL, L"Project");
+    chooseProject->SetStateText(UIControl::STATE_NORMAL, LocalizedString("Project"));
 	chooseProject->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(chooseProject);
     
@@ -88,7 +91,7 @@ void TestScreen::LoadResources()
     newEmitter->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     newEmitter->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     newEmitter->SetStateFont(UIControl::STATE_NORMAL, f);
-    newEmitter->SetStateText(UIControl::STATE_NORMAL, L"New");
+    newEmitter->SetStateText(UIControl::STATE_NORMAL, LocalizedString("New"));
 	newEmitter->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(newEmitter);
     
@@ -98,7 +101,7 @@ void TestScreen::LoadResources()
     loadEmitter->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     loadEmitter->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     loadEmitter->SetStateFont(UIControl::STATE_NORMAL, f);
-    loadEmitter->SetStateText(UIControl::STATE_NORMAL, L"Load");
+    loadEmitter->SetStateText(UIControl::STATE_NORMAL, LocalizedString("Load"));
 	loadEmitter->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(loadEmitter);
     
@@ -108,7 +111,7 @@ void TestScreen::LoadResources()
     saveEmitter->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     saveEmitter->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     saveEmitter->SetStateFont(UIControl::STATE_NORMAL, f);
-    saveEmitter->SetStateText(UIControl::STATE_NORMAL, L"Save");
+    saveEmitter->SetStateText(UIControl::STATE_NORMAL, LocalizedString("Save"));
 	saveEmitter->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(saveEmitter);
     
@@ -118,7 +121,7 @@ void TestScreen::LoadResources()
     addLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     addLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     addLayer->SetStateFont(UIControl::STATE_NORMAL, f);
-    addLayer->SetStateText(UIControl::STATE_NORMAL, L"+ Layer");
+    addLayer->SetStateText(UIControl::STATE_NORMAL, LocalizedString("AddLayer"));
 	addLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(addLayer);
     
@@ -128,7 +131,7 @@ void TestScreen::LoadResources()
     cloneLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     cloneLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     cloneLayer->SetStateFont(UIControl::STATE_NORMAL, f);
-    cloneLayer->SetStateText(UIControl::STATE_NORMAL, L"copy L");
+    cloneLayer->SetStateText(UIControl::STATE_NORMAL, LocalizedString("CopyLayer"));
 	cloneLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(cloneLayer);
     
@@ -138,7 +141,7 @@ void TestScreen::LoadResources()
     disableLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     disableLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     disableLayer->SetStateFont(UIControl::STATE_NORMAL, f);
-    disableLayer->SetStateText(UIControl::STATE_NORMAL, L"on/off L");
+    disableLayer->SetStateText(UIControl::STATE_NORMAL, LocalizedString("DELayer"));
 	disableLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(disableLayer);
     
@@ -148,7 +151,7 @@ void TestScreen::LoadResources()
     delLayer->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     delLayer->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     delLayer->SetStateFont(UIControl::STATE_NORMAL, f);
-    delLayer->SetStateText(UIControl::STATE_NORMAL, L"- Layer");
+    delLayer->SetStateText(UIControl::STATE_NORMAL, LocalizedString("DelLayer"));
 	delLayer->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(delLayer);
     
@@ -158,7 +161,7 @@ void TestScreen::LoadResources()
     addProp->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     addProp->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     addProp->SetStateFont(UIControl::STATE_NORMAL, f);
-    addProp->SetStateText(UIControl::STATE_NORMAL, L"+ Prop");
+    addProp->SetStateText(UIControl::STATE_NORMAL, LocalizedString("AddProp"));
 	addProp->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(addProp);
 
@@ -168,7 +171,7 @@ void TestScreen::LoadResources()
     delProp->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     delProp->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     delProp->SetStateFont(UIControl::STATE_NORMAL, f);
-    delProp->SetStateText(UIControl::STATE_NORMAL, L"- Prop");
+    delProp->SetStateText(UIControl::STATE_NORMAL, LocalizedString("DelProp"));
 	delProp->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(delProp);
 
@@ -178,7 +181,7 @@ void TestScreen::LoadResources()
     valueBut->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     valueBut->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     valueBut->SetStateFont(UIControl::STATE_NORMAL, f);
-    valueBut->SetStateText(UIControl::STATE_NORMAL, L"Value");
+    valueBut->SetStateText(UIControl::STATE_NORMAL, LocalizedString("Value"));
 	valueBut->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(valueBut);
 
@@ -188,7 +191,7 @@ void TestScreen::LoadResources()
     KFBut->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     KFBut->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     KFBut->SetStateFont(UIControl::STATE_NORMAL, f);
-    KFBut->SetStateText(UIControl::STATE_NORMAL, L"KF");
+    KFBut->SetStateText(UIControl::STATE_NORMAL, LocalizedString("KF"));
 	KFBut->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(KFBut);
 
@@ -198,7 +201,7 @@ void TestScreen::LoadResources()
     addForce->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     addForce->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     addForce->SetStateFont(UIControl::STATE_NORMAL, f);
-    addForce->SetStateText(UIControl::STATE_NORMAL, L"+ Force");
+    addForce->SetStateText(UIControl::STATE_NORMAL, LocalizedString("AddForce"));
 	addForce->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(addForce);
 
@@ -208,7 +211,7 @@ void TestScreen::LoadResources()
     delForce->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     delForce->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     delForce->SetStateFont(UIControl::STATE_NORMAL, f);
-    delForce->SetStateText(UIControl::STATE_NORMAL, L"- Force");
+    delForce->SetStateText(UIControl::STATE_NORMAL, LocalizedString("DelForce"));
 	delForce->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(delForce);
 
@@ -218,7 +221,7 @@ void TestScreen::LoadResources()
     emitterList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     AddControl(emitterList);
 
-    propList = new UIList(Rect(0, cellH*9, buttonW, GetScreenHeight() - cellH*9), UIList::ORIENTATION_VERTICAL);
+    propList = new UIList(Rect(0, cellH*9, buttonW, GetScreenHeight() - cellH*13), UIList::ORIENTATION_VERTICAL);
     propList->SetDelegate(this);
     propList->GetBackground()->SetColor(Color(0.4, 0.4, 0.4, 0.5));
     propList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
@@ -236,6 +239,11 @@ void TestScreen::LoadResources()
     forcesList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     AddControl(forcesList);
 
+    emitterTypeList = new UIList(Rect(buttonW, cellH*9, buttonW, cellH*5), UIList::ORIENTATION_VERTICAL);
+    emitterTypeList->SetDelegate(this);
+    emitterTypeList->GetBackground()->SetColor(Color(0.3, 0.3, 0.3, 0.5));
+    emitterTypeList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+    
     emitter3D = new UIButton(Rect(buttonW - cellH*2/3, cellH*3, cellH*2/3, cellH*2/3));
     emitter3D->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     emitter3D->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.5, 0.5, 0.5, 0.0));
@@ -252,7 +260,7 @@ void TestScreen::LoadResources()
     OKBut->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     OKBut->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     OKBut->SetStateFont(UIControl::STATE_NORMAL, f);
-    OKBut->SetStateText(UIControl::STATE_NORMAL, L"OK");
+    OKBut->SetStateText(UIControl::STATE_NORMAL, LocalizedString("OK"));
 	OKBut->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(OKBut);
     
@@ -262,7 +270,7 @@ void TestScreen::LoadResources()
     cancelBut->SetStateDrawType(UIControl::STATE_PRESSED_INSIDE, UIControlBackground::DRAW_FILL);
     cancelBut->GetStateBackground(UIControl::STATE_PRESSED_INSIDE)->SetColor(Color(0.5, 0.5, 0.5, 0.5));
     cancelBut->SetStateFont(UIControl::STATE_NORMAL, f);
-    cancelBut->SetStateText(UIControl::STATE_NORMAL, L"Cancel");
+    cancelBut->SetStateText(UIControl::STATE_NORMAL, LocalizedString("Cancel"));
 	cancelBut->AddEvent(UIControl::EVENT_TOUCH_UP_INSIDE, Message(this, &TestScreen::ButtonPressed));
     AddControl(cancelBut);
 
@@ -293,15 +301,15 @@ void TestScreen::LoadResources()
         AddControl(valueText[i]);
         
         propEdit[i] = new PropertyLineEditControl();
-        propEdit[i]->SetRect(Rect(buttonW, cellH*(9+i*3), buttonW*5/6, cellH*3));
+        propEdit[i]->SetRect(Rect(buttonW, cellH*(9.5f+i*3), buttonW*5/6, cellH*3));
         propEdit[i]->SetDelegate(this);
         AddControl(propEdit[i]);
         
-        kfValueTextPos[i] = Rect(buttonW, cellH*(12.5f+i*3), buttonW, cellH/2);
-        tfkfPos[i][0] = Rect(buttonW*9/8, cellH*(12+i*3), buttonW/4, cellH/2);
-        tfkfPos[i][1] = Rect(buttonW*12/8, cellH*(12+i*3), buttonW/4, cellH/2);
-        tfkfTextPos[i][0] = Rect(buttonW, cellH*(12+i*3), buttonW/8, cellH/2);
-        tfkfTextPos[i][1] = Rect(buttonW*11/8, cellH*(12+i*3), buttonW/8, cellH/2);
+        kfValueTextPos[i] = Rect(buttonW, cellH*(13+i*3), buttonW, cellH/2);
+        tfkfPos[i][0] = Rect(buttonW*9/8, cellH*(12.5f+i*3), buttonW/4, cellH/2);
+        tfkfPos[i][1] = Rect(buttonW*12/8, cellH*(12.5f+i*3), buttonW/4, cellH/2);
+        tfkfTextPos[i][0] = Rect(buttonW, cellH*(12.5f+i*3), buttonW/8, cellH/2);
+        tfkfTextPos[i][1] = Rect(buttonW*11/8, cellH*(12.5f+i*3), buttonW/8, cellH/2);
     }
     
     kfValueText = new UIStaticText(kfValueTextPos[0]);
@@ -320,17 +328,24 @@ void TestScreen::LoadResources()
         
         tfkfText[i] = new UIStaticText(tfkfTextPos[0][i]);
         tfkfText[i]->SetFont(cellFont);
-        AddControl(tfkfText[i]); 
+        AddControl(tfkfText[i]);
+        
+        tfTText[i] = new UIStaticText(Rect(buttonW*(12+i*5)/12, cellH*9, buttonW/4, cellH/2));
+        tfTText[i]->SetFont(cellFont);
+        AddControl(tfTText[i]); 
     }
     
     tfkfText[0]->SetText(L"T:");
     tfkfText[1]->SetText(L"V:");
     
+    tfTText[0]->SetText(L" Tmin:");
+    tfTText[1]->SetText(L" Tmax:");
+    
     tfPosSlider[0] = Rect(buttonW, cellH*(9.5f), buttonW/6, cellH/2);
     tfPosSlider[1] = Rect(buttonW*11/6, cellH*(9.5f), buttonW/6, cellH/2);
     
-    tfPosKFEdit[0] = Rect(buttonW*11/6, cellH*(11.5f), buttonW/6, cellH/2);
-    tfPosKFEdit[1] = Rect(buttonW*11/6, cellH*(9), buttonW/6, cellH/2);
+    tfPosKFEdit[0] = Rect(buttonW*11/6, cellH*(12), buttonW/6, cellH/2);
+    tfPosKFEdit[1] = Rect(buttonW*11/6, cellH*(9.5f), buttonW/6, cellH/2);
     
     for(int i = 0; i < 2; i++)
     {
@@ -340,6 +355,13 @@ void TestScreen::LoadResources()
         tf[i]->SetFont(cellFont);
         tf[i]->SetDelegate(this);
         AddControl(tf[i]);
+        
+        tfT[i] = new UITextField(Rect(buttonW*(15+i*5)/12, cellH*9, buttonW/6, cellH/2));
+        tfT[i]->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+        tfT[i]->GetBackground()->SetColor(Color(0.25, 0.25, 0.25, 0.75));
+        tfT[i]->SetFont(cellFont);
+        tfT[i]->SetDelegate(this);
+        AddControl(tfT[i]);
     }
     
     fsDlg = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
@@ -348,7 +370,7 @@ void TestScreen::LoadResources()
     filter.push_back(".yaml");
     filter.push_back(".YAML");
     fsDlg->SetExtensionFilter(filter);
-    fsDlg->SetTitle(L"Loading from .yaml file");
+    fsDlg->SetTitle(LocalizedString("Dlg.Load"));
     fsDlg->SetCurrentDir("~res:/");
     
     fsDlgSprite = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
@@ -357,13 +379,13 @@ void TestScreen::LoadResources()
     filter2.push_back(".txt");
     filter2.push_back(".TXT");
     fsDlgSprite->SetExtensionFilter(filter2);
-    fsDlgSprite->SetTitle(L"Selecte Sprite");
+    fsDlgSprite->SetTitle(LocalizedString("Dlg.SelectSprite"));
     fsDlgSprite->SetCurrentDir("~res:/");
 
     fsDlgProject = new UIFileSystemDialog("~res:/Fonts/MyriadPro-Regular.otf");
     fsDlgProject->SetDelegate(this);
     fsDlgProject->SetOperationType(UIFileSystemDialog::OPERATION_CHOOSE_DIR);
-    fsDlgProject->SetTitle(L"Choose Project Folder");
+    fsDlgProject->SetTitle(LocalizedString("Dlg.ChoosePrj"));
 
     spritePanel = new UIControl(Rect(buttonW, cellH*8, buttonW, buttonW + cellH));
     spritePanel->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
@@ -389,6 +411,12 @@ void TestScreen::LoadResources()
     spriteInfo->SetFont(cellFont);
     spritePanel->AddControl(spriteInfo);
 
+    tip = new UIStaticText(Rect(5, GetScreenHeight() - cellH*4, buttonW-5, cellH*4));
+    tip->SetFont(cellFont);
+    tip->SetMultiline(true);
+    tip->SetAlign(DAVA::ALIGN_LEFT|DAVA::ALIGN_TOP);
+    AddControl(tip);
+    
     preview = new PreviewControl();
     preview->SetRect(Rect(buttonW*2, 0, GetScreenWidth() - buttonW*2, GetScreenHeight()));
     AddControl(preview);
@@ -399,10 +427,10 @@ void TestScreen::LoadResources()
     AddControl(layers.at(0).curLayerTime);
     preview->SetEmitter(emitter);
     
-    layers[0].props[0].minValue = 0;
-    layers[0].props[0].maxValue = 360;
     layers[0].props[1].minValue = 0;
     layers[0].props[1].maxValue = 360;
+    layers[0].props[2].minValue = 0;
+    layers[0].props[2].maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
     forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
@@ -431,7 +459,7 @@ void TestScreen::LoadResources()
     
     HideAndResetEditFields();
     HideForcesList();
-    HideAddProps();    
+    HideAddProps();
 }
 
 void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
@@ -483,6 +511,27 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
         swscanf(textField->GetText().c_str(), L"%d", &value);
         layers[selectedEmitterElement].props[selectedPropElement].maxValue = value;
     }
+
+    if(textField == tfT[0])
+    {
+        value = layers[selectedEmitterElement].props[selectedPropElement].minT;
+        for(int i = 0; i < 4; i++)
+        {
+            propEdit[i]->SetMinX(value);
+        }
+        swscanf(textField->GetText().c_str(), L"%d", &value);
+        layers[selectedEmitterElement].props[selectedPropElement].minT = value;
+    }
+    if(textField == tfT[1])
+    {
+        value = layers[selectedEmitterElement].props[selectedPropElement].maxT;
+        for(int i = 0; i < 4; i++)
+        {
+            propEdit[i]->SetMaxX(value);
+        }
+        swscanf(textField->GetText().c_str(), L"%d", &value);
+        layers[selectedEmitterElement].props[selectedPropElement].maxT = value;
+    }
     
     for(int i = 0; i < 4; i++)
     {
@@ -533,7 +582,7 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
 bool TestScreen::TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString)
 {
     int v;
-    if(replacementLength == -1 || replacementString == L"-")
+    if(replacementLength == -1 || replacementString == L"-" || replacementString == L".")
     {
         return true;
     }
@@ -551,6 +600,7 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
 {
     if(obj == newEmitter)
     {
+        tip->SetText(L"");
         selectedEmitterElement = -1;
         selectedPropElement = -1;
         selectedForceElement = -1;
@@ -843,16 +893,20 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
     {
         if(getLimits)
         {
-            float32 maxV = 1, minV = 0;
+            float32 maxV = 1, minV = 0, minT = 0, maxT = 1;
             for(int i = 0; i < pk->keys.size(); i++)
             {
                 minV = Min(minV, pk->keys[i].value);
                 maxV = Max(maxV, pk->keys[i].value);
+                minT = Min(minT, pk->keys[i].t);
+                maxT = Max(maxT, pk->keys[i].t);
             }
             layers[selectedEmitterElement].props[id].minValue = minV;
             layers[selectedEmitterElement].props[id].maxValue = maxV;
+            layers[selectedEmitterElement].props[id].minT = minT;
+            layers[selectedEmitterElement].props[id].maxT = maxT;
             
-            if(selectedEmitterElement == 0 && (id == 0 || id == 1))
+            if(selectedEmitterElement == 0 && id == 2)
             {
                 layers[selectedEmitterElement].props[id].minValue = 0;
                 layers[selectedEmitterElement].props[id].maxValue = 360;
@@ -861,13 +915,17 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
             curPropType = false;
             return true;
         }
-        int32 min = layers[selectedEmitterElement].props[id].minValue;
-        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minV = layers[selectedEmitterElement].props[id].minValue;
+        int32 maxV = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minT = layers[selectedEmitterElement].props[id].minT;
+        int32 maxT = layers[selectedEmitterElement].props[id].maxT;
         propEdit[0]->SetVisible(true);
         for(int i = 0; i < 2; i++)
         {
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
+            tfT[i]->SetVisible(true);
+            tfTText[i]->SetVisible(true);
         }
         
         for(int i = 0; i < 2; i++)
@@ -880,11 +938,15 @@ bool TestScreen::GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getL
         kfValueText->SetText(Format(L" t = 0.00 : %.2f", pk->GetValue(0)));
         cur1DimProp = pk;
         
-        tf[0]->SetText(Format(L"%d", min));
-        tf[1]->SetText(Format(L"%d", max));
+        tf[0]->SetText(Format(L"%d", minV));
+        tf[1]->SetText(Format(L"%d", maxV));
+        tfT[0]->SetText(Format(L"%d", minT));
+        tfT[1]->SetText(Format(L"%d", maxT));
         
-        propEdit[0]->SetMinY(min);
-        propEdit[0]->SetMaxY(max);
+        propEdit[0]->SetMinY(minV);
+        propEdit[0]->SetMaxY(maxV);
+        propEdit[0]->SetMinX(minT);
+        propEdit[0]->SetMaxX(maxT);
         propEdit[0]->GetValues().clear();
         for(int i = 0; i < pk->keys.size(); i++)
         {
@@ -964,22 +1026,28 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
     {
         if(getLimits)
         {
-            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0;
+            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0, minT = 0, maxT = 1;
             for(int i = 0; i < vk->keys.size(); i++)
             {
                 minV1 = Min(minV1, vk->keys[i].value.x);
                 minV2 = Min(minV2, vk->keys[i].value.x);
-                maxV1 = Min(maxV1, vk->keys[i].value.y);
-                maxV2 = Min(maxV2, vk->keys[i].value.y);
+                maxV1 = Max(maxV1, vk->keys[i].value.y);
+                maxV2 = Max(maxV2, vk->keys[i].value.y);
+                minT = Min(minT, vk->keys[i].t);
+                maxT = Max(maxT, vk->keys[i].t);
             }
             layers[selectedEmitterElement].props[id].minValue = Min(minV1, minV2);
             layers[selectedEmitterElement].props[id].maxValue = Max(maxV1, maxV2);
+            layers[selectedEmitterElement].props[id].minT = minT;
+            layers[selectedEmitterElement].props[id].maxT = maxT;
             
             curPropType = false;
             return true;
         }
-        int32 min = layers[selectedEmitterElement].props[id].minValue;
-        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minV = layers[selectedEmitterElement].props[id].minValue;
+        int32 maxV = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minT = layers[selectedEmitterElement].props[id].minT;
+        int32 maxT = layers[selectedEmitterElement].props[id].maxT;
         
         for(int i = 0; i < 2; i++)
         {
@@ -989,6 +1057,8 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
         {
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
+            tfT[i]->SetVisible(true);
+            tfTText[i]->SetVisible(true);
         }
         
         for(int i = 0; i < 2; i++)
@@ -1002,14 +1072,18 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getL
         kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y));
         cur2DimProp = vk;
         
-        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
-        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
+        tf[0]->SetText(Format(L"%d", minV));
+        tf[1]->SetText(Format(L"%d", maxV));
+        tfT[0]->SetText(Format(L"%d", minT));
+        tfT[1]->SetText(Format(L"%d", maxT));
         
         for(int i = 0; i < 2; i++)
         {
             propEdit[i]->GetValues().clear();
-            propEdit[i]->SetMaxY(max);
-            propEdit[i]->SetMinY(min);
+            propEdit[i]->SetMaxY(maxV);
+            propEdit[i]->SetMinY(minV);
+            propEdit[i]->SetMaxX(maxT);
+            propEdit[i]->SetMinX(minT);
         }
         for(int i = 0; i < vk->keys.size(); i++)
         {
@@ -1098,24 +1172,31 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getL
     {
         if(getLimits)
         {
-            float32 maxV1 = 1, minV1 = 0, maxV2 = 1, minV2 = 0, maxV3 = 1, minV3 = 0;
+            float32 maxV[3] = {1, 1, 1}, minV[3] = {0, 0, 0}, maxT = 1, minT = 0;
             for(int i = 0; i < vk->keys.size(); i++)
             {
-                minV1 = Min(minV1, vk->keys[i].value.x);
-                minV2 = Min(minV2, vk->keys[i].value.y);
-                minV3 = Min(minV3, vk->keys[i].value.z);
-                maxV1 = Min(maxV1, vk->keys[i].value.x);
-                maxV2 = Min(maxV2, vk->keys[i].value.y);
-                maxV3 = Min(maxV3, vk->keys[i].value.z);
+                minV[0] = Min(minV[0], vk->keys[i].value.x);
+                minV[1] = Min(minV[1], vk->keys[i].value.y);
+                minV[2] = Min(minV[2], vk->keys[i].value.z);
+                maxV[0] = Max(maxV[0], vk->keys[i].value.x);
+                maxV[1] = Max(maxV[1], vk->keys[i].value.y);
+                maxV[2] = Max(maxV[2], vk->keys[i].value.z);
+                
+                minT = Min(minT, vk->keys[i].t);
+                maxT = Max(maxT, vk->keys[i].t);
             }
-            layers[selectedEmitterElement].props[id].minValue = Min(Min(minV1, minV2), minV3);
-            layers[selectedEmitterElement].props[id].maxValue = Max(Max(maxV1, maxV2), minV3);
+            layers[selectedEmitterElement].props[id].minValue = Min(Min(minV[0], minV[1]), minV[2]);
+            layers[selectedEmitterElement].props[id].maxValue = Max(Max(maxV[0], maxV[1]), maxV[2]);
+            layers[selectedEmitterElement].props[id].minT = minT;
+            layers[selectedEmitterElement].props[id].maxT = maxT;
             
             curPropType = false;
             return true;
         }
-        int32 min = layers[selectedEmitterElement].props[id].minValue;
-        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minV = layers[selectedEmitterElement].props[id].minValue;
+        int32 maxV = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minT = layers[selectedEmitterElement].props[id].minT;
+        int32 maxT = layers[selectedEmitterElement].props[id].maxT;
         
         int n = 2;
         if(emitter->GetIs3D())
@@ -1129,6 +1210,8 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getL
         {
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
+            tfT[i]->SetVisible(true);
+            tfTText[i]->SetVisible(true);
         }
         
         for(int i = 0; i < 2; i++)
@@ -1142,14 +1225,18 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getL
         kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f, %.2f)", vk->GetValue(0).x, vk->GetValue(0).y, vk->GetValue(0).z));
         cur3DimProp = vk;
         
-        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
-        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
+        tf[0]->SetText(Format(L"%d", minV));
+        tf[1]->SetText(Format(L"%d", maxV));
+        tfT[0]->SetText(Format(L"%d", minT));
+        tfT[1]->SetText(Format(L"%d", maxT));
         
         for(int i = 0; i < 3; i++)
         {
             propEdit[i]->GetValues().clear();
-            propEdit[i]->SetMaxY(max);
-            propEdit[i]->SetMinY(min);
+            propEdit[i]->SetMaxY(maxV);
+            propEdit[i]->SetMinY(minV);
+            propEdit[i]->SetMaxX(maxT);
+            propEdit[i]->SetMinX(minT);
         }
         for(int i = 0; i < vk->keys.size(); i++)
         {
@@ -1221,8 +1308,10 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Color> *ck, int32 id, bool getLim
 {
     if(ck)
     {
-        int32 min = layers[selectedEmitterElement].props[id].minValue;
-        int32 max = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minV = layers[selectedEmitterElement].props[id].minValue;
+        int32 maxV = layers[selectedEmitterElement].props[id].maxValue;
+        int32 minT = layers[selectedEmitterElement].props[id].minT;
+        int32 maxT = layers[selectedEmitterElement].props[id].maxT;
         for(int i = 0; i < 4; i++)
         {
             propEdit[i]->SetVisible(true);
@@ -1231,6 +1320,8 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Color> *ck, int32 id, bool getLim
         {
             tf[i]->SetVisible(true);
             tf[i]->SetRect(tfPosKFEdit[i]);
+            tfT[i]->SetVisible(true);
+            tfTText[i]->SetVisible(true);
         }
         colorView->SetVisible(true);
         colorView->SetRect(colorViewPosKFEdit);
@@ -1249,14 +1340,18 @@ bool TestScreen::GetProp(PropertyLineKeyframes<Color> *ck, int32 id, bool getLim
         kfValueText->SetRect(kfValueTextPos[3]);
         kfValueText->SetText(Format(L" t = 0.00 : (%.2f, %.2f, %.2f, %.2f)", ck->GetValue(0).r, ck->GetValue(0).g, ck->GetValue(0).b, ck->GetValue(0).a));
         
-        tf[0]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].minValue));
-        tf[1]->SetText(Format(L"%d", layers[selectedEmitterElement].props[id].maxValue));
+        tf[0]->SetText(Format(L"%d", minV));
+        tf[1]->SetText(Format(L"%d", maxV));
+        tfT[0]->SetText(Format(L"%d", minT));
+        tfT[1]->SetText(Format(L"%d", maxT));
         
         for(int i = 0; i < 4; i++)
         {
             propEdit[i]->GetValues().clear();
-            propEdit[i]->SetMaxY(max);
-            propEdit[i]->SetMinY(min);
+            propEdit[i]->SetMaxY(maxV);
+            propEdit[i]->SetMinY(minV);
+            propEdit[i]->SetMaxX(maxT);
+            propEdit[i]->SetMinX(minT);
         }
         for(int i = 0; i < ck->keys.size(); i++)
         {
@@ -1293,6 +1388,27 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
     PropertyLineKeyframes<Color> *ck;
     switch (id) {
         case 0:
+            if(emitter->type == ParticleEmitter::EMITTER_POINT)
+                selectedEmitterTypeElement = 0;
+            if(emitter->type == ParticleEmitter::EMITTER_LINE)
+                selectedEmitterTypeElement = 1;
+            if(emitter->type == ParticleEmitter::EMITTER_RECT)
+                selectedEmitterTypeElement = 2;
+            if(emitter->type == ParticleEmitter::EMITTER_ONCIRCLE)
+                selectedEmitterTypeElement = 3;
+            
+            AddControl(emitterTypeList);
+            valueBut->SetVisible(false);
+            KFBut->SetVisible(false);
+            
+            if(getLimits && selectedEmitterTypeElement == 0)
+                    layers[0].props[0].isDefault = true;
+            else
+                    layers[0].props[0].isDefault = false;
+            
+            break;
+            
+        case 1:
             vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
             vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1301,7 +1417,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 1:
+        case 2:
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
             pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1310,7 +1426,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 2:
+        case 3:
             pk = dynamic_cast< PropertyLineKeyframes<float> *>(emitter->radius.Get());
             pv = dynamic_cast< PropertyLineValue<float> *>(emitter->radius.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1319,7 +1435,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 3:
+        case 4:
             ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
             cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1328,6 +1444,27 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
+        case 5:
+            vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->size.Get());
+            vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->size.Get());
+            layers.at(0).props.at(id).isDefault = false;
+            if(!GetProp(vk, id, getLimits))
+                if(!GetProp(vv, id, getLimits))
+                    layers.at(0).props.at(id).isDefault = true;
+            break;
+            
+        case 6:
+            if(emitter->GetLifeTime() == 1000000000.0f)
+                layers.at(0).props.at(id).isDefault = true;
+            else
+                layers.at(0).props.at(id).isDefault = false;
+            
+            valueText[0]->SetVisible(true);
+            tfv[0]->SetVisible(true);
+            vSliders[0]->SetValue(emitter->GetLifeTime());
+            tfv[0]->SetText(Format(L"%.2f", emitter->GetLifeTime()));
+            valueText[0]->SetText(L"X:");            
+            break;
         default:
             break;
     }
@@ -1394,31 +1531,53 @@ void TestScreen::SetEmitterPropValue(int32 id, bool def)
     }
     switch (id) {
         case 0:
+            if(selectedEmitterTypeElement == 0)
+                emitter->type = ParticleEmitter::EMITTER_POINT;
+            if(selectedEmitterTypeElement == 1)
+                emitter->type = ParticleEmitter::EMITTER_LINE;
+            if(selectedEmitterTypeElement == 2)
+                emitter->type = ParticleEmitter::EMITTER_RECT;
+            if(selectedEmitterTypeElement == 3)
+                emitter->type = ParticleEmitter::EMITTER_ONCIRCLE;
+            break;
+            
+        case 1:
             SafeRelease(valueDim2);
             SafeRelease(valueDim1);
             SafeRelease(valueDim4);
             emitter->emissionAngle.Set(valueDim3);
             break;
             
-        case 1:
+        case 2:
             SafeRelease(valueDim2);
             SafeRelease(valueDim4);
             SafeRelease(valueDim3);
             emitter->emissionRange.Set(valueDim1);      
             break;
            
-        case 2:
+        case 3:
             SafeRelease(valueDim2);
             SafeRelease(valueDim3);
             SafeRelease(valueDim4);
             emitter->radius.Set(valueDim1);
             break;
             
-        case 3:
+        case 4:
             SafeRelease(valueDim2);
             SafeRelease(valueDim1);
             SafeRelease(valueDim3);
             emitter->colorOverLife.Set(valueDim4);
+            break;
+            
+        case 5:
+            SafeRelease(valueDim2);
+            SafeRelease(valueDim1);
+            SafeRelease(valueDim4);
+            emitter->size.Set(valueDim3);
+            break;
+            
+        case 6:
+            emitter->SetLifeTime(value[0]);
             break;
             
         default:
@@ -1430,19 +1589,32 @@ void TestScreen::ResetEmitterPropValue(int32 id)
 {
     switch (id) {
         case 0:
-            emitter->emissionAngle.Set(0);
+            selectedEmitterTypeElement = 0;
+            emitter->type = ParticleEmitter::EMITTER_POINT;
             break;
             
         case 1:
-            emitter->emissionRange.Set(0);      
+            emitter->emissionAngle.Set(0);
             break;
             
         case 2:
-            emitter->radius.Set(0);
+            emitter->emissionRange.Set(0);      
             break;
             
         case 3:
+            emitter->radius.Set(0);
+            break;
+            
+        case 4:
             emitter->colorOverLife.Set(0);
+            break;
+
+        case 5:
+            emitter->size.Set(0);
+            break;
+            
+        case 6:
+            emitter->SetLifeTime(1000000000.0f);
             break;
             
         default:
@@ -2282,6 +2454,7 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
     {
         if(forDialog->GetOperationType() == UIFileSystemDialog::OPERATION_LOAD)
         {
+            tip->SetText(L"");
             selectedEmitterElement = -1;
             selectedPropElement = -1;
             selectedForceElement = -1;
@@ -2420,8 +2593,15 @@ void TestScreen::HideAndResetEditFields()
         vSliders[i]->SetValue(0.0f);
         propEdit[i]->Reset();
     }
-    tf[0]->SetVisible(false);
-    tf[1]->SetVisible(false);
+    for(int i = 0; i < 2; i++)
+    {
+        tf[i]->SetVisible(false);
+        tfT[i]->SetVisible(false);
+        tfkf[i]->SetVisible(false);
+        tfkfText[i]->SetVisible(false);
+        tfTText[i]->SetVisible(false);
+    }
+    
     KFBut->SetVisible(false);
     valueBut->SetVisible(false);
     
@@ -2429,10 +2609,8 @@ void TestScreen::HideAndResetEditFields()
     
     colorView->SetVisible(false);
     kfValueText->SetVisible(false);
-    tfkf[0]->SetVisible(false);
-    tfkf[1]->SetVisible(false);
-    tfkfText[0]->SetVisible(false);
-    tfkfText[1]->SetVisible(false);
+    
+    RemoveControl(emitterTypeList);
 }
 
 void TestScreen::ShowAddProps()
@@ -2588,6 +2766,10 @@ int32 TestScreen::ElementsCount(UIList *forList)
                 break;
         }
     }
+    if(forList == emitterTypeList)
+    {
+        n = emitterTypesCount;
+    }
     return n;
 }
 
@@ -2633,7 +2815,7 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
     }
     if (forList == propList)
     {
-        PropListCell *c = new PropListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterList Cell");
+        PropListCell *c = new PropListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "PropList Cell");
         c->SetFront(cellFont);
         int32 n = layers.at(selectedEmitterElement).props.size();
         while((index+deltaIndex < n) && layers.at(selectedEmitterElement).props.at(index+deltaIndex).isDefault)
@@ -2647,7 +2829,7 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
     }
     if (forList == addPropList)
     {
-        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterList Cell");
+        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "AddPropList Cell");
         c->SetStateFont(UIListCell::STATE_NORMAL, cellFont);
         c->SetStateDrawType(UIControl::STATE_SELECTED, UIControlBackground::DRAW_FILL);
         c->GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));
@@ -2687,6 +2869,22 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         }
         return c;
     }
+    
+    if(forList == emitterTypeList)
+    {
+        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterType Cell");
+        c->SetStateFont(UIListCell::STATE_NORMAL, cellFont);
+        c->SetStateDrawType(UIControl::STATE_SELECTED, UIControlBackground::DRAW_FILL);
+        c->GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));  
+        c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(emitterTypes[index]));
+
+        if(index == selectedEmitterTypeElement)
+            c->SetSelected(true);
+        else
+            c->SetSelected(false);
+        
+        return c;
+    }
     return 0;
 }
 
@@ -2699,6 +2897,7 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         selectedCell->SetSelected(true);
         propList->RefreshList();
         deltaIndex = 0;
+        tip->SetText(L"");
         selectedPropElement = -1;
         selectedForceElement = -1;
         forcePreview->SetValue(Vector3(0, 0, 0));
@@ -2718,7 +2917,6 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
             }
         }
         
-        
         HideAndResetEditFields();
         HideForcesList();
     }
@@ -2734,10 +2932,15 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         if(selectedEmitterElement == 0)
         {
             GetEmitterPropValue(selectedPropElement);
+            if(selectedPropElement == 0)
+                emitterTypeList->RefreshList();
+            tip->SetText(LocalizedString("emitter." + emitterProps[selectedPropElement]));
         }
         if(selectedEmitterElement > 0)
         {
             GetLayerPropValue(selectedPropElement);
+            
+            tip->SetText(LocalizedString("layer." + layerProps[selectedPropElement]));
             
             if(selectedPropElement == 11 || selectedPropElement == 12|| selectedPropElement == 13)
             {
@@ -2778,6 +2981,16 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         HideForcesList();
         
         GetLayerPropValue(selectedPropElement);
+    }
+    
+    if(forList == emitterTypeList)
+    {
+        selectedEmitterTypeElement = selectedCell->GetIndex();
+        selectedCell->SetSelected(true);
+        
+        tip->SetText(LocalizedString("emitterType." + emitterTypes[selectedEmitterTypeElement]));
+        
+        SetEmitterPropValue(0);
     }
 }
 
@@ -2846,33 +3059,60 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     else
         fprintf(file, "    3d: false\n");
     
+    int32 emitPropIndex = 0;
+    
+    if(emitter->type == ParticleEmitter::EMITTER_POINT)
+        fprintf(file, "    type: point\n");
+    if(emitter->type == ParticleEmitter::EMITTER_LINE)
+        fprintf(file, "    type: line\n");
+    if(emitter->type == ParticleEmitter::EMITTER_RECT)
+        fprintf(file, "    type: rect\n");
+    if(emitter->type == ParticleEmitter::EMITTER_ONCIRCLE)
+        fprintf(file, "    type: oncirlce\n");
+    emitPropIndex++;
+    
     v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
     v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
     if(v3k)
-        PrintPropKFValue(file, emitterProps[0], v3k);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
     else if(v3v)
-        PrintPropValue(file, emitterProps[0], v3v);
+        PrintPropValue(file, emitterProps[emitPropIndex], v3v);
+    emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
     if(pk)
-        PrintPropKFValue(file, emitterProps[1], pk);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
     else if(pv)
-        PrintPropValue(file, emitterProps[1], pv);
+        PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->radius.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->radius.Get());
     if(pk)
-        PrintPropKFValue(file, emitterProps[2], pk);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
     else if(pv)
-        PrintPropValue(file, emitterProps[2], pv);
+        PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
     
     ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
     cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
-    if(pk)
-        PrintPropKFValue(file, emitterProps[3], ck);
-    else if(pv)
-        PrintPropValue(file, emitterProps[3], cv);
+    if(ck)
+        PrintPropKFValue(file, emitterProps[emitPropIndex], ck);
+    else if(cv)
+        PrintPropValue(file, emitterProps[emitPropIndex], cv);
+    emitPropIndex++;
+    
+    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->size.Get());
+    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->size.Get());
+    if(v3k)
+        PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
+    else if(v3v)
+        PrintPropValue(file, emitterProps[emitPropIndex], v3v);
+    emitPropIndex++;
+    
+    fprintf(file, "    life: %f\n", emitter->GetLifeTime());
+    emitPropIndex++;
     
     fprintf(file, "\n");
     
@@ -3127,6 +3367,7 @@ void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<V
     Vector3 value = pv->GetValue(0);
     fprintf(file, "    %s: [%f, %f, %f]\n", propName.c_str(), value.x, value.y, value.z);
 }
+
 void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<Color> *pv)
 {
     Color value = pv->GetValue(0);

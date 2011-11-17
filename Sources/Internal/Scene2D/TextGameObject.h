@@ -25,78 +25,38 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Kiryl Polyakov 
 =====================================================================================*/
-#include "GameCore.h"
-#include "AppScreens.h"
-#include "TestScreen.h"
+#ifndef __TEXT_GAME_OBJECT__
+#define __TEXT_GAME_OBJECT__
 
-using namespace DAVA;
+#include "Scene2D/GameObject.h"
 
-GameCore::GameCore()
+namespace DAVA
 {
-	
-}
-
-GameCore::~GameCore()
+    class Font;
+    struct TextBlock;
+/**
+	\ingroup scene2d
+	\brief represent text as game object
+ */
+class TextGameObject : public GameObject
 {
-	
-}
+public: // from UIStaticText
+    TextGameObject(const Rect &rect);
+    TextGameObject(const Rect &rect, Font *font, const WideString &string);
 
-void GameCore::OnAppStarted()
-{
-	cursor = 0;
-	RenderManager::Instance()->SetFPS(60);
+    void SetText(const WideString &string, const Vector2 &requestedTextRectSize = Vector2(0,0));
+    void SetFont(Font *font, bool prepareSprite = true);
+    void SetMultiline(bool isMultilineEnabled);
+    void SetFittingOption(int32 fittingType);
+    void SetAlign(int32 alignment);
 
- 	testScreen = new TestScreen();
-	
-	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
+protected:
+    void PrepareSprite();
 
-    UIScreenManager::Instance()->SetFirst(SCREEN_TEST);
-    
-    LocalizationSystem::Instance()->SetCurrentLocale("en");
-    LocalizationSystem::Instance()->InitWithDirectory("~res:/Configs/Strings");
-}
-
-void GameCore::OnAppFinished()
-{
-	SafeRelease(cursor);
-
-    SafeRelease(testScreen);
-}
-
-void GameCore::OnSuspend()
-{
-    ApplicationCore::OnSuspend();
-}
-
-void GameCore::OnResume()
-{
-    ApplicationCore::OnResume();
-}
-
-void GameCore::OnBackground()
-{
-	
-}
-
-void GameCore::BeginFrame()
-{
-	ApplicationCore::BeginFrame();
-	RenderManager::Instance()->ClearWithColor(0, 0.2, 0, 1);
-}
-
-void GameCore::Update(float32 timeElapsed)
-{	
-//	if (!cursor)
-//	{
-//		cursor = Cursor::Create("~res:/Cursor/cursor1.png", Vector2(6, 0));
-//		RenderManager::Instance()->SetCursor(cursor);
-//	}
-	ApplicationCore::Update(timeElapsed);
-}
-
-void GameCore::Draw()
-{
-	ApplicationCore::Draw();
-}
+protected:
+    TextBlock *textBlock;
+};
+};
+#endif // __TEXT_GAME_OBJECT__

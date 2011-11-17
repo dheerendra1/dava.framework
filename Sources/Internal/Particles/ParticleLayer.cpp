@@ -507,10 +507,11 @@ void ParticleLayer::ProcessParticle(Particle * particle)
 		int32 frame = (int32)frameOverLife->GetValue(t);
 		particle->frame = frame;
 	}
-//	if ((forcesOverLife.size() == 1) && (forcesOverLife[0] != 0))
-//	{
-//		particle->forceOverLife0 = forcesOverLife[0]->GetValue(t);
-//	}
+    
+    particle->forcesOverLife.clear();
+    for(int i = 0; i < forcesOverLife.size(); i++)
+        if(forcesOverLife[i].Get())
+            particle->forcesOverLife.push_back(forcesOverLife[i]->GetValue(t));
 }
 
 void ParticleLayer::Draw()

@@ -113,7 +113,7 @@ RefPtr< PropertyLine<Vector2> > PropertyLineYamlReader::CreateVector2PropertyLin
             if(propertyName == "emissionAngle") // for old emissionAngle compatibility
             {
                 Vector3 res(0, 0, 0);
-                float32 angle = node->AsFloat();
+                float32 angle = DegToRad(node->AsFloat());
                 res.x = cosf(angle);
                 res.y = sinf(angle);
                 return RefPtr< PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(res));
@@ -153,6 +153,13 @@ RefPtr< PropertyLine<Vector2> > PropertyLineYamlReader::CreateVector2PropertyLin
                     else 
                     {
                         Vector3 v = value->AsVector3();
+                        if(propertyName == "emissionAngle") // for old emissionAngle compatibility
+                        {
+                            float32 angle = DegToRad(value->AsFloat());
+                            v.x = cosf(angle);
+                            v.y = sinf(angle);
+                            v.z = 0.0f;
+                        }
                         keyframes->AddValue(time->AsFloat(), v);
                     }
                 }
