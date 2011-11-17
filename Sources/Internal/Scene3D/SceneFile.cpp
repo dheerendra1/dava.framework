@@ -601,7 +601,12 @@ bool SceneFile::ReadSceneNode(SceneNode * parentNode, int level)
 	{
 		if (!ReadSceneNode(node, level + 1))return false;
 	}
-	
+
+    if (parentNode == scene) 
+    {//we should process lod loading when all scene graph is ready
+        ProcessLOD(node);
+    }
+    
 	SafeRelease(node);
 	
 	// clear skeleton node 
@@ -691,5 +696,50 @@ bool SceneFile::ReadLight()
 	return true;
 }
 
+void SceneFile::ProcessLOD(SceneNode *forRootNode)
+{
+    List<SceneNode*> lodNodes;
+    forRootNode->FindNodesByNamePart("_lod0", lodNodes);
+    if (debugLogEnabled) 
+    {
+        Logger::Debug("Find %d nodes with LOD", lodNodes.size());
+    }
+    for (List<SceneNode*>::iterator it = lodNodes.begin(); it != lodNodes.end(); it++)
+    {
+        String lodName = (*it)->GetName();
+        if (debugLogEnabled) 
+        {
+            Logger::Debug("Processing LODs for %s", lodName.c_str());
+        }
+        MeshInstanceNode *meshToAdd = (MeshInstanceNode *)(*it)->FindByName("instance_0");
+        for (int i = 1; i < scene->GetLodLayersCount(); i++) 
+        {
+            lodName[lodName.size() - 1] = '0' + i;
+            SceneNode *ln = (*it)->GetParent()->FindByName(lodName);
+            if (ln) 
+            {
+                MeshInstanceNode *mn = (MeshInstanceNode *)ln->FindByName("instance_0");
+                if (mn) 
+                {
+                    if (debugLogEnabled) 
+                    {
+                        Logger::Debug("      Add LOD layer %d", i);
+                    }
+                    for (int32 n = 0; n < (int32)mn->GetMeshes().size(); n++) 
+                    {
+                        meshToAdd->AddPolygonGroupForLayer(i, mn->GetMeshes()[n], mn->GetPolygonGroupIndexes()[n], mn->GetMaterials()[n]);
+                    }
+                }
+                ln->RemoveNode(ln);
+            }
+        }
+    }
+}
+
+    
+    
 	
 };
+
+
+

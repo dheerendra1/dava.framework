@@ -49,6 +49,16 @@ class SceneNodeAnimationList;
 class Scene : public SceneNode
 {
 public:	
+    
+    struct LodLayer
+    {
+        float32 nearDistance;
+        float32 farDistance;
+
+        float32 nearDistanceSq;
+        float32 farDistanceSq;
+};
+    
 	Scene();
 	~Scene();
 	
@@ -109,12 +119,26 @@ public:
     void SetClipCamera(Camera * clipCamera);
     Camera * GetClipCamera() const;
     
+    /**
+     \brief Registers LOD layer into the scene.
+     \param[in] nearDistance near view distance fro the layer
+     \param[in] farDistance far view distance fro the layer
+     \returns Serial number of the layer
+	 */
+    int32 RegisterLodLayer(float32 nearDistance, float32 farDistance);
+    
+    inline int32 GetLodLayersCount();
+    inline float32 GetLodLayerNear(int32 layerNum);
+    inline float32 GetLodLayerFar(int32 layerNum);
+    inline float32 GetLodLayerNearSquare(int32 layerNum);
+    inline float32 GetLodLayerFarSquare(int32 layerNum);
+
+    
 private:	
     uint64 updateTime;
     uint64 drawTime;
     uint32 nodeCounter;
 
-    
 	Vector<Texture*> textures;
 	Vector<StaticMesh*> staticMeshes;
 	Vector<AnimatedMesh*> animatedMeshes;
@@ -124,6 +148,9 @@ private:
     Map<String, SceneNode*> rootNodes;
 
     // Vector<SceneNode*> alphaObjectQueue;
+    
+    Vector<LodLayer> lodLayers;
+
     
     Camera * currentCamera;
     Camera * clipCamera;
@@ -161,7 +188,36 @@ int32 Scene::GetCameraCount()
 {
     return (int32)cameras.size();
 }
+
+    
+int32 Scene::GetLodLayersCount()
+{
+    return lodLayers.size();
+}
+
+float32 Scene::GetLodLayerNear(int32 layerNum)
+{
+    return lodLayers[layerNum].nearDistance;
+}
+
+float32 Scene::GetLodLayerFar(int32 layerNum)
+{
+    return lodLayers[layerNum].farDistance;
+}
+
+float32 Scene::GetLodLayerNearSquare(int32 layerNum)
+{
+    return lodLayers[layerNum].nearDistanceSq;
+}
+
+float32 Scene::GetLodLayerFarSquare(int32 layerNum)
+{
+    return lodLayers[layerNum].farDistanceSq;
+}
+    
+
 };
+
 
 
 

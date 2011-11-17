@@ -44,7 +44,8 @@ public:
 	~MeshInstanceNode();
 	
 	void AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupIndex, Material* material);
-	
+    void AddPolygonGroupForLayer(int32 layer, StaticMesh * mesh, int32 polygonGroupIndex, Material* material);
+
     virtual void Update(float32 timeElapsed);
 	virtual void Draw();
 	
@@ -53,10 +54,25 @@ public:
 	
 	inline AABBox3 & GetBoundingBox();
 	
-	std::vector<StaticMesh*> & GetMeshes()
+	Vector<StaticMesh*> & GetMeshes()
 	{
-		return meshes;
+		return lodLayers.begin()->meshes;
 	}
+
+	Vector<int32> & GetPolygonGroupIndexes()
+	{
+		return lodLayers.begin()->polygonGroupIndexes;
+	}
+
+    Vector<Material*> & GetMaterials()
+	{
+		return lodLayers.begin()->materials;
+	}
+    
+//	Vector<StaticMesh*> & GetMeshes(int32 lodLayer)
+//	{
+//		return lodLayers.begin()->meshes;
+//	}
 	
     virtual SceneNode* Clone(SceneNode *dstNode = NULL);
 //    virtual SceneNode* Clone();
@@ -65,11 +81,23 @@ public:
 protected:
 //    virtual SceneNode* CopyDataTo(SceneNode *dstNode);
 
-	std::vector<StaticMesh*> meshes;
-	std::vector<int32> polygonGroupIndexes;
-	std::vector<Material*> materials;
+    struct LodData
+    {
+        Vector<StaticMesh*> meshes;
+        Vector<int32> polygonGroupIndexes;
+        Vector<Material*> materials;
+        int layer;
+    };
+    
+    LodData *currentLod;
+    List<LodData> lodLayers;
+    
+    
 	AABBox3 bbox;
     AABBox3 transformedBox;
+    
+    bool lodPresents;
+    int lastLodUpdateFrame;
 };
 	
 inline AABBox3 & MeshInstanceNode::GetBoundingBox()
