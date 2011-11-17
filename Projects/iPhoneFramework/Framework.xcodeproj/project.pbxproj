@@ -17,6 +17,8 @@
 		AA747D9F0F9514B9006C5449 /* Framework_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* Framework_Prefix.pch */; };
 		EA7DEDDA144854E900D9E652 /* libfreetype_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7DEDD9144854E900D9E652 /* libfreetype_ios.a */; };
 		EA7DEDDD1448550100D9E652 /* libfreetype_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7DEDDC1448550100D9E652 /* libfreetype_ios.a */; };
+		EDA6D63314753FF0000898F8 /* TextGameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EDA6D63114753FF0000898F8 /* TextGameObject.cpp */; };
+		EDA6D63414753FF0000898F8 /* TextGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = EDA6D63214753FF0000898F8 /* TextGameObject.h */; };
 		FE044EFF140EE86D002A6D27 /* ResourceArchive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044EFD140EE86D002A6D27 /* ResourceArchive.cpp */; };
 		FE044F00140EE86D002A6D27 /* ResourceArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = FE044EFE140EE86D002A6D27 /* ResourceArchive.h */; };
 		FE044F08140EE88D002A6D27 /* ColorOnlyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE044F01140EE88D002A6D27 /* ColorOnlyEffect.cpp */; };
@@ -452,6 +454,8 @@
 		D2AAC07E0554694100DB518D /* libFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA7DEDD9144854E900D9E652 /* libfreetype_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_ios.a; path = ../../Libs/freetype/lib/libfreetype_ios.a; sourceTree = "<group>"; };
 		EA7DEDDC1448550100D9E652 /* libfreetype_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype_ios.a; path = ../../Libs/freetype/lib/libfreetype_ios.a; sourceTree = "<group>"; };
+		EDA6D63114753FF0000898F8 /* TextGameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextGameObject.cpp; sourceTree = "<group>"; };
+		EDA6D63214753FF0000898F8 /* TextGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGameObject.h; sourceTree = "<group>"; };
 		FE044EFD140EE86D002A6D27 /* ResourceArchive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceArchive.cpp; sourceTree = "<group>"; };
 		FE044EFE140EE86D002A6D27 /* ResourceArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceArchive.h; sourceTree = "<group>"; };
 		FE044F01140EE88D002A6D27 /* ColorOnlyEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorOnlyEffect.cpp; sourceTree = "<group>"; };
@@ -1341,8 +1345,6 @@
 		FECFB40D12E5904400C71562 /* Scene2D */ = {
 			isa = PBXGroup;
 			children = (
-				475D59501300236500A18EC7 /* Box2DGameObject.cpp */,
-				475D59511300236500A18EC7 /* Box2DGameObject.h */,
 				475D59521300236500A18EC7 /* Box2DHelper.cpp */,
 				475D59531300236500A18EC7 /* Box2DHelper.h */,
 				475D59541300236500A18EC7 /* Box2DTileCollider.cpp */,
@@ -1351,8 +1353,12 @@
 				FECFB40F12E5904400C71562 /* Box2DDebugDraw.h */,
 				FECFB41012E5904400C71562 /* Box2DGameObjectManager.cpp */,
 				FECFB41112E5904400C71562 /* Box2DGameObjectManager.h */,
+				475D59501300236500A18EC7 /* Box2DGameObject.cpp */,
+				475D59511300236500A18EC7 /* Box2DGameObject.h */,
 				FECFB41212E5904400C71562 /* GameObject.cpp */,
 				FECFB41312E5904400C71562 /* GameObject.h */,
+				EDA6D63114753FF0000898F8 /* TextGameObject.cpp */,
+				EDA6D63214753FF0000898F8 /* TextGameObject.h */,
 				FECFB41412E5904400C71562 /* GameObjectAnimations.cpp */,
 				FECFB41512E5904400C71562 /* GameObjectAnimations.h */,
 				FECFB41612E5904400C71562 /* GameObjectManager.cpp */,
@@ -1761,6 +1767,7 @@
 				FE879F5914504A1800F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */,
 				FEE98F00146948C900EEAEFC /* UberShader.h in Headers */,
 				FEE98F04146948EB00EEAEFC /* Data.h in Headers */,
+				EDA6D63414753FF0000898F8 /* TextGameObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2024,6 +2031,7 @@
 				FEE98EFB146948C000EEAEFC /* Material.cpp in Sources */,
 				FEE98EFF146948C900EEAEFC /* UberShader.cpp in Sources */,
 				FEE98F03146948EB00EEAEFC /* Data.cpp in Sources */,
+				EDA6D63314753FF0000898F8 /* TextGameObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

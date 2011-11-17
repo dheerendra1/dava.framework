@@ -35,7 +35,7 @@
 namespace DAVA
 {
     class Font;
-    class TextBlock;
+    struct TextBlock;
 /**
 	\ingroup scene2d
 	\brief represent text as game object
