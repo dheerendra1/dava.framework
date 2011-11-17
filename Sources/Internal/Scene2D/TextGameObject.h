@@ -25,36 +25,38 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Kiryl Polyakov 
 =====================================================================================*/
-#import <Cocoa/Cocoa.h>
-#import "OpenGLView.h"
-#import "AppDelegate.h"
-#import "NSFullScreenWindow.h"
+#ifndef __TEXT_GAME_OBJECT__
+#define __TEXT_GAME_OBJECT__
 
+#include "Scene2D/GameObject.h"
 
-@interface MainWindowController : NSWindowController <NSWindowDelegate>
+namespace DAVA
 {
-@public
-	float32	currFPS;
-	OpenGLView * openGLView;
-	NSWindow * mainWindow;
-	//NSWindow * fullscreenWindow;
-	NSFullScreenWindow * fullscreenWindow;
-    
-	NSOpenGLContext * fullScreenContext;
+    class Font;
+    class TextBlock;
+/**
+	\ingroup scene2d
+	\brief represent text as game object
+ */
+class TextGameObject : public GameObject
+{
+public: // from UIStaticText
+    TextGameObject(const Rect &rect);
+    TextGameObject(const Rect &rect, Font *font, const WideString &string);
 
-	bool isAnimating;
-	NSTimer * animationTimer;
-	CFAbsoluteTime timeBefore;
-	BOOL stayInFullScreenMode;          // this flag indicating that we want to leave full screen mode
-	
-	ApplicationCore * core;
-}
+    void SetText(const WideString &string, const Vector2 &requestedTextRectSize = Vector2(0,0));
+    void SetFont(Font *font, bool prepareSprite = true);
+    void SetMultiline(bool isMultilineEnabled);
+    void SetFittingOption(int32 fittingType);
+    void SetAlign(int32 alignment);
 
-- (void)switchToFullScreen;
+protected:
+    void PrepareSprite();
 
-- (void)windowWillMiniaturize:(NSNotification *)notification;
-- (void)windowDidDeminiaturize:(NSNotification *)notification;
-
-@end
+protected:
+    TextBlock *textBlock;
+};
+};
+#endif // __TEXT_GAME_OBJECT__

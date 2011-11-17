@@ -30,10 +30,12 @@
 #include "TestScreen.h"
 #include <sys/time.h>
 
-String emitterProps[] = {"emissionDir", "emissionRage", "radius", "colorOverLife"};
+String emitterProps[] = {"type", "emissionDir", "emissionRage", "radius", "colorOverLife"};
 String layerProps[] = {"sprite", "life", "lifeVariation", "number", "numberVariation", "size","sizeVariation", "sizeOverLife", "velocity", "velocityVariation", "velocityOverLife", "forces","forcesVariation", "forcesOverLife", "spin", "spinVariation", "spinOverLife", "motionRandom","motionRandomVariation", "motionRandomOverLife", "bounce", "bounceVariation", "bounceOverLife","colorRandom", "alphaOverLife", "colorOverLife"};
+String emitterTypes[] = {"EMITTER_POINT", "EMITTER_LINE", "EMITTER_RECT", "EMITTER_ONCIRCLE"};
 
-int32 emitterPropsCount = 4;
+int32 emitterPropsCount = 5;
+int32 emitterTypesCount = 4;
 int32 layerPropsCount = 26;
 int32 deltaIndex = 0;
 bool curPropType = 0; //0 - value, 1 - Keyframed
@@ -67,6 +69,7 @@ void TestScreen::LoadResources()
     selectedPropElement = -1;
     selectedEmitterElement = -1;
     selectedForceElement = -1;
+    selectedEmitterTypeElement = -1;
 
     f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     f->SetSize(18);
@@ -236,6 +239,11 @@ void TestScreen::LoadResources()
     forcesList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
     AddControl(forcesList);
 
+    emitterTypeList = new UIList(Rect(buttonW, cellH*9, buttonW, cellH*5), UIList::ORIENTATION_VERTICAL);
+    emitterTypeList->SetDelegate(this);
+    emitterTypeList->GetBackground()->SetColor(Color(0.3, 0.3, 0.3, 0.5));
+    emitterTypeList->GetBackground()->SetDrawType(UIControlBackground::DRAW_FILL);
+    
     emitter3D = new UIButton(Rect(buttonW - cellH*2/3, cellH*3, cellH*2/3, cellH*2/3));
     emitter3D->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
     emitter3D->GetStateBackground(UIControl::STATE_NORMAL)->SetColor(Color(0.5, 0.5, 0.5, 0.0));
@@ -399,10 +407,10 @@ void TestScreen::LoadResources()
     AddControl(layers.at(0).curLayerTime);
     preview->SetEmitter(emitter);
     
-    layers[0].props[0].minValue = 0;
-    layers[0].props[0].maxValue = 360;
     layers[0].props[1].minValue = 0;
     layers[0].props[1].maxValue = 360;
+    layers[0].props[2].minValue = 0;
+    layers[0].props[2].maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
     forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
@@ -431,7 +439,7 @@ void TestScreen::LoadResources()
     
     HideAndResetEditFields();
     HideForcesList();
-    HideAddProps();    
+    HideAddProps();
 }
 
 void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
@@ -1293,6 +1301,27 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
     PropertyLineKeyframes<Color> *ck;
     switch (id) {
         case 0:
+            if(emitter->type == ParticleEmitter::EMITTER_POINT)
+                selectedEmitterTypeElement = 0;
+            if(emitter->type == ParticleEmitter::EMITTER_LINE)
+                selectedEmitterTypeElement = 1;
+            if(emitter->type == ParticleEmitter::EMITTER_RECT)
+                selectedEmitterTypeElement = 2;
+            if(emitter->type == ParticleEmitter::EMITTER_ONCIRCLE)
+                selectedEmitterTypeElement = 3;
+            
+            AddControl(emitterTypeList);
+            valueBut->SetVisible(false);
+            KFBut->SetVisible(false);
+            
+            if(getLimits && selectedEmitterTypeElement == 0)
+                    layers[0].props[0].isDefault = true;
+            else
+                    layers[0].props[0].isDefault = false;
+            
+            break;
+            
+        case 1:
             vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
             vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1301,7 +1330,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 1:
+        case 2:
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
             pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1310,7 +1339,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 2:
+        case 3:
             pk = dynamic_cast< PropertyLineKeyframes<float> *>(emitter->radius.Get());
             pv = dynamic_cast< PropertyLineValue<float> *>(emitter->radius.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1319,7 +1348,7 @@ void TestScreen::GetEmitterPropValue(int32 id, bool getLimits)
                     layers.at(0).props.at(id).isDefault = true;
             break;
             
-        case 3:
+        case 4:
             ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
             cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
             layers.at(0).props.at(id).isDefault = false;
@@ -1394,27 +1423,38 @@ void TestScreen::SetEmitterPropValue(int32 id, bool def)
     }
     switch (id) {
         case 0:
+            if(selectedEmitterTypeElement == 0)
+                emitter->type = ParticleEmitter::EMITTER_POINT;
+            if(selectedEmitterTypeElement == 1)
+                emitter->type = ParticleEmitter::EMITTER_LINE;
+            if(selectedEmitterTypeElement == 2)
+                emitter->type = ParticleEmitter::EMITTER_RECT;
+            if(selectedEmitterTypeElement == 3)
+                emitter->type = ParticleEmitter::EMITTER_ONCIRCLE;
+            break;
+            
+        case 1:
             SafeRelease(valueDim2);
             SafeRelease(valueDim1);
             SafeRelease(valueDim4);
             emitter->emissionAngle.Set(valueDim3);
             break;
             
-        case 1:
+        case 2:
             SafeRelease(valueDim2);
             SafeRelease(valueDim4);
             SafeRelease(valueDim3);
             emitter->emissionRange.Set(valueDim1);      
             break;
            
-        case 2:
+        case 3:
             SafeRelease(valueDim2);
             SafeRelease(valueDim3);
             SafeRelease(valueDim4);
             emitter->radius.Set(valueDim1);
             break;
             
-        case 3:
+        case 4:
             SafeRelease(valueDim2);
             SafeRelease(valueDim1);
             SafeRelease(valueDim3);
@@ -1430,18 +1470,23 @@ void TestScreen::ResetEmitterPropValue(int32 id)
 {
     switch (id) {
         case 0:
-            emitter->emissionAngle.Set(0);
+            selectedEmitterTypeElement = 0;
+            emitter->type = ParticleEmitter::EMITTER_POINT;
             break;
             
         case 1:
-            emitter->emissionRange.Set(0);      
+            emitter->emissionAngle.Set(0);
             break;
             
         case 2:
-            emitter->radius.Set(0);
+            emitter->emissionRange.Set(0);      
             break;
             
         case 3:
+            emitter->radius.Set(0);
+            break;
+            
+        case 4:
             emitter->colorOverLife.Set(0);
             break;
             
@@ -2433,6 +2478,8 @@ void TestScreen::HideAndResetEditFields()
     tfkf[1]->SetVisible(false);
     tfkfText[0]->SetVisible(false);
     tfkfText[1]->SetVisible(false);
+    
+    RemoveControl(emitterTypeList);
 }
 
 void TestScreen::ShowAddProps()
@@ -2588,6 +2635,10 @@ int32 TestScreen::ElementsCount(UIList *forList)
                 break;
         }
     }
+    if(forList == emitterTypeList)
+    {
+        n = emitterTypesCount;
+    }
     return n;
 }
 
@@ -2633,7 +2684,7 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
     }
     if (forList == propList)
     {
-        PropListCell *c = new PropListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterList Cell");
+        PropListCell *c = new PropListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "PropList Cell");
         c->SetFront(cellFont);
         int32 n = layers.at(selectedEmitterElement).props.size();
         while((index+deltaIndex < n) && layers.at(selectedEmitterElement).props.at(index+deltaIndex).isDefault)
@@ -2647,7 +2698,7 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
     }
     if (forList == addPropList)
     {
-        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterList Cell");
+        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "AddPropList Cell");
         c->SetStateFont(UIListCell::STATE_NORMAL, cellFont);
         c->SetStateDrawType(UIControl::STATE_SELECTED, UIControlBackground::DRAW_FILL);
         c->GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));
@@ -2685,6 +2736,22 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         {
             c->SetSelected(true);
         }
+        return c;
+    }
+    
+    if(forList == emitterTypeList)
+    {
+        UIListCell *c = new UIListCell(Rect(0, 0, forList->size.x, CellHeight(forList, index)), "EmitterType Cell");
+        c->SetStateFont(UIListCell::STATE_NORMAL, cellFont);
+        c->SetStateDrawType(UIControl::STATE_SELECTED, UIControlBackground::DRAW_FILL);
+        c->GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));  
+        c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(emitterTypes[index]));
+
+        if(index == selectedEmitterTypeElement)
+            c->SetSelected(true);
+        else
+            c->SetSelected(false);
+        
         return c;
     }
     return 0;
@@ -2734,6 +2801,8 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         if(selectedEmitterElement == 0)
         {
             GetEmitterPropValue(selectedPropElement);
+            if(selectedPropElement == 0)
+                emitterTypeList->RefreshList();
         }
         if(selectedEmitterElement > 0)
         {
@@ -2778,6 +2847,14 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         HideForcesList();
         
         GetLayerPropValue(selectedPropElement);
+    }
+    
+    if(forList == emitterTypeList)
+    {
+        selectedEmitterTypeElement = selectedCell->GetIndex();
+        selectedCell->SetSelected(true);
+        
+        SetEmitterPropValue(0);
     }
 }
 
@@ -2846,33 +2923,49 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     else
         fprintf(file, "    3d: false\n");
     
+    int32 emitPropIndex = 0;
+    
+    if(emitter->type == ParticleEmitter::EMITTER_POINT)
+        fprintf(file, "    type: point\n");
+    if(emitter->type == ParticleEmitter::EMITTER_LINE)
+        fprintf(file, "    type: line\n");
+    if(emitter->type == ParticleEmitter::EMITTER_RECT)
+        fprintf(file, "    type: rect\n");
+    if(emitter->type == ParticleEmitter::EMITTER_ONCIRCLE)
+        fprintf(file, "    type: oncirlce\n");
+    emitPropIndex++;
+    
     v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
     v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
     if(v3k)
-        PrintPropKFValue(file, emitterProps[0], v3k);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
     else if(v3v)
-        PrintPropValue(file, emitterProps[0], v3v);
+        PrintPropValue(file, emitterProps[emitPropIndex], v3v);
+    emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
     if(pk)
-        PrintPropKFValue(file, emitterProps[1], pk);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
     else if(pv)
-        PrintPropValue(file, emitterProps[1], pv);
+        PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->radius.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->radius.Get());
     if(pk)
-        PrintPropKFValue(file, emitterProps[2], pk);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
     else if(pv)
-        PrintPropValue(file, emitterProps[2], pv);
+        PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
     
     ck = dynamic_cast< PropertyLineKeyframes<Color> *>(emitter->colorOverLife.Get());
     cv = dynamic_cast< PropertyLineValue<Color> *>(emitter->colorOverLife.Get());
     if(pk)
-        PrintPropKFValue(file, emitterProps[3], ck);
+        PrintPropKFValue(file, emitterProps[emitPropIndex], ck);
     else if(pv)
-        PrintPropValue(file, emitterProps[3], cv);
+        PrintPropValue(file, emitterProps[emitPropIndex], cv);
+    emitPropIndex++;
     
     fprintf(file, "\n");
     
@@ -3127,6 +3220,7 @@ void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<V
     Vector3 value = pv->GetValue(0);
     fprintf(file, "    %s: [%f, %f, %f]\n", propName.c_str(), value.x, value.y, value.z);
 }
+
 void TestScreen::PrintPropValue(FILE *file, String propName, PropertyLineValue<Color> *pv)
 {
     Color value = pv->GetValue(0);

@@ -263,7 +263,6 @@ protected:
 	Vector<ParticleLayer*> layers;
 	Vector3 position;
 	float32 angle;
-	eType	type;
 	Vector3 size;
 	
 	float32	lifeTime;
@@ -280,7 +279,8 @@ public:
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
 	RefPtr< PropertyLine<Color> > colorOverLife;
-
+    
+	eType	type;
 	Color currentColor;
 
 	bool GetCurrentColor(Color * currentColor);

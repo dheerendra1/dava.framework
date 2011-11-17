@@ -167,7 +167,10 @@ extern void FrameworkMain(int argc, char *argv[]);
 	}
 	else glFlush();
 	sizeChanged = NO; */
-	[[self openGLContext] flushBuffer];
+    if(DAVA::Core::Instance()->IsActive())
+    {
+        [[self openGLContext] flushBuffer];
+    }
 	DAVA::RenderManager::Instance()->Unlock();
 //	Logger::Debug("drawRect ended");
 
@@ -381,7 +384,7 @@ void MoveTouchsToVector(NSEvent *curEvent, int touchPhase, Vector<UIEvent> *outT
 - (void) keyDown:(NSEvent *)event
 {
 	{
-		//Logger::Debug("glview keypress!");
+		Logger::Debug("glview keypress!");
 		unichar c = [[event characters] characterAtIndex:0];
 		
 		Vector<DAVA::UIEvent> touches;
