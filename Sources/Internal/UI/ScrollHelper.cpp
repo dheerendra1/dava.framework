@@ -111,12 +111,13 @@ namespace DAVA
 	{
 		if(isPositionLocked)
 		{
-			if(position > 0 && positionDelta > 0)
+			if(position + positionDelta > 0)
 			{
 				positionDelta *= (1.0f - position / virtualViewSize) * backward;
 			}
-			if(position + elementSize < virtualViewSize && positionDelta < 0)
+			if(position + elementSize + positionDelta  < virtualViewSize)
 			{
+                
 				positionDelta *= (1.0f - (virtualViewSize - (position + elementSize)) / virtualViewSize) * backward;
 			}
 			position += positionDelta;
@@ -134,7 +135,6 @@ namespace DAVA
 				totalDeltaMove -= it->deltaMove;
 				moves.erase(it);
 			}
-			
 		}
 		else
 		{
@@ -220,6 +220,8 @@ namespace DAVA
 			moves.clear();
 			totalDeltaTime = 0;
 			totalDeltaMove = 0;
+            
+            Logger::Debug("ScrollHelper::GetPosition positionDelta=%f position=%f",positionDelta, position);
 		}
 		
 		return position;
