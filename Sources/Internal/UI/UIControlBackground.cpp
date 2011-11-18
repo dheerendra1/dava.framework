@@ -49,7 +49,7 @@ UIControlBackground::UIControlBackground()
 ,	topStretchCap(0)
 ,	spriteModification(0)
 ,	colorInheritType(COLOR_IGNORE_PARENT)
-,	usePerPixelAccuracy(false)
+,	perPixelAccuracyType(PER_PIXEL_ACCURACY_DISABLED)
 ,	lastDrawPos(0, 0)
 {
 	rdoObject = new RenderDataObject();
@@ -75,7 +75,7 @@ void UIControlBackground::CopyDataFrom(UIControlBackground *srcBackground)
 	color = srcBackground->color;
 	spriteModification = srcBackground->spriteModification;
 	colorInheritType = srcBackground->colorInheritType;
-	usePerPixelAccuracy = srcBackground->usePerPixelAccuracy;
+	perPixelAccuracyType = srcBackground->perPixelAccuracyType;
 }
 
 
@@ -148,14 +148,21 @@ void UIControlBackground::SetModification(int32 modification)
 	spriteModification = modification;	
 }
 	
-void	UIControlBackground::SetColorInheritType(UIControlBackground::eColorInheritType inheritType)
+void UIControlBackground::SetColorInheritType(UIControlBackground::eColorInheritType inheritType)
 {
 	DVASSERT(inheritType >= 0 && inheritType < COLOR_INHERIT_TYPES_COUNT);
 	colorInheritType = inheritType;
 }
-	
-
-	
+    
+void UIControlBackground::SetPerPixelAccuracyType(ePerPixelAccuracyType accuracyType)
+{
+    perPixelAccuracyType = accuracyType;
+}
+    
+UIControlBackground::ePerPixelAccuracyType UIControlBackground::GetPerPixelAccuracyType()
+{
+    return perPixelAccuracyType;
+}
 	
 const Color &UIControlBackground::GetDrawColor()
 {
@@ -275,14 +282,25 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 			drawState.scale = geometricData.scale;
 			drawState.pivotPoint = spr->GetDefaultPivotPoint();
 //			spr->SetScale(geometricData.scale);
-			if (usePerPixelAccuracy && lastDrawPos == drawState.position && drawState.scale.x == 1.0 && drawState.scale.y == 1.0)
-			{
-				drawState.usePerPixelAccuracy = usePerPixelAccuracy;
-//				Logger::Info("UIControlBackground: Trying to draw with per pixel accuracy");
-
-			}
+            if (drawState.scale.x == 1.0 && drawState.scale.y == 1.0)
+            {
+                switch(perPixelAccuracyType)
+                {
+                    case PER_PIXEL_ACCURACY_ENABLED:
+                        if(lastDrawPos == drawState.position)
+                        {
+                            drawState.usePerPixelAccuracy = true;
+                        }
+                        break;
+                    case PER_PIXEL_ACCURACY_FORCED:
+                        drawState.usePerPixelAccuracy = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+			
 			lastDrawPos = drawState.position;
-
 
 			spr->Draw(&drawState);
 		}
