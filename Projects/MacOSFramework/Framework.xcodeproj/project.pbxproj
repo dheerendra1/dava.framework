@@ -76,6 +76,9 @@
 		FE578C601327927C0081BDE9 /* libogg_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5D1327927C0081BDE9 /* libogg_macos.a */; };
 		FE578C611327927C0081BDE9 /* libvorbis_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5E1327927C0081BDE9 /* libvorbis_macos.a */; };
 		FE578C621327927C0081BDE9 /* libvorbisfile_macos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE578C5F1327927C0081BDE9 /* libvorbisfile_macos.a */; };
+		FE707B1A147588AC0082008F /* SpriteNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE707B19147588AC0082008F /* SpriteNode.cpp */; };
+		FE707B1D147588B60082008F /* BillboardNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE707B1B147588B60082008F /* BillboardNode.cpp */; };
+		FE707B1E147588B60082008F /* BillboardNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE707B1C147588B60082008F /* BillboardNode.h */; };
 		FE879F87145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE879F85145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp */; };
 		FE879F88145061E400F889E5 /* TextureMulColorAlphaTestEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FE879F86145061E400F889E5 /* TextureMulColorAlphaTestEffect.h */; };
 		FE941D321331543700515418 /* CorePlatformMacOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE941D2C1331543700515418 /* CorePlatformMacOS.cpp */; };
@@ -533,6 +536,9 @@
 		FE578C5D1327927C0081BDE9 /* libogg_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg_macos.a; path = ../../Libs/oggvorbis/lib/libogg_macos.a; sourceTree = SOURCE_ROOT; };
 		FE578C5E1327927C0081BDE9 /* libvorbis_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis_macos.a; path = ../../Libs/oggvorbis/lib/libvorbis_macos.a; sourceTree = SOURCE_ROOT; };
 		FE578C5F1327927C0081BDE9 /* libvorbisfile_macos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile_macos.a; path = ../../Libs/oggvorbis/lib/libvorbisfile_macos.a; sourceTree = SOURCE_ROOT; };
+		FE707B19147588AC0082008F /* SpriteNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteNode.cpp; sourceTree = "<group>"; };
+		FE707B1B147588B60082008F /* BillboardNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BillboardNode.cpp; sourceTree = "<group>"; };
+		FE707B1C147588B60082008F /* BillboardNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillboardNode.h; sourceTree = "<group>"; };
 		FE879F85145061E400F889E5 /* TextureMulColorAlphaTestEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureMulColorAlphaTestEffect.cpp; sourceTree = "<group>"; };
 		FE879F86145061E400F889E5 /* TextureMulColorAlphaTestEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureMulColorAlphaTestEffect.h; sourceTree = "<group>"; };
 		FE941D2C1331543700515418 /* CorePlatformMacOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CorePlatformMacOS.cpp; sourceTree = "<group>"; };
@@ -1472,10 +1478,13 @@
 				FECFC1BB12E87E3000C71562 /* SceneNodeAnimationList.h */,
 				FECFC1BC12E87E3000C71562 /* SkeletonNode.cpp */,
 				FECFC1BD12E87E3000C71562 /* SkeletonNode.h */,
+				FE707B19147588AC0082008F /* SpriteNode.cpp */,
 				FECFC1BE12E87E3000C71562 /* SpriteNode.h */,
 				FECFC1BF12E87E3000C71562 /* StateNode.h */,
 				FE4A005213EBDC24006E924D /* LandscapeNode.cpp */,
 				FE4A005313EBDC24006E924D /* LandscapeNode.h */,
+				FE707B1B147588B60082008F /* BillboardNode.cpp */,
+				FE707B1C147588B60082008F /* BillboardNode.h */,
 			);
 			path = Scene3D;
 			sourceTree = "<group>";
@@ -1843,6 +1852,7 @@
 				FE25F789145DB33E00A72F9C /* UberShader.h in Headers */,
 				FE25F78B145DB75700A72F9C /* Data.h in Headers */,
 				C7AB370F1473F31E00D52251 /* NSFullScreenWindow.h in Headers */,
+				FE707B1E147588B60082008F /* BillboardNode.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2115,6 +2125,8 @@
 				FE25F788145DB33E00A72F9C /* UberShader.cpp in Sources */,
 				FE25F78D145DB88B00A72F9C /* Data.cpp in Sources */,
 				C7AB37101473F31E00D52251 /* NSFullScreenWindow.m in Sources */,
+				FE707B1A147588AC0082008F /* SpriteNode.cpp in Sources */,
+				FE707B1D147588B60082008F /* BillboardNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
