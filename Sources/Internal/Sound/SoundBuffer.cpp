@@ -122,6 +122,7 @@ bool SoundBuffer::Fill(SoundDataProvider * provider, int32 size)
 	if(0 == actualSize)
 	{
 		Free(data);
+		data = 0; 
 		return false;
 	}
 
