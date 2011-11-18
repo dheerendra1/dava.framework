@@ -47,7 +47,7 @@ UIStaticText::UIStaticText(const Rect &rect, bool rectInAbsoluteCoordinates/* = 
 	inputEnabled = false;
 	textBlock = TextBlock::Create(Vector2(rect.dx, rect.dy));
 	background->SetAlign(ALIGN_TOP|ALIGN_LEFT);
-	background->usePerPixelAccuracy = true;
+	background->SetPerPixelAccuracyType(UIControlBackground::PER_PIXEL_ACCURACY_ENABLED);
 }
 
 UIStaticText::~UIStaticText()

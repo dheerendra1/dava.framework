@@ -67,6 +67,7 @@ public:
 
 	virtual void SetCameraPosition(float32 cameraPositionX, float32 cameraPositionY);	
 	virtual void SetCameraScale(float32 cameraScale);
+    virtual float32 GetCameraScale() const;
 
 	/*	
 		Functions to enumerate objects

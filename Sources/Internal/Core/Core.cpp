@@ -285,7 +285,9 @@ void Core::CalculateScaleMultipliers()
 	
 	Sprite::ValidateForSize();
 	TextBlock::ScreenResolutionChanged();
-	
+			
+	Logger::Debug("[Core] CalculateScaleMultipliers desirableIndex: %d", desirableIndex);
+		
 }
 	
 float32 Core::GetResourceToPhysicalFactor(int32 resourceIndex)
@@ -430,20 +432,56 @@ DisplayMode Core::FindBestMode(const DisplayMode & requestedMode)
 
 	if (bestMatchMode.refreshRate == -1) // haven't found any mode
 	{
+		int32 minDiffWidth = 0;
+		int32 minDiffHeight = 0;
+		float32 requestedAspect = (requestedMode.height>0?(float32)requestedMode.width/(float32)requestedMode.height:1.0f);
+		float32 minDiffAspect = 0;
+
 		for (List<DisplayMode>::iterator it = availableDisplayModes.begin(); it != availableDisplayModes.end(); ++it)
 		{
 			DisplayMode & availableMode = *it;
 
-			int32 diffWidth = availableMode.width - requestedMode.width;
-			int32 diffHeight = availableMode.height - requestedMode.height;
-			if (diffWidth > 0 && diffHeight > 0)
-			{
-				int32 curDiffWidth = availableMode.width - bestMatchMode.width;
-				int32 curDiffHeight = availableMode.height - bestMatchMode.height;
+			int32 diffWidth = abs(availableMode.width - requestedMode.width);
+			int32 diffHeight = abs(availableMode.height - requestedMode.height);
 
-				if (diffWidth + diffHeight <= curDiffWidth + curDiffHeight)
+			float32 availableAspect = (availableMode.height>0?(float32)availableMode.width/(float32)availableMode.height:1.0f);
+			float32 diffAspect = fabs(availableAspect - requestedAspect);
+
+//			if (diffWidth >= 0 && diffHeight >= 0)
+			{
+				// if first mode found replace
+				if (bestMatchMode.refreshRate == -1)
 				{
-					bestMatchMode = availableMode;
+					minDiffWidth = diffWidth;
+					minDiffHeight = diffHeight;
+					minDiffAspect = diffAspect;
+				}
+
+				if(diffAspect<=(minDiffAspect+0.01f))
+				{
+					if((diffAspect+0.01f)<minDiffAspect)
+					{
+						// aspect changed, clear min diff
+						minDiffWidth = diffWidth;
+						minDiffHeight = diffHeight;
+					}
+
+					minDiffAspect = diffAspect;
+
+					//int32 curDiffWidth = availableMode.width - bestMatchMode.width;
+					//int32 curDiffHeight = availableMode.height - bestMatchMode.height;
+
+					//if (diffWidth + diffHeight <= curDiffWidth + curDiffHeight)
+					if (diffWidth + diffHeight <= minDiffWidth + minDiffHeight)
+					{
+						minDiffWidth = diffWidth;
+						minDiffHeight = diffHeight;
+
+						if (availableMode.bpp >= bestMatchMode.bpp) // find best match with highest bits per pixel
+						{
+							bestMatchMode = availableMode;
+						}
+					}
 				}
 			}
 		}

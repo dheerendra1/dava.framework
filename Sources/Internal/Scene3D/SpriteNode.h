@@ -37,6 +37,11 @@
 namespace DAVA 
 {
 class Sprite;
+    
+/**
+    \ingroup 
+    \brief 
+ */
 class SpriteNode : public SceneNode
 {
 public:
@@ -49,12 +54,40 @@ public:
                , const Vector2 &pivotPoint = Vector2(0.0f, 0.0f));
     ~SpriteNode();
     
+    enum eType
+    {
+        TYPE_OBJECT = 0,            //! draw sprite without any transformations. Set by default.
+        TYPE_BILLBOARD,             //! normal billboard when billboard is always parallel to the camera projection plane. It computed by multiplication of worldMatrix of node to [R]^-1 matrix of camera
+        TYPE_BILLBOARD_TO_CAMERA,   //! billboard is facing to camera point
+    };
+    
+    /**
+        \brief Set type of coordinates modification for the given sprite node
+        \param[in] type type you want to set
+     */
+    void SetType(eType type);
+    /**
+        \brief Get type of coordinates modification for the given sprite node
+        \returns type that was set to this sprite node
+     */
+    eType GetType();
+    
+    /**
+        \brief Overriden draw function that draws sprite
+     */
     virtual void	Draw();
     
+    /**
+        \brief Change sprite frame for this sprite node 
+        \param[in] newFrame frame you want to set
+     */
     void SetFrame(int32 newFrame);
-    int32 GetFrame();
-
     
+    /**
+        \brief Get frame for this sprite node
+        \returns frame index that was set for this node last time
+     */
+    int32 GetFrame();
 protected:
     
     void CreateMeshFromSprite(int32 frameToGen);
@@ -67,6 +100,8 @@ protected:
     int32 frame;
     
     RenderDataObject *renderData;
+    
+    eType type;
 };
 };
 

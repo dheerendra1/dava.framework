@@ -900,6 +900,9 @@
     <ClInclude Include="..\..\Sources\Internal\Render\UberShader.h">
       <Filter>Internal\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Internal\Scene2D\TextGameObject.h">
+      <Filter>Internal\Scene2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\External\Box2D\Collision\b2BroadPhase.cpp">
@@ -1546,6 +1549,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Internal\Render\UberShader.cpp">
       <Filter>Internal\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Internal\Scene2D\TextGameObject.cpp">
+      <Filter>Internal\Scene2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

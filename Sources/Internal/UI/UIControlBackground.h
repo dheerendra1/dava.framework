@@ -60,7 +60,8 @@ public:
 	{
 		DRAW_ALIGNED = 0,			//!<Align sprite inside ronctrol rect.
 		DRAW_SCALE_TO_RECT,			//!<Scale sprite along the all control rect.
-		DRAW_SCALE_PROPORTIONAL,	//!<Sclae sptire to fit into the control rect but with keeping sprite proportions.
+		DRAW_SCALE_PROPORTIONAL,	//!<Scale sptire to fit both width and height into the control rect but with keeping sprite proportions.
+        DRAW_SCALE_PROPORTIONAL_ONE,//!<Scale sptire to fit width or height into control rect but with keeping sprite proportions.
 		DRAW_FILL,					//!<Fill control rect with the control color.
 		DRAW_STRETCH_HORIZONTAL,	//!<Stretch sprite horizontally along the control rect.
 		DRAW_STRETCH_VERTICAL,		//!<Stretch sprite vertically along the control rect.
@@ -82,6 +83,15 @@ public:
 		,	COLOR_INHERIT_TYPES_COUNT
 	};
 	
+    enum ePerPixelAccuracyType
+    {
+        PER_PIXEL_ACCURACY_DISABLED = 0,
+        PER_PIXEL_ACCURACY_ENABLED,
+        PER_PIXEL_ACCURACY_FORCED,
+        
+        PER_PIXEL_ACCURACY_TYPES
+    };
+    
 	/**
 	 \brief Constructor.
 	 */
@@ -171,14 +181,27 @@ public:
 	 \param[in] inheritType color inheritance type.
 	 */
 	virtual void SetColorInheritType(UIControlBackground::eColorInheritType inheritType);
+    
 	/**
 	 \brief Returns current color inheritance type.
 		Color inheritance type it's a rules of the calculating resulting draw color 
 		from the current control color and parent control color.
 		Color inheritance type by default is COLOR_IGNORE_PARENT.
-	 \param[in] eColorInheritType color inheritance type.
+	 \returns eColorInheritType color inheritance type.
 	 */
 	virtual eColorInheritType GetColorInheritType();
+    
+    /**
+	 \brief Sets per pixel accuracy type. Enable per pixel accuracy if you want to draw controls using int coordinates instead of float. Disabled by default.  
+	 \param[in] accuracyType. Use PER_PIXEL_ACCURACY_ENABLED to enable it for static controls. Use PER_PIXEL_ACCURACY_FORCED to enable it both for static controls and for control position animations.
+	 */
+    void SetPerPixelAccuracyType(UIControlBackground::ePerPixelAccuracyType accuracyType);
+    
+    /**
+	 \brief Returns per pixel accuracy type. Enable per pixel accuracy if you want to draw controls using int coordinates instead of float. Disabled by default.  
+	 \returns ePerPixelAccuracyType per pixel accuracy type
+	 */
+    UIControlBackground::ePerPixelAccuracyType GetPerPixelAccuracyType();
 
 	/**
 	 \brief Draw selected sprite by selected rules in the current control rect.
@@ -219,7 +242,7 @@ public:
 	// WTF? Probably we should move it to protected to avoid problems in future? 
 	Color color;//!<Control color. By default is Color(1,1,1,1).
 	int32 frame;//!<Sprite frame.
-	bool usePerPixelAccuracy;//!<Is sprite should be drawn with per pixel accuracy. Used for texts, for example.
+    
 protected:
 	void DrawStretched(const Rect &drawRect);
 
@@ -235,6 +258,9 @@ protected:
 	RenderDataObject * rdoObject;
     RenderDataStream * vertexStream;
     RenderDataStream * texCoordStream;
+    
+    ePerPixelAccuracyType perPixelAccuracyType;//!<Is sprite should be drawn with per pixel accuracy. Used for texts, for example.
+    
 protected:
 	~UIControlBackground();
 	Color drawColor;

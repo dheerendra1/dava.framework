@@ -49,7 +49,7 @@ UIControlBackground::UIControlBackground()
 ,	topStretchCap(0)
 ,	spriteModification(0)
 ,	colorInheritType(COLOR_IGNORE_PARENT)
-,	usePerPixelAccuracy(false)
+,	perPixelAccuracyType(PER_PIXEL_ACCURACY_DISABLED)
 ,	lastDrawPos(0, 0)
 {
 	rdoObject = new RenderDataObject();
@@ -75,7 +75,7 @@ void UIControlBackground::CopyDataFrom(UIControlBackground *srcBackground)
 	color = srcBackground->color;
 	spriteModification = srcBackground->spriteModification;
 	colorInheritType = srcBackground->colorInheritType;
-	usePerPixelAccuracy = srcBackground->usePerPixelAccuracy;
+	perPixelAccuracyType = srcBackground->perPixelAccuracyType;
 }
 
 
@@ -148,14 +148,21 @@ void UIControlBackground::SetModification(int32 modification)
 	spriteModification = modification;	
 }
 	
-void	UIControlBackground::SetColorInheritType(UIControlBackground::eColorInheritType inheritType)
+void UIControlBackground::SetColorInheritType(UIControlBackground::eColorInheritType inheritType)
 {
 	DVASSERT(inheritType >= 0 && inheritType < COLOR_INHERIT_TYPES_COUNT);
 	colorInheritType = inheritType;
 }
-	
-
-	
+    
+void UIControlBackground::SetPerPixelAccuracyType(ePerPixelAccuracyType accuracyType)
+{
+    perPixelAccuracyType = accuracyType;
+}
+    
+UIControlBackground::ePerPixelAccuracyType UIControlBackground::GetPerPixelAccuracyType()
+{
+    return perPixelAccuracyType;
+}
 	
 const Color &UIControlBackground::GetDrawColor()
 {
@@ -275,14 +282,25 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 			drawState.scale = geometricData.scale;
 			drawState.pivotPoint = spr->GetDefaultPivotPoint();
 //			spr->SetScale(geometricData.scale);
-			if (usePerPixelAccuracy && lastDrawPos == drawState.position && drawState.scale.x == 1.0 && drawState.scale.y == 1.0)
-			{
-				drawState.usePerPixelAccuracy = usePerPixelAccuracy;
-//				Logger::Info("UIControlBackground: Trying to draw with per pixel accuracy");
-
-			}
+            if (drawState.scale.x == 1.0 && drawState.scale.y == 1.0)
+            {
+                switch(perPixelAccuracyType)
+                {
+                    case PER_PIXEL_ACCURACY_ENABLED:
+                        if(lastDrawPos == drawState.position)
+                        {
+                            drawState.usePerPixelAccuracy = true;
+                        }
+                        break;
+                    case PER_PIXEL_ACCURACY_FORCED:
+                        drawState.usePerPixelAccuracy = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+			
 			lastDrawPos = drawState.position;
-
 
 			spr->Draw(&drawState);
 		}
@@ -310,24 +328,45 @@ void UIControlBackground::Draw(const UIGeometricData &geometricData)
 		break;
 		
 		case DRAW_SCALE_PROPORTIONAL:
+        case DRAW_SCALE_PROPORTIONAL_ONE:
 		{
 			if (!spr)break;
 			float32 w, h;
 			w = drawRect.dx / (spr->GetWidth() * geometricData.scale.x);
 			h = drawRect.dy / (spr->GetHeight() * geometricData.scale.y);
 			float ph = spr->GetDefaultPivotPoint().y;
-			if(w < h)
-			{
-				h = spr->GetHeight() * w * geometricData.scale.x;
-				ph *= w;
-				w = drawRect.dx;
-			}
-			else
-			{
-				w = spr->GetWidth() * h * geometricData.scale.y;
-				ph *= h;
-				h = drawRect.dy;
-			}
+            
+            if(w < h)
+            {
+                if(type==DRAW_SCALE_PROPORTIONAL_ONE)
+                {
+                    w = spr->GetWidth() * h * geometricData.scale.y;
+                    ph *= h;
+                    h = drawRect.dy;
+                }
+                else
+                {
+                    h = spr->GetHeight() * w * geometricData.scale.x;
+                    ph *= w;
+                    w = drawRect.dx;
+                }
+            }
+            else
+            {
+                if(type==DRAW_SCALE_PROPORTIONAL_ONE)
+                {
+                    h = spr->GetHeight() * w * geometricData.scale.x;
+                    ph *= w;
+                    w = drawRect.dx;
+                }
+                else
+                {
+                    w = spr->GetWidth() * h * geometricData.scale.y;
+                    ph *= h;
+                    h = drawRect.dy;
+                }
+            }
+            
 			if(align & ALIGN_LEFT)
 			{
 				drawState.position.x = drawRect.x;

@@ -1,9 +1,9 @@
 //
 //  PreviewControl.cpp
-//  TemplateProjectMacOS
+//  ParticlesEditor
 //
-//  Created by Dmitry Shpakov on 11/2/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Created by Igor Solovey on 11/2/11.
+//  Copyright (c) 2011 DAVA Consulting. All rights reserved.
 //
 
 #include "PreviewControl.h"

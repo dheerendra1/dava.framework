@@ -71,9 +71,37 @@ public:
     
     struct Layer
     {
+        struct Property
+        {
+            Property(String sName, bool isDef, int _id)
+            {
+                name = sName;
+                isDefault = isDef;
+                id = _id;
+                minValue = 0;
+                maxValue = 1;
+                minT = 0;
+                maxT = 1;
+
+            }
+            String name;
+            int32 id;
+            bool isDefault;
+            int32 minValue;
+            int32 maxValue;
+            int32 minT;
+            int32 maxT;
+        };
+        
+        Vector<Property> props;
         String spritePath;
         UIStaticText *curLayerTime;
+        bool isDisabled;
         
+        Layer()
+        {
+            curLayerTime = new UIStaticText();
+        }
         Layer(String names[], int32 count, String _spritePath, Font *f)
         {
             for(int i = 0; i < count; i++)
@@ -85,25 +113,18 @@ public:
             curLayerTime = new UIStaticText();
             curLayerTime->SetAlign(DAVA::ALIGN_LEFT);
             curLayerTime->SetFont(f);
+            
+            isDisabled = false;
         }
-        struct Property
+        Layer Clone()
         {
-            Property(String sName, bool isDef, int _id)
-            {
-                name = sName;
-                isDefault = isDef;
-                id = _id;
-                minValue = 0;
-                maxValue = 1;
-            }
-            String name;
-            int32 id;
-            bool isDefault;
-            int32 minValue;
-            int32 maxValue;
-        };
-        
-        Vector<Property> props;
+            Layer l;
+            l.props = props;
+            l.spritePath = spritePath;
+            l.curLayerTime = curLayerTime->CloneStaticText();
+            l.isDisabled = isDisabled;
+            return l;
+        }
     };
     
 	virtual void LoadResources();
@@ -119,9 +140,9 @@ public:
 protected:
     virtual int32 ElementsCount(UIList *forList);
 	virtual UIListCell *CellAtIndex(UIList *forList, int32 index);
-	virtual int32 CellWidth(UIList *forList, int32 index)//calls only for horizontal orientation
+	virtual int32 CellWidth(UIList *forList, int32 index)
 	{return 20;};
-	virtual int32 CellHeight(UIList *forList, int32 index);//calls only for vertical orientation
+	virtual int32 CellHeight(UIList *forList, int32 index);
 	virtual void OnCellSelected(UIList *forList, UIListCell *selectedCell);
     
     virtual void OnFileSelected(UIFileSystemDialog *forDialog, const String &pathToFile);
@@ -147,12 +168,14 @@ protected:
     void SetLayerPropValue(int32 id, bool def = 0);
     void ResetEmitterPropValue(int32 id);
     void ResetLayerPropValue(int32 id);
-    void GetForcesValue(int32 id);
+    void GetForcesValue(int32 id, bool getLimits = false);
     
     bool GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimits = false);
     bool GetProp(PropertyLineKeyframes<float32> *pk, int32 id, bool getLimits = false);
     bool GetProp(PropertyLineValue<Vector2> *vv, int32 id, bool getLimits = false);
-    bool GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getLimits = false);    
+    bool GetProp(PropertyLineKeyframes<Vector2> *vk, int32 id, bool getLimits = false); 
+    bool GetProp(PropertyLineValue<Vector3> *vv, int32 id, bool getLimits = false);
+    bool GetProp(PropertyLineKeyframes<Vector3> *vk, int32 id, bool getLimits = false);     
     bool GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits = false);
     bool GetProp(PropertyLineKeyframes<Color> *cv, int32 id, bool getLimits = false);
     
@@ -164,20 +187,23 @@ protected:
     
     void PrintPropValue(FILE *file, String propName, PropertyLineValue<float32> *pv);
     void PrintPropValue(FILE *file, String propName, PropertyLineValue<Vector2> *pv);
+    void PrintPropValue(FILE *file, String propName, PropertyLineValue<Vector3> *pv);
     void PrintPropValue(FILE *file, String propName, PropertyLineValue<Color> *pv);
     void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<float32> *pv);
     void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Vector2> *pv);
+    void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Vector3> *pv);
     void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Color> *pv);
+    
+    void ExecutePacker(const String &path);
     
     ParticleEmitter *emitter;
     int32 selectedEmitterElement;
     int32 selectedPropElement;
     int32 selectedAddPropElement;
     int32 selectedForceElement;
+    int32 selectedEmitterTypeElement;
     
     float32 cellH;
-    
-    //String defSpriteFile;
     
     UIButton *loadEmitter;
     UIButton *saveEmitter;
@@ -194,20 +220,28 @@ protected:
     UIButton *addForce;
     UIButton *delForce;
     UIButton *chooseProject;
+    UIButton *emitter3D;
     
+    UIButton *cloneLayer;
+    UIButton *disableLayer;
+    
+    UIStaticText *tfTText[2];
     UIStaticText *tfkfText[2];
     UIStaticText *kfValueText;
     UIStaticText *valueText[4];
     UIStaticText *spriteInfo;
     UIStaticText *particleCountText;
+    UIStaticText *tip;
     
     UIList *emitterList;
     UIList *propList;
     UIList *addPropList;
     UIList *forcesList;
+    UIList *emitterTypeList;
     
     UITextField *tfkf[2];
     UITextField *tfv[4];
+    UITextField *tfT[2];
     UITextField *tf[2];
     UISlider *vSliders[4];
     

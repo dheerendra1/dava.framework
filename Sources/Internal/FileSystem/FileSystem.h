@@ -186,6 +186,13 @@ public:
 		\param[in] attachPath path we attach our archive 
 	*/ 
 	virtual void AttachArchive(const String & archiveName, const String & attachPath);
+
+	/**
+	 \brief Invokes the command processor to execute a command
+	 \param[in] command contains the system command to be executed
+	 \returns platform-dependent
+	 */
+	int32 Spawn(const String& command);
     
 private:
 	String tempRetPath;

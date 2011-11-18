@@ -31,6 +31,7 @@
 #include "Scene3D/SpriteNode.h"
 #include "Scene3D/Scene.h"
 #include "Render/RenderManager.h"
+#include "Render/RenderHelper.h"
 #include "Render/2D/Sprite.h"
 namespace DAVA 
 {
@@ -68,6 +69,7 @@ SpriteNode::SpriteNode(Scene * _scene, Sprite *spr, int32 _frame
     renderData = new RenderDataObject();
     renderData->SetStream(EVF_VERTEX, TYPE_FLOAT, 3, 0, verts.data());
     renderData->SetStream(EVF_TEXCOORD0, TYPE_FLOAT, 2, 0, textures.data());
+    type = TYPE_OBJECT;
 }
 
 SpriteNode::~SpriteNode()
@@ -101,24 +103,24 @@ void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
         //triangle 1
         //0, 0
     verts.push_back(x0);
-    verts.push_back(0);
     verts.push_back(y0);
+    verts.push_back(0);
     
         //1, 0
     verts.push_back(x1);
-    verts.push_back(0);
     verts.push_back(y0);
+    verts.push_back(0);
     
     
         //0, 1
     verts.push_back(x0);
-    verts.push_back(0);
     verts.push_back(y1);
+    verts.push_back(0);
     
         //1, 1
     verts.push_back(x1);
-    verts.push_back(0);
     verts.push_back(y1);
+    verts.push_back(0);
 
 
     float32 *pT = sprite->GetTextureVerts(frameToGen);
@@ -127,9 +129,16 @@ void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
         textures.push_back(*pT);
         pT++;
     }
+}
     
+void SpriteNode::SetType(eType _type)
+{
+    type = _type;
+}
     
-    
+SpriteNode::eType SpriteNode::GetType()
+{
+    return type;
 }
 
 
@@ -137,8 +146,71 @@ void SpriteNode::Draw()
 {
 	if (!visible)return;
     
-	Matrix4 prevMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
-	Matrix4 meshFinalMatrix = worldTransform * prevMatrix;
+    // Get current modelview matrix, and in this case it's always a camera matrix
+	Matrix4 cameraMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
+    Matrix4 meshFinalMatrix;
+    
+    switch(type)
+    {
+        case TYPE_OBJECT:
+        {
+            meshFinalMatrix = worldTransform * cameraMatrix;
+            break;
+        };
+        case TYPE_BILLBOARD:
+        {
+            Matrix4 inverse(Matrix4::IDENTITY);
+            
+            inverse._00 = cameraMatrix._00;
+            inverse._01 = cameraMatrix._10;
+            inverse._02 = cameraMatrix._20;
+            
+            inverse._10 = cameraMatrix._01;
+            inverse._11 = cameraMatrix._11;
+            inverse._12 = cameraMatrix._21;
+            
+            inverse._20 = cameraMatrix._02;
+            inverse._21 = cameraMatrix._12;
+            inverse._22 = cameraMatrix._22;
+            
+            meshFinalMatrix = inverse * worldTransform * cameraMatrix;
+            break;
+        };
+        case TYPE_BILLBOARD_TO_CAMERA:
+        {
+            Camera * camera = scene->GetCurrentCamera();
+            Vector3 look = camera->GetPosition() - Vector3(0.0f, 0.0f, 0.0f) * worldTransform; 
+            look.Normalize();
+            Vector3 right = CrossProduct(camera->GetUp(), look);
+            Vector3 up = CrossProduct(look, right);
+
+            Matrix4 matrix = Matrix4::IDENTITY;
+            matrix._00 = right.x;
+            matrix._10 = right.y;
+            matrix._20 = right.z;
+            
+            matrix._01 = up.x;
+            matrix._11 = up.y;
+            matrix._21 = up.z;
+
+            matrix._02 = look.x;
+            matrix._12 = look.y;
+            matrix._22 = look.z;
+            
+            meshFinalMatrix = matrix * worldTransform * cameraMatrix;
+
+//            left.x = cameraTransform._00;
+//            left.y = cameraTransform._10;
+//            left.z = cameraTransform._20;
+//            up.x = cameraTransform._01;
+//            up.y = cameraTransform._11;
+//            up.z = cameraTransform._21;
+//            target.x = position.x - cameraTransform._02;
+//            target.y = position.y - cameraTransform._12;
+//            target.z = position.z - cameraTransform._22;
+            break;
+        };   
+    }
     
 
         //TODO: Add billboards mode
@@ -178,9 +250,7 @@ void SpriteNode::Draw()
 ////        meshFinalMatrix = worldTransform * meshFinalMatrix;
 //    }
     
- 
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, meshFinalMatrix);
-    
     RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR);
 
     
@@ -197,7 +267,7 @@ void SpriteNode::Draw()
     RenderManager::Instance()->SetRenderData(renderData);
 
     
-    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, frame*4, 4);
+    RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, frame * 4, 4);
 
 
     
@@ -206,10 +276,17 @@ void SpriteNode::Draw()
     RenderManager::Instance()->EnableBlending(false);
     RenderManager::Instance()->EnableDepthTest(true);
     RenderManager::Instance()->EnableDepthWrite(true);
-
     
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, prevMatrix);
+    if (debugFlags & DEBUG_DRAW_ALL)
+    {
+        AABBox3 box(Vector3(-0.5f, -0.5f, -0.5f), Vector3(0.5f, 0.5f, 0.5f));
+        RenderHelper::Instance()->DrawBox(box);
+    }
+    
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, cameraMatrix);
 }
+    
+    
 
 };
 

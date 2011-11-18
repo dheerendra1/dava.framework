@@ -25,50 +25,26 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     Revision History:
-        * Created by Vitaliy Borodovsky 
+        * Created by Vitaliy Borodovsky
 =====================================================================================*/
-#include "Render/2D/Sprite.h"
-#include "Render/RenderManager.h"
-#include "Particles/Particle.h"
+
+#ifndef __DAVAENGINE_BILLBOARD_NODE_H__
+#define __DAVAENGINE_BILLBOARD_NODE_H__
+
+#include "Scene3D/SceneNode3d.h"
+#include "Render/RenderDataObject.h"
 
 namespace DAVA 
 {
-
-Particle::Particle()
+class BillboardNode : public SceneNode
 {
+public:
+    BillboardNode(Scene * _scene);
+    virtual ~BillboardNode();
     
-}
-
-Particle::~Particle()
-{
-    
-}
-
-bool Particle::Update(float32 timeElapsed)
-{
-	life += timeElapsed;
-	if (life >= lifeTime)
-	{
-		return false;
-	}
-
-	position += velocity * timeElapsed * velocityOverLife;
-	angle += spin * timeElapsed * spinOverLife;
-    for(int i = 0; i < Min(forces.size(), forcesOverLife.size()); i++)
-        velocity += forces[i] * forcesOverLife[i] * timeElapsed;
-	return true;
-}
-
-void Particle::Draw()
-{
-	if (IsDead())return;
-	RenderManager::Instance()->SetColor(drawColor.r, drawColor.g, drawColor.b, drawColor.a);
-	sprite->SetAngle(angle);
-	sprite->SetPosition(position.x, position.y);
-	sprite->SetScale(size.x * sizeOverLife, size.y * sizeOverLife);
-	sprite->SetFrame(frame);
-	sprite->Draw();
-}
+    virtual void Draw();
+};
 
 };
 
+#endif

@@ -2,8 +2,8 @@
  *  TestScreen.h
  *  TemplateProjectMacOS
  *
- *  Created by Vitaliy  Borodovsky on 3/21/10.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
+ *  Created by Igor Solovey on 11/2/11.
+ *  Copyright 2011 DAVA Consulting. All rights reserved.
  *
  */
 #ifndef __PROPERTY_LINE_EDIT_CONTROL_H__
@@ -55,6 +55,8 @@ public:
     
     void SetMinY(float32 value);
     void SetMaxY(float32 value);
+    void SetMinX(float32 value);
+    void SetMaxX(float32 value);
     
 	class PropertyRect
 	{

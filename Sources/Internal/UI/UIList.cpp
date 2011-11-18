@@ -278,14 +278,14 @@ void UIList::Update(float32 timeElapsed)
 	scrollContainer->SetRect(r);
 	
 	List<UIControl*>::const_iterator it;
-	Rect viewRect = GetRect(TRUE);
+	Rect viewRect = GetGeometricData().GetUnrotatedRect();//GetRect(TRUE);
 	const List<UIControl*> &scrollList = scrollContainer->GetChildren();
 	List<UIControl*> removeList;
 	
 	//removing invisible elements
 	for(it = scrollList.begin(); it != scrollList.end(); it++)
 	{
-		Rect crect = (*it)->GetRect(TRUE);
+		Rect crect = (*it)->GetGeometricData().GetUnrotatedRect();//GetRect(TRUE);
 		if(orientation == ORIENTATION_HORIZONTAL)
 		{
 			if(crect.x + crect.dx < viewRect.x - viewRect.dx || crect.x > viewRect.x + viewRect.dx*2)
