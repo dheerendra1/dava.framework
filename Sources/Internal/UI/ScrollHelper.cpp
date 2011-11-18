@@ -111,12 +111,13 @@ namespace DAVA
 	{
 		if(isPositionLocked)
 		{
-			if(position > 0 && positionDelta > 0)
+			if(position + positionDelta > 0)
 			{
 				positionDelta *= (1.0f - position / virtualViewSize) * backward;
 			}
-			if(position + elementSize < virtualViewSize && positionDelta < 0)
+			if(position + elementSize + positionDelta  < virtualViewSize)
 			{
+                
 				positionDelta *= (1.0f - (virtualViewSize - (position + elementSize)) / virtualViewSize) * backward;
 			}
 			position += positionDelta;
@@ -134,7 +135,6 @@ namespace DAVA
 				totalDeltaMove -= it->deltaMove;
 				moves.erase(it);
 			}
-			
 		}
 		else
 		{
@@ -143,7 +143,6 @@ namespace DAVA
 				speed = totalDeltaMove / totalDeltaTime;
 				speed = Min(speed, virtualViewSize * 2);
 				speed = Max(speed, -virtualViewSize * 2);
-				Logger::Info("inertion speed = %f", speed);
 			}
 			
 			if(position > 0)
@@ -213,9 +212,6 @@ namespace DAVA
 					speed = 0;
 				}
 			}
-			
-
-			
 			
 			moves.clear();
 			totalDeltaTime = 0;
