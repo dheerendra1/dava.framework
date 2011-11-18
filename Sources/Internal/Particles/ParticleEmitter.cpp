@@ -41,6 +41,7 @@ ParticleEmitter::ParticleEmitter()
 	type = EMITTER_POINT;
 	emissionAngle = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0.0f, 0.0f, 0.0f)));
 	emissionRange = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(360.0f));
+	size = RefPtr<PropertyLineValue<Vector3> >(0);
 	colorOverLife = 0;
 	radius = 0;
 	// number = new PropertyLineValue<float>(1.0f);
@@ -83,12 +84,13 @@ ParticleEmitter * ParticleEmitter::Clone()
 		emitter->colorOverLife = colorOverLife->Clone();
 	if (radius)
 		emitter->radius = radius->Clone();
+    if (size)
+        emitter->size = size->Clone();
 	
 	emitter->type = type;
 	emitter->lifeTime = lifeTime;
 	emitter->emitPointsCount = emitPointsCount;
 	emitter->isPaused = isPaused;
-	emitter->size = size;
 	emitter->isAutorestart = isAutorestart;
 	emitter->particlesFollow = particlesFollow;
 	return emitter;
@@ -183,7 +185,9 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 	{
 		// TODO: add emitter angle support
 		float32 rand1 = Random::Instance()->RandFloat() * 2 - 1.0f; // [-0.5f, 0.5f]
-		Vector3 lineDirection = size*rand1;
+        Vector3 lineDirection(0, 0, 0);
+        if(size)
+            Vector3 lineDirection = size->GetValue(time)*rand1;
 		particle->position = tempPosition + lineDirection;
 	}
     else if (type == EMITTER_RECT)
@@ -192,7 +196,9 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 		float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
 		float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
 		float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-		Vector3 lineDirection(size.x * rand05_x, size.y * rand05_y, size.z * rand05_z);
+        Vector3 lineDirection(0, 0, 0);
+        if(size)
+            lineDirection = Vector3(size->GetValue(time).x * rand05_x, size->GetValue(time).y * rand05_y, size->GetValue(time).z * rand05_z);
 		particle->position = tempPosition + lineDirection;
 	}
     else if (type == EMITTER_ONCIRCLE)
@@ -330,16 +336,26 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
 		}else
 			type = EMITTER_POINT;
 		
-		size.x = 1.0f;
-		YamlNode * widthNode = emitterNode->Get("width");
-		if (widthNode)
-			size.x = widthNode->AsFloat();
+        size = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(emitterNode, "size");
+        
+        if(size == 0)
+        {
+            Vector3 _size(0, 0, 0);
+            YamlNode * widthNode = emitterNode->Get("width");
+            if (widthNode)
+                _size.x = widthNode->AsFloat();
 
-		size.y = 1.0f;
-		YamlNode * heightNode = emitterNode->Get("height");
-		if (heightNode)
-			size.y = heightNode->AsFloat();
+            YamlNode * heightNode = emitterNode->Get("height");
+            if (heightNode)
+                _size.y = heightNode->AsFloat();
 
+            YamlNode * depthNode = emitterNode->Get("depth");
+            if (depthNode)
+                _size.y = depthNode->AsFloat();
+            
+            size = new PropertyLineValue<Vector3>(_size);
+        }
+        
 		YamlNode * autorestartNode = emitterNode->Get("autorestart");
 		if(autorestartNode)
 			isAutorestart = autorestartNode->AsBool();
@@ -383,7 +399,12 @@ float32 ParticleEmitter::GetLifeTime()
 {
 	return lifeTime;
 }
-
+    
+void ParticleEmitter::SetLifeTime(float32 time)
+{
+    lifeTime = time;
+}
+    
 float32 ParticleEmitter::GetTime()
 {
     return time;
@@ -410,17 +431,29 @@ bool ParticleEmitter::GetAutorestart()
 
 Vector3 ParticleEmitter::GetSize()
 {
-	return size;
+    if(size)
+        return size->GetValue(0);
+    return Vector3(0, 0, 0);
 }
-
-void ParticleEmitter::SetSize(const Vector2& _size)
+    
+Vector3 ParticleEmitter::GetSize(float32 time)
 {
-	size = _size;
+    if(size)
+        return size->GetValue(time);
+    return Vector3(0, 0, 0);
+}
+    
+void ParticleEmitter::SetSize(const Vector3& _size)
+{
+	size = new PropertyLineValue<Vector3>(_size);
 }
 
 Animation * ParticleEmitter::SizeAnimation(const Vector3 & newSize, float32 time, Interpolation::FuncType interpolationFunc /*= Interpolation::LINEAR*/, int32 track /*= 0*/)
 {
-	LinearAnimation<Vector3> * animation = new LinearAnimation<Vector3>(this, &size, newSize, time, interpolationFunc);
+    Vector3 _size(0, 0, 0);
+    if(size)
+        _size = size->GetValue(0);
+	LinearAnimation<Vector3> * animation = new LinearAnimation<Vector3>(this, &_size, newSize, time, interpolationFunc);
 	animation->Start(track);
 	return animation;
 }

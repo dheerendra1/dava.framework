@@ -80,12 +80,17 @@ public:
                 id = _id;
                 minValue = 0;
                 maxValue = 1;
+                minT = 0;
+                maxT = 1;
+
             }
             String name;
             int32 id;
             bool isDefault;
             int32 minValue;
             int32 maxValue;
+            int32 minT;
+            int32 maxT;
         };
         
         Vector<Property> props;
@@ -220,11 +225,13 @@ protected:
     UIButton *cloneLayer;
     UIButton *disableLayer;
     
+    UIStaticText *tfTText[2];
     UIStaticText *tfkfText[2];
     UIStaticText *kfValueText;
     UIStaticText *valueText[4];
     UIStaticText *spriteInfo;
     UIStaticText *particleCountText;
+    UIStaticText *tip;
     
     UIList *emitterList;
     UIList *propList;
@@ -234,6 +241,7 @@ protected:
     
     UITextField *tfkf[2];
     UITextField *tfv[4];
+    UITextField *tfT[2];
     UITextField *tf[2];
     UISlider *vSliders[4];
     

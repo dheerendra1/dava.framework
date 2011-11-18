@@ -53,6 +53,9 @@ void GameCore::OnAppStarted()
 	UIScreenManager::Instance()->RegisterScreen(SCREEN_TEST, testScreen);
 
     UIScreenManager::Instance()->SetFirst(SCREEN_TEST);
+    
+    LocalizationSystem::Instance()->SetCurrentLocale("en");
+    LocalizationSystem::Instance()->InitWithDirectory("~res:/Configs/Strings");
 }
 
 void GameCore::OnAppFinished()

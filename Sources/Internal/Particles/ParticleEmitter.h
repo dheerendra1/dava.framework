@@ -105,6 +105,7 @@ public:
 		\param[in] position position to be set
 	 */
 	inline void SetPosition(Vector2 position);
+	inline void SetPosition(Vector3 position);
 	
 	/**
 		\brief Function sets the angle of emitter.
@@ -222,13 +223,14 @@ public:
 	 \returns emitter's width and height in Vector2 form.
 	 */
 	Vector3 GetSize();
+	Vector3 GetSize(float32 time);
 
 	/**
 	 \brief Set width and height.
 	 Valid only for emitter with type 'rect'.
 	 \param[in] size emitter's width and height in Vector2 form.
 	 */
-	void SetSize(const Vector2& size);
+	void SetSize(const Vector3& size);
 
 	/**
 	 \brief Enables/disables particles following.
@@ -251,7 +253,9 @@ public:
 	Animation * SizeAnimation(const Vector3 & newSize, float32 time, Interpolation::FuncType interpolationFunc = Interpolation::LINEAR, int32 track = 0);
     
     float32 GetTime();
-	
+    
+	void SetLifeTime(float32 time);
+    
     inline void Set3D(bool is3D);
     inline bool GetIs3D();
     
@@ -263,7 +267,6 @@ protected:
 	Vector<ParticleLayer*> layers;
 	Vector3 position;
 	float32 angle;
-	Vector3 size;
 	
 	float32	lifeTime;
 	int32	repeatCount;
@@ -279,6 +282,7 @@ public:
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
 	RefPtr< PropertyLine<Color> > colorOverLife;
+	RefPtr< PropertyLine<Vector3> > size;
     
 	eType	type;
 	Color currentColor;
@@ -294,6 +298,10 @@ inline void ParticleEmitter::SetPosition(Vector2 _position)
 	position = _position;
 }
 
+inline void ParticleEmitter::SetPosition(Vector3 _position)
+{
+    position = _position;
+}
 inline Vector3 & ParticleEmitter::GetPosition()
 {
 	return position;
