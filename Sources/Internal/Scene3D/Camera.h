@@ -68,22 +68,22 @@ public:
         \brief return current Field Of View of this camera
         \returns FOV for this camera
      */ 
-    float32 GetFOV();
+    float32 GetFOV() const;
         
     /** 
         \brief return current aspect for this camera
      */
-    float32 GetAspect();
+    float32 GetAspect() const;
 
     /**
         \brief return znear value for this camera
      */
-    float32 GetZNear();
+    float32 GetZNear() const;
     
     /**
         \brief return zfar value for this camera
      */
-    float32 GetZFar();
+    float32 GetZFar() const;
     
     void SetPosition(const Vector3 & position);
 	void SetDirection(const Vector3 & direction);
@@ -92,11 +92,12 @@ public:
 	void SetLeft(const Vector3 & left);
     
 	
-	Vector3 & GetTarget();
-	Vector3 & GetPosition();
-	Vector3 & GetDirection();   // camera forward direction
-    Vector3 & GetUp();
-    Vector3 & GetLeft();    // camera left direction
+	const Vector3 & GetTarget() const;
+	const Vector3 & GetPosition() const;
+	const Vector3 & GetDirection();   // camera forward direction
+    const Vector3 & GetUp() const;
+    const Vector3 & GetLeft() const;    // camera left direction
+    const Matrix4 & GetMatrix() const;  
 	
 	void RebuildCameraFromValues();
 	void ExtractCameraToValues();
