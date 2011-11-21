@@ -102,33 +102,43 @@ void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
 
         //triangle 1
         //0, 0
+    float32 *pT = sprite->GetTextureVerts(frameToGen);
+
     verts.push_back(x0);
     verts.push_back(y0);
     verts.push_back(0);
+    textures.push_back(pT[2 * 2 + 0]);
+    textures.push_back(pT[2 * 2 + 1]);
+
     
         //1, 0
     verts.push_back(x1);
     verts.push_back(y0);
     verts.push_back(0);
+    textures.push_back(pT[3 * 2 + 0]);
+    textures.push_back(pT[3 * 2 + 1]);
     
     
         //0, 1
     verts.push_back(x0);
     verts.push_back(y1);
     verts.push_back(0);
+    textures.push_back(pT[0 * 2 + 0]);
+    textures.push_back(pT[0 * 2 + 1]);
     
         //1, 1
     verts.push_back(x1);
     verts.push_back(y1);
     verts.push_back(0);
+    textures.push_back(pT[1 * 2 + 0]);
+    textures.push_back(pT[1 * 2 + 1]);
 
 
-    float32 *pT = sprite->GetTextureVerts(frameToGen);
-    for (int i = 0; i < 2*4; i++) 
+    /*for (int i = 0; i < 2*4; i++) 
     {
         textures.push_back(*pT);
         pT++;
-    }
+    }*/
 }
     
 void SpriteNode::SetType(eType _type)
@@ -186,15 +196,15 @@ void SpriteNode::Draw()
 
             Matrix4 matrix = Matrix4::IDENTITY;
             matrix._00 = right.x;
-            matrix._10 = right.y;
-            matrix._20 = right.z;
+            matrix._01 = right.y;
+            matrix._02 = right.z;
             
-            matrix._01 = up.x;
+            matrix._10 = up.x;
             matrix._11 = up.y;
-            matrix._21 = up.z;
+            matrix._12 = up.z;
 
-            matrix._02 = look.x;
-            matrix._12 = look.y;
+            matrix._20 = look.x;
+            matrix._21 = look.y;
             matrix._22 = look.z;
             
             meshFinalMatrix = matrix * worldTransform * cameraMatrix;
