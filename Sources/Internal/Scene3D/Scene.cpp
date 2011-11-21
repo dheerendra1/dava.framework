@@ -419,6 +419,30 @@ Camera * Scene::GetClipCamera() const
 {
     return clipCamera;
 }
+    
+int32 Scene::RegisterLodLayer(float32 nearDistance, float32 farDistance)
+{
+    LodLayer newLevel;
+    newLevel.nearDistance = nearDistance;
+    newLevel.farDistance = farDistance;
+    newLevel.nearDistanceSq = nearDistance * nearDistance;
+    newLevel.farDistanceSq = farDistance * farDistance;
+    int i = 0;
+    
+    for (Vector<LodLayer>::iterator it = lodLayers.begin(); it < lodLayers.end(); it++)
+    {
+        if (nearDistance < it->nearDistance)
+        {
+            lodLayers.insert(it, newLevel);
+            return i;
+        }
+        i++;
+    }
+    
+    lodLayers.push_back(newLevel);
+    return i;
+}
+
 
 };
 
