@@ -137,8 +137,6 @@ public:
 	 */
 	void Restart(bool isDeleteAllParticles = true);
 	
-	
-	
 	/**
 		\brief Function to pause generation from this emitter
 		\param[in] isPaused true if you want to pause the generation, false if you want to resume it
