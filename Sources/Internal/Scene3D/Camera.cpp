@@ -66,9 +66,9 @@ void Camera::RestoreOriginalSceneTransform()
 	ExtractCameraToValues();
 }
 
-void Camera::SetFOV(float32 _fovy)
+void Camera::SetFOV(float32 fovyInDegrees)
 {
-    Setup(_fovy, aspect, znear, zfar, ortho);
+    Setup(fovyInDegrees, aspect, znear, zfar, ortho);
 }
     
 void Camera::SetAspect(float32 _aspect)
@@ -96,16 +96,16 @@ float32 Camera::GetZFar() const
     return zfar;
 }
 
-void Camera::Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho)
+void Camera::Setup(float32 fovyInDegrees, float32 aspectYdivX, float32 zNear, float32 zFar, bool isOrtho)
 {
     flags |= REQUIRE_REBUILD_PROJECTION;
 
-    this->aspect = aspect;
+    this->aspect = aspectYdivX;
     
-    this->fovy = fovy;
-	this->znear = znear;
-	this->zfar = zfar;
-	this->ortho = ortho;
+    this->fovy = fovyInDegrees;
+	this->znear = zNear;
+	this->zfar = zFar;
+	this->ortho = isOrtho;
 	
 	this->znear = 1;
 	this->zfar = 5000;
