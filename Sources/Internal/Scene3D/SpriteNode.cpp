@@ -157,7 +157,8 @@ void SpriteNode::Draw()
 	if (!visible)return;
     
     // Get current modelview matrix, and in this case it's always a camera matrix
-	Matrix4 cameraMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
+	Matrix4 modelViewMatrix = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_MODELVIEW); 
+    const Matrix4 & cameraMatrix = scene->GetCurrentCamera()->GetMatrix();
     Matrix4 meshFinalMatrix;
     
     switch(type)
@@ -183,7 +184,7 @@ void SpriteNode::Draw()
             inverse._21 = cameraMatrix._12;
             inverse._22 = cameraMatrix._22;
             
-            meshFinalMatrix = inverse * worldTransform * cameraMatrix;
+            meshFinalMatrix = inverse * worldTransform * modelViewMatrix;
             break;
         };
         case TYPE_BILLBOARD_TO_CAMERA:
@@ -207,7 +208,7 @@ void SpriteNode::Draw()
             matrix._21 = look.y;
             matrix._22 = look.z;
             
-            meshFinalMatrix = matrix * worldTransform * cameraMatrix;
+            meshFinalMatrix = matrix * worldTransform * modelViewMatrix;
 
 //            left.x = cameraTransform._00;
 //            left.y = cameraTransform._10;
