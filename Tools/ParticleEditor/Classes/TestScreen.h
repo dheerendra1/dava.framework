@@ -116,7 +116,7 @@ public:
     {
         struct Property
         {
-            Property(String *sName, bool isDef, int _id)
+            Property(const String *sName, bool isDef, int _id)
             {
                 name = sName;
                 isDefault = isDef;
@@ -127,7 +127,7 @@ public:
                 maxT = 1;
 
             }
-            String *name;
+            const String *name;
             int32 id;
             bool isDefault;
             int32 minValue;
@@ -150,9 +150,9 @@ public:
             SafeRelease(curLayerTime);
             props.clear();
         }
-        Layer(String *names, int32 count, const String &_spritePath, Font *f)
+        Layer(const Vector<String> &names, const String &_spritePath, Font *f)
         {
-            for(int i = 0; i < count; i++)
+            for(int i = 0; i < names.size(); i++)
             {
                 props.push_back(new Property(&names[i], true, i));
             }
@@ -174,6 +174,8 @@ public:
             return l;
         }
     };
+    
+    TestScreen();
     
 	virtual void LoadResources();
 	virtual void UnloadResources();
@@ -234,19 +236,39 @@ protected:
     
     void SaveToYaml(const String &pathToFile);
     
-    void PrintPropValue(File *file, String propName, PropertyLineValue<float32> *pv);
-    void PrintPropValue(File *file, String propName, PropertyLineValue<Vector2> *pv);
-    void PrintPropValue(File *file, String propName, PropertyLineValue<Vector3> *pv);
-    void PrintPropValue(File *file, String propName, PropertyLineValue<Color> *pv);
-    void PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<float32> *pv);
-    void PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Vector2> *pv);
-    void PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Vector3> *pv);
-    void PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Color> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<float32> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector2> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector3> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Color> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<float32> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector2> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector3> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Color> *pv);
     
     void ExecutePacker(const String &path);
     
     void SafeAddControl(UIControl *control);
     void SafeRemoveControl(UIControl *control);
+      
+    Vector<String> emitterProps;
+    Vector<String>layerProps;
+    Vector<String> emitterTypes;
+
+    int32 deltaIndex;
+    bool curPropType; //0 - value, 1 - Keyframed
+    Font *cellFont, *f;
+    int32 dblClickDelay;
+    int32 activePropEdit;
+    float32 curPropEditTime;
+    float32 buttonW;
+    Rect tfPosSlider[2], tfPosKFEdit[2];
+    Rect colorViewPosSlider, colorViewPosKFEdit;
+    Rect keysValueTextPos[4], tfKeysValuePos[4][2], tfKeysValueTextPos[4][2];
+    PropertyLineKeyframes<Color> *curColorProp;
+    PropertyLineKeyframes<float32> *cur1DimProp;
+    PropertyLineKeyframes<Vector2> *cur2DimProp;
+    PropertyLineKeyframes<Vector3> *cur3DimProp;
+    int32 activeKFEdit;
     
     Vector<Layer *> layers;
     

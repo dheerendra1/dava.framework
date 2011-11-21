@@ -16,7 +16,7 @@ ForcePreviewControl::ForcePreviewControl()
     GetBackground()->SetColor(Color(0.2, 0.2, 0.2, 1));
     
     Font *f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
-    f->SetSize(14);
+    f->SetSize(10);
     f->SetColor(Color(1,1,1,1));
     powerText = new UIStaticText();
     powerText->SetFont(f);

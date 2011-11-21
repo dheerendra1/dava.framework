@@ -30,28 +30,53 @@
 #include "TestScreen.h"
 #include <sys/time.h>
 
-String emitterProps[] = {"type", "emissionAngle", "emissionRage", "radius", "colorOverLife", "size", "life"};
-String layerProps[] = {"sprite", "life", "lifeVariation", "number", "numberVariation", "size","sizeVariation", "sizeOverLife", "velocity", "velocityVariation", "velocityOverLife", "forces","forcesVariation", "forcesOverLife", "spin", "spinVariation", "spinOverLife", "motionRandom","motionRandomVariation", "motionRandomOverLife", "bounce", "bounceVariation", "bounceOverLife","colorRandom", "alphaOverLife", "colorOverLife"};
-String emitterTypes[] = {"POINT", "LINE", "RECT", "ONCIRCLE"};
-
-int32 emitterPropsCount = 7;
-int32 emitterTypesCount = 4;
-int32 layerPropsCount = 26;
-int32 deltaIndex = 0;
-bool curPropType = 0; //0 - value, 1 - Keyframed
-Font *cellFont, *f;
-int32 dblClickDelay = 500;
-int32 activePropEdit = 0;
-float32 curPropEditTime;
-float32 buttonW;
-Rect tfPosSlider[2], tfPosKFEdit[2];
-Rect colorViewPosSlider, colorViewPosKFEdit;
-Rect keysValueTextPos[4], tfKeysValuePos[4][2], tfKeysValueTextPos[4][2];
-PropertyLineKeyframes<Color> *curColorProp;
-PropertyLineKeyframes<float32> *cur1DimProp;
-PropertyLineKeyframes<Vector2> *cur2DimProp;
-PropertyLineKeyframes<Vector3> *cur3DimProp;
-int32 activeKFEdit;
+TestScreen::TestScreen()
+{
+    emitterProps.push_back("type");
+    emitterProps.push_back("emissionAngle");  
+    emitterProps.push_back("emissionRage");
+    emitterProps.push_back("radius");
+    emitterProps.push_back("colorOverLife");
+    emitterProps.push_back("size");
+    emitterProps.push_back("life");
+    
+    layerProps.push_back("sprite");
+    layerProps.push_back("life");
+    layerProps.push_back("lifeVariation");
+    layerProps.push_back("number");
+    layerProps.push_back("numberVariation");
+    layerProps.push_back("size");
+    layerProps.push_back("sizeVariation");
+    layerProps.push_back("sizeOverLife");
+    layerProps.push_back("velocity");
+    layerProps.push_back("velocityVariation");
+    layerProps.push_back("velocityOverLife");
+    layerProps.push_back("forces");
+    layerProps.push_back("forcesVariation");
+    layerProps.push_back("forcesOverLife");
+    layerProps.push_back("spin");
+    layerProps.push_back("spinVariation");
+    layerProps.push_back("spinOverLife");
+    layerProps.push_back("motionRandom");
+    layerProps.push_back("motionRandomVariation");
+    layerProps.push_back("motionRandomOverLife");
+    layerProps.push_back("bounce");
+    layerProps.push_back("bounceVariation");
+    layerProps.push_back("bounceOverLife");
+    layerProps.push_back("colorRandom");
+    layerProps.push_back("alphaOverLife");
+    layerProps.push_back("colorOverLife");
+    
+    emitterTypes.push_back("POINT");
+    emitterTypes.push_back("LINE");
+    emitterTypes.push_back("RECT");
+    emitterTypes.push_back("ONCIRCLE");
+    
+    deltaIndex = 0;
+    curPropType = 0; //0 - value, 1 - Keyframed
+    dblClickDelay = 500;
+    activePropEdit = 0;    
+}
 
 void TestScreen::SafeAddControl(UIControl *control)
 {
@@ -433,7 +458,7 @@ void TestScreen::LoadResources()
     AddControl(preview);
     
     emitter = new ParticleEmitter();
-    layers.push_back(new Layer(emitterProps, emitterPropsCount, "", cellFont));
+    layers.push_back(new Layer(emitterProps, "", cellFont));
     layers[0]->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, 0, buttonW, cellH));
     AddControl(layers[0]->curLayerTime);
     preview->SetEmitter(emitter);
@@ -442,7 +467,7 @@ void TestScreen::LoadResources()
     layers[0]->props[EMITTER_EMISSION_RAGE]->maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
-    forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
+    forcePreview->SetRect(Rect(buttonW*3/2, GetScreenHeight() - cellH*4, buttonW/2, buttonW*0.625f));
     forcePreview->SetValue(Vector3(0, 0, 0));
     AddControl(forcePreview);
     
@@ -488,9 +513,9 @@ void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
                 GetLayerPropValue((lProps)selectedPropElement);
             }
         }
-        if(selectedPropElement == 11)
+        if(selectedPropElement == LAYER_FORCES)
             forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forces[selectedForceElement].Get()->GetValue(curPropEditTime));
-        if(selectedPropElement == 12)
+        if(selectedPropElement == LAYER_FORCES_VARIATION)
             forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forcesVariation[selectedForceElement].Get()->GetValue(curPropEditTime));
     }
 }
@@ -620,7 +645,7 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
             SafeRemoveControl(layers[i]->curLayerTime);
         }
         layers.clear();
-        layers.push_back(new Layer(emitterProps, emitterPropsCount, "", cellFont));
+        layers.push_back(new Layer(emitterProps, "", cellFont));
         layers[0]->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, 0, buttonW, cellH));
         SafeAddControl(layers[0]->curLayerTime);
         
@@ -664,7 +689,7 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         emitter->AddLayer(layer);
         SafeRelease(layer);
         
-        Layer *l = new Layer(layerProps, layerPropsCount, "", cellFont);
+        Layer *l = new Layer(layerProps, "", cellFont);
         l->spritePath = "";
         l->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, cellH*(layers.size()), buttonW, cellH));
         layers.push_back(l);
@@ -733,6 +758,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedEmitterElement >= 0 && selectedPropElement >= 0)
             layers[selectedEmitterElement]->props.at(selectedPropElement)->isDefault = true;
+        
+        if(selectedPropElement == LAYER_FORCES)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = true;
+        
+        if(selectedPropElement == LAYER_FORCES_OVER_LIFE)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = true;
+        
         if(selectedEmitterElement == 0)
         {
             ResetEmitterPropValue((eProps)selectedPropElement);
@@ -749,6 +781,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     if(obj == OKBut)
     {
         layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
+        
+        if(selectedAddPropElement == LAYER_FORCES)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
+        
+        if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
+        
         deltaIndex = 0;
         propList->RefreshList();
         HideAddProps();
@@ -799,13 +838,17 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == addForce)
     {
-        if(selectedPropElement == 11) 
-            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(0));
-        if(selectedPropElement == 12) 
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(0));
-        if(selectedPropElement == 13)
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(0));
+        if(selectedPropElement == LAYER_FORCES || selectedPropElement == LAYER_FORCES_OVER_LIFE)
+        {
+            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0, 0, 0))));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(new PropertyLineValue<float32>(1.0f)));
+        }
+        if(selectedPropElement == LAYER_FORCES_VARIATION)
+        {
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0, 0, 0))));
+        }
         
+        emitter->Restart();
         HideAndResetEditFields();
         selectedForceElement = -1;
         forcePreview->SetValue(Vector3(0, 0, 0));
@@ -815,20 +858,22 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedForceElement >= 0)
         {
-            if(selectedPropElement == 11) 
+            if(selectedPropElement == LAYER_FORCES || selectedPropElement == LAYER_FORCES_OVER_LIFE)
+            {
                 emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
-            
-            if(selectedPropElement == 12) 
-                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
-            
-            if(selectedPropElement == 13)
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
+            }
+            if(selectedPropElement == LAYER_FORCES_VARIATION)
+            {
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
+            }
             
             HideAndResetEditFields();
             forcesList->RefreshList();
             selectedForceElement = -1;
             forcePreview->SetValue(Vector3(0, 0, 0));
         }
+        emitter->Restart();
     }
     if(obj == chooseProject)
     {
@@ -1507,7 +1552,8 @@ void TestScreen::ResetEmitterPropValue(eProps id)
             
         default:
             break;
-    }        
+    } 
+    emitter->Restart();
 }
 
 void TestScreen::ResetLayerPropValue(lProps id)
@@ -1558,15 +1604,13 @@ void TestScreen::ResetLayerPropValue(lProps id)
             break;
             
         case LAYER_FORCES:
+        case LAYER_FORCES_OVER_LIFE:
             emitter->GetLayers().at(selectedEmitterElement-1)->forces.clear();
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.clear();
             break;
             
         case LAYER_FORCES_VARIATION:
             emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.clear();
-            break;
-            
-        case LAYER_FORCES_OVER_LIFE:
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.clear();
             break;
             
         case LAYER_SPIN:
@@ -1620,7 +1664,7 @@ void TestScreen::ResetLayerPropValue(lProps id)
         default:
             break;
     }    
-
+    emitter->Restart();
 }
 
 void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
@@ -2263,23 +2307,23 @@ void TestScreen::OnFileSelected(UIFileSystemDialog *forDialog, const String &pat
                 SafeRemoveControl(layers[i]->curLayerTime);
             }
             layers.clear();
-            layers.push_back(new Layer(emitterProps, emitterPropsCount, "", cellFont));
+            layers.push_back(new Layer(emitterProps, "", cellFont));
             layers[0]->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, 0, buttonW, cellH));
             SafeAddControl(layers[0]->curLayerTime);
             selectedEmitterElement = 0;
-            for(int i = 0; i < emitterPropsCount; i++)
+            for(int i = 0; i < emitterProps.size(); i++)
             {
                 GetEmitterPropValue((eProps)i, true);
             }
             for(int i = 0; i < emitter->GetLayers().size(); i++)
             {
                 String spritePath = emitter->GetLayers()[i]->GetSprite()->GetName();
-                Layer * l = new Layer(layerProps, layerPropsCount, spritePath.substr(0, spritePath.size()-4), cellFont);
+                Layer * l = new Layer(layerProps, spritePath.substr(0, spritePath.size()-4), cellFont);
                 l->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, cellH*(layers.size()), buttonW, cellH));
                 layers.push_back(l);
                 SafeAddControl(l->curLayerTime);
                 
-                for(int j = 0; j < layerPropsCount; j++)
+                for(int j = 0; j < layerProps.size(); j++)
                 {
                     selectedEmitterElement = i + 1;
                     selectedPropElement = j;
@@ -2562,7 +2606,7 @@ int32 TestScreen::ElementsCount(UIList *forList)
         int32 n = 0;
         if(selectedEmitterElement == 0)
         {
-            for(int i = 0; i < emitterPropsCount; i++)
+            for(int i = 0; i < emitterProps.size(); i++)
             {
                 if(!layers[selectedEmitterElement]->props.at(i)->isDefault)
                     n++;
@@ -2570,7 +2614,7 @@ int32 TestScreen::ElementsCount(UIList *forList)
         }
         else if(selectedEmitterElement > 0)
         {
-            for(int i = 0; i < layerPropsCount; i++)
+            for(int i = 0; i < layerProps.size(); i++)
             {
                 if(!layers[selectedEmitterElement]->props.at(i)->isDefault)
                     n++;
@@ -2581,9 +2625,9 @@ int32 TestScreen::ElementsCount(UIList *forList)
     if(forList == addPropList)
     {
         if(selectedEmitterElement == 0)
-            return emitterPropsCount;
+            return emitterProps.size();
         else if(selectedEmitterElement > 0)
-            return layerPropsCount;
+            return layerProps.size();
     }
     if(forList == forcesList)
     {
@@ -2605,7 +2649,7 @@ int32 TestScreen::ElementsCount(UIList *forList)
     }
     if(forList == emitterTypeList)
     {
-        return emitterTypesCount;
+        return emitterTypes.size();
     }
     return 0;
 }
@@ -2756,14 +2800,14 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         
         if(selectedEmitterElement == 0)
         {
-            for(int i = 0; i < emitterPropsCount; i++)
+            for(int i = 0; i < emitterProps.size(); i++)
             {
                 GetEmitterPropValue((eProps)i);
             }
         }
         if(selectedEmitterElement > 0)
         {
-            for(int i = 0; i < layerPropsCount; i++)
+            for(int i = 0; i < layerProps.size(); i++)
             {
                 GetLayerPropValue((lProps)i);
             }
@@ -2817,6 +2861,13 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         if( Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000) < dblClickDelay)
         {
             layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
+            
+            if(selectedAddPropElement == LAYER_FORCES)
+                layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
+            
+            if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
+                layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
+            
             deltaIndex = 0;
             propList->RefreshList();
             HideAddProps();
@@ -3200,30 +3251,30 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     SafeRelease(file);
 }
 
-void TestScreen::PrintPropValue(File *file, String propName, PropertyLineValue<float32> *pv)
+void TestScreen::PrintPropValue(File *file, const String &propName, PropertyLineValue<float32> *pv)
 {
     file->WriteLine(Format("    %s: %f", propName.c_str(), pv->GetValue(0)));
 }
 
-void TestScreen::PrintPropValue(File *file, String propName, PropertyLineValue<Vector2> *pv)
+void TestScreen::PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector2> *pv)
 {
     Vector2 value = pv->GetValue(0);
     file->WriteLine(Format("    %s: [%f, %f]", propName.c_str(), value.x, value.y));
 }
 
-void TestScreen::PrintPropValue(File *file, String propName, PropertyLineValue<Vector3> *pv)
+void TestScreen::PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector3> *pv)
 {
     Vector3 value = pv->GetValue(0);
     file->WriteLine(Format("    %s: [%f, %f, %f]", propName.c_str(), value.x, value.y, value.z));
 }
 
-void TestScreen::PrintPropValue(File *file, String propName, PropertyLineValue<Color> *pv)
+void TestScreen::PrintPropValue(File *file, const String &propName, PropertyLineValue<Color> *pv)
 {
     Color value = pv->GetValue(0);
     file->WriteLine(Format("    %s: [%d, %d, %d, %d]", propName.c_str(), (int32)(value.r*255), (int32)(value.g*255), (int32)(value.b*255), (int32)(value.a*255)));
 }
 
-void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<float32> *pv)
+void TestScreen::PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<float32> *pv)
 {    
     String out = "    " + propName + ": [";    
     for(int i = 0; i < pv->keys.size(); i++)
@@ -3233,17 +3284,9 @@ void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyfr
     out = out.substr(0, out.length()-2);
     out += "]";
     file->WriteLine(out);
-    
-//    file->WriteString(Format("    %s: [", propName.c_str()));
-//    for(int i = 0; i < pv->keys.size(); i++)
-//    {
-//        file->WriteString(Format("%f, %f, ", pv->keys[i].t, pv->keys[i].value));
-//    }
-//    file->Seek(-2, File::SEEK_FROM_CURRENT);
-//    file->WriteLine("]");
 }
 
-void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Vector2> *pv)
+void TestScreen::PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector2> *pv)
 {
     String out = "    " + propName + ": [";    
     for(int i = 0; i < pv->keys.size(); i++)
@@ -3254,17 +3297,9 @@ void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyfr
     out = out.substr(0, out.length()-2);
     out += "]";
     file->WriteLine(out);
-    
-//    file->WriteString(Format("    %s: [", propName.c_str()));
-//    for(int i = 0; i < pv->keys.size(); i++)
-//    {
-//        file->WriteString(Format("%f, [%f, %f], ", pv->keys[i].t, pv->keys[i].value.x, pv->keys[i].value.y));
-//    }
-//    file->Seek(-2, File::SEEK_FROM_CURRENT);
-//    file->WriteLine("]");
 }
 
-void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Vector3> *pv)
+void TestScreen::PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector3> *pv)
 {
     String out = "    " + propName + ": [";    
     for(int i = 0; i < pv->keys.size(); i++)
@@ -3274,17 +3309,9 @@ void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyfr
     out = out.substr(0, out.length()-2);
     out += "]";
     file->WriteLine(out);
-    
-//    file->WriteString(Format("    %s: [", propName.c_str()));
-//    for(int i = 0; i < pv->keys.size(); i++)
-//    {
-//        file->WriteString(Format("%f, [%f, %f, %f], ", pv->keys[i].t, pv->keys[i].value.x, pv->keys[i].value.y, pv->keys[i].value.z));
-//    }
-//    file->Seek(-2, File::SEEK_FROM_CURRENT);
-//    file->WriteLine("");
 }
 
-void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyframes<Color> *pv)
+void TestScreen::PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Color> *pv)
 {
     String out = "    " + propName + ": [";    
     for(int i = 0; i < pv->keys.size(); i++)
@@ -3293,13 +3320,5 @@ void TestScreen::PrintPropKFValue(File *file, String propName, PropertyLineKeyfr
     }
     out = out.substr(0, out.length()-2);
     out += "]";
-    file->WriteLine(out);
-    
-//    file->WriteString(Format("    %s: [", propName.c_str()));
-//    for(int i = 0; i < pv->keys.size(); i++)
-//    {
-//        file->WriteString(Format("%f, [%d, %d, %d, %d], ", pv->keys[i].t, (int32)(pv->keys[i].value.r*255), (int32)(pv->keys[i].value.g*255), (int32)(pv->keys[i].value.b*255), (int32)(pv->keys[i].value.a*255)));
-//    }
-//    file->Seek(-2, File::SEEK_FROM_CURRENT);
-//    file->WriteLine("]");    
+    file->WriteLine(out);   
 }

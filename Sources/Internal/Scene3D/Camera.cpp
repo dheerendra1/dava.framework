@@ -76,22 +76,22 @@ void Camera::SetAspect(float32 _aspect)
     Setup(fovy, _aspect, znear, zfar, ortho);
 }
     
-float32 Camera::GetFOV()
+float32 Camera::GetFOV() const
 {
     return fovy;
 }
 
-float32 Camera::GetAspect()
+float32 Camera::GetAspect() const
 {
     return aspect;
 }
 
-float32 Camera::GetZNear()
+float32 Camera::GetZNear() const
 {
     return znear;
 }
 
-float32 Camera::GetZFar()
+float32 Camera::GetZFar() const
 {
     return zfar;
 }
@@ -285,44 +285,50 @@ void Camera::SetTarget(const Vector3 & _target)
 	target = _target;
     flags |= REQUIRE_REBUILD;
 }
+    
+void Camera::SetUp(const Vector3 & _up)
+{
+    up = _up;
+    flags |= REQUIRE_REBUILD;
+}
+    
+void Camera::SetLeft(const Vector3 & _left)
+{
+    left = _left;
+    flags |= REQUIRE_REBUILD;
+}
+
 	
-Vector3 & Camera::GetTarget()
+const Vector3 & Camera::GetTarget() const
 {
 	return target;
 }
 
-Vector3 & Camera::GetPosition()
+const Vector3 & Camera::GetPosition() const
 {
 	return position;
 }
 
-Vector3 & Camera::GetDirection()
+const Vector3 & Camera::GetDirection()
 {
     direction = target - position;
     direction.Normalize();
     return direction;
 }
 
-void Camera::SetUp(const Vector3 & _up)
-{
-	up = _up;
-    flags |= REQUIRE_REBUILD;
-}
-    
-Vector3 & Camera::GetUp()
+const Vector3 & Camera::GetUp() const
 {
     return up;
 }
 
-void Camera::SetLeft(const Vector3 & _left)
-{
-	left = _left;
-    flags |= REQUIRE_REBUILD;
-}
-
-Vector3 & Camera::GetLeft()
+const Vector3 & Camera::GetLeft() const
 {
     return left;
+}
+    
+const Matrix4 & Camera::GetMatrix() const 
+{
+    return cameraTransform;
 }
 
 void Camera::RebuildCameraFromValues()
