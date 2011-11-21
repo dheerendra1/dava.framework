@@ -59,6 +59,10 @@ void MeshInstanceNode::AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupInde
         lodLayers.push_back(d);
         currentLod = &(*lodLayers.begin());
     }
+    if (name.find("lod0dummy") != name.npos)
+    {
+        return;
+    }
     ld = &(*lodLayers.begin());
 
 	ld->meshes.push_back(mesh);
@@ -123,6 +127,42 @@ void MeshInstanceNode::AddPolygonGroupForLayer(int32 layer, StaticMesh * mesh, i
     {
         PolygonGroup * group = mesh->GetPolygonGroup(polygonGroupIndex);
         bbox.AddAABBox(group->GetBoundingBox());
+    }
+}
+
+void MeshInstanceNode::AddDummyLODLayer(int32 layer)
+{
+    if (layer != 0) 
+    {
+        lodPresents = true;
+    }
+    if (lodLayers.empty()) 
+    {
+        LodData d;
+        d.layer = layer;
+        lodLayers.push_back(d);
+        currentLod = &(*lodLayers.begin());
+    }
+    else 
+    {
+        for (List<LodData>::iterator it = lodLayers.begin(); it != lodLayers.end(); it++)
+        {
+            if (it->layer == layer) 
+            {
+                return;
+            }
+            if (layer < it->layer)
+            {
+                LodData d;
+                d.layer = layer;
+                List<LodData>::iterator newIt = lodLayers.insert(it, d);
+                return;
+            }
+        }
+        
+        LodData d;
+        d.layer = layer;
+        lodLayers.push_back(d);
     }
 }
 

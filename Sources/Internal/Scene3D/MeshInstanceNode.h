@@ -45,6 +45,7 @@ public:
 	
 	void AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupIndex, Material* material);
     void AddPolygonGroupForLayer(int32 layer, StaticMesh * mesh, int32 polygonGroupIndex, Material* material);
+    void AddDummyLODLayer(int32 layer);
 
     virtual void Update(float32 timeElapsed);
 	virtual void Draw();

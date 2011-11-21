@@ -732,6 +732,17 @@ void SceneFile::ProcessLOD(SceneNode *forRootNode)
                 }
                 ln->RemoveNode(ln);
             }
+            else 
+            {
+                lodName[lodName.size() - 1] = '0' + i;
+                SceneNode *ln = (*it)->GetParent()->FindByName(lodName + "dummy");
+                if (ln) 
+                {
+                    meshToAdd->AddDummyLODLayer(i);
+                    ln->RemoveNode(ln);
+                }
+            }
+
         }
     }
 }
