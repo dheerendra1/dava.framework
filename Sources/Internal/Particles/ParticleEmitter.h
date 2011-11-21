@@ -104,8 +104,8 @@ public:
 		
 		\param[in] position position to be set
 	 */
-	inline void SetPosition(Vector2 position);
-	inline void SetPosition(Vector3 position);
+	inline void SetPosition(const Vector2 &position);
+	inline void SetPosition(const Vector3 &position);
 	
 	/**
 		\brief Function sets the angle of emitter.
@@ -216,17 +216,17 @@ public:
 	bool GetAutorestart();
 
 	/**
-	 \brief Get emitter's width and height.
-	 Valid only for emitter with type 'rect'.
-	 \returns emitter's width and height in Vector2 form.
+	 \brief Get emitter's size.
+	 Valid only for emitter with type 'rect' and 'line'.
+	 \returns emitter's width, height and depth in Vector3 form.
 	 */
 	Vector3 GetSize();
 	Vector3 GetSize(float32 time);
 
 	/**
 	 \brief Set width and height.
-	 Valid only for emitter with type 'rect'.
-	 \param[in] size emitter's width and height in Vector2 form.
+	 Valid only for emitter with type 'rect' and 'line'.
+	 \param[in] size emitter's width, height and depth in Vector3 form.
 	 */
 	void SetSize(const Vector3& size);
 
@@ -291,12 +291,12 @@ public:
 	friend class ParticleLayer;
 };
 
-inline void ParticleEmitter::SetPosition(Vector2 _position)
+inline void ParticleEmitter::SetPosition(const Vector2 &_position)
 {
 	position = _position;
 }
 
-inline void ParticleEmitter::SetPosition(Vector3 _position)
+inline void ParticleEmitter::SetPosition(const Vector3 &_position)
 {
     position = _position;
 }
