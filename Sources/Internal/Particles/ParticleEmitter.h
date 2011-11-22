@@ -218,17 +218,17 @@ public:
 	bool GetAutorestart();
 
 	/**
-	 \brief Get emitter's width and height.
-	 Valid only for emitter with type 'rect'.
-	 \returns emitter's width and height in Vector2 form.
+	 \brief Get emitter's size.
+	 Valid only for emitter with type 'rect' and 'line'.
+	 \returns emitter's width, height and depth in Vector3 form.
 	 */
 	Vector3 GetSize();
 	Vector3 GetSize(float32 time);
 
 	/**
 	 \brief Set width and height.
-	 Valid only for emitter with type 'rect'.
-	 \param[in] size emitter's width and height in Vector2 form.
+	 Valid only for emitter with type 'rect' and 'line'.
+	 \param[in] size emitter's width, height and depth in Vector3 form.
 	 */
 	void SetSize(const Vector3& size);
 
