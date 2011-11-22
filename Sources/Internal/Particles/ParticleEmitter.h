@@ -104,8 +104,8 @@ public:
 		
 		\param[in] position position to be set
 	 */
-	inline void SetPosition(Vector2 position);
-	inline void SetPosition(Vector3 position);
+	inline void SetPosition(const Vector2 &position);
+	inline void SetPosition(const Vector3 &position);
 	
 	/**
 		\brief Function sets the angle of emitter.
@@ -293,12 +293,12 @@ public:
 	friend class ParticleLayer;
 };
 
-inline void ParticleEmitter::SetPosition(Vector2 _position)
+inline void ParticleEmitter::SetPosition(const Vector2 &_position)
 {
 	position = _position;
 }
 
-inline void ParticleEmitter::SetPosition(Vector3 _position)
+inline void ParticleEmitter::SetPosition(const Vector3 &_position)
 {
     position = _position;
 }
