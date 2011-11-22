@@ -646,7 +646,6 @@ void ParticleLayer::LoadFromYaml(YamlNode * node)
 	}
 
     DVASSERT(forces.size() == forcesOverLife.size());
-    DVASSERT(forces.size() == forcesVariation.size());
 	
 	spin = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(node, "spin");	
 	spinVariation = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(node, "spinVariation");	
