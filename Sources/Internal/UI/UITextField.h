@@ -43,6 +43,10 @@ namespace DAVA
 {
 
 class UITextField;
+/**
+    \brief  The UITextFieldDelegate interface defines the messages sent to a text field delegate as part of the sequence of editing its text. 
+            All the methods of the interface is optional.
+ */
 class UITextFieldDelegate
 {
 public:
@@ -50,23 +54,34 @@ public:
 	virtual void TextFieldDidBeginEditing(UITextField * textField);
 	virtual void TextFieldShouldEndEditing(UITextField * textField);
 	virtual void TextFieldShouldDidEditing(UITextField * textField);*/
-	/*
-	 
-	 */
 	
-	virtual void TextFieldShouldReturn(UITextField * textField) = 0;
+    /**
+        \brief Asks the delegate if the text field should process the pressing of the return button.
+        In this function you can check what you want to do with UITextField when return button pressed. 
+     */
+	virtual void TextFieldShouldReturn(UITextField * textField)
+    {
+    };
 
-	/*
-	 \brief Asks the delegate if the specified text should be changed.
-	 \param[in] textField The text field containing the text.
-	 \param[in] replacementLocation starting position of range of characters to be replaced
-	 \param[in] replacementLength ending position of range of characters to be replaced
-	 \param[in] replacementString the replacement string.
-	 \returns true if the specified text range should be replaced; otherwise, false to keep the old text.
+	/**
+        \brief Asks the delegate if the specified text should be changed.
+        \param[in] textField The text field containing the text.
+        \param[in] replacementLocation starting position of range of characters to be replaced
+        \param[in] replacementLength ending position of range of characters to be replaced
+        \param[in] replacementString the replacement string.
+        \returns true if the specified text range should be replaced; otherwise, false to keep the old text. Default implementation returns true.
 	 */
-	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString) = 0;
+	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString)
+    {
+        return true;
+    };
 };
-
+    
+/**
+    \brief  A UITextField object is a control that displays editable text and sends an action message to a target object when the user presses the return button. 
+            You typically use this class to gather small amounts of text from the user and perform some immediate action, such as a search operation, based on that text.
+            A text field object supports the use of a delegate object to handle editing-related notifications. 
+ */
 class UITextField : public UIControl 
 {
 public:

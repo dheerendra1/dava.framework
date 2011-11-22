@@ -37,6 +37,45 @@ using namespace DAVA;
 class TestScreen : public UIScreen, public UIListDelegate, public UIFileSystemDialogDelegate, public PropertyLineEditControlDelegate, public UITextFieldDelegate
 {
 public:
+    enum eProps
+    {
+        EMITTER_TYPE = 0,
+        EMITTER_EMISSION_ANGLE,
+        EMITTER_EMISSION_RAGE,
+        EMITTER_RADIUS,
+        EMITTER_COLOR_OVER_LIFE,
+        EMITTER_SIZE, 
+        EMITTER_LIFE,
+    };
+    enum lProps
+    {
+        LAYER_SPRITE = 0, 
+        LAYER_LIFE, 
+        LAYER_LIFE_VARIATION, 
+        LAYER_NUMBER, 
+        LAYER_NUMBER_VARIATION, 
+        LAYER_SIZE,
+        LAYER_SIZE_VARIATION, 
+        LAYER_SIZE_OVER_LIFE, 
+        LAYER_VELOCITY,
+        LAYER_VELOCITY_VARIATION,
+        LAYER_VELOCITY_OVER_LIFE, 
+        LAYER_FORCES,
+        LAYER_FORCES_VARIATION, 
+        LAYER_FORCES_OVER_LIFE, 
+        LAYER_SPIN, 
+        LAYER_SPIN_VARIATION, 
+        LAYER_SPIN_OVER_LIFE, 
+        LAYER_MOTION_RANDOM,
+        LAYER_MOTION_RANDOM_VARIATION, 
+        LAYER_MOTION_RANDOM_OVER_LIFE, 
+        LAYER_BOUNCE, 
+        LAYER_BOUNCE_VARIATION, 
+        LAYER_BOUNCE_OVER_LIFE,
+        LAYER_COLOR_RANDOM,
+        LAYER_ALPHA_OVER_LIFE,
+        LAYER_COLOR_OVER_LIFE,
+    };
     class PropListCell : public UIListCell
     {
     public:
@@ -47,6 +86,10 @@ public:
             GetStateBackground(UIControl::STATE_SELECTED)->SetColor(Color(0.65, 0.65, 0.65, 0.65));
             name = new UIStaticText(Rect(0, 0, size.x, size.y));
             AddControl(name);
+        }
+        ~PropListCell()
+        {
+            SafeRelease(name);
         }
         void SetText(WideString nameStr)
         {
@@ -73,7 +116,7 @@ public:
     {
         struct Property
         {
-            Property(String sName, bool isDef, int _id)
+            Property(const String *sName, bool isDef, int _id)
             {
                 name = sName;
                 isDefault = isDef;
@@ -84,7 +127,7 @@ public:
                 maxT = 1;
 
             }
-            String name;
+            const String *name;
             int32 id;
             bool isDefault;
             int32 minValue;
@@ -93,7 +136,7 @@ public:
             int32 maxT;
         };
         
-        Vector<Property> props;
+        Vector<Property *> props;
         String spritePath;
         UIStaticText *curLayerTime;
         bool isDisabled;
@@ -102,11 +145,16 @@ public:
         {
             curLayerTime = new UIStaticText();
         }
-        Layer(String names[], int32 count, String _spritePath, Font *f)
+        ~Layer()
         {
-            for(int i = 0; i < count; i++)
+            SafeRelease(curLayerTime);
+            props.clear();
+        }
+        Layer(const Vector<String> &names, const String &_spritePath, Font *f)
+        {
+            for(int i = 0; i < names.size(); i++)
             {
-                props.push_back(Property(names[i], true, i));
+                props.push_back(new Property(&names[i], true, i));
             }
             spritePath = _spritePath;
             
@@ -116,16 +164,18 @@ public:
             
             isDisabled = false;
         }
-        Layer Clone()
+        Layer * Clone()
         {
-            Layer l;
-            l.props = props;
-            l.spritePath = spritePath;
-            l.curLayerTime = curLayerTime->CloneStaticText();
-            l.isDisabled = isDisabled;
+            Layer * l = new Layer();
+            l->props = props;
+            l->spritePath = spritePath;
+            l->curLayerTime = curLayerTime->CloneStaticText();
+            l->isDisabled = isDisabled;
             return l;
         }
     };
+    
+    TestScreen();
     
 	virtual void LoadResources();
 	virtual void UnloadResources();
@@ -156,18 +206,17 @@ protected:
 	virtual bool TextFieldKeyPressed(UITextField * textField, int32 replacementLocation, int32 replacementLength, const WideString & replacementString);
     
     void ButtonPressed(BaseObject *obj, void *data, void *callerData);
-    void SetLayerProps(Layer *layerProps, ParticleLayer *layer);
     void ShowAddProps();
     void HideAddProps();
     
     void SliderChanged(BaseObject *obj, void *data, void *callerData);
     
-    void GetEmitterPropValue(int32 id, bool getLimits = false);
-    void SetEmitterPropValue(int32 id, bool def = 0);
-    void GetLayerPropValue(int32 id, bool getLimits = false);
-    void SetLayerPropValue(int32 id, bool def = 0);
-    void ResetEmitterPropValue(int32 id);
-    void ResetLayerPropValue(int32 id);
+    void GetEmitterPropValue(eProps id, bool getLimits = false);
+    void SetEmitterPropValue(eProps id, bool def = 0);
+    void GetLayerPropValue(lProps id, bool getLimits = false);
+    void SetLayerPropValue(lProps id, bool def = 0);
+    void ResetEmitterPropValue(eProps id);
+    void ResetLayerPropValue(lProps id);
     void GetForcesValue(int32 id, bool getLimits = false);
     
     bool GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimits = false);
@@ -179,22 +228,49 @@ protected:
     bool GetProp(PropertyLineValue<Color> *cv, int32 id, bool getLimits = false);
     bool GetProp(PropertyLineKeyframes<Color> *cv, int32 id, bool getLimits = false);
     
+    void ShowValueEditFields(int32 dim);
+    void ShowKeyedEditFields(int32 dim);
     void HideAndResetEditFields();
     void HideForcesList();
     void ShowForcesList();
     
     void SaveToYaml(const String &pathToFile);
     
-    void PrintPropValue(FILE *file, String propName, PropertyLineValue<float32> *pv);
-    void PrintPropValue(FILE *file, String propName, PropertyLineValue<Vector2> *pv);
-    void PrintPropValue(FILE *file, String propName, PropertyLineValue<Vector3> *pv);
-    void PrintPropValue(FILE *file, String propName, PropertyLineValue<Color> *pv);
-    void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<float32> *pv);
-    void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Vector2> *pv);
-    void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Vector3> *pv);
-    void PrintPropKFValue(FILE *file, String propName, PropertyLineKeyframes<Color> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<float32> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector2> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Vector3> *pv);
+    void PrintPropValue(File *file, const String &propName, PropertyLineValue<Color> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<float32> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector2> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Vector3> *pv);
+    void PrintPropKFValue(File *file, const String &propName, PropertyLineKeyframes<Color> *pv);
     
     void ExecutePacker(const String &path);
+    
+    void SafeAddControl(UIControl *control);
+    void SafeRemoveControl(UIControl *control);
+      
+    Vector<String> emitterProps;
+    Vector<String>layerProps;
+    Vector<String> emitterTypes;
+
+    int32 deltaIndex;
+    bool curPropType; //0 - value, 1 - Keyframed
+    Font *cellFont, *f;
+    int32 dblClickDelay;
+    int32 activePropEdit;
+    float32 curPropEditTime;
+    float32 buttonW;
+    Rect tfPosSlider[2], tfPosKFEdit[2];
+    Rect colorViewPosSlider, colorViewPosKFEdit;
+    Rect keysValueTextPos[4], tfKeysValuePos[4][2], tfKeysValueTextPos[4][2];
+    PropertyLineKeyframes<Color> *curColorProp;
+    PropertyLineKeyframes<float32> *cur1DimProp;
+    PropertyLineKeyframes<Vector2> *cur2DimProp;
+    PropertyLineKeyframes<Vector3> *cur3DimProp;
+    int32 activeKFEdit;
+    
+    Vector<Layer *> layers;
     
     ParticleEmitter *emitter;
     int32 selectedEmitterElement;
@@ -225,9 +301,9 @@ protected:
     UIButton *cloneLayer;
     UIButton *disableLayer;
     
-    UIStaticText *tfTText[2];
-    UIStaticText *tfkfText[2];
-    UIStaticText *kfValueText;
+    UIStaticText *tfTimeLimitsText[2];
+    UIStaticText *tfKeysValueText[2];
+    UIStaticText *keysValueText;
     UIStaticText *valueText[4];
     UIStaticText *spriteInfo;
     UIStaticText *particleCountText;
@@ -239,10 +315,10 @@ protected:
     UIList *forcesList;
     UIList *emitterTypeList;
     
-    UITextField *tfkf[2];
-    UITextField *tfv[4];
-    UITextField *tfT[2];
-    UITextField *tf[2];
+    UITextField *tfKeysValue[2];
+    UITextField *tfValue[4];
+    UITextField *tfTimeLimits[2];
+    UITextField *tfValueLimits[2];
     UISlider *vSliders[4];
     
     PropertyLineEditControl *propEdit[4];

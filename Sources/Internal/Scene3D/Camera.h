@@ -40,6 +40,8 @@ namespace DAVA
 {
 /**
     \brief this class is main class to perform camera transformations in our 3D engine.
+    This class creates standard matrix-based view-directional camera. Right now engine do not have quaternion camera, and
+    you can always add it support if it will be required.
  */
 class Camera : public SceneNode
 {
@@ -47,71 +49,179 @@ public:
 	Camera(Scene * scene);
 	virtual ~Camera();
 	
-	void Setup(float32 fovy, float32 aspect, float32 znear, float32 zfar, bool ortho = false);
-	void SetFOV(float32 _fovy);
+    /**
+        \brief Setup camera with basic camera params
+        This function set all parameters for the camera. All these parameters will be applied in case if camera Set function will be called. 
+     
+        \param[in] fovyInDegrees horizontal FOV of camera in degrees
+        \param[in] aspectYdivX proportion between y and x. So if you want to setup camera manually pass y / x
+        \param[in] zNear near clipping distance of camera
+        \param[in] zFar far clipping distance of camera
+        \param[in] isOrtho is camera will be with orthographic projection or perspective. By default it's false so camera will be with perspective projection.
+     */
+	void Setup(float32 fovyInDegrees, float32 aspectYdivX, float32 zNear, float32 zFar, bool isOrtho = false);
+    /**
+        \brief Function change fov in camera.
+        You can use this function in many cases. For example you can use it when you want to change zoom of camera in your game. 
+        
+        \param[in] fovInDegrees new for in degrees for the camera
+     */ 
+    
+	void SetFOV(float32 fovyInDegrees);
     /**
         \brief Set camera aspect ratio 
-        Aspect ratio is viewport width / viewport height
+        \param[in] aspectYdivX Aspect ratio is viewport height / viewport width
      */
-	void SetAspect(float32 aspect);
+	void SetAspect(float32 aspectYdivX);
     
-	// forms matrix
-	//void LookAt(Vector3 position, Vector3 view, Vector3 up);
-	
-	/** apply camera transformations (projection, model-view matrices) */
+	/** 
+        \brief Function applies camera transformations (projection, model-view matrices) to RenderManager
+        This function normally is called internally from Scene class. In most cases you'll not need it. 
+     */
 	void Set();
 	
-	/** Restore camera transform that was give from file */
+	/**     
+        \brief Restore camera transform to original camera transform that was set using 
+     */
 	void RestoreOriginalSceneTransform();
 	
     /**
         \brief return current Field Of View of this camera
         \returns FOV for this camera
      */ 
-    float32 GetFOV();
+    float32 GetFOV() const;
         
     /** 
         \brief return current aspect for this camera
+        \returns current aspect ratio for the camera
      */
-    float32 GetAspect();
+    float32 GetAspect() const;
 
     /**
         \brief return znear value for this camera
+        \returns current znear value
      */
-    float32 GetZNear();
+    float32 GetZNear() const;
     
     /**
         \brief return zfar value for this camera
+        \returns current zfar value
      */
-    float32 GetZFar();
+    float32 GetZFar() const;
     
+    /**
+        \brief Function change camera position.
+        \param[in] position new camera position
+     */
     void SetPosition(const Vector3 & position);
+    /**
+        \brief Function change camera direction.
+        Be carefull with this function. It changing target of the camera because in calculations we use pair: position, target. 
+        \param[in] direction new camera direction
+     */
 	void SetDirection(const Vector3 & direction);
+    
+    /**
+        \brief Function to change camera target
+        \param[in] target new camera target
+     */
 	void SetTarget(const Vector3 & target);
+    
+    /**
+        \brief Function to change camera up vector
+        \param[in] up new camera up vector
+     */
 	void SetUp(const Vector3 & up);
+    
+    /**
+        \brief Function to change left camera vector
+        \param[in] left new camera left vector
+     */
 	void SetLeft(const Vector3 & left);
     
+	/**
+        \brief Function returns current camera target vector
+        Be carefull if you using SetDirection, target will not give you a vector that will make any sense. 
+        It'll be just a point that located on (position, direction) ray distant on 1 from position.
+        \returns target vector
+     */
+	const Vector3 & GetTarget() const;
+    /**
+        \brief Function returns position of camera
+        \returns current position
+     */
+	const Vector3 & GetPosition() const;
+    /**
+        \brief Function returns normalized direction of camera
+        \returns current normalized direction
+     */
+	const Vector3 & GetDirection();   // camera forward direction
+    /**
+        \brief Function returns current normalized up vector of camera
+        \returns current normalized up vector
+     */
+    const Vector3 & GetUp() const;
+    /**
+        \brief Function returns current normalized left vector of camera
+        \returns current normalized left vector
+     */
+    const Vector3 & GetLeft() const;    // camera left direction
+    /**
+        \brief Function returns current camera matrix
+        This function returns camera matrix without multiplication of this matrix to viewport rotation matrix according to RenderManager and Core Interface Orientation.
+        This matrix is right matrix that should be used in all 3D computations, that depends from camera, but final multiplication should be done to model view matrix.
+        \returns current camera matrix
+     */
+    const Matrix4 & GetMatrix() const;  
 	
-	Vector3 & GetTarget();
-	Vector3 & GetPosition();
-	Vector3 & GetDirection();   // camera forward direction
-    Vector3 & GetUp();
-    Vector3 & GetLeft();    // camera left direction
-	
+    /**
+        \brief Rebuild camera from all values that set inside it.
+     */
 	void RebuildCameraFromValues();
+
+    /**
+        \brief Extract values from matrices to all vectors
+        This function is called when you load camera from file, using camera matrix
+     */
 	void ExtractCameraToValues();
 	
+    /**
+        \brief Clone current camera
+        
+     */
     virtual SceneNode* Clone(SceneNode *dstNode = NULL);
-    const Matrix4 &GetUniformProjModelMatrix();
-    Vector2 GetOnScreenPosition(const Vector3 &forPoint);
-//    virtual SceneNode* Clone();
     
+    /**
+        \brief Get project * camera matrix
+        \returns matrix 
+     */
+    const Matrix4 &GetUniformProjModelMatrix();
+    
+    /**
+        \brief Function to return 2D position of 3D point that is transformed to screen. 
+        \returns 2D point on screen.
+     */
+    Vector2 GetOnScreenPosition(const Vector3 & forPoint);
+
+    /**
+        \brief Get frustum object for this camera.
+        This function is widely used everywhere where you need object clipping.
+     
+        \returns pointer to frustum object
+     */
     Frustum * GetFrustum() const;
     
+    /**
+        \brief Get camera zoom factor. 
+        You can use zoom factor to have dependencies between camera zoom and visualisation of object
+        \returns tanf(fov / 2). 
+     */
     float32 GetZoomFactor() const;
 
     
-    // mostly for debug purposes
+    /**
+        \brief Draw debug camera information if debug flags enabled
+     */
     void Draw();
 
 protected:

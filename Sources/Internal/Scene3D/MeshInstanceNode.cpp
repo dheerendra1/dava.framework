@@ -37,6 +37,9 @@ namespace DAVA
 {
 MeshInstanceNode::MeshInstanceNode(Scene * _scene)
 :	SceneNode3d(_scene)
+,   lodPresents(false)
+,   currentLod(NULL)
+,   lastLodUpdateFrame(0)
 {
 	
 }
@@ -48,13 +51,121 @@ MeshInstanceNode::~MeshInstanceNode()
 
 void MeshInstanceNode::AddPolygonGroup(StaticMesh * mesh, int32 polygonGroupIndex, Material* material)
 {
-	meshes.push_back(mesh);
-	polygonGroupIndexes.push_back(polygonGroupIndex);
-	materials.push_back(material);
+    LodData *ld = NULL;
+    if (lodLayers.empty()) 
+    {
+        LodData d;
+        d.layer = 0;
+        lodLayers.push_back(d);
+        currentLod = &(*lodLayers.begin());
+    }
+    if (name.find("lod0dummy") != name.npos)
+    {
+        return;
+    }
+    ld = &(*lodLayers.begin());
+
+	ld->meshes.push_back(mesh);
+	ld->polygonGroupIndexes.push_back(polygonGroupIndex);
+	ld->materials.push_back(material);
 	
 	PolygonGroup * group = mesh->GetPolygonGroup(polygonGroupIndex);
 	bbox.AddAABBox(group->GetBoundingBox());
 }
+
+void MeshInstanceNode::AddPolygonGroupForLayer(int32 layer, StaticMesh * mesh, int32 polygonGroupIndex, Material* material)
+{
+    LodData *ld = NULL;
+    if (layer != 0) 
+    {
+        lodPresents = true;
+    }
+    if (lodLayers.empty()) 
+    {
+        LodData d;
+        d.layer = layer;
+        lodLayers.push_back(d);
+        ld = &(*lodLayers.begin());
+        currentLod = ld;
+    }
+    else 
+    {
+        bool isFind = false;
+        for (List<LodData>::iterator it = lodLayers.begin(); it != lodLayers.end(); it++)
+        {
+            if (it->layer == layer) 
+            {
+                ld = &(*lodLayers.begin());
+                isFind = true;
+                break;
+            }
+            if (layer < it->layer)
+            {
+                isFind = true;
+                LodData d;
+                d.layer = layer;
+                List<LodData>::iterator newIt = lodLayers.insert(it, d);
+                ld = &(*newIt);
+                break;
+            }
+        }
+        if (!isFind) 
+        {
+            LodData d;
+            d.layer = layer;
+            lodLayers.push_back(d);
+            ld = &(*lodLayers.rbegin());
+        }
+    }
+
+    
+	ld->meshes.push_back(mesh);
+	ld->polygonGroupIndexes.push_back(polygonGroupIndex);
+	ld->materials.push_back(material);
+
+	if (ld->layer == 0) 
+    {
+        PolygonGroup * group = mesh->GetPolygonGroup(polygonGroupIndex);
+        bbox.AddAABBox(group->GetBoundingBox());
+    }
+}
+
+void MeshInstanceNode::AddDummyLODLayer(int32 layer)
+{
+    if (layer != 0) 
+    {
+        lodPresents = true;
+    }
+    if (lodLayers.empty()) 
+    {
+        LodData d;
+        d.layer = layer;
+        lodLayers.push_back(d);
+        currentLod = &(*lodLayers.begin());
+    }
+    else 
+    {
+        for (List<LodData>::iterator it = lodLayers.begin(); it != lodLayers.end(); it++)
+        {
+            if (it->layer == layer) 
+            {
+                return;
+            }
+            if (layer < it->layer)
+            {
+                LodData d;
+                d.layer = layer;
+                List<LodData>::iterator newIt = lodLayers.insert(it, d);
+                return;
+            }
+        }
+        
+        LodData d;
+        d.layer = layer;
+        lodLayers.push_back(d);
+    }
+}
+
     
 void MeshInstanceNode::Update(float32 timeElapsed)
 {
@@ -67,6 +178,34 @@ void MeshInstanceNode::Update(float32 timeElapsed)
     
     if (needUpdateTransformBox)
         bbox.GetTransformedBox(worldTransform, transformedBox);
+    
+    if (lodPresents && visible)
+    {
+        lastLodUpdateFrame++;
+        if (lastLodUpdateFrame > 3)
+        {
+            lastLodUpdateFrame = 0;
+            float32 dst = (scene->GetCurrentCamera()->GetPosition() - GetWorldTransform().GetTranslationVector()).SquareLength();
+            dst *= scene->GetCurrentCamera()->GetZoomFactor() * scene->GetCurrentCamera()->GetZoomFactor();
+            if (dst > scene->GetLodLayerFarSquare(currentLod->layer) || dst < scene->GetLodLayerNearSquare(currentLod->layer))
+            {
+                for (List<LodData>::iterator it = lodLayers.begin(); it != lodLayers.end(); it++)
+                {
+                    if (dst >= scene->GetLodLayerNearSquare(it->layer))
+                    {
+                        currentLod = &(*it);
+                    }
+                    else 
+                    {
+//                        Logger::Info("Draw selected LOD %d", currentLod->layer);
+                        return;
+                    }
+                }
+            }
+        }
+//        Logger::Info("Draw selected LOD %d", currentLod->layer);
+    }
+    
 }
     
 void MeshInstanceNode::Draw()
@@ -105,10 +244,10 @@ void MeshInstanceNode::Draw()
     //glPushMatrix();
     //glMultMatrixf(worldTransform.data);
     
-    uint32 meshesSize = meshes.size();
+    uint32 meshesSize = currentLod->meshes.size();
 	for (uint32 k = 0; k < meshesSize; ++k)
 	{
-		meshes[k]->DrawPolygonGroup(polygonGroupIndexes[k], materials[k]);
+		currentLod->meshes[k]->DrawPolygonGroup(currentLod->polygonGroupIndexes[k], currentLod->materials[k]);
 	}
 	
 	if (debugFlags != DEBUG_DRAW_NONE)
@@ -166,9 +305,13 @@ SceneNode* MeshInstanceNode::Clone(SceneNode *dstNode)
 
     SceneNode3d::Clone(dstNode);
     MeshInstanceNode *nd = (MeshInstanceNode *)dstNode;
-    nd->meshes = meshes;
-    nd->polygonGroupIndexes = polygonGroupIndexes;
-    nd->materials = materials;
+    nd->lodLayers = lodLayers;
+    nd->lodPresents = lodPresents;
+    nd->lastLodUpdateFrame = 1000;
+    nd->currentLod = &(*nd->lodLayers.begin());
+//    nd->meshes = meshes;
+//    nd->polygonGroupIndexes = polygonGroupIndexes;
+//    nd->materials = materials;
     nd->bbox = bbox;
     
     return dstNode;

@@ -184,10 +184,10 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
     else if (type == EMITTER_LINE)
 	{
 		// TODO: add emitter angle support
-		float32 rand1 = Random::Instance()->RandFloat() * 2 - 1.0f; // [-0.5f, 0.5f]
+		float32 rand05 = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
         Vector3 lineDirection(0, 0, 0);
         if(size)
-            Vector3 lineDirection = size->GetValue(time)*rand1;
+            lineDirection = size->GetValue(time)*rand05;
 		particle->position = tempPosition + lineDirection;
 	}
     else if (type == EMITTER_RECT)

@@ -44,6 +44,7 @@ SceneNode::SceneNode(Scene * _scene)
 {
 	localTransform.Identity();
 	worldTransform.Identity();
+    defaultLocalTransform.Identity();
 	//animation = 0;
     debugFlags = DEBUG_DRAW_NONE;
     flags = 0;
@@ -51,12 +52,7 @@ SceneNode::SceneNode(Scene * _scene)
 
 SceneNode::~SceneNode()
 {
-	for (std::vector<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
-	{
-        SceneNode *node = *t;
-        node->SetParent(0);
-        node->Release();
-	}
+    RemoveAllChildren();
 }
 
 void SceneNode::SetParent(SceneNode * node)
@@ -112,8 +108,14 @@ int32 SceneNode::GetChildrenCount()
     return childs.size();
 }
 
-void SceneNode::RemoveAllChilds()
+void SceneNode::RemoveAllChildren()
 {
+	for (std::vector<SceneNode*>::iterator t = childs.begin(); t != childs.end(); ++t)
+	{
+        SceneNode *node = *t;
+        node->SetParent(0);
+        node->Release();
+	}
 	childs.clear();
 }
 

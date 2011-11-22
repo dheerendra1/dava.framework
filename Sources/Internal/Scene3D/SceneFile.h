@@ -210,6 +210,8 @@ public:
 	};
 
 private:
+    
+    void ProcessLOD(SceneNode *forRootNode);
 	String scenePath;
     String rootNodePath;
     SceneNode *rootNode;
