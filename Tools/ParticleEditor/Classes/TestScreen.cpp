@@ -467,7 +467,7 @@ void TestScreen::LoadResources()
     layers[0]->props[EMITTER_EMISSION_RAGE]->maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
-    forcePreview->SetRect(Rect(buttonW, cellH*(15.5f), buttonW, buttonW*1.125f));
+    forcePreview->SetRect(Rect(buttonW*3/2, GetScreenHeight() - cellH*4, buttonW/2, buttonW*0.625f));
     forcePreview->SetValue(Vector3(0, 0, 0));
     AddControl(forcePreview);
     
@@ -513,9 +513,9 @@ void TestScreen::SliderChanged(BaseObject *obj, void *data, void *callerData)
                 GetLayerPropValue((lProps)selectedPropElement);
             }
         }
-        if(selectedPropElement == 11)
+        if(selectedPropElement == LAYER_FORCES)
             forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forces[selectedForceElement].Get()->GetValue(curPropEditTime));
-        if(selectedPropElement == 12)
+        if(selectedPropElement == LAYER_FORCES_VARIATION)
             forcePreview->SetValue(emitter->GetLayers()[selectedEmitterElement-1]->forcesVariation[selectedForceElement].Get()->GetValue(curPropEditTime));
     }
 }
@@ -758,6 +758,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedEmitterElement >= 0 && selectedPropElement >= 0)
             layers[selectedEmitterElement]->props.at(selectedPropElement)->isDefault = true;
+        
+        if(selectedPropElement == LAYER_FORCES)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = true;
+        
+        if(selectedPropElement == LAYER_FORCES_OVER_LIFE)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = true;
+        
         if(selectedEmitterElement == 0)
         {
             ResetEmitterPropValue((eProps)selectedPropElement);
@@ -774,6 +781,13 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     if(obj == OKBut)
     {
         layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
+        
+        if(selectedAddPropElement == LAYER_FORCES)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
+        
+        if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
+            layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
+        
         deltaIndex = 0;
         propList->RefreshList();
         HideAddProps();
@@ -824,13 +838,17 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == addForce)
     {
-        if(selectedPropElement == 11) 
-            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(0));
-        if(selectedPropElement == 12) 
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(0));
-        if(selectedPropElement == 13)
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(0));
+        if(selectedPropElement == LAYER_FORCES || selectedPropElement == LAYER_FORCES_OVER_LIFE)
+        {
+            emitter->GetLayers().at(selectedEmitterElement-1)->forces.push_back(RefPtr<PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0, 0, 0))));
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.push_back(RefPtr<PropertyLine<float32> >(new PropertyLineValue<float32>(1.0f)));
+        }
+        if(selectedPropElement == LAYER_FORCES_VARIATION)
+        {
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.push_back(RefPtr<PropertyLine<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0, 0, 0))));
+        }
         
+        emitter->Restart();
         HideAndResetEditFields();
         selectedForceElement = -1;
         forcePreview->SetValue(Vector3(0, 0, 0));
@@ -840,20 +858,22 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     {
         if(selectedForceElement >= 0)
         {
-            if(selectedPropElement == 11) 
+            if(selectedPropElement == LAYER_FORCES || selectedPropElement == LAYER_FORCES_OVER_LIFE)
+            {
                 emitter->GetLayers().at(selectedEmitterElement-1)->forces.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forces.begin() + selectedForceElement);
-            
-            if(selectedPropElement == 12) 
-                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
-            
-            if(selectedPropElement == 13)
                 emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.begin() + selectedForceElement);
+            }
+            if(selectedPropElement == LAYER_FORCES_VARIATION)
+            {
+                emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.erase(emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.begin() + selectedForceElement);
+            }
             
             HideAndResetEditFields();
             forcesList->RefreshList();
             selectedForceElement = -1;
             forcePreview->SetValue(Vector3(0, 0, 0));
         }
+        emitter->Restart();
     }
     if(obj == chooseProject)
     {
@@ -1532,7 +1552,8 @@ void TestScreen::ResetEmitterPropValue(eProps id)
             
         default:
             break;
-    }        
+    } 
+    emitter->Restart();
 }
 
 void TestScreen::ResetLayerPropValue(lProps id)
@@ -1583,15 +1604,13 @@ void TestScreen::ResetLayerPropValue(lProps id)
             break;
             
         case LAYER_FORCES:
+        case LAYER_FORCES_OVER_LIFE:
             emitter->GetLayers().at(selectedEmitterElement-1)->forces.clear();
+            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.clear();
             break;
             
         case LAYER_FORCES_VARIATION:
             emitter->GetLayers().at(selectedEmitterElement-1)->forcesVariation.clear();
-            break;
-            
-        case LAYER_FORCES_OVER_LIFE:
-            emitter->GetLayers().at(selectedEmitterElement-1)->forcesOverLife.clear();
             break;
             
         case LAYER_SPIN:
@@ -1645,7 +1664,7 @@ void TestScreen::ResetLayerPropValue(lProps id)
         default:
             break;
     }    
-
+    emitter->Restart();
 }
 
 void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
@@ -2842,6 +2861,13 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         if( Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000) < dblClickDelay)
         {
             layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
+            
+            if(selectedAddPropElement == LAYER_FORCES)
+                layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
+            
+            if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
+                layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
+            
             deltaIndex = 0;
             propList->RefreshList();
             HideAddProps();
