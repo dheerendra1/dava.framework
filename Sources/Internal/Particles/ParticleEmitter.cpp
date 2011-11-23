@@ -176,92 +176,157 @@ void ParticleEmitter::Draw()
 
 void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velocity, int32 emitIndex)
 {
-	Vector3 tempPosition = particlesFollow ? Vector3() : position;
-	if (type == EMITTER_POINT)
-	{
-		particle->position = tempPosition;
-	}
-    else if (type == EMITTER_LINE)
-	{
-		// TODO: add emitter angle support
-		float32 rand05 = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-        Vector3 lineDirection(0, 0, 0);
-        if(size)
-            lineDirection = size->GetValue(time)*rand05;
-		particle->position = tempPosition + lineDirection;
-	}
-    else if (type == EMITTER_RECT)
-	{
-		// TODO: add emitter angle support
-		float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-		float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-		float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-        Vector3 lineDirection(0, 0, 0);
-        if(size)
-            lineDirection = Vector3(size->GetValue(time).x * rand05_x, size->GetValue(time).y * rand05_y, size->GetValue(time).z * rand05_z);
-		particle->position = tempPosition + lineDirection;
-	}
-    else if (type == EMITTER_ONCIRCLE)
-	{
-		// here just set particle position
-		particle->position = tempPosition;
-	}
-	
-	Vector3 vel = emissionAngle->GetValue(time);
-    
-    Vector3 rotVect(0, 0, 1);
-    float32 phi = PI*2*Random::Instance()->RandFloat();
-    if(vel.x != 0)
+    if (!is3D)
     {
-        rotVect.y = sinf(phi);
-        rotVect.z = cosf(phi);
-        rotVect.x = - rotVect.y*vel.y/vel.x - rotVect.z*vel.z/vel.x;
-    }
-    else if(vel.y != 0)
-    {
-        rotVect.x = cosf(phi);
-        rotVect.z = sinf(phi);
-        rotVect.y = - rotVect.z*vel.z/vel.y;
-    }
-    else if(vel.z != 0)
-    {
-        rotVect.x = cosf(phi);
-        rotVect.y = sinf(phi);
-        rotVect.z = 0;
-    }
-    rotVect.Normalize();
-    
-	float32 range = DegToRad(emissionRange->GetValue(time));
-	float32 rand05 = Random::Instance()->RandFloat() - 0.5f;
-    
-    Vector3 q_v(rotVect*sinf(range*rand05/2));
-    float32 q_w = cosf(range*rand05/2);
-
-    Vector3 q1_v(q_v);
-    float32 q1_w = -q_w;
-    q1_v /= (q_v.SquareLength() + q_w*q_w);
-    q1_w /= (q_v.SquareLength() + q_w*q_w);
-    
-    Vector3 v_v(vel);
-    
-    Vector3 qv_v = q_v.CrossProduct(v_v) + q_w*v_v;
-    float32 qv_w = - q_v.DotProduct(v_v);
-    
-    Vector3 qvq1_v = qv_v.CrossProduct(q1_v) + qv_w*q1_v + q1_w*qv_v;
-    
-	qvq1_v *= velocity;
-	particle->velocity = qvq1_v;
-
-    if (type == EMITTER_ONCIRCLE)
-	{
-        qvq1_v.Normalize();
-		particle->position += qvq1_v * radius->GetValue(time);
-	}
-    
-    if(is3D)
-        particle->angle = 0.0f;
+        Vector2 tempPosition = (particlesFollow) ? Vector2() : Vector2(position.x, position.y);
+        if (type == EMITTER_POINT)
+        {
+            particle->position = tempPosition;
+        }else if (type == EMITTER_LINE)
+        {
+            // TODO: add emitter angle support
+            float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+            Vector2 lineDirection(size->GetValue(time).x * rand05, 0);
+            particle->position = tempPosition + lineDirection;
+        }else if (type == EMITTER_RECT)
+        {
+            // TODO: add emitter angle support
+            float32 rand05_x = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_y = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+            Vector3 sizeAtTime = size->GetValue(time);
+            Vector2 lineDirection(sizeAtTime.x * rand05_x, sizeAtTime.y * rand05_y);
+            particle->position = tempPosition + lineDirection;
+        }else if (type == EMITTER_ONCIRCLE)
+        {
+            // here just set particle position
+            particle->position = tempPosition;
+            //if (
+        }
+        
+        Vector3 vel;
+        //vel.x = (float32)((rand() & 255) - 128);
+        //vel.y = (float32)((rand() & 255) - 128);
+        //vel.Normalize();
+        
+        float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+        
+        Vector3 emissionAngleAtTime = emissionAngle->GetValue(time);
+        float32 particleAngle = DegToRad(atanf(emissionAngleAtTime.y / emissionAngleAtTime.x) + angle);
+        float32 range = DegToRad(emissionRange->GetValue(time));
+        
+        if (emitPointsCount == -1)
+        {
+            // if emitAtPoints property is not set just emit randomly in range
+            particleAngle += range * rand05;
+        }else {
+            particleAngle += range * (float32)emitIndex / (float32)emitPointsCount;
+        }
+        
+        
+        vel.x = cosf(particleAngle);
+        vel.y = sinf(particleAngle);
+        
+        // reuse particle velocity we've calculated 
+        if (type == EMITTER_ONCIRCLE)
+        {
+            particle->position += vel * radius->GetValue(time);
+        }
+        
+        vel *= velocity;
+        particle->velocity.x = vel.x;
+        particle->velocity.y = vel.y;
+        particle->angle = particleAngle;
+    }    
     else
-        particle->angle = atan2f(qvq1_v.y, qvq1_v.x);
+    {
+        Vector3 tempPosition = particlesFollow ? Vector3() : position;
+        if (type == EMITTER_POINT)
+        {
+            particle->position = tempPosition;
+        }
+        else if (type == EMITTER_LINE)
+        {
+            // TODO: add emitter angle support
+            float32 rand05 = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            Vector3 lineDirection(0, 0, 0);
+            if(size)
+                lineDirection = size->GetValue(time)*rand05;
+            particle->position = tempPosition + lineDirection;
+        }
+        else if (type == EMITTER_RECT)
+        {
+            // TODO: add emitter angle support
+            float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            Vector3 lineDirection(0, 0, 0);
+            if(size)
+                lineDirection = Vector3(size->GetValue(time).x * rand05_x, size->GetValue(time).y * rand05_y, size->GetValue(time).z * rand05_z);
+            particle->position = tempPosition + lineDirection;
+        }
+        else if (type == EMITTER_ONCIRCLE)
+        {
+            // here just set particle position
+            particle->position = tempPosition;
+        }
+        
+        Vector3 vel = emissionAngle->GetValue(time);
+        
+        Vector3 rotVect(0, 0, 1);
+        float32 phi = PI*2*Random::Instance()->RandFloat();
+        if(vel.x != 0)
+        {
+            rotVect.y = sinf(phi);
+            rotVect.z = cosf(phi);
+            rotVect.x = - rotVect.y*vel.y/vel.x - rotVect.z*vel.z/vel.x;
+        }
+        else if(vel.y != 0)
+        {
+            rotVect.x = cosf(phi);
+            rotVect.z = sinf(phi);
+            rotVect.y = - rotVect.z*vel.z/vel.y;
+        }
+        else if(vel.z != 0)
+        {
+            rotVect.x = cosf(phi);
+            rotVect.y = sinf(phi);
+            rotVect.z = 0;
+        }
+        rotVect.Normalize();
+        
+        float32 range = DegToRad(emissionRange->GetValue(time));
+        float32 rand05 = Random::Instance()->RandFloat() - 0.5f;
+        
+        Vector3 q_v(rotVect*sinf(range*rand05/2));
+        float32 q_w = cosf(range*rand05/2);
+
+        Vector3 q1_v(q_v);
+        float32 q1_w = -q_w;
+        q1_v /= (q_v.SquareLength() + q_w*q_w);
+        q1_w /= (q_v.SquareLength() + q_w*q_w);
+        
+        Vector3 v_v(vel);
+        
+        Vector3 qv_v = q_v.CrossProduct(v_v) + q_w*v_v;
+        float32 qv_w = - q_v.DotProduct(v_v);
+        
+        Vector3 qvq1_v = qv_v.CrossProduct(q1_v) + qv_w*q1_v + q1_w*qv_v;
+        
+        qvq1_v *= velocity;
+        particle->velocity = qvq1_v;
+
+        if (type == EMITTER_ONCIRCLE)
+        {
+            qvq1_v.Normalize();
+            particle->position += qvq1_v * radius->GetValue(time);
+        }
+       
+        
+        if(is3D)
+            particle->angle = 0.0f;
+        else
+            particle->angle = atan2f(qvq1_v.y, qvq1_v.x);
+    }
 }
 
 void ParticleEmitter::LoadFromYaml(const String & filename)
