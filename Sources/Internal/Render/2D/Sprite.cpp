@@ -785,8 +785,8 @@ inline void Sprite::PrepareSpriteRenderData(Sprite::DrawState * state)
             
         frame = Max(0, Min(state->frame, frameCount - 1));	
         
-        x = state->position.x - state->pivotPoint.x * scale.x;
-        y = state->position.y - state->pivotPoint.y * scale.y;
+        x = state->position.x - state->pivotPoint.x * state->scale.x;
+        y = state->position.y - state->pivotPoint.y * state->scale.y;
     }
     else
     {
