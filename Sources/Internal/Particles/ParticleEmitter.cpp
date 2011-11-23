@@ -247,7 +247,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         else if (type == EMITTER_LINE)
         {
             // TODO: add emitter angle support
-            float32 rand05 = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
             Vector3 lineDirection(0, 0, 0);
             if(size)
                 lineDirection = size->GetValue(time)*rand05;
@@ -256,9 +256,9 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         else if (type == EMITTER_RECT)
         {
             // TODO: add emitter angle support
-            float32 rand05_x = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-            float32 rand05_y = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
-            float32 rand05_z = Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_x = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_y = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_z = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
             Vector3 lineDirection(0, 0, 0);
             if(size)
                 lineDirection = Vector3(size->GetValue(time).x * rand05_x, size->GetValue(time).y * rand05_y, size->GetValue(time).z * rand05_z);
@@ -273,7 +273,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         Vector3 vel = emissionAngle->GetValue(time);
         
         Vector3 rotVect(0, 0, 1);
-        float32 phi = PI*2*Random::Instance()->RandFloat();
+        float32 phi = PI*2*(float32)Random::Instance()->RandFloat();
         if(vel.x != 0)
         {
             rotVect.y = sinf(phi);
@@ -295,7 +295,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         rotVect.Normalize();
         
         float32 range = DegToRad(emissionRange->GetValue(time));
-        float32 rand05 = Random::Instance()->RandFloat() - 0.5f;
+        float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f;
         
         Vector3 q_v(rotVect*sinf(range*rand05/2));
         float32 q_w = cosf(range*rand05/2);
