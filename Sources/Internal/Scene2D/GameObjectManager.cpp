@@ -295,6 +295,6 @@ void GameObjectManager::SetCameraScale(float32 cameraScale)
 
 float32 GameObjectManager::GetCameraScale() const
 {
-    return drawState.scale.x > 0 ? drawState.scale.x : 1.f;
+    return drawState.scale.x; // > 0 ? drawState.scale.x : 1.f;
 }
 };
