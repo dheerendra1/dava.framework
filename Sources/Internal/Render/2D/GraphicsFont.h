@@ -50,8 +50,6 @@ public:
 	virtual Size2i	GetStringSize(const WideString & str, Vector<int32> *charSizes = NULL);
 	virtual bool	IsCharAvaliable(char16 ch);
 	virtual uint32	GetFontHeight();
-	virtual int32	GetAscender();
-	virtual int32	GetDescender();
 	
 	virtual bool	IsTextSupportsHardwareRendering();
 	virtual Size2i	DrawString(float32 x, float32 y, const WideString & string, int32 justifyWidth = 0);

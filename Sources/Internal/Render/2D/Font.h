@@ -55,25 +55,55 @@ class Font : public BaseObject
 public:
 	enum eFontType 
 	{
-			FONT_TYPE_FT = 0	//!< freetype-based
-		,	FONT_TYPE_GRAPHICAL //!< sprite-based
+			TYPE_FT = 0	//!< freetype-based
+		,	TYPE_GRAPHICAL //!< sprite-based
 	};
 	
 	Font();
 	virtual ~Font();
 
+	/**
+		\brief Set global DPI(dots per inch).
+		Default value is 72.
+		\param[in] dpi DPI value
+	*/
 	static void SetDPI(int32 dpi);
+
+
+	/**
+		\brief Get global DPI.
+	*/
 	static int32 GetDPI();
 	
+	/**
+		\brief Set color.
+	*/
 	virtual void SetColor(float32 r, float32 g, float32 b, float32 a);
+
+	/**
+		\brief Set color.
+	*/
 	virtual void SetColor(const Color & color);
+
+	/**
+		\brief Get color.
+	*/
 	virtual const Color & GetColor() const;
 	
+	/**
+		\brief Set size.
+		\param[in] size in points
+	*/
 	virtual void SetSize(float32 size);
+
+	/**
+		\brief Get size.
+		\returns size in pixels
+	*/
 	virtual float32	GetSize();
 	
 	/**
-	 \brief Set vertical spacing
+	 \brief Set vertical spacing.
 	 Spacing value is added to vertical range between lines in multiline text.
 	 \param[in] verticalSpacing value in pixels
 	 */
@@ -86,27 +116,78 @@ public:
 	 */
 	virtual int32 GetVerticalSpacing();
 	
-	// text splitting functions
-	bool SplitTextToStrings(const WideString & text, const Vector2 & targetRectSize, Vector<WideString> & resultVector);
+	/**
+		\brief Split string into substrings.
+		If one word(letters without separators) is longer than targetRectSize.dx, word will not be splitted.
+		Separator symbols:
+		1. '\n' - forced split. 
+		2. ' '(space) - soft split. If substring is longer than targetRectSize.dx, it will be limited to the last found space symbol. 
+		\param[in] text - string to be splitted
+		\param[in] targetRectSize - targetRectSize.dx sets desirable maximum substring width
+		\param[in, out] resultVector - contains resulting substrings
+	*/
+	void SplitTextToStrings(const WideString & text, const Vector2 & targetRectSize, Vector<WideString> & resultVector);
 
-	// pure virtual functions that have to be overloaded in implementations 
+	/**
+		\brief Get string size(rect).
+		\param[in] str - processed string
+		\param[in, out] charSizes - if present(not NULL), will contain widths of every symbol in str 
+		\returns bounding rect for string in pixels
+	*/
 	virtual Size2i GetStringSize(const WideString & str, Vector<int32> *charSizes = 0) = 0;
+
+	/**
+		\brief Checks if symbol is present in font.
+		\param[in] ch - tested symbol
+		\returns true if symbol is available, false otherwise
+	*/
 	virtual bool IsCharAvaliable(char16 ch) = 0;
+
+	/**
+		\brief Get height of highest symbol in font.
+		\returns height in pixels
+	*/
 	virtual uint32 GetFontHeight() = 0;
-	virtual int32  GetAscender() = 0;
-	virtual int32  GetDescender() = 0;
+
+	/**
+		\brief Clone font.
+	*/
 	virtual Font * Clone() = 0;
+
+	/**
+		\brief Tests if two fonts are the same.
+	*/
 	virtual bool IsEqual(Font *font);
 
-	// functions to overload rendering
-	virtual bool IsTextSupportsSoftwareRendering() { return false; };
-	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString & str, bool contentScaleIncluded = false) { return  Size2i(0, 0); };
-	
-	virtual bool IsTextSupportsHardwareRendering() { return false; };
+	/**
+		\brief Draw string to screen.
+		\param[in] offsetX - starting X offset
+		\param[in] offsetY - starting Y offset
+		\param[in] str - string to draw
+		\param[in] justifyWidth - reserved
+		\returns bounding rect for string in pixels
+	*/
 	virtual Size2i DrawString(float32 offsetX, float32 offsetY, const WideString & str, int32 justifyWidth = 0) { return Size2i(0, 0);};
-	
-	
-	
+
+	/**
+		\brief Draw string to memory buffer
+		\param[in, out] buffer - destination buffer
+		\param[in] bufWidth - buffer width in pixels
+		\param[in] bufHeight - buffer height in pixels
+		\param[in] offsetX - starting X offset
+		\param[in] offsetY - starting Y offset
+		\param[in] justifyWidth - TODO
+		\param[in] spaceAddon - TODO
+		\param[in] str - string to draw
+		\param[in] contentScaleIncluded - TODO
+		\returns bounding rect for string in pixels
+	*/
+	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString & str, bool contentScaleIncluded = false) { return  Size2i(0, 0); };
+
+	//TODO: get rid of this
+	virtual bool IsTextSupportsSoftwareRendering() { return false; };
+	virtual bool IsTextSupportsHardwareRendering() { return false; };
+
 protected:
 	static int32 globalFontDPI;
 	

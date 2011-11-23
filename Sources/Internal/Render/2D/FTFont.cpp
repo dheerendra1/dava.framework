@@ -65,8 +65,6 @@ public:
 		Vector<int32> *charSizes = NULL,
 		bool contentScaleIncluded = false);
 	uint32 GetFontHeight(float32 size);
-	int32 GetAscender(float32 size);
-	int32 GetDescender(float32 size);
 
 	bool IsCharAvaliable(char16 ch);
 
@@ -97,7 +95,7 @@ FTFont::FTFont(FTInternalFont* _internalFont)
 {
 	internalFont = _internalFont;
 	internalFont->Retain();
-	fontType = FONT_TYPE_FT;
+	fontType = TYPE_FT;
 }
 
 FTFont::~FTFont()
@@ -163,16 +161,6 @@ Size2i FTFont::GetStringSize(const WideString& str, Vector<int32> *charSizes)
 uint32 FTFont::GetFontHeight()
 {
 	return internalFont->GetFontHeight(size);
-}
-	
-int32 FTFont::GetAscender()
-{
-	return internalFont->GetAscender(size);
-}
-	
-int32 FTFont::GetDescender()
-{
-	return internalFont->GetDescender(size);
 }
 
 
@@ -427,19 +415,6 @@ void FTInternalFont::SetFTCharSize(float32 size)
 	{
 		Logger::Error("FTInternalFont::FT_Set_Char_Size");
 	}
-}
-
-
-int32 FTInternalFont::GetAscender(float32 size)
-{
-	SetFTCharSize(size);
-	return (int32)(Core::GetPhysicalToVirtualFactor() * (face->size->metrics.ascender >> 6));
-}
-
-int32 FTInternalFont::GetDescender(float32 size)
-{
-	SetFTCharSize(size);
-	return (int32)(Core::GetPhysicalToVirtualFactor() * (face->size->metrics.descender >> 6));
 }
 
 void FTInternalFont::Prepare(FT_Vector * advances)
