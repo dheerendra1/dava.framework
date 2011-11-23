@@ -265,8 +265,8 @@ void GameObject::Update(float32 timeElapsed)
 
     if(!children.empty())
     {
-        GameObjectsList::iterator it_end = children.end();
-        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+        List<GameObject*>::iterator it_end = children.end();
+        for(List<GameObject*>::iterator t = children.begin(); t != it_end; ++t)
     	{
 	    	GameObject *o = *t;
 		    o->Update(timeElapsed);
@@ -279,8 +279,8 @@ void GameObject::RecalcHierarchy(Sprite::DrawState & parentDrawState)
 	globalDrawState.BuildStateFromParentAndLocal(parentDrawState, localDrawState);
     if(!children.empty())
     {
-        GameObjectsList::iterator it_end = children.end();
-        for(GameObjectsList::iterator t = children.begin(); t != it_end; ++t)
+        List<GameObject*>::iterator it_end = children.end();
+        for(List<GameObject*>::iterator t = children.begin(); t != it_end; ++t)
         {
             GameObject *o = *t;
             o->RecalcHierarchy(globalDrawState);
@@ -335,7 +335,7 @@ void	GameObject::AttachObject(GameObject * gameObject)
 
 void	GameObject::DetachObject(GameObject * gameObject)
 {
-	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
+	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -363,7 +363,7 @@ void	GameObject::RemoveObject(GameObject * gameObject)
 {
 	//std::remove(animations.begin(), animations.end(), animation);
 	
-	for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
+	for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
 	{
 		if (*t == gameObject)
 		{
@@ -392,7 +392,7 @@ void GameObject::ChangeManager(GameObjectManager * newManager)
 	{
 		newManager->AddObject(this);
 		
-		for (GameObjectsList::iterator t = children.begin(); t != children.end(); ++t)
+		for (List<GameObject*>::iterator t = children.begin(); t != children.end(); ++t)
 		{
 			GameObject * child = *t;
 			child->ChangeManager(newManager);
