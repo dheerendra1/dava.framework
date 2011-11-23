@@ -39,7 +39,7 @@ namespace DAVA
 ParticleEmitter::ParticleEmitter()
 {
 	type = EMITTER_POINT;
-	emissionAngle = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(0.0f, 0.0f, 0.0f)));
+	emissionAngle = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(1.0f, 0.0f, 0.0f)));
 	emissionRange = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(360.0f));
 	size = RefPtr<PropertyLineValue<Vector3> >(0);
 	colorOverLife = 0;
@@ -211,7 +211,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
         
         Vector3 emissionAngleAtTime = emissionAngle->GetValue(time);
-        float32 particleAngle = DegToRad(atanf(emissionAngleAtTime.y / emissionAngleAtTime.x) + angle);
+        float32 particleAngle = atanf(emissionAngleAtTime.y / emissionAngleAtTime.x) + (angle);
         float32 range = DegToRad(emissionRange->GetValue(time));
         
         if (emitPointsCount == -1)
