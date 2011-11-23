@@ -39,6 +39,7 @@
 namespace DAVA
 {
 /**
+    \ingroup scene3d
     \brief this class is main class to perform camera transformations in our 3D engine.
     This class creates standard matrix-based view-directional camera. Right now engine do not have quaternion camera, and
     you can always add it support if it will be required.
@@ -50,10 +51,10 @@ public:
 	virtual ~Camera();
 	
     /**
-        \brief Setup camera with basic camera params
+        \brief Setup camera with basic camera params.
         This function set all parameters for the camera. All these parameters will be applied in case if camera Set function will be called. 
      
-        \param[in] fovyInDegrees horizontal FOV of camera in degrees
+        \param[in] fovyInDegrees horizontal FOV of camera in degrees.
         \param[in] aspectYdivX proportion between y and x. So if you want to setup camera manually pass y / x
         \param[in] zNear near clipping distance of camera
         \param[in] zFar far clipping distance of camera

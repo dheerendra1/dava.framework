@@ -40,12 +40,25 @@
 namespace DAVA
 {
 
+/**
+    \defgroup scene3d 3D Engine
+  */  
+    
 class Texture;
 class Material;
 class StaticMesh;
 class AnimatedMesh;
 class SceneNodeAnimationList;
 	
+/** 
+    \ingroup scene3d
+    \brief This class is a code of our 3D Engine scene graph. 
+    To visualize any 3d scene you'll need to create Scene object. 
+    Scene have visible hierarchy and invisible root nodes. You can add as many root nodes as you want, and do not visualize them.
+    For example you can have multiple scenes, load them to one scene, and show each scene when it will be required. 
+ 
+ 
+ */
 class Scene : public SceneNode
 {
 public:	
@@ -57,14 +70,12 @@ public:
 
         float32 nearDistanceSq;
         float32 farDistanceSq;
-};
+    };
     
 	Scene();
 	~Scene();
 	
 	void		ClearScene();
-	
-	
 	
 	void AddTexture(Texture * texture);
 	void RemoveTexture(Texture * texture);
@@ -91,9 +102,36 @@ public:
 	SceneNodeAnimationList * GetAnimation(const String & name);
 	inline int32 GetAnimationCount();
     
+    
+    /**
+        \brief Function to add root node.
+        \param[in] node node you want to add
+        \param[in] rootNodePath path of this root node
+     */
+
     void AddRootNode(SceneNode *node, const String &rootNodePath);
-	SceneNode *GetRootNode(const String &rootNodePath);
+
+	/**
+        \brief Get root node by path.
+        This function can be used when you want to get a node and add it to real scene.  
+        \code
+        SceneNode * node = scene->GetRootNode("~res:/Scenes/level0.sce");
+        scene->AddNode(node);
+        \endcode
+     */
+    
+    SceneNode *GetRootNode(const String &rootNodePath);
+    
+    /**
+        \brief Release root node by name.
+        \param[in] rootNodePath root node path you want to release.
+     */
     void ReleaseRootNode(const String &rootNodePath);
+    
+    /**
+        \brief Release root node by pointer to this node.
+        \param[in] nodeToRelease root node pointer you want to release.
+     */
     void ReleaseRootNode(SceneNode *nodeToRelease);
 
 	
@@ -120,10 +158,10 @@ public:
     Camera * GetClipCamera() const;
     
     /**
-     \brief Registers LOD layer into the scene.
-     \param[in] nearDistance near view distance fro the layer
-     \param[in] farDistance far view distance fro the layer
-     \returns Serial number of the layer
+        \brief Registers LOD layer into the scene.
+        \param[in] nearDistance near view distance fro the layer
+        \param[in] farDistance far view distance fro the layer
+        \returns Serial number of the layer
 	 */
     int32 RegisterLodLayer(float32 nearDistance, float32 farDistance);
     
