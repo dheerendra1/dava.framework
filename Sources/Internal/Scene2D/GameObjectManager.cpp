@@ -163,10 +163,7 @@ void GameObjectManager::RealAddObject(GameObject * _object)
 	//Logger::Debug("added to pos: %d\n", pos);
 	objects.insert(currentPos, _object);
 	_object->SetManager(this);
-	
-	
-	if (_object->GetParent() == 0)_object->RecalcHierarchy(drawState);
-	else _object->RecalcHierarchy(_object->GetParent()->globalDrawState);
+    RecalcObjectHierarchy(_object);
 }
 
 void GameObjectManager::RemoveObject(GameObject * _object)
@@ -190,6 +187,12 @@ void GameObjectManager::SortObjects()
 	std::sort(objects.begin(), objects.end(), PrioritySortFn);
 }
 */
+
+void GameObjectManager::RecalcObjectHierarchy(GameObject *object) const
+{
+    const GameObject *objParent = object->GetParent();
+    object->RecalcHierarchy(objParent ? objParent->globalDrawState : drawState);
+}
 	
 void GameObjectManager::RecalcObjectsHierarchy()
 {

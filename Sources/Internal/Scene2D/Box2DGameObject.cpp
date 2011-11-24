@@ -53,9 +53,14 @@ Box2DGameObject::~Box2DGameObject()
 void Box2DGameObject::InitBox2DBody(const b2BodyDef &bodyDef)
 {
 	DVASSERT_MSG(manager, "You need to set manager first");
-	DVASSERT_MSG(box2DWorld, "Youor box2d world is not set");
+	DVASSERT_MSG(box2DWorld, "Your box2d world is not set");
+
 	box2DBody = box2DWorld->CreateBody(&bodyDef);
 	box2DBody->SetUserData(this);
+
+    SetPosition(((Box2DGameObjectManager *)manager)->VectorBox2DToGameManager(bodyDef.position));
+    SetAngle(-bodyDef.angle);
+    manager->RecalcObjectHierarchy(this);
 }
 	
 b2Fixture* Box2DGameObject::AddFixture(const b2FixtureDef &fixtureDef)

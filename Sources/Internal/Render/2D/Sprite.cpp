@@ -1356,7 +1356,7 @@ void Sprite::SetClipPolygon(Polygon2 * _clipPolygon)
 	clipPolygon = _clipPolygon;
 }
 	
-void Sprite::DrawState::BuildStateFromParentAndLocal(Sprite::DrawState & parentState, Sprite::DrawState & localState)
+void Sprite::DrawState::BuildStateFromParentAndLocal(const Sprite::DrawState &parentState, const Sprite::DrawState &localState)
 {
 	position.x = parentState.position.x + localState.position.x * parentState.scale.x;
 	position.y = parentState.position.y + localState.position.y * parentState.scale.y;

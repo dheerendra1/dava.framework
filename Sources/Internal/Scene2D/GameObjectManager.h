@@ -100,6 +100,7 @@ public:
 	
 	
 	void RecalcObjectsHierarchy();
+    void RecalcObjectHierarchy(GameObject *object) const;
 	
 protected:
 	Vector3 cameraPosition;

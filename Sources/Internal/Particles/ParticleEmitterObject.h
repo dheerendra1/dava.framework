@@ -81,7 +81,7 @@ public:
 	 */
 	ParticleEmitter * GetEmitter();
 	
-	virtual void RecalcHierarchy(Sprite::DrawState & parentDrawState);
+	virtual void RecalcHierarchy(const Sprite::DrawState & parentDrawState);
 	/**
 		\brief Overloaded function of GameObject to update emitter when GameObjectManager updates GameObject.
 		\param[in] timeElapsed time in seconds

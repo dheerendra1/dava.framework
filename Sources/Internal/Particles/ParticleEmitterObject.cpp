@@ -58,7 +58,7 @@ void ParticleEmitterObject::LoadFromYaml(const String & pathName)
 	emitter->LoadFromYaml(pathName);
 }
 
-void ParticleEmitterObject::RecalcHierarchy(Sprite::DrawState & parentDrawState)
+void ParticleEmitterObject::RecalcHierarchy(const Sprite::DrawState & parentDrawState)
 {
 	GameObject::RecalcHierarchy(parentDrawState);
 	

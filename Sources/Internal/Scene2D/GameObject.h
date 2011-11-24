@@ -100,7 +100,7 @@ public:
 		\param[in] newPriority new priority to be set
 	 */
 	virtual void	SetPriority(int32 newPriority);
-	inline int		GetPriority();
+	inline int		GetPriority() const;
 	
 	void			SetFrame(int32 frame);
 	inline int32	GetFrame() const;
@@ -109,27 +109,27 @@ public:
 	inline int32	GetGroupId();
 	
 	inline void	SetAngle(float32 angleInRadians);
-	inline float32	GetAngle();
+	inline float32	GetAngle() const;
 	
 	inline void		SetColor(float32 r, float32 g, float32 b, float32 a);
 	inline void		SetColor(const Color & _color);
-	inline Color &	GetColor(); 
+	inline Color&	GetColor(); 
     inline void		SetBlendMode(eBlendMode	srcOp, eBlendMode destOp);
 	
-    inline bool GetVisible();
+    inline bool GetVisible() const;
 	inline void SetVisible(bool isVisible);
 
-	inline bool IsDead();
+	inline bool IsDead() const;
 
-	inline void SetUserData(void * userData);
-	inline void * GetUserData() const;
+	inline void SetUserData(void *userData);
+	inline void* GetUserData() const;
 	
 	inline const Sprite::DrawState & GetGlobalDrawState() const;
 	inline const Sprite::DrawState & GetLocalDrawState() const;
 	
 	
-	void			ChangeManager(GameObjectManager * newManager);
-	inline	GameObjectManager * GetManager();
+	void ChangeManager(GameObjectManager *newManager);
+	inline	GameObjectManager* GetManager();
 	
 	
 	/**
@@ -198,7 +198,7 @@ public:
 		It called every frame after update and process whole hierarchy
 		\param[in] parentDrawState pass the calculated parentDrawState 
 	 */
-	virtual void	RecalcHierarchy(Sprite::DrawState & parentDrawState);
+	virtual void	RecalcHierarchy(const Sprite::DrawState &parentDrawState);
 	/**
 		\brief Here you can check all collisions and make all collision responses. 
 		If you'll update position, scale or rotate in this function you should manually call RecalcHierarchy after that 
@@ -240,7 +240,7 @@ public:
 	 */
 	virtual void	RemoveObject(GameObject * gameObject);
 
-	virtual GameObject * GetParent() const;
+	virtual GameObject* GetParent() const;
 	
 	List<GameObject*> & GetChildren();
 protected:
@@ -294,7 +294,7 @@ inline Sprite* GameObject::GetSprite() const
 	return sprite;
 }
 
-inline int GameObject::GetPriority()
+inline int GameObject::GetPriority() const
 {
 	return priority;
 }
@@ -385,7 +385,7 @@ inline void		GameObject::SetAngle(float32 angleInRadians)
 	localDrawState.angle = angleInRadians;
 }
 
-inline float32	GameObject::GetAngle()
+inline float32	GameObject::GetAngle() const
 {
 	return localDrawState.angle;
 }
@@ -403,7 +403,7 @@ inline void	GameObject::SetColor(const Color & _color)
 	color = _color;
 }
 	
-inline Color & GameObject::GetColor()
+inline Color& GameObject::GetColor()
 {
 	return color;
 }
@@ -414,7 +414,7 @@ inline void GameObject::SetBlendMode(eBlendMode	_srcOp, eBlendMode _destOp)
 	destOp = _destOp;
 }
 
-inline bool GameObject::GetVisible()
+inline bool GameObject::GetVisible() const
 {
     return visible;
 }
@@ -424,17 +424,17 @@ inline void GameObject::SetVisible(bool isVisible)
     visible = isVisible;
 }
 	
-void GameObject::SetUserData(void * _userData)
+void GameObject::SetUserData(void *_userData)
 {
 	userData = _userData;
 }
 
-void * GameObject::GetUserData() const
+void* GameObject::GetUserData() const
 {
 	return userData;
 }
 
-inline bool GameObject::IsDead()
+inline bool GameObject::IsDead() const
 {
 	return dead;	
 }

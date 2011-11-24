@@ -274,7 +274,7 @@ void GameObject::Update(float32 timeElapsed)
     }
 }
 	
-void GameObject::RecalcHierarchy(Sprite::DrawState & parentDrawState)
+void GameObject::RecalcHierarchy(const Sprite::DrawState &parentDrawState)
 {
 	globalDrawState.BuildStateFromParentAndLocal(parentDrawState, localDrawState);
     if(!children.empty())
@@ -375,12 +375,12 @@ void	GameObject::RemoveObject(GameObject * gameObject)
 	}
 }
 
-GameObject * GameObject::GetParent() const
+GameObject* GameObject::GetParent() const
 {
 	return parent;
 }
 
-void GameObject::ChangeManager(GameObjectManager * newManager)
+void GameObject::ChangeManager(GameObjectManager *newManager)
 {
 	Retain();
 	if(manager)

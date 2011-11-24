@@ -86,7 +86,7 @@ public:
 		inline void SetFrame(uint32 frame);
 		inline void SetFlags(uint32 flags);
 		inline void SetPerPixelAccuracyUsage(bool needToUse);
-		void BuildStateFromParentAndLocal(Sprite::DrawState & parentState, Sprite::DrawState & localState); 
+		void BuildStateFromParentAndLocal(const Sprite::DrawState &parentState, const Sprite::DrawState &localState); 
 	};
 	
 	
