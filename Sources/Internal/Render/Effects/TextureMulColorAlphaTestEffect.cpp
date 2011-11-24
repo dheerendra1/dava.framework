@@ -108,7 +108,7 @@ void TextureMulColorAlphaTestEffectDX9::DrawArrays(ePrimitiveType mode, int32 fi
 {
 	RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->EnableAlphaTest(true);
-    RenderManager::Instance()->SetAlphaFunc(ALPHA_GREATER, 0.9f);
+    RenderManager::Instance()->SetAlphaFunc(CMP_GREATER, 0.9f);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawArrays(mode, first, count);
     RenderManager::Instance()->EnableAlphaTest(false);
@@ -118,7 +118,7 @@ void TextureMulColorAlphaTestEffectDX9::DrawElements(ePrimitiveType type, int32 
 {
 	RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->EnableAlphaTest(true);
-    RenderManager::Instance()->SetAlphaFunc(ALPHA_GREATER, 0.9f);
+    RenderManager::Instance()->SetAlphaFunc(CMP_GREATER, 0.9f);
 	RenderManager::Instance()->FlushState();
 	RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);
     RenderManager::Instance()->EnableAlphaTest(false);
