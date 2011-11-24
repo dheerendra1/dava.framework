@@ -120,8 +120,8 @@ public:
 		\brief Split string into substrings.
 		If one word(letters without separators) is longer than targetRectSize.dx, word will not be splitted.
 		Separator symbols:
-		1. '\n' - forced split. 
-		2. ' '(space) - soft split. If substring is longer than targetRectSize.dx, it will be limited to the last found space symbol. 
+		1. '\n', "\n"(two symbols) - forced split.
+		3. ' '(space) - soft split. If substring is longer than targetRectSize.dx, it will be limited to the last found space symbol. 
 		\param[in] text - string to be splitted
 		\param[in] targetRectSize - targetRectSize.dx sets desirable maximum substring width
 		\param[in, out] resultVector - contains resulting substrings
