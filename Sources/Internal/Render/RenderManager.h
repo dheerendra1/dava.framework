@@ -269,7 +269,7 @@ public:
     void EnableDepthWrite(bool isEnabled);
     
     void EnableAlphaTest(bool isEnabled);
-    void SetAlphaFunc(eAlphaFunc func, float32 cmpValue);
+    void SetAlphaFunc(eCmpFunc func, float32 cmpValue);
     void EnableCulling(bool isEnabled);
     void SetCullFace(eCull cullFace);
     
@@ -527,8 +527,8 @@ protected:
     
     bool oldAlphaTestEnabled;                       // default value: false
     bool alphaTestEnabled;                          // default value: false
-    eAlphaFunc alphaFunc;                           // 
-    eAlphaFunc oldAlphaFunc;
+    eCmpFunc alphaFunc;                           // 
+    eCmpFunc oldAlphaFunc;
     float32 oldAlphaTestCmpValue;                   // old alpha test cmp value
     float32 alphaTestCmpValue;                      // default value: 0.0f
     bool cullingEnabled, oldCullingEnabled;

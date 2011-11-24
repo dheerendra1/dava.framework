@@ -294,7 +294,7 @@ void SpriteNode::Draw()
         RenderHelper::Instance()->DrawBox(box);
     }
     
-    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, cameraMatrix);
+    RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelViewMatrix);
 }
     
     

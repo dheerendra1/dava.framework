@@ -38,7 +38,7 @@
 namespace DAVA
 {
 /**
-	\defgroup fonts Fonts in engine
+	\defgroup fonts Font
  */
 
 class Texture;
