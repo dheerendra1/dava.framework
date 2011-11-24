@@ -65,8 +65,6 @@ public:
 	
 	virtual Size2i		GetStringSize(const WideString & str, Vector<int32> *charSizes = NULL);
 	virtual uint32		GetFontHeight();
-	virtual int32		GetAscender();
-	virtual int32		GetDescender();
 	
 	virtual bool		IsCharAvaliable(char16 ch);
 

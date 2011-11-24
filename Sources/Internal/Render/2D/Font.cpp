@@ -110,7 +110,7 @@ int32 Font::GetVerticalSpacing()
 	return verticalSpacing;
 }
 
-bool Font::SplitTextToStrings(const WideString & text, const Vector2 & targetRectSize, Vector<WideString> & resultVector)
+void Font::SplitTextToStrings(const WideString & text, const Vector2 & targetRectSize, Vector<WideString> & resultVector)
 {
 	int32 targetWidth = (int32)(targetRectSize.dx * Core::GetVirtualToPhysicalFactor());
 
@@ -270,8 +270,6 @@ bool Font::SplitTextToStrings(const WideString & text, const Vector2 & targetRec
 				break;
 		};
 	};
-	
-	return true;
 }
 
 };

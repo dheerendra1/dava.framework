@@ -548,9 +548,6 @@ void TextBlock::Prepare()
 			dy = i;
 		}
 		
-
-
-		// release previous sprite
 		SafeRelease(sprite); 
 		
 		cacheUseJustify = useJustify;
@@ -571,7 +568,6 @@ void TextBlock::Prepare()
 		else 
 		{
 			//omg 8888!
-			//TODO: magic "+3" cause size is wrong calculated for graphics fonts
 			RenderManager::Instance()->LockNonMain();
 			sprite = Sprite::CreateAsRenderTarget(finalW, finalH, Texture::FORMAT_RGBA8888);
 			if (sprite && sprite->GetTexture())
@@ -585,106 +581,7 @@ void TextBlock::Prepare()
 				}
 			}				
 			RenderManager::Instance()->UnlockNonMain();
-			
-//			RenderManager::Instance()->SetRenderTarget(sprite);
 		}
-
-
-		
-		/*
-		Size2i realSize;
-		if(!isMultilineEnabled)
-		{
-			if (buf)
-			{
-				if (useJustify) 
-				{
-					realSize = font->DrawStringToBuffer(buf, dx, dy, 0, 0, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w), text, true);
-				}
-				else 
-				{
-					realSize = font->DrawStringToBuffer(buf, dx, dy, 0, 0, 0, text, true);
-				}
-
-			}
-			else
-			{
-				if (useJustify) 
-				{
-					realSize = font->DrawString(0, 0, text, (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w));
-				}
-				else 
-				{
-					realSize = font->DrawString(0, 0, text);
-				}
-
-			}
-		}
-		else
-		{
-			
-			uint32 yOffset = 0;
-//			uint32 fontHeight = font->GetFontHeight() + yOffset;
-			int32 fontHeight = font->GetFontHeight() + font->GetVerticalSpacing();
-			for (int32 line = 0; line < (int32)multilineStrings.size(); ++line)
-			{
-				if (line >= (int32)multilineStrings.size() - 1) 
-				{
-					useJustify = false;
-				}
-				int32 xo = 0;
-				if(GetAlign() & ALIGN_RIGHT)
-				{
-					xo = finalW - stringSizes[line];
-					if(xo < 0)
-					{
-						xo = 0;
-					}
-				}
-				else if(GetAlign() & ALIGN_HCENTER)
-				{
-					xo = (finalW - stringSizes[line]) / 2;
-					if(xo < 0)
-					{
-						xo = 0;
-					}
-				}
-				Size2i ds;
-				if (buf)
-				{
-					if (useJustify) 
-					{
-						ds = font->DrawStringToBuffer(buf, dx, dy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w), multilineStrings[line], true);
-					}
-					else 
-					{
-						ds = font->DrawStringToBuffer(buf, dx, dy, (int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), 0, multilineStrings[line], true);
-					}
-
-				}
-				else 
-				{
-					if (useJustify) 
-					{
-						ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], (int32)ceilf(Core::GetVirtualToPhysicalFactor() * w)); 
-					}
-					else 
-					{
-						ds = font->DrawString((int32)(Core::GetVirtualToPhysicalFactor() * xo), (int32)(Core::GetVirtualToPhysicalFactor() * yOffset), multilineStrings[line], 0); 
-					}
-
-				}
-				
-				
-				realSize.dx = Max(realSize.dx, (int32)(Core::GetPhysicalToVirtualFactor() * ds.dx));
-				yOffset += fontHeight;
-				realSize.dy = yOffset;
-			}	
-		}
-		 */
-		
-		//		realSize.dx = Min(realSize.dx, w);
-		//		realSize.dy = Min(realSize.dy, h);
 		
 
 		if (buf)
@@ -692,14 +589,12 @@ void TextBlock::Prepare()
 			String addInfo;
 			if(!isMultilineEnabled)
 			{
-				//addInfo = WStringToString(Format(L"Text texture: %S", text.c_str()));
 				addInfo = WStringToString(text.c_str());
 			}
 			else 
 			{
 				if (multilineStrings.size() >= 1)
 				{
-					//addInfo = WStringToString(Format(L"Text texture: %S", multilineStrings[0].c_str()));
 					addInfo = WStringToString(multilineStrings[0].c_str());
 				}else 
 				{
@@ -709,15 +604,10 @@ void TextBlock::Prepare()
 			
 			Texture *tex = Texture::CreateTextFromData(Texture::FORMAT_RGBA4444, (uint8*)buf, dx, dy, addInfo.c_str());
 			delete[] buf;
-//			Logger::Info("Creating text sprite %.4fx%.4f", finalW, finalH);
 			sprite = Sprite::CreateFromTexture(tex, 0, 0, finalW, finalH);
 			SafeRelease(tex);
 		}
-		else
-		{
-//			RenderManager::Instance()->RestoreRenderTarget();
-//			RenderManager::Instance()->UnlockNonMain();
-		}
+
 		ProcessAlign();
 		needRedraw = false;
 	}
@@ -881,19 +771,14 @@ void TextBlock::PreDraw()
 	
 	if (!font->IsTextSupportsSoftwareRendering())
 	{
-			//omg 8888!
-			//TODO: magic "+3" cause size is wrong calculated for graphics fonts
 		RenderManager::Instance()->LockNonMain();
-//		sprite = Sprite::CreateAsRenderTarget(finalW, finalH, Texture::FORMAT_RGBA8888);
 		RenderManager::Instance()->SetRenderTarget(sprite);
 
 		DrawToBuffer(NULL);
 		
 		RenderManager::Instance()->RestoreRenderTarget();
 		RenderManager::Instance()->UnlockNonMain();
-
 	}
-	
 }
     
 TextBlock * TextBlock::Clone()

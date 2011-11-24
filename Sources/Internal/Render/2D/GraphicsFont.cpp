@@ -59,7 +59,7 @@ GraphicsFont::GraphicsFont()
 	:fontSprite(0)
 {
 	color = Color::White();
-	fontType = FONT_TYPE_GRAPHICAL;
+	fontType = TYPE_GRAPHICAL;
 	fdef = 0;
 	fontScaleCoeff = 1.0f;
 }
@@ -151,15 +151,6 @@ bool GraphicsFont::IsCharAvaliable(char16 ch)
 uint32 GraphicsFont::GetFontHeight()
 {
 	return (uint32)(fdef->fontHeight * fontScaleCoeff);
-}
-	
-int32 GraphicsFont::GetAscender()
-{
-	return (int32) ((fdef->fontAscent + 0.5f) * fontScaleCoeff);
-}
-int32 GraphicsFont::GetDescender()
-{
-	return (int32) ((fdef->fontDescent + 0.5f) * fontScaleCoeff);
 }
 	
 void GraphicsFont::SetSize(float32 _size)
