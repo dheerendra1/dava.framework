@@ -107,6 +107,12 @@ struct Matrix4
 	inline bool GetInverse(Matrix4 & out);
 	
 
+    //! 
+    inline static Matrix4 MakeTranslation(const Vector3 & translationVector);
+    inline static Matrix4 MakeRotation(const Vector3 & axis, float32 angleInRadians);
+    inline static Matrix4 MakeScale(const Vector3 & scaleVector);
+    
+    
 	//! create translation matrix
 	inline void	CreateTranslation(const Vector3 & vector);
 
@@ -547,6 +553,28 @@ inline void	Matrix4::CreateScale(const Vector3 & _v)
 	_11 = _v.y;
 	_22 = _v.z;
 }
+    
+inline Matrix4 Matrix4::MakeTranslation(const Vector3 & translationVector)
+{
+    Matrix4 result; 
+    result.CreateTranslation(translationVector);
+    return result;
+}
+
+inline Matrix4 Matrix4::MakeRotation(const Vector3 & axis, float32 angleInRadians)
+{
+    Matrix4 result;
+    result.CreateRotation(axis, angleInRadians);
+    return result;
+}
+    
+inline Matrix4 Matrix4::MakeScale(const Vector3 & scaleVector)
+{
+    Matrix4 result;
+    result.CreateScale(scaleVector);
+    return result;
+}
+    
 //! Comparison operators
 inline bool Matrix4::operator == (const Matrix4 & _m) const
 {
