@@ -48,31 +48,76 @@ namespace DAVA
 class FontManager;
 class FTInternalFont;
 
-
-
+/** 
+	\ingroup fonts
+	\brief Freetype-based font implementation.
+ 
+	Class is a wrapper to freetype2 library.
+ */
 class FTFont : public Font
 {	
 public:
-	FTInternalFont	* internalFont;
-
+	
+	/**
+		\brief Factory method.
+		\param[in] path - path to freetype-supported file (.ttf, .otf)
+		\returns constructed font
+	*/
 	static		FTFont * Create(const String& path);
+	
 	virtual		~FTFont();
 
+	/**
+		\brief Clone font.
+	*/
 	FTFont *	Clone();
 
+	/**
+		\brief Tests if two fonts are the same.
+	*/
 	virtual bool IsEqual(Font *font);
 
-	
+	/**
+		\brief Get string size(rect).
+		\param[in] str - processed string
+		\param[in, out] charSizes - if present(not NULL), will contain widths of every symbol in str 
+		\returns bounding rect for string in pixels
+	*/
 	virtual Size2i		GetStringSize(const WideString & str, Vector<int32> *charSizes = NULL);
+
+	/**
+		\brief Get height of highest symbol in font.
+		\returns height in pixels
+	*/
 	virtual uint32		GetFontHeight();
 	
+	/**
+		\brief Checks if symbol is present in font.
+		\param[in] ch - tested symbol
+		\returns true if symbol is available, false otherwise
+	*/
 	virtual bool		IsCharAvaliable(char16 ch);
 
-	virtual bool IsTextSupportsSoftwareRendering() { return true; };
+	/**
+		\brief Draw string to memory buffer
+		\param[in, out] buffer - destination buffer
+		\param[in] bufWidth - buffer width in pixels
+		\param[in] bufHeight - buffer height in pixels
+		\param[in] offsetX - starting X offset
+		\param[in] offsetY - starting Y offset
+		\param[in] justifyWidth - TODO
+		\param[in] spaceAddon - TODO
+		\param[in] str - string to draw
+		\param[in] contentScaleIncluded - TODO
+		\returns bounding rect for string in pixels
+	*/
 	virtual Size2i DrawStringToBuffer(void * buffer, int32 bufWidth, int32 bufHeight, int32 offsetX, int32 offsetY, int32 justifyWidth, int32 spaceAddon, const WideString & str, bool contentScaleIncluded = false);
+
+	virtual bool IsTextSupportsSoftwareRendering() { return true; };
 
 private:
 	FTFont(FTInternalFont* internalFont);
+	FTInternalFont	* internalFont;
 };
 
 
