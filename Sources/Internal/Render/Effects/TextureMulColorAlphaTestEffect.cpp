@@ -56,7 +56,7 @@ void TextureMulColorAlphaTestEffectGL::DrawArrays(ePrimitiveType mode, int32 fir
 {
     RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->EnableAlphaTest(true);
-    RenderManager::Instance()->SetAlphaFunc(ALPHA_GREATER, 0.9f);
+    RenderManager::Instance()->SetAlphaFunc(CMP_GREATER, 0.9f);
     RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
@@ -67,7 +67,7 @@ void TextureMulColorAlphaTestEffectGL::DrawElements(ePrimitiveType type, int32 c
 {
     RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->EnableAlphaTest(true);
-    RenderManager::Instance()->SetAlphaFunc(ALPHA_GREATER, 0.9f);
+    RenderManager::Instance()->SetAlphaFunc(CMP_GREATER, 0.9f);
     RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);

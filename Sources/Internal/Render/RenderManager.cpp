@@ -103,7 +103,7 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 
     oldAlphaTestEnabled = alphaTestEnabled = false;
     oldAlphaTestCmpValue = alphaTestCmpValue = 0.0f;
-    oldAlphaFunc = ALPHA_ALWAYS;
+    oldAlphaFunc = CMP_ALWAYS;
     
     cullingEnabled = oldCullingEnabled = false;
     cullFace = oldCullFace = CULL_BACK;
@@ -721,7 +721,7 @@ void RenderManager::EnableAlphaTest(bool isEnabled)
     alphaTestEnabled = isEnabled;
 }
 
-void RenderManager::SetAlphaFunc(eAlphaFunc func, float32 cmpValue)
+void RenderManager::SetAlphaFunc(eCmpFunc func, float32 cmpValue)
 {
     alphaFunc = func;
     alphaTestCmpValue = cmpValue;

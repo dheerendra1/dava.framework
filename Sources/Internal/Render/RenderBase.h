@@ -136,21 +136,21 @@ static const GLint BLEND_MODE_MAP[BLEND_MODE_COUNT] =
 };
 #endif
   
-enum eAlphaFunc
+enum eCmpFunc
 {
-    ALPHA_NEVER = 0,   // Never passes.
-    ALPHA_LESS,    // Passes if the incoming alpha value is less than the reference value.
-    ALPHA_EQUAL,   // Passes if the incoming alpha value is equal to the reference value.
-    ALPHA_LEQUAL,  // Passes if the incoming alpha value is less than or equal to the reference value.
-    ALPHA_GREATER, // Passes if the incoming alpha value is greater than the reference value.
-    ALPHA_NOTEQUAL, // Passes if the incoming alpha value is not equal to the reference value.
-    ALPHA_GEQUAL,   // Passes if the incoming alpha value is greater than or equal to the reference value.
-    ALPHA_ALWAYS,
-    ALPHA_TEST_MODE_COUNT, 
+    CMP_NEVER = 0,   // Never passes.
+    CMP_LESS,    // Passes if the incoming alpha value is less than the reference value.
+    CMP_EQUAL,   // Passes if the incoming alpha value is equal to the reference value.
+    CMP_LEQUAL,  // Passes if the incoming alpha value is less than or equal to the reference value.
+    CMP_GREATER, // Passes if the incoming alpha value is greater than the reference value.
+    CMP_NOTEQUAL, // Passes if the incoming alpha value is not equal to the reference value.
+    CMP_GEQUAL,   // Passes if the incoming alpha value is greater than or equal to the reference value.
+    CMP_ALWAYS,
+    CMP_TEST_MODE_COUNT, 
 };
     
 #if defined(__DAVAENGINE_OPENGL__)
-static const GLint ALPHA_TEST_MODE_MAP[ALPHA_TEST_MODE_COUNT] = 
+static const GLint ALPHA_TEST_MODE_MAP[CMP_TEST_MODE_COUNT] = 
 {
     GL_NEVER,
     GL_LESS,
@@ -162,7 +162,7 @@ static const GLint ALPHA_TEST_MODE_MAP[ALPHA_TEST_MODE_COUNT] =
     GL_ALWAYS,
 };
 #elif defined(__DAVAENGINE_DIRECTX9__)  
-static const GLint ALPHA_TEST_MODE_MAP[ALPHA_TEST_MODE_COUNT] = 
+static const GLint ALPHA_TEST_MODE_MAP[CMP_TEST_MODE_COUNT] = 
 {
     D3DCMP_NEVER,
     D3DCMP_LESS,
