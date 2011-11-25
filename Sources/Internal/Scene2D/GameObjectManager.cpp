@@ -283,6 +283,7 @@ void GameObjectManager::Draw()
 	}
 	
 	RenderManager::Instance()->SetBlendMode(srcMode, destMode);
+    RenderManager::Instance()->ResetColor();
 }
 
 void GameObjectManager::SetCameraPosition(float32 _cameraPositionX, float32 _cameraPositionY)
