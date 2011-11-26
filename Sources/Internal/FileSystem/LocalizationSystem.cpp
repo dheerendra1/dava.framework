@@ -80,7 +80,7 @@ int read_handler_localization_system(void *ext, unsigned char *buffer, size_t si
 {
 	LocalizationSystem::YamlDataHolder * holder = (LocalizationSystem::YamlDataHolder*)ext;
 	int32 sizeToWrite = Min((uint32)size, holder->fileSize-holder->dataOffset);
-	memcpy(buffer, holder->data, sizeToWrite);
+	memcpy(buffer, holder->data+holder->dataOffset, sizeToWrite);
 	*length = sizeToWrite;
 
 	holder->dataOffset += sizeToWrite;
