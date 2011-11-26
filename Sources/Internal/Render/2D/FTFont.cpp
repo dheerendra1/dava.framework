@@ -476,7 +476,10 @@ void FTInternalFont::Prepare(FT_Vector * advances)
 		extent.y += prevAdvance->y;
 	}
 
-	advances[size-1] = extent;
+	if(size > 0)
+	{
+		advances[size-1] = extent;
+	}
 }
 
 void FTInternalFont::ClearString()
