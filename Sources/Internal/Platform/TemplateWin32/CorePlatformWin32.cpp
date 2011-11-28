@@ -533,7 +533,7 @@ namespace DAVA
 
 	void CoreWin32Platform::Quit()
 	{
-		willQuit = true;
+		PostQuitMessage(0);
 	}
 
 	void CoreWin32Platform::SetIcon(int32 iconId)
