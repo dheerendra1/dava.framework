@@ -276,7 +276,8 @@ protected:
     bool    is3D;
 
 public:
-	RefPtr< PropertyLine<Vector3> > emissionAngle;
+	RefPtr< PropertyLine<Vector3> > emissionVector;
+    RefPtr< PropertyLine<float32> > emissionAngle;
 	RefPtr< PropertyLine<float32> > emissionRange;
 	RefPtr< PropertyLine<float32> > radius;
 	RefPtr< PropertyLine<Color> > colorOverLife;

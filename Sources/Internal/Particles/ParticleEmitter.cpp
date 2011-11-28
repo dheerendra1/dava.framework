@@ -39,7 +39,8 @@ namespace DAVA
 ParticleEmitter::ParticleEmitter()
 {
 	type = EMITTER_POINT;
-	emissionAngle = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(1.0f, 0.0f, 0.0f)));
+    emissionVector = RefPtr<PropertyLineValue<Vector3> >(new PropertyLineValue<Vector3>(Vector3(1.0f, 0.0f, 0.0f)));
+	emissionAngle = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(0.0f));
 	emissionRange = RefPtr<PropertyLineValue<float32> >(new PropertyLineValue<float32>(360.0f));
 	size = RefPtr<PropertyLineValue<Vector3> >(0);
 	colorOverLife = 0;
@@ -76,6 +77,7 @@ ParticleEmitter * ParticleEmitter::Clone()
 		newLayer->SetEmitter(emitter);
 		emitter->layers.push_back(newLayer);
 	}
+    emitter->emissionVector = emissionVector;
 	if (emissionAngle)
 		emitter->emissionAngle = emissionAngle->Clone();
 	if (emissionRange)
@@ -178,25 +180,32 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
 {
     if (!is3D)
     {
-        Vector2 tempPosition = (particlesFollow) ? Vector2() : Vector2(position.x, position.y);
+        Vector3 tempPosition = particlesFollow ? Vector3() : position;
         if (type == EMITTER_POINT)
         {
             particle->position = tempPosition;
-        }else if (type == EMITTER_LINE)
+        }
+        else if (type == EMITTER_LINE)
         {
             // TODO: add emitter angle support
             float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-            Vector2 lineDirection(size->GetValue(time).x * rand05, 0);
+            Vector3 lineDirection(0, 0, 0);
+            if(size)
+                lineDirection = size->GetValue(time)*rand05;
             particle->position = tempPosition + lineDirection;
-        }else if (type == EMITTER_RECT)
+        }
+        else if (type == EMITTER_RECT)
         {
             // TODO: add emitter angle support
-            float32 rand05_x = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-            float32 rand05_y = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
-            Vector3 sizeAtTime = size->GetValue(time);
-            Vector2 lineDirection(sizeAtTime.x * rand05_x, sizeAtTime.y * rand05_y);
+            float32 rand05_x = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_y = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05_z = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
+            Vector3 lineDirection(0, 0, 0);
+            if(size)
+                lineDirection = Vector3(size->GetValue(time).x * rand05_x, size->GetValue(time).y * rand05_y, size->GetValue(time).z * rand05_z);
             particle->position = tempPosition + lineDirection;
-        }else if (type == EMITTER_ONCIRCLE)
+        }
+        else if (type == EMITTER_ONCIRCLE)
         {
             // here just set particle position
             particle->position = tempPosition;
@@ -210,21 +219,23 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         
         float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
         
-        Vector3 emissionAngleAtTime = emissionAngle->GetValue(time);
-        float32 particleAngle = atanf(emissionAngleAtTime.y / emissionAngleAtTime.x) + (angle);
+        float32 particleAngle = DegToRad(emissionAngle->GetValue(time) + angle);
         float32 range = DegToRad(emissionRange->GetValue(time));
         
         if (emitPointsCount == -1)
         {
             // if emitAtPoints property is not set just emit randomly in range
             particleAngle += range * rand05;
-        }else {
+        }
+        else
+        {
             particleAngle += range * (float32)emitIndex / (float32)emitPointsCount;
         }
         
         
         vel.x = cosf(particleAngle);
         vel.y = sinf(particleAngle);
+        vel.z = 0;
         
         // reuse particle velocity we've calculated 
         if (type == EMITTER_ONCIRCLE)
@@ -236,6 +247,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         particle->velocity.x = vel.x;
         particle->velocity.y = vel.y;
         particle->angle = particleAngle;
+
     }    
     else
     {
@@ -270,7 +282,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
             particle->position = tempPosition;
         }
         
-        Vector3 vel = emissionAngle->GetValue(time);
+        Vector3 vel = emissionVector->GetValue(0);
         
         Vector3 rotVect(0, 0, 1);
         float32 phi = PI*2*(float32)Random::Instance()->RandFloat();
@@ -294,7 +306,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         }
         rotVect.Normalize();
         
-        float32 range = DegToRad(emissionRange->GetValue(time));
+        float32 range = DegToRad(emissionRange->GetValue(time) + angle);
         float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f;
         
         Vector3 q_v(rotVect*sinf(range*rand05/2));
@@ -321,7 +333,6 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
             particle->position += qvq1_v * radius->GetValue(time);
         }
        
-        
         if(is3D)
             particle->angle = 0.0f;
         else
@@ -354,9 +365,13 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
 
 	YamlNode * emitterNode = rootNode->Get("emitter");
 	if (emitterNode)
-	{		
+	{
 		if (emitterNode->Get("emissionAngle"))
-			emissionAngle = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(emitterNode, "emissionAngle");
+			emissionAngle = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(emitterNode, "emissionAngle");
+        
+		if (emitterNode->Get("emissionVector"))
+			emissionVector = PropertyLineYamlReader::CreateVector3PropertyLineFromYamlNode(emitterNode, "emissionVector");
+        
 		if (emitterNode->Get("emissionRange"))
 			emissionRange = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(emitterNode, "emissionRange");
 		if (emitterNode->Get("colorOverLife"))

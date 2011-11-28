@@ -33,8 +33,9 @@
 TestScreen::TestScreen()
 {
     emitterProps.push_back("type");
-    emitterProps.push_back("emissionAngle");  
+    emitterProps.push_back("emissionAngle");
     emitterProps.push_back("emissionRage");
+    emitterProps.push_back("emissionVector");
     emitterProps.push_back("radius");
     emitterProps.push_back("colorOverLife");
     emitterProps.push_back("size");
@@ -1339,8 +1340,8 @@ void TestScreen::GetEmitterPropValue(eProps id, bool getLimits)
     
     PropertyLineValue<float32> *pv;
     PropertyLineKeyframes<float32> *pk;
-    PropertyLineValue<Vector3> *vv;
-    PropertyLineKeyframes<Vector3> *vk;
+    PropertyLineValue<Vector3> *v3v;
+    PropertyLineKeyframes<Vector3> *v3k;
     PropertyLineValue<Color> *cv;
     PropertyLineKeyframes<Color> *ck;
     switch (id) {
@@ -1360,11 +1361,20 @@ void TestScreen::GetEmitterPropValue(eProps id, bool getLimits)
             break;
             
         case EMITTER_EMISSION_ANGLE:
-            vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
-            vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
+            pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
+            pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
             layers[0]->props.at(id)->isDefault = false;
-            if(!GetProp(vk, id, getLimits))
-                if(!GetProp(vv, id, getLimits))
+            if(!GetProp(pk, id, getLimits))
+                if(!GetProp(pv, id, getLimits))
+                    layers[0]->props.at(id)->isDefault = true;
+            break;
+            
+        case EMITTER_EMISSION_VECTOR:
+            v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionVector.Get());
+            v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionVector.Get());
+            layers[0]->props.at(id)->isDefault = false;
+            if(!GetProp(v3k, id, getLimits))
+                if(!GetProp(v3v, id, getLimits))
                     layers[0]->props.at(id)->isDefault = true;
             break;
             
@@ -1396,11 +1406,11 @@ void TestScreen::GetEmitterPropValue(eProps id, bool getLimits)
             break;
             
         case EMITTER_SIZE:
-            vk = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->size.Get());
-            vv = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->size.Get());
+            v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->size.Get());
+            v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->size.Get());
             layers[0]->props.at(id)->isDefault = false;
-            if(!GetProp(vk, id, getLimits))
-                if(!GetProp(vv, id, getLimits))
+            if(!GetProp(v3k, id, getLimits))
+                if(!GetProp(v3v, id, getLimits))
                     layers[0]->props.at(id)->isDefault = true;
             break;
             
@@ -1486,7 +1496,11 @@ void TestScreen::SetEmitterPropValue(eProps id, bool def)
             break;
             
         case EMITTER_EMISSION_ANGLE:
-            emitter->emissionAngle = valueDim3;
+            emitter->emissionAngle = valueDim1;
+            break;
+            
+        case EMITTER_EMISSION_VECTOR:
+            emitter->emissionVector = valueDim3;
             break;
             
         case EMITTER_EMISSION_RAGE:
@@ -1528,6 +1542,10 @@ void TestScreen::ResetEmitterPropValue(eProps id)
             
         case EMITTER_EMISSION_ANGLE:
             emitter->emissionAngle = 0;
+            break;
+            
+        case EMITTER_EMISSION_VECTOR:
+            emitter->emissionVector = 0;
             break;
             
         case EMITTER_EMISSION_RAGE:
@@ -2976,8 +2994,16 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         file->WriteLine("    type: oncirlce");
     emitPropIndex++;
     
-    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionAngle.Get());
-    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionAngle.Get());
+    pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
+    pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionAngle.Get());
+    if(pk)
+        PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
+    else if(pv)
+        PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
+
+    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionVector.Get());
+    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionVector.Get());
     if(v3k)
         PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
     else if(v3v)

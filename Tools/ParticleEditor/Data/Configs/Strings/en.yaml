@@ -25,6 +25,7 @@ Dlg.Load: "Load from .yaml file"
 
 emitter.type: "Emitter type"
 emitter.emissionAngle: "Direction for generation"
+emitter.emissionVector: "Direction for generation"
 emitter.emissionRage: "Direction angle variation."
 emitter.radius: "Circle radius (only for ONCITRCLE emitter type)."
 emitter.colorOverLife: "Emitter color over life."
