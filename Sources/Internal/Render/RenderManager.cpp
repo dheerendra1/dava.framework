@@ -34,10 +34,11 @@
 #include "Core/Core.h"
 #include "Render/Shader.h"
 #include "Render/RenderDataObject.h"
+
+
 #include "Render/Effects/ColorOnlyEffect.h"
 #include "Render/Effects/TextureMulColorEffect.h"
 #include "Render/Effects/TextureMulColorAlphaTestEffect.h"
-
 
 namespace DAVA
 {
@@ -48,29 +49,33 @@ RenderEffect * RenderManager::TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST = 0;
 
     
 RenderManager::RenderManager(Core::eRenderer _renderer)
+    : currentState(_renderer)
+    , hardwareState(_renderer)
 {
 	Logger::Debug("[RenderManager] created");
     renderer = _renderer;
-    
-	oldColor = Color::Clear();
-    newColor = Color::Clear();
 
-	oldSFactor = BLEND_NONE;
-	oldDFactor = BLEND_NONE;
-	newSFactor = BLEND_NONE;
-	newDFactor = BLEND_NONE;
+//  RENDERSTATE
+//	oldColor = Color::Clear();
+//    newColor = Color::Clear();
+//
+//	oldSFactor = BLEND_NONE;
+//	oldDFactor = BLEND_NONE;
+//	newSFactor = BLEND_NONE;
+//	newDFactor = BLEND_NONE;
 
-    for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
-        currentTexture[idx] = 0;
-	
-    newTextureEnabled = 0;
-	oldTextureEnabled = 0;
-	oldVertexArrayEnabled = 0;
-	oldTextureCoordArrayEnabled = 0;
-	oldColorArrayEnabled = 0;
-	oldBlendingEnabled = 0;
-    depthWriteEnabled = 0;
-    depthTestEnabled = 0;
+//    for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
+//        currentTexture[idx] = 0;
+
+// RENDERSTATE
+//    newTextureEnabled = 0;
+//	oldTextureEnabled = 0;
+//	oldVertexArrayEnabled = 0;
+//	oldTextureCoordArrayEnabled = 0;
+//	oldColorArrayEnabled = 0;
+//	oldBlendingEnabled = 0;
+//    depthWriteEnabled = 0;
+//    depthTestEnabled = 0;
     
 	renderOrientation = 0;
 	currentRenderTarget = 0;
@@ -101,12 +106,13 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
 	
 	isInsideDraw = false;
 
-    oldAlphaTestEnabled = alphaTestEnabled = false;
-    oldAlphaTestCmpValue = alphaTestCmpValue = 0.0f;
-    oldAlphaFunc = CMP_ALWAYS;
-    
-    cullingEnabled = oldCullingEnabled = false;
-    cullFace = oldCullFace = CULL_BACK;
+// RENDERSTATE
+//    oldAlphaTestEnabled = alphaTestEnabled = false;
+//    oldAlphaTestCmpValue = alphaTestCmpValue = 0.0f;
+//    oldAlphaFunc = CMP_ALWAYS;
+//    
+//    cullingEnabled = oldCullingEnabled = false;
+//    cullFace = oldCullFace = CULL_BACK;
 
 #if defined(__DAVAENGINE_DIRECTX9__)
 	depthStencilSurface = 0;
@@ -120,7 +126,6 @@ RenderManager::RenderManager(Core::eRenderer _renderer)
     
     statsFrameCountToShowDebug = 0;
     frameToShowDebugStats = -1;
-    shader = 0;
     
     FLAT_COLOR = 0;
     TEXTURE_MUL_FLAT_COLOR = 0;
@@ -156,6 +161,8 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
     if (!TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST)
         TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST = TextureMulColorAlphaTestEffect::Create(renderer);
     
+    currentState.Reset(true);
+    
 	frameBufferWidth = _frameBufferWidth;
 	frameBufferHeight = _frameBufferHeight;
 #if defined (__DAVAENGINE_OPENGL__)
@@ -170,18 +177,8 @@ void RenderManager::Init(int32 _frameBufferWidth, int32 _frameBufferHeight)
 
 void RenderManager::Reset()
 {
-	oldColor.r = oldColor.g = oldColor.b = oldColor.a = -1.0f;
 	ResetColor();
-//#if defined(__DAVAENGINE_OPENGL__)
-	oldSFactor = oldDFactor = BLEND_NONE;
-	newSFactor = newDFactor = BLEND_NONE;
-//#endif
-	newTextureEnabled = oldTextureEnabled = -1;
-	oldVertexArrayEnabled = -1;
-	oldTextureCoordArrayEnabled = -1;
-#if defined(__DAVAENGINE_OPENGL__)
-	oldBlendingEnabled = -1;
-#endif 	
+
 	currentRenderTarget = NULL;
 	currentRenderEffect = NULL;
 	currentClip.x = 0;
@@ -189,8 +186,8 @@ void RenderManager::Reset()
 	currentClip.dx = -1;
 	currentClip.dy = -1;
 	
-	for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
-        currentTexture[idx] = 0;
+//	for (uint32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
+//        currentTexture[idx] = 0;
 
 	userDrawOffset = Vector2(0, 0);
 	userDrawScale = Vector2(1, 1);
@@ -198,7 +195,7 @@ void RenderManager::Reset()
 	currentDrawOffset = Vector2(0, 0);
 	currentDrawScale = Vector2(1, 1);
     mappingMatrixChanged = true;
-	
+	//currentState.Reset(false);
 //	glLoadIdentity();
 }
 
@@ -216,53 +213,51 @@ int32 RenderManager::GetScreenHeight()
 	return retScreenHeight;
 }
 
-void RenderManager::SetColor(float r, float g, float b, float a)
+void RenderManager::SetColor(float32 r, float32 g, float32 b, float32 a)
 {
-	newColor.r = r;
-	newColor.g = g;
-	newColor.b = b;
-	newColor.a = a;
+    currentState.SetColor(r, g, b, a);
 }
 	
 void RenderManager::SetColor(const Color & _color)
 {
-	newColor = _color;
+    currentState.SetColor(_color);
 }
 	
-float RenderManager::GetColorR()
+float32 RenderManager::GetColorR() const
 {
-	return newColor.r;
+	return currentState.color.r;
 }
 	
-float RenderManager::GetColorG()
+float32 RenderManager::GetColorG() const
 {
-	return newColor.g;
+	return currentState.color.g;
 }
 	
-float RenderManager::GetColorB()
+float32 RenderManager::GetColorB() const
 {
-	return newColor.b;
+	return currentState.color.b;
 }
 	
-float RenderManager::GetColorA()
+float32 RenderManager::GetColorA() const
 {
-	return newColor.a;
+	return currentState.color.a;
 }
     
 const Color & RenderManager::GetColor() const
 {
-    return newColor;
+    return currentState.color;
 }
 
 void RenderManager::ResetColor()
 {
-	newColor.r = newColor.g = newColor.b = newColor.a = 1.0f;
+	currentState.color.r = currentState.color.g = currentState.color.b = currentState.color.a = 1.0f;
 }
 	
 	
 void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
 {
-    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
+    currentState.SetTexture(texture, textureLevel);
+/*  DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
 	if(texture != currentTexture[textureLevel])
 	{
 		currentTexture[textureLevel] = texture;
@@ -299,24 +294,25 @@ void RenderManager::SetTexture(Texture *texture, uint32 textureLevel)
             }
 #endif
         }
-	}
+	}*/
 }
 	
 Texture *RenderManager::GetTexture(uint32 textureLevel)
 {
-    DVASSERT(textureLevel < MAX_TEXTURE_LEVELS);
-	return currentTexture[textureLevel];	
+    DVASSERT(textureLevel < RenderStateBlock::MAX_TEXTURE_LEVELS);
+	return currentState.currentTexture[textureLevel];	
 }
     
 void RenderManager::SetShader(Shader * _shader)
 {
-    SafeRelease(shader);
-    shader = SafeRetain(_shader);
+//    SafeRelease(shader);
+//    shader = SafeRetain(_shader);
+    currentState.SetShader(_shader);
 }
 
 Shader * RenderManager::GetShader()
 {
-    return shader;
+    return currentState.shader;
 }
 
 
@@ -324,11 +320,6 @@ void RenderManager::SetRenderData(RenderDataObject * object)
 {
     SafeRelease(currentRenderData);
     currentRenderData = SafeRetain(object);
-}
-
-void RenderManager::EnableTexturing(bool isEnabled)
-{
-	newTextureEnabled = isEnabled;
 }
 		
 void RenderManager::SetClip(const Rect &rect)
@@ -415,16 +406,17 @@ bool RenderManager::IsRenderTarget()
 	return currentRenderTarget != NULL;
 }
     
+/*
 bool RenderManager::IsDepthTestEnabled()
 {
-    return depthTestEnabled > 0;
+    return (hardwareState.state & RenderStateBlock::STATE_DEPTH_TEST) != 0;
 }
 
 bool RenderManager::IsDepthWriteEnabled()
 {
-    return depthWriteEnabled > 0;
+    return (depthWriteEnabled & RenderStateBlock::STATE_DEPTH_WRITE) != 0;
 }
-
+*/
 
 void RenderManager::SetNewRenderEffect(RenderEffect *renderEffect)
 {
@@ -716,25 +708,47 @@ void RenderManager::ProcessStats()
     }
 }
     
-void RenderManager::EnableAlphaTest(bool isEnabled)
+    /*void RenderManager::EnableAlphaTest(bool isEnabled)
 {
     alphaTestEnabled = isEnabled;
 }
 
-void RenderManager::SetAlphaFunc(eCmpFunc func, float32 cmpValue)
-{
-    alphaFunc = func;
-    alphaTestCmpValue = cmpValue;
-}
-    
+ 
 void RenderManager::EnableCulling(bool isEnabled)
 {
     cullingEnabled = isEnabled;
+}*/
+
+void RenderManager::AppendState(uint32 state)
+{
+    currentState.state |= state;
+}
+    
+void RenderManager::RemoveState(uint32 state)
+{
+    currentState.state &= ~state;
 }
 
-void RenderManager::SetCullFace(eCull _cullFace)
+void RenderManager::SetState(uint32 state)
 {
-    cullFace = _cullFace;
+    currentState.state = state;
 }
+    
+uint32 RenderManager::GetState()
+{
+    return currentState.state;
+}
+    
+    
+void RenderManager::SetCullMode(eCull _cullFace)
+{
+    currentState.SetCullMode(_cullFace);
+}
+    
+void RenderManager::SetAlphaFunc(eCmpFunc func, float32 cmpValue)
+{
+    currentState.SetAlphaFunc(func, cmpValue);
+}
+
 	
 };

@@ -29,6 +29,7 @@
 =====================================================================================*/
 #include "Render/RenderStateBlock.h"
 #include "Render/RenderManager.h"
+#include "Render/Shader.h"
 #include "Platform/Thread.h"
 
 namespace DAVA
@@ -175,9 +176,13 @@ void RenderStateBlock::Flush()
 RenderStateBlock::RenderStateBlock(Core::eRenderer _renderer)
     : renderer(_renderer)
 {
-    
+    Reset(false);
 }
 
+RenderStateBlock::~RenderStateBlock()
+{
+    
+}
     
     
 /**
@@ -186,6 +191,7 @@ RenderStateBlock::RenderStateBlock(Core::eRenderer _renderer)
 void RenderStateBlock::Reset(bool doHardwareReset)
 {
     state = 0;
+    changeSet = 0;
     color.r = 1.0f;
     color.g = 1.0f;
     color.b = 1.0f;
@@ -194,95 +200,141 @@ void RenderStateBlock::Reset(bool doHardwareReset)
     destFactor = BLEND_ZERO;
     for (int32 idx = 0; idx < MAX_TEXTURE_LEVELS; ++idx)
         currentTexture[idx] = 0;
+    alphaFunc = CMP_ALWAYS;
+    shader = 0;
     
     if (doHardwareReset)
     {
         SetColorInHW();
         SetEnableBlendingInHW();
         SetBlendModeInHW();
-        SetEnableTexturingInHW();
-        for (int32 textureLevel = 0; textureLevel < MAX_TEXTURE_LEVELS; ++textureLevel)
-            {
-                SetTextureLevelInHW(textureLevel);
-            }
-        
         SetDepthTestInHW();
         SetDepthWriteInHW();
+        SetAlphaTestInHW();
+        SetAlphaTestFuncInHW();
+
+        for (int32 textureLevel = 0; textureLevel < MAX_TEXTURE_LEVELS; ++textureLevel)
+        {
+            SetTextureLevelInHW(textureLevel);
+        }
     }
+}
+bool RenderStateBlock::IsEqual(RenderStateBlock * anotherState)
+{
+    if (state != anotherState->state)
+        return false;
+    
+    // check texture first for early rejection 
+    if (currentTexture[0] != anotherState->currentTexture[0])return false;
+
+    if (state & STATE_BLEND)
+    {
+        if (destFactor != anotherState->destFactor)return false;
+        if (sourceFactor != anotherState->sourceFactor)return false;
+    }
+    
+    if (color != anotherState->color)return false;
+    
+    if (currentTexture[1] != anotherState->currentTexture[1])return false;
+    if (currentTexture[2] != anotherState->currentTexture[2])return false;
+    if (currentTexture[3] != anotherState->currentTexture[3])return false;
+    
+    
+    
+    
+    return true;
 }
 
 void RenderStateBlock::Flush(RenderStateBlock * previousState)
 {
-//#if defined(__DAVAENGINE_OPENGL__)
-    if(color != previousState->color)
-	{
-        SetColorInHW();
-	}   
- 
-    state |= STATE_BLEND_ENABLED;
-    if ((state ^ previousState->state) & STATE_BLEND_ENABLED)
+    uint32 diffState = state ^ previousState->state;
+    if (diffState != 0)
     {
-        SetEnableBlendingInHW();
+        if (diffState & STATE_BLEND)
+            SetEnableBlendingInHW();
+        
+        if (diffState & STATE_DEPTH_TEST)
+            SetDepthTestInHW();
+        
+        if (diffState & STATE_DEPTH_WRITE)
+            SetDepthWriteInHW();
+        
+        if (diffState & STATE_CULL)
+            SetCullInHW();
+        
+        if (diffState & STATE_ALPHA_TEST)
+            SetAlphaTestInHW();
+        
+        changeSet |= diffState & (STATE_TEXTURE0 | STATE_TEXTURE1 | STATE_TEXTURE2 | STATE_TEXTURE3);
+        
+        previousState->state = state;
     }
-    sourceFactor = BLEND_ONE;
-    destFactor = BLEND_ONE_MINUS_SRC_ALPHA;
-    if(sourceFactor != previousState->sourceFactor || destFactor != previousState->destFactor)
-	{
-        SetBlendModeInHW();
-	}
-	if((state ^ previousState->state) & STATE_TEXTURE_ENABLED)
-	{
-        SetEnableTexturingInHW();
-	}    
     
-    
-    for (int32 textureLevel = 0; textureLevel < MAX_TEXTURE_LEVELS; ++textureLevel)
-        //if(currentTexture[textureLevel] != previousState->currentTexture[textureLevel])
+    if (changeSet != 0)
+    {
+        if (changeSet & STATE_CHANGED_COLOR)
+            if (color != previousState->color)
+            {
+                SetColorInHW();
+                previousState->color = color;
+            }
+        if (changeSet & (STATE_CHANGED_SRC_BLEND | STATE_CHANGED_DEST_BLEND))
+            if (sourceFactor != previousState->sourceFactor || destFactor != previousState->destFactor)
+            {
+                SetBlendModeInHW();
+                previousState->sourceFactor = sourceFactor;
+                previousState->destFactor = destFactor;
+            }
+        
+        if (changeSet & STATE_CHANGED_CULLMODE)
+            if (cullMode != previousState->cullMode)
+            {
+                SetCullModeInHW();
+                previousState->cullMode = cullMode;
+            }
+        if (changeSet & STATE_CHANGED_ALPHA_FUNC)
+            if ((alphaFunc != previousState->alphaFunc) || (alphaFuncCmpValue != previousState->alphaFuncCmpValue))
+            {
+                SetAlphaTestFuncInHW();
+                previousState->alphaFunc = alphaFunc;
+                previousState->alphaFuncCmpValue = alphaFuncCmpValue;
+            }
+        
+        if (changeSet & STATE_CHANGED_TEXTURE0)
         {
-            SetTextureLevelInHW(textureLevel);
+            SetTextureLevelInHW(0);
+            previousState->currentTexture[0] = currentTexture[0];
         }
-    
-    
-	if((state ^ previousState->state) & STATE_DEPTH_TEST_ENABLED)
-	{
-        SetDepthTestInHW();
-	}
-    
-    if((state ^ previousState->state) & STATE_DEPTH_WRITE_ENABLED)
-    {
-        SetDepthWriteInHW();
-    }
-    
-//    // Full set
-//    SetColorInHW();
-//    SetEnableBlendingInHW();
-//    SetBlendModeInHW();
-//    SetEnableTexturingInHW();
-//    for (int32 textureLevel = 0; textureLevel < 1; ++textureLevel)
-//    {
-//        SetTextureLevelInHW(textureLevel);
-//    }
-//    
-//    SetDepthTestInHW();
-//    SetDepthWriteInHW();
-    
-/*#elif defined(__DAVAENGINE_DIRECTX9__)
-    
-    
-    for (int32 textureLevel = 0; textureLevel < MAX_TEXTURE_LEVELS; ++textureLevel)
-        if(currentTexture[textureLevel] != previousState->currentTexture[textureLevel])
+        if (changeSet & STATE_CHANGED_TEXTURE1)
         {
-            if(currentTexture[textureLevel])
+            SetTextureLevelInHW(1);
+            previousState->currentTexture[1] = currentTexture[1];
+        }
+        if (changeSet & STATE_CHANGED_TEXTURE2)
+        {
+            SetTextureLevelInHW(2);
+            previousState->currentTexture[2] = currentTexture[2];
+        }
+        if (changeSet & STATE_CHANGED_TEXTURE3)
+        {
+            SetTextureLevelInHW(3);
+            previousState->currentTexture[3] = currentTexture[3];
+        }
+        
+        RENDER_VERIFY(glActiveTexture(GL_TEXTURE0));
+        
+        if (changeSet & STATE_CHANGED_SHADER)
+        {
+            if (shader != previousState->shader)
             {
-                RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, currentTexture[textureLevel]->id));
-            }else
-            {
-                RENDER_VERIFY(GetD3DDevice()->SetTexture(textureLevel, 0));
+                if (shader)shader->Bind();
+                else Shader::Unbind();
+                previousState->shader = shader;
             }
         }
-
-#endif // 
-    */
+        changeSet = 0;
+        previousState->changeSet = 0;
+    }
 }
     
     
@@ -295,7 +347,7 @@ inline void RenderStateBlock::SetColorInHW()
 
 inline void RenderStateBlock::SetEnableBlendingInHW()
 {
-    if (state & STATE_BLEND_ENABLED)
+    if (state & STATE_BLEND)
     {
         RENDER_VERIFY(glEnable(GL_BLEND));
     }
@@ -304,22 +356,28 @@ inline void RenderStateBlock::SetEnableBlendingInHW()
         RENDER_VERIFY(glDisable(GL_BLEND));
     }
 }
+    
+inline void RenderStateBlock::SetCullInHW()
+{
+    if (state & STATE_CULL)
+    {
+        RENDER_VERIFY(glEnable(GL_CULL_FACE));
+    }
+    else 
+    {
+        RENDER_VERIFY(glDisable(GL_CULL_FACE));
+    }
+}
+
+inline void RenderStateBlock::SetCullModeInHW()
+{
+    RENDER_VERIFY(glCullFace(CULL_FACE_MAP[cullMode]));
+}
+
 
 inline void RenderStateBlock::SetBlendModeInHW()
 {
     RENDER_VERIFY(glBlendFunc(BLEND_MODE_MAP[sourceFactor], BLEND_MODE_MAP[destFactor]));
-}
-
-inline void RenderStateBlock::SetEnableTexturingInHW()
-{
-    if (state & STATE_TEXTURE_ENABLED)
-    {
-        RENDER_VERIFY(glEnable(GL_TEXTURE_2D)); 
-    }
-    else 
-    {
-        RENDER_VERIFY(glDisable(GL_TEXTURE_2D));
-    }
 }
 
 inline void RenderStateBlock::SetTextureLevelInHW(uint32 textureLevel)
@@ -327,17 +385,28 @@ inline void RenderStateBlock::SetTextureLevelInHW(uint32 textureLevel)
     if(currentTexture[textureLevel])
     {
         RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+        
+        if (state & (STATE_TEXTURE0 << textureLevel))
+            glEnable(GL_TEXTURE_2D);
+        else 
+            glDisable(GL_TEXTURE_2D);
+        
         RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, currentTexture[textureLevel]->id));
     }else
     {
         RENDER_VERIFY(glActiveTexture(GL_TEXTURE0 + textureLevel));
+
+        if (state & (STATE_TEXTURE0 << textureLevel))
+            glEnable(GL_TEXTURE_2D);
+        else 
+            glDisable(GL_TEXTURE_2D);
+        
         RENDER_VERIFY(glBindTexture(GL_TEXTURE_2D, 0));
     }    
-    RENDER_VERIFY(glActiveTexture(GL_TEXTURE0));
 }
 inline void RenderStateBlock::SetDepthTestInHW()
 {
-    if(state & STATE_DEPTH_TEST_ENABLED)
+    if(state & STATE_DEPTH_TEST)
     {
         RENDER_VERIFY(glEnable(GL_DEPTH_TEST));
     }
@@ -349,7 +418,7 @@ inline void RenderStateBlock::SetDepthTestInHW()
 
 inline void RenderStateBlock::SetDepthWriteInHW()
 {
-    if(state & STATE_DEPTH_WRITE_ENABLED)
+    if(state & STATE_DEPTH_WRITE)
     {
         RENDER_VERIFY(glDepthMask(GL_TRUE));
     }
@@ -357,6 +426,23 @@ inline void RenderStateBlock::SetDepthWriteInHW()
     {
         RENDER_VERIFY(glDepthMask(GL_FALSE));
     }
+}
+    
+inline void RenderStateBlock::SetAlphaTestInHW()
+{
+    if(state & STATE_ALPHA_TEST)
+    {
+        RENDER_VERIFY(glEnable(GL_ALPHA_TEST));
+    }
+    else
+    {
+        RENDER_VERIFY(glDisable(GL_ALPHA_TEST));
+    }
+}
+
+inline void RenderStateBlock::SetAlphaTestFuncInHW()
+{
+     RENDER_VERIFY(glAlphaFunc(ALPHA_TEST_MODE_MAP[alphaFunc], alphaFuncCmpValue) );
 }
     
 #elif defined(__DAVAENGINE_DIRECTX9__)

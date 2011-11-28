@@ -55,7 +55,7 @@ RenderEffect * MultiTextureEffect::Create(Core::eRenderer renderer)
    
 void MultiTextureEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
-    RenderManager::Instance()->EnableTexturing(true);
+    //RenderManager::Instance()->EnableTexturing(true);
     RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);

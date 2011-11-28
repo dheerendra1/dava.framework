@@ -98,32 +98,18 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
     Matrix4 projectionSave = RenderManager::Instance()->GetMatrix(RenderManager::MATRIX_PROJECTION);
 
     RenderManager::Instance()->SetViewport(viewportRect);
-    
-    RenderManager::Instance()->EnableDepthWrite(true);
-    RenderManager::Instance()->EnableDepthTest(true);
-    RenderManager::Instance()->EnableBlending(false);
-//    glEnable(GL_DEPTH_TEST);
-    
-//  glMatrixMode(GL_MODELVIEW);
-//	glPushMatrix();
-//	glMatrixMode(GL_PROJECTION);
-//	glPushMatrix();
 
+//  Not required because Scene should setup it state before draw
+//    RenderManager::Instance()->EnableDepthWrite(true);
+//    RenderManager::Instance()->EnableDepthTest(true);
+//    RenderManager::Instance()->EnableBlending(false);
     
     Draw(geometricData);
-    
-    
-//  glMatrixMode(GL_MODELVIEW);
-//	glPopMatrix();
-//	glMatrixMode(GL_PROJECTION);
-//	glPopMatrix();
-    
-    
+       
 
-    RenderManager::Instance()->EnableDepthTest(false);
-    RenderManager::Instance()->EnableDepthWrite(false);
-    RenderManager::Instance()->EnableBlending(true);
-        //    glDisable(GL_DEPTH_TEST);
+//    RenderManager::Instance()->EnableDepthTest(false);
+//    RenderManager::Instance()->EnableDepthWrite(false);
+//    RenderManager::Instance()->EnableBlending(true);
     
     /*
         Restore render orientation
@@ -131,8 +117,10 @@ void UI3DView::SystemDraw(const UIGeometricData & geometricData)
     RenderManager::Instance()->SetViewport(Rect(0.0f, 0.0f, -1.0f, -1.0f));
     RenderManager::Instance()->SetRenderOrientation(Core::Instance()->GetScreenOrientation());
 
-    RenderManager::Instance()->Reset();
-
+    RenderManager::Instance()->Reset(); // Boroda: Do we need this??
+    
+    //RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_2D_STATE_BLEND);
+    
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_MODELVIEW, modelViewSave);
     RenderManager::Instance()->SetMatrix(RenderManager::MATRIX_PROJECTION, projectionSave);
 	RenderManager::Instance()->PopDrawMatrix();

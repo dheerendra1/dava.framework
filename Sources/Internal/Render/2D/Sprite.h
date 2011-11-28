@@ -200,6 +200,9 @@ public:
 	void ResetModification();
 	void ResetScale();
 	void Reset();//Reset do not resets the pivot point
+    
+    void BeginBatching();
+    void EndBatching();
 	
 	void Draw();	
 	void Draw(DrawState * state);
@@ -345,9 +348,12 @@ private:
     static Vector<Vector2> clippedTexCoords;
     static Vector<Vector2> clippedVertices;
     RenderDataObject * spriteRenderObject;
+
+    //static bool batchingEnabled;
+    //static Vector<Vector2> 
 };
 	
-	
+
 // inline functions implementation 
 	
 inline void Sprite::DrawState::Reset()

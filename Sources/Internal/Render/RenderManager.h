@@ -40,7 +40,7 @@
 #include "Core/DisplayMode.h"
 #include "Core/Core.h"
 #include "Render/Cursor.h"
-
+#include "Render/RenderStateBlock.h"
 #include <stack>
 
 namespace DAVA
@@ -49,9 +49,7 @@ namespace DAVA
 	
 class Texture;
 class Shader;
-#if defined(__DAVAENGINE_DIRECTX9__)
-//#include "D3DInitialize.h"
-#endif // __DAVAENGINE_DIRECTX9__
+class RenderStateBlock;
 
 /** 
 	\ingroup render
@@ -211,7 +209,7 @@ public:
     
     
     /**
-     === State Management
+     *** State Management
      */
 
 	/** 
@@ -242,10 +240,10 @@ public:
 	 */
 	void SetColor(float32 r, float32 g, float32 b, float32 a);
 	void SetColor(const Color & color);
-	float32 GetColorR();
-	float32 GetColorG();
-    float32 GetColorB();
-    float32 GetColorA();
+	float32 GetColorR() const;
+	float32 GetColorG() const;
+    float32 GetColorB() const;
+    float32 GetColorA() const;
     const Color & GetColor() const;
 	void ResetColor();
 
@@ -254,13 +252,14 @@ public:
 	Texture * GetTexture(uint32 textureLevel = 0);
     void SetShader(Shader * shader);
     Shader * GetShader();
-	
-	void EnableBlending(bool isEnabled);
-	void EnableTexturing(bool isEnabled);
-	
-	void EnableVertexArray(bool isEnabled);
+    
+    
+    void EnableVertexArray(bool isEnabled);
 	void EnableTextureCoordArray(bool isEnabled);
 	void EnableColorArray(bool isEnabled);
+	
+	/*void EnableBlending(bool isEnabled);
+	void EnableTexturing(bool isEnabled);
 
     bool IsDepthTestEnabled();
     bool IsDepthWriteEnabled();
@@ -269,9 +268,20 @@ public:
     void EnableDepthWrite(bool isEnabled);
     
     void EnableAlphaTest(bool isEnabled);
-    void SetAlphaFunc(eCmpFunc func, float32 cmpValue);
     void EnableCulling(bool isEnabled);
-    void SetCullFace(eCull cullFace);
+    */
+    
+    
+    void PushState(uint32 );
+    void AppendState(uint32 state);
+    void RemoveState(uint32 state);
+    void SetState(uint32 state);
+    uint32 GetState();
+    void PopState();
+    
+    void SetAlphaFunc(eCmpFunc func, float32 cmpValue);
+    void SetCullMode(eCull cullFace);
+
     
     
     void SetRenderData(RenderDataObject * object);
@@ -507,21 +517,27 @@ protected:
 	uint32 fboViewFramebuffer;
 
 	// state information
-	Color oldColor;                 // UNIFORM - can be used or not used by RenderEffect
-	Color newColor;                 // UNIFORM - can be used or not used by RenderEffect
+//	Color oldColor;                 // UNIFORM - can be used or not used by RenderEffect
+//	Color newColor;                 // UNIFORM - can be used or not used by RenderEffect
     
-	eBlendMode oldSFactor, oldDFactor;  // STATE
-	eBlendMode newSFactor, newDFactor;  // STATE
+//	eBlendMode oldSFactor, oldDFactor;  // STATE
+//	eBlendMode newSFactor, newDFactor;  // STATE
     
-    static const uint32 MAX_TEXTURE_LEVELS = 4;
-	Texture *currentTexture[MAX_TEXTURE_LEVELS];                        // Texture that was set
-    Shader * shader;
+//  static const uint32 MAX_TEXTURE_LEVELS = 4;
+//	Texture *currentTexture[MAX_TEXTURE_LEVELS];                        // Texture that was set
+//  Shader * shader;
 	
-    int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
-	int oldVertexArrayEnabled;                      // state
+    
+    RenderStateBlock currentState;
+    RenderStateBlock hardwareState;
+
+    int oldVertexArrayEnabled;                      // state
 	int oldTextureCoordArrayEnabled;                // state
 	int oldColorArrayEnabled;                       // state
 	int oldBlendingEnabled;                         // state
+
+    
+    /*int newTextureEnabled, oldTextureEnabled;       // Enable or disable texturing
     int depthWriteEnabled;                          // state
     int depthTestEnabled;                           // state
     
@@ -532,7 +548,11 @@ protected:
     float32 oldAlphaTestCmpValue;                   // old alpha test cmp value
     float32 alphaTestCmpValue;                      // default value: 0.0f
     bool cullingEnabled, oldCullingEnabled;
-    eCull cullFace, oldCullFace;
+    eCull cullFace, oldCullFace;*/
+    
+    
+    
+    
     
     
     uint32 pointerArraysCurrentState;

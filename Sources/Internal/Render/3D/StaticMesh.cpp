@@ -98,7 +98,8 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
         if (material->hasOpacity)
         {
             RenderManager::Instance()->SetRenderEffect(RenderManager::TEXTURE_MUL_FLAT_COLOR_ALPHA_TEST);
-            RenderManager::Instance()->EnableCulling(false);
+            //RenderManager::Instance()->EnableCulling(false);
+            RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_3D_STATE | RenderStateBlock::STATE_CULL);
         }
 	}
 #else 
@@ -131,7 +132,8 @@ void StaticMesh::DrawPolygonGroup(int32 index, Material * material)
     
     
     RenderManager::Instance()->SetTexture(0, 1); // clear texture block 1
-    RenderManager::Instance()->EnableCulling(true);
+    //RenderManager::Instance()->EnableCulling(true);
+    RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_3D_STATE);
 }
 
 void StaticMesh::Draw()

@@ -54,7 +54,7 @@ RenderEffect * ColorOnlyEffect::Create(Core::eRenderer renderer)
 
 void ColorOnlyEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count)
 {
-    RenderManager::Instance()->EnableTexturing(false);
+    RenderManager::Instance()->RemoveState(RenderStateBlock::STATE_TEXTURE0);
     RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawArrays(mode, first, count);
@@ -62,7 +62,7 @@ void ColorOnlyEffectGL::DrawArrays(ePrimitiveType mode, int32 first, int32 count
     
 void ColorOnlyEffectGL::DrawElements(ePrimitiveType type, int32 count, eIndexFormat indexFormat, void * indices)
 {
-    RenderManager::Instance()->EnableTexturing(false);
+    RenderManager::Instance()->RemoveState(RenderStateBlock::STATE_TEXTURE0);
     RenderManager::Instance()->SetShader(0);
     RenderManager::Instance()->FlushState();
     RenderManager::Instance()->HWDrawElements(type, count, indexFormat, indices);

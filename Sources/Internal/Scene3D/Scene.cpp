@@ -360,9 +360,12 @@ void Scene::Draw()
     nodeCounter = 0;
     uint64 time = SystemTimer::Instance()->AbsoluteMS();
     
-    RenderManager::Instance()->EnableCulling(true);
-    RenderManager::Instance()->SetCullFace(CULL_BACK);
+    RenderManager::Instance()->SetCullMode(CULL_BACK);
+    RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_3D_STATE);
+    RenderManager::Instance()->FlushState();
+    RenderManager::Instance()->ClearDepthBuffer();
     
+
     
 	SetupTestLighting();
 
@@ -372,7 +375,7 @@ void Scene::Draw()
     }
 	SceneNode::Draw();
 	
-    RenderManager::Instance()->EnableCulling(false);
+    RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_2D_STATE_BLEND);
     
     drawTime = SystemTimer::Instance()->AbsoluteMS() - time;
 //  Logger::Debug("upt: %lld drawt: %lld, %ld", updateTime, drawTime, nodeCounter);

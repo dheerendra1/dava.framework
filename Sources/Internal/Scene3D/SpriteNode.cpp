@@ -107,38 +107,38 @@ void SpriteNode::CreateMeshFromSprite(int32 frameToGen)
     verts.push_back(x0);
     verts.push_back(y0);
     verts.push_back(0);
-    textures.push_back(pT[2 * 2 + 0]);
-    textures.push_back(pT[2 * 2 + 1]);
+    //textures.push_back(pT[2 * 2 + 0]);
+    //textures.push_back(pT[2 * 2 + 1]);
 
     
         //1, 0
     verts.push_back(x1);
     verts.push_back(y0);
     verts.push_back(0);
-    textures.push_back(pT[3 * 2 + 0]);
-    textures.push_back(pT[3 * 2 + 1]);
+    //textures.push_back(pT[3 * 2 + 0]);
+    //textures.push_back(pT[3 * 2 + 1]);
     
     
         //0, 1
     verts.push_back(x0);
     verts.push_back(y1);
     verts.push_back(0);
-    textures.push_back(pT[0 * 2 + 0]);
-    textures.push_back(pT[0 * 2 + 1]);
+    //textures.push_back(pT[0 * 2 + 0]);
+    //textures.push_back(pT[0 * 2 + 1]);
     
         //1, 1
     verts.push_back(x1);
     verts.push_back(y1);
     verts.push_back(0);
-    textures.push_back(pT[1 * 2 + 0]);
-    textures.push_back(pT[1 * 2 + 1]);
+    //textures.push_back(pT[1 * 2 + 0]);
+    //textures.push_back(pT[1 * 2 + 1]);
 
 
-    /*for (int i = 0; i < 2*4; i++) 
+    for (int i = 0; i < 2*4; i++) 
     {
         textures.push_back(*pT);
         pT++;
-    }*/
+    }
 }
     
 void SpriteNode::SetType(eType _type)
@@ -267,11 +267,15 @@ void SpriteNode::Draw()
     
     
     
-    RenderManager::Instance()->SetColor(1, 1, 1, 1);
-    RenderManager::Instance()->EnableBlending(true);
-    RenderManager::Instance()->EnableTexturing(true);//TODO: Move all this code to the RenderState node
-    RenderManager::Instance()->EnableDepthTest(false);
-    RenderManager::Instance()->EnableDepthWrite(false);
+    RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+//    RenderManager::Instance()->EnableBlending(true);
+//    RenderManager::Instance()->EnableTexturing(true);//TODO: Move all this code to the RenderState node
+//    RenderManager::Instance()->EnableDepthTest(false);
+//    RenderManager::Instance()->EnableDepthWrite(false);
+    
+    
+    RenderManager::Instance()->SetState(RenderStateBlock::STATE_BLEND | RenderStateBlock::STATE_TEXTURE0 | RenderStateBlock::STATE_CULL);
+    
     RenderManager::Instance()->SetTexture(sprite->GetTexture(frame));
 //	RenderManager::Instance()->FlushState();
     
@@ -283,10 +287,11 @@ void SpriteNode::Draw()
 
     
 //    glDisableClientState(GL_COLOR_ARRAY);
-    RenderManager::Instance()->EnableTexturing(true);
-    RenderManager::Instance()->EnableBlending(false);
-    RenderManager::Instance()->EnableDepthTest(true);
-    RenderManager::Instance()->EnableDepthWrite(true);
+    RenderManager::Instance()->SetState(RenderStateBlock::DEFAULT_3D_STATE);
+//    RenderManager::Instance()->EnableTexturing(true);
+//    RenderManager::Instance()->EnableBlending(false);
+//    RenderManager::Instance()->EnableDepthTest(true);
+//    RenderManager::Instance()->EnableDepthWrite(true);
     
     if (debugFlags & DEBUG_DRAW_ALL)
     {

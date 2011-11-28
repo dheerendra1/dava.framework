@@ -1021,28 +1021,6 @@ void Sprite::Draw()
         
     RenderManager::Instance()->DrawArrays(primitiveToDraw, 0, vertexCount);
 
-    /* if (RenderManager::Instance()->GetRenderer() != Core::RENDERER_OPENGL_ES_2_0)
-    {
-        //RenderManager::Instance()->SetVertexPointer(2, TYPE_FLOAT, 0, tempVertices);
-        //RenderManager::Instance()->SetTexCoordPointer(2, TYPE_FLOAT, 0, texCoords[frame]); 
-        //RenderManager::Instance()->FlushState();
-    }else if (RenderManager::Instance()->GetRenderer() == Core::RENDERER_OPENGL_ES_2_0)
-    {
-        RenderManagerGL20 * rMan = (RenderManagerGL20 *)RenderManager::Instance();
-        
-        RenderManager::Instance()->colorWithTexture->Set();
-        
-        glVertexAttribPointer(0, 2, GL_FLOAT, 0, 0, tempVertices);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 2, GL_FLOAT, 0, 0, texCoords[frame]);
-        glEnableVertexAttribArray(1);
-        
-        RenderManager::Instance()->FlushState();
-        //glVertexAttribPointer(ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, 1, 0, squareColors); //enable the normalized flag
-        //glEnableVertexAttribArray(ATTRIB_COLOR);
-        RenderManager::Instance()->DrawArrays(PRIMITIVETYPE_TRIANGLESTRIP, 0, 4);
-    } */
-
 	Reset();
 }
 	
@@ -1062,6 +1040,19 @@ void Sprite::Draw(DrawState * state)
 		RenderManager::Instance()->PopMappingMatrix();
 
 }
+    
+void Sprite::BeginBatching()
+{
+    
+    
+}
+
+void Sprite::EndBatching()
+{
+    
+    
+}
+
 
 void Sprite::DrawPoints(Vector2 *verticies, Vector2 *textureCoordinates)
 {
