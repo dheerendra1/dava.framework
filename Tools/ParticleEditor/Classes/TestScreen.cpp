@@ -34,7 +34,7 @@ TestScreen::TestScreen()
 {
     emitterProps.push_back("type");
     emitterProps.push_back("emissionAngle");
-    emitterProps.push_back("emissionRage");
+    emitterProps.push_back("emissionRange");
     emitterProps.push_back("emissionVector");
     emitterProps.push_back("radius");
     emitterProps.push_back("colorOverLife");
@@ -111,6 +111,10 @@ void TestScreen::LoadResources()
     f = FTFont::Create("~res:/Fonts/MyriadPro-Regular.otf");
     f->SetSize(18);
     f->SetColor(Color(1,1,1,1));
+
+    preview = new PreviewControl();
+    preview->SetRect(Rect(buttonW*2, 0, GetScreenWidth() - buttonW*2, GetScreenHeight()));
+    AddControl(preview);
     
     chooseProject = new UIButton(Rect(0, 0, buttonW/2, cellH));
     chooseProject->SetStateDrawType(UIControl::STATE_NORMAL, UIControlBackground::DRAW_FILL);
@@ -454,18 +458,14 @@ void TestScreen::LoadResources()
     tip->SetAlign(DAVA::ALIGN_LEFT|DAVA::ALIGN_TOP);
     AddControl(tip);
     
-    preview = new PreviewControl();
-    preview->SetRect(Rect(buttonW*2, 0, GetScreenWidth() - buttonW*2, GetScreenHeight()));
-    AddControl(preview);
-    
     emitter = new ParticleEmitter();
     layers.push_back(new Layer(emitterProps, "", cellFont));
     layers[0]->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, 0, buttonW, cellH));
     AddControl(layers[0]->curLayerTime);
     preview->SetEmitter(emitter);
     
-    layers[0]->props[EMITTER_EMISSION_RAGE]->minValue = 0;
-    layers[0]->props[EMITTER_EMISSION_RAGE]->maxValue = 360;
+    layers[0]->props[EMITTER_EMISSION_RANGE]->minValue = 0;
+    layers[0]->props[EMITTER_EMISSION_RANGE]->maxValue = 360;
     
     forcePreview = new ForcePreviewControl();
     forcePreview->SetRect(Rect(buttonW*3/2, GetScreenHeight() - cellH*4, buttonW/2, buttonW*0.625f));
@@ -650,8 +650,8 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         layers[0]->curLayerTime->SetRect(Rect(GetScreenWidth() - buttonW, 0, buttonW, cellH));
         SafeAddControl(layers[0]->curLayerTime);
         
-        layers[0]->props[EMITTER_EMISSION_RAGE]->minValue = 0;
-        layers[0]->props[EMITTER_EMISSION_RAGE]->maxValue = 360;
+        layers[0]->props[EMITTER_EMISSION_RANGE]->minValue = 0;
+        layers[0]->props[EMITTER_EMISSION_RANGE]->maxValue = 360;
         emitterList->RefreshList();
         propList->RefreshList();    
         
@@ -1378,7 +1378,7 @@ void TestScreen::GetEmitterPropValue(eProps id, bool getLimits)
                     layers[0]->props.at(id)->isDefault = true;
             break;
             
-        case EMITTER_EMISSION_RAGE:
+        case EMITTER_EMISSION_RANGE:
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
             pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
             layers[0]->props.at(id)->isDefault = false;
@@ -1503,7 +1503,7 @@ void TestScreen::SetEmitterPropValue(eProps id, bool def)
             emitter->emissionVector = valueDim3;
             break;
             
-        case EMITTER_EMISSION_RAGE:
+        case EMITTER_EMISSION_RANGE:
             emitter->emissionRange = valueDim1;      
             break;
            
@@ -1548,7 +1548,7 @@ void TestScreen::ResetEmitterPropValue(eProps id)
             emitter->emissionVector = 0;
             break;
             
-        case EMITTER_EMISSION_RAGE:
+        case EMITTER_EMISSION_RANGE:
             emitter->emissionRange = 0;      
             break;
             
@@ -3001,14 +3001,6 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     else if(pv)
         PrintPropValue(file, emitterProps[emitPropIndex], pv);
     emitPropIndex++;
-
-    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionVector.Get());
-    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionVector.Get());
-    if(v3k)
-        PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
-    else if(v3v)
-        PrintPropValue(file, emitterProps[emitPropIndex], v3v);
-    emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionRange.Get());
     pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->emissionRange.Get());
@@ -3016,6 +3008,14 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         PrintPropKFValue(file, emitterProps[emitPropIndex], pk);
     else if(pv)
         PrintPropValue(file, emitterProps[emitPropIndex], pv);
+    emitPropIndex++;
+    
+    v3k = dynamic_cast< PropertyLineKeyframes<Vector3> *>(emitter->emissionVector.Get());
+    v3v = dynamic_cast< PropertyLineValue<Vector3> *>(emitter->emissionVector.Get());
+    if(v3k)
+        PrintPropKFValue(file, emitterProps[emitPropIndex], v3k);
+    else if(v3v)
+        PrintPropValue(file, emitterProps[emitPropIndex], v3v);
     emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->radius.Get());
