@@ -41,7 +41,7 @@
 namespace DAVA
 {
 	
-GameObjectManager::GameObjectManager()
+GameObjectManager::GameObjectManager() : cameraScale(1.f,1.f)
 {
 	isInUpdate = false;
 }
@@ -273,6 +273,10 @@ void GameObjectManager::Draw()
 	eBlendMode srcMode = RenderManager::Instance()->GetSrcBlend();
 	eBlendMode destMode = RenderManager::Instance()->GetDestBlend();
 	
+        RenderManager::Instance()->PushDrawMatrix();
+        RenderManager::Instance()->SetDrawTranslate(cameraPosition);
+        RenderManager::Instance()->SetDrawScale(cameraScale);
+
 	for(List<GameObject*>::iterator currentObj = objects.begin(); currentObj != objects.end(); ++currentObj)
 	{
 		GameObject *object = *currentObj;
@@ -282,23 +286,28 @@ void GameObjectManager::Draw()
 		    object->Draw();
 	}
 	
+        RenderManager::Instance()->PopDrawMatrix();
+
 	RenderManager::Instance()->SetBlendMode(srcMode, destMode);
     RenderManager::Instance()->ResetColor();
 }
 
 void GameObjectManager::SetCameraPosition(float32 _cameraPositionX, float32 _cameraPositionY)
 {
-	drawState.position.x = -_cameraPositionX;
-	drawState.position.y = -_cameraPositionY;
+// 	drawState.position.x = -_cameraPositionX;
+// 	drawState.position.y = -_cameraPositionY;
+    cameraPosition.x = -_cameraPositionX;
+    cameraPosition.y = -_cameraPositionY;
 }
 	
-void GameObjectManager::SetCameraScale(float32 cameraScale)
+void GameObjectManager::SetCameraScale(float32 _cameraScale)
 {
-	drawState.scale.x = drawState.scale.y = cameraScale;
+//	drawState.scale.x = drawState.scale.y = _cameraScale;
+    cameraScale.x = cameraScale.y = _cameraScale;
 }
 
 float32 GameObjectManager::GetCameraScale() const
 {
-    return drawState.scale.x; // > 0 ? drawState.scale.x : 1.f;
+    return cameraScale.x; // > 0 ? drawState.scale.x : 1.f;
 }
 };
