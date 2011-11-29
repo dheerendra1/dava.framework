@@ -134,17 +134,21 @@ ParticleLayer * ParticleLayer::Clone()
 			forceClone.Set(forces[f]->Clone());
 		layer->forces.push_back(forceClone);
 
-		RefPtr< PropertyLine<Vector3> > forceVariationClone;
-		if (forcesVariation[f])
-			forceVariationClone.Set(forcesVariation[f]->Clone());
-		layer->forcesVariation.push_back(forceVariationClone);
-
 		RefPtr< PropertyLine<float32> > forceOverLifeClone;
 		if (forcesOverLife[f])
 			forceOverLifeClone.Set(forcesOverLife[f]->Clone());
 		layer->forcesOverLife.push_back(forceOverLifeClone);
 	}
 	
+    for(int32 f = 0; f < (int32)forcesVariation.size(); ++f)
+    {
+        
+		RefPtr< PropertyLine<Vector3> > forceVariationClone;
+		if (forcesVariation[f])
+			forceVariationClone.Set(forcesVariation[f]->Clone());
+		layer->forcesVariation.push_back(forceVariationClone);        
+    }
+    
 	if (spin)
 		layer->spin.Set(spin->Clone());
 	
