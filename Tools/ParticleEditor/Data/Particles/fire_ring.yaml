@@ -1,0 +1,36 @@
+emitter:
+    3d: false
+    type: oncircle
+    emissionAngle: 270.000000
+    emissionRange: 360.000000
+    emissionVector: [1.000000, 0.000000, 0.000000]
+    radius: 50.000000
+    size: [0.000000, 0.000000, 0.000000]
+    life: 10000.000000
+layer0:
+    type: layer
+    sprite: "~res:/Gfx/Sparkles/basic_blur"
+    life: 3.000000
+    lifeVariation: 0.800000
+
+    number: 150.000000
+    numberVariation: 0.000000
+
+    size: [30.000000, 35.000000]
+    sizeVariation: [0.000000, 0.000000]
+    sizeOverLife: [0.000000, 1.000000, 1.000000, 2.000000]
+
+    velocity: 3.000000
+    velocityVariation: 0.000000
+    velocityOverLife: 1.000000
+
+    forceCount: 1
+    force0: [0.000000, -20.000000, 0.000000]
+    forceOverLife0: 1.000000
+
+
+
+
+
+    colorOverLife: [0.000000, [182, 165, 71, 255], 1.000000, [255, 71, 71, 0]]
+

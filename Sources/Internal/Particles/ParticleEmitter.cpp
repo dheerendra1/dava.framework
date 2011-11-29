@@ -334,8 +334,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         
         Vector3 qvq1_v = qv_v.CrossProduct(q1_v) + qv_w*q1_v + q1_w*qv_v;
         
-        qvq1_v *= velocity;
-        particle->velocity = qvq1_v;
+        particle->velocity = qvq1_v * velocity;
 
         if (type == EMITTER_ONCIRCLE)
         {

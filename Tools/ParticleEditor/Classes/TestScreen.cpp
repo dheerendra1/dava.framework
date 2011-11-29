@@ -2987,7 +2987,7 @@ void TestScreen::SaveToYaml(const String &pathToFile)
     if(emitter->type == ParticleEmitter::EMITTER_RECT)
         file->WriteLine("    type: rect");
     if(emitter->type == ParticleEmitter::EMITTER_ONCIRCLE)
-        file->WriteLine("    type: oncirlce");
+        file->WriteLine("    type: oncircle");
     emitPropIndex++;
     
     pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->emissionAngle.Get());
