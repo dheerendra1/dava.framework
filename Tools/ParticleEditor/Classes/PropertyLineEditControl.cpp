@@ -285,11 +285,16 @@ bool PropertyLineEditControl::GetSelectedValue(Vector2 &v)
     return true;
 }
 
-void PropertyLineEditControl::SetSelectedValue(Vector2 v)
+void PropertyLineEditControl::SetSelectedValue(const Vector2 &v)
 {
     if(selectedValueIndex != -1)
     {
-        delegate->OnPointMove(this, values[selectedValueIndex].x, v.x, v.y);
+        Vector2 v2 = v;
+        if(v2.x < minX)
+            v2.x = minX;
+        if(v2.x > maxX)
+            v2.x = maxX;
+        delegate->OnPointMove(this, values[selectedValueIndex].x, v2.x, v2.y);
     }
 }
 

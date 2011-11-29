@@ -579,10 +579,6 @@ void TestScreen::TextFieldShouldReturn(UITextField * textField)
     {
         float32 val = 0;
         swscanf(textField->GetText().c_str(), L"%f", &val);
-        if(val > 1.0f)
-            val = 1.0f;
-        if(val < 0.0f)
-            val = 0.0f;
         Vector2 v2;
         propEdit[activeKFEdit]->GetSelectedValue(v2);
         v2.x = val;

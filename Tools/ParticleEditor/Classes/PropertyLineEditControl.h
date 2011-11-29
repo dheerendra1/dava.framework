@@ -86,7 +86,7 @@ public:
     void SetDelegate(PropertyLineEditControlDelegate *controlDelegate);
     void Reset();
     bool GetSelectedValue(Vector2 &v);
-    void SetSelectedValue(Vector2 v);
+    void SetSelectedValue(const Vector2 &v);
     
 private:
 	
