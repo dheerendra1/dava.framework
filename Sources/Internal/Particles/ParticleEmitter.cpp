@@ -218,9 +218,14 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         //vel.Normalize();
         
         float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+
+        float32 particleAngle = 0;
+        if(emissionAngle)
+            particleAngle = DegToRad(emissionAngle->GetValue(time) + angle);
         
-        float32 particleAngle = DegToRad(emissionAngle->GetValue(time) + angle);
-        float32 range = DegToRad(emissionRange->GetValue(time));
+        float32 range = 0.0f;
+        if(emissionRange)
+            range = DegToRad(emissionRange->GetValue(time));
         
         if (emitPointsCount == -1)
         {
@@ -240,7 +245,8 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         // reuse particle velocity we've calculated 
         if (type == EMITTER_ONCIRCLE)
         {
-            particle->position += vel * radius->GetValue(time);
+            if(radius)
+                particle->position += vel * radius->GetValue(time);
         }
         
         vel *= velocity;
@@ -282,7 +288,9 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
             particle->position = tempPosition;
         }
         
-        Vector3 vel = emissionVector->GetValue(0);
+        Vector3 vel = Vector3(1.0f, 0.0f, 0.0f);
+        if(emissionVector)
+            vel = emissionVector->GetValue(0);
         
         Vector3 rotVect(0, 0, 1);
         float32 phi = PI*2*(float32)Random::Instance()->RandFloat();
@@ -306,7 +314,9 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         }
         rotVect.Normalize();
         
-        float32 range = DegToRad(emissionRange->GetValue(time) + angle);
+        float32 range = 0;
+        if(emissionRange)
+            range = DegToRad(emissionRange->GetValue(time) + angle);
         float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f;
         
         Vector3 q_v(rotVect*sinf(range*rand05/2));
@@ -330,7 +340,8 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         if (type == EMITTER_ONCIRCLE)
         {
             qvq1_v.Normalize();
-            particle->position += qvq1_v * radius->GetValue(time);
+            if(radius)
+                particle->position += qvq1_v * radius->GetValue(time);
         }
        
         if(is3D)
@@ -374,6 +385,7 @@ void ParticleEmitter::LoadFromYaml(const String & filename)
         
 		if (emitterNode->Get("emissionRange"))
 			emissionRange = PropertyLineYamlReader::CreateFloatPropertyLineFromYamlNode(emitterNode, "emissionRange");
+        
 		if (emitterNode->Get("colorOverLife"))
 			colorOverLife = PropertyLineYamlReader::CreateColorPropertyLineFromYamlNode(emitterNode, "colorOverLife");
 		if (emitterNode->Get("radius"))
