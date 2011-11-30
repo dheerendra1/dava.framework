@@ -233,7 +233,7 @@ namespace DAVA
 	UIControl * UIControl::FindByName(const String & name, bool recursive)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			UIControl * c = (*it);
 			if (c->name == name)return c;
@@ -601,7 +601,7 @@ namespace DAVA
 	void UIControl::RemoveControl(UIControl *control)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == control)
 			{
@@ -632,7 +632,7 @@ namespace DAVA
 	void UIControl::BringChildFront(UIControl *_control)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _control)
 			{
@@ -646,7 +646,7 @@ namespace DAVA
 	void UIControl::BringChildBack(UIControl *_control)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _control)
 			{
@@ -661,7 +661,7 @@ namespace DAVA
 	void UIControl::InsertChildBelow(UIControl * _control, UIControl * _belowThisChild)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _belowThisChild)
 			{
@@ -692,7 +692,7 @@ namespace DAVA
 	void UIControl::InsertChildAbove(UIControl * _control, UIControl * _aboveThisChild)
 	{
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _aboveThisChild)
 			{
@@ -726,7 +726,7 @@ namespace DAVA
 		
 		// firstly find control in list and erase it
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _control)
 			{
@@ -737,7 +737,7 @@ namespace DAVA
 		}
 		// after that find place where we should put the control and do that
 		it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _belowThisChild)
 			{
@@ -755,7 +755,7 @@ namespace DAVA
 
 		// firstly find control in list and erase it
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _control)
 			{
@@ -766,7 +766,7 @@ namespace DAVA
 		}
 		// after that find place where we should put the control and do that
 		it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			if((*it) == _aboveThisChild)
 			{
@@ -814,7 +814,7 @@ namespace DAVA
 		
 		RemoveAllControls();
 		List<UIControl*>::iterator it = srcControl->childs.begin();
-		for(; it != srcControl->childs.end(); it++)
+		for(; it != srcControl->childs.end(); ++it)
 		{
 			
 			UIControl *c = (*it)->Clone();
@@ -856,7 +856,7 @@ namespace DAVA
 				it = childs.begin();
 				continue;
 			}
-			it++;
+			++it;
 		}
 	}
 	
@@ -881,7 +881,7 @@ namespace DAVA
 				it = childs.begin();
 				continue;
 			}
-			it++;
+			++it;
 		}
 	}
 	
@@ -902,7 +902,7 @@ namespace DAVA
 				it = childs.begin();
 				continue;
 			}
-			it++;
+			++it;
 		}
 	}
 	
@@ -923,7 +923,7 @@ namespace DAVA
 				it = childs.begin();
 				continue;
 			}
-			it++;
+			++it;
 		}
 	}
     
@@ -944,7 +944,7 @@ namespace DAVA
 				it = childs.begin();
 				continue;
 			}
-			it++;
+			++it;
 		}
     }
 
@@ -979,7 +979,7 @@ namespace DAVA
 		Update(timeElapsed);
 		isUpdated = true;
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+		for(; it != childs.end(); ++it)
 		{
 			(*it)->isUpdated = false;
 		}
@@ -1000,9 +1000,10 @@ namespace DAVA
 					continue;
 				}
 			}
-			it++;
+			++it;
 		}
 	}
+
 	void UIControl::SystemDraw(const UIGeometricData &geometricData)
 	{
 		UIGeometricData drawData;
@@ -1021,13 +1022,13 @@ namespace DAVA
 		{
 			GetBackground()->SetParentColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
 		}
-
 				
 		if(clipContents)
 		{//WARNING: for now clip contents don't work for rotating controls if you have any ideas you are welcome
 			RenderManager::Instance()->ClipPush();
 			RenderManager::Instance()->ClipRect(drawData.GetUnrotatedRect());
 		}
+
 		if(visible)
 		{
 			Draw(drawData);
@@ -1040,10 +1041,10 @@ namespace DAVA
 			RenderManager::Instance()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 		
-		
 		isIteratorCorrupted = false;
 		List<UIControl*>::iterator it = childs.begin();
-		for(; it != childs.end(); it++)
+        List<UIControl*>::iterator itEnd = childs.end();
+		for(; it != itEnd; ++it)
 		{
 			(*it)->SystemDraw(drawData);
 			DVASSERT(!isIteratorCorrupted);
@@ -1056,8 +1057,7 @@ namespace DAVA
 		if(clipContents)
 		{
 			RenderManager::Instance()->ClipPop();
-		}
-		
+		}	
 	}
 	
 	bool UIControl::IsPointInside(const Vector2 &point, bool expandWithFocus/* = false*/)
@@ -1094,8 +1094,6 @@ namespace DAVA
 			return false;
 		}
 		
-		
-		
 		switch (currentInput->phase) 
 		{
 #if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                
@@ -1127,8 +1125,8 @@ namespace DAVA
 					{
 						controlState |= STATE_PRESSED_INSIDE;
 						controlState &= ~STATE_NORMAL;
-						touchesInside++;
-						totalTouches++;
+						++touchesInside;
+						++totalTouches;
 						currentInput->controlState = UIEvent::CONTROL_STATE_INSIDE;
 						
 						
@@ -1162,7 +1160,6 @@ namespace DAVA
 				{
 					if(multiInput || currentInputID == currentInput->tid)
 					{
-
 						if(controlState & STATE_PRESSED_INSIDE || controlState & STATE_PRESSED_OUTSIDE)
 						{
 #ifdef ENABLE_CONTROL_EDIT
@@ -1173,7 +1170,7 @@ namespace DAVA
 								if(currentInput->controlState == UIEvent::CONTROL_STATE_OUTSIDE)
 								{
 									currentInput->controlState = UIEvent::CONTROL_STATE_INSIDE;
-									touchesInside++;
+									++touchesInside;
 									if(touchesInside > 0)
 									{
 										controlState |= STATE_PRESSED_INSIDE;
@@ -1189,7 +1186,7 @@ namespace DAVA
 								if(currentInput->controlState == UIEvent::CONTROL_STATE_INSIDE)
 								{
 									currentInput->controlState = UIEvent::CONTROL_STATE_OUTSIDE;
-									touchesInside--;
+									--touchesInside;
 									if(touchesInside == 0)
 									{
 										controlState |= STATE_PRESSED_OUTSIDE;
@@ -1217,10 +1214,10 @@ namespace DAVA
 						}
 						if(totalTouches > 0)
 						{
-							totalTouches--;
+							--totalTouches;
 							if(currentInput->controlState == UIEvent::CONTROL_STATE_INSIDE)
 							{
-								touchesInside--;
+								--touchesInside;
 #if !defined(__DAVAENGINE_IPHONE__) && !defined(__DAVAENGINE_ANDROID__)                                        
 								if(totalTouches == 0)
 								{
@@ -1259,10 +1256,8 @@ namespace DAVA
 								controlState &= ~STATE_HOVER;
 #endif
 							}
-
 						}
 					}
-
 
 					currentInput->touchLocker = NULL;
 					return true;
@@ -1289,7 +1284,7 @@ namespace DAVA
 
 			List<UIControl*>::reverse_iterator it = childs.rbegin();
 			List<UIControl*>::reverse_iterator itEnd = childs.rend();
-			for(; it != itEnd; it++)
+			for(; it != itEnd; ++it)
 			{
 				(*it)->isUpdated = false;
 			}
@@ -1315,7 +1310,7 @@ namespace DAVA
 						continue;
 					}
 				}
-				it++;
+				++it;
 			}
 		}
 		return SystemProcessInput(currentInput);
@@ -1325,11 +1320,11 @@ namespace DAVA
 	{
 		if(currentInput->controlState != UIEvent::CONTROL_STATE_RELEASED)
 		{
-			totalTouches--;
+			--totalTouches;
 		}
 		if(currentInput->controlState == UIEvent::CONTROL_STATE_INSIDE)
 		{
-			touchesInside--;
+			--touchesInside;
 		}
 
 		if(touchesInside == 0)

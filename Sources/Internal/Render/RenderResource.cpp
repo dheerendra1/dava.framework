@@ -69,7 +69,8 @@ void RenderResource::Invalidate()
 void RenderResource::LostAllResources()
 {
 	List<RenderResource*>::iterator it = resourceList.begin();
-	for(; it != resourceList.end(); it++)
+    List<RenderResource*>::const_iterator itEnd = resourceList.end();
+	for(; it != itEnd; ++it)
 	{
 		(*it)->Lost();
 	}
@@ -78,7 +79,8 @@ void RenderResource::LostAllResources()
 void RenderResource::InvalidateAllResources()
 {
 	List<RenderResource*>::iterator it = resourceList.begin();
-	for(; it != resourceList.end(); it++)
+    List<RenderResource*>::const_iterator itEnd = resourceList.end();
+	for(; it != itEnd; ++it)
 	{
 		(*it)->Invalidate();
 	}
@@ -87,7 +89,8 @@ void RenderResource::InvalidateAllResources()
 void RenderResource::SaveAllResourcesToSystemMem()
 {
 	List<RenderResource*>::iterator it = resourceList.begin();
-	for(; it != resourceList.end(); it++)
+    List<RenderResource*>::const_iterator itEnd = resourceList.end();
+	for(; it != itEnd; ++it)
 	{
 		(*it)->SaveToSystemMemory();
 // 		Texture * t = dynamic_cast<Texture*>((*it));
@@ -95,8 +98,4 @@ void RenderResource::SaveAllResourcesToSystemMem()
 // 			Logger::Debug("%s", t->relativePathname.c_str());
 	}
 }
-
-
-
-
 };

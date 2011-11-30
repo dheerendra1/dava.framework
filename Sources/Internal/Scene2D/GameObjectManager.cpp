@@ -212,11 +212,11 @@ void GameObjectManager::Update(float32 timeElapsed)
 	// Than perform usual update
 	for (List<GameObject*>::iterator currentPos = objects.begin(); currentPos != objects.end(); ++currentPos)
 	{
-		GameObject * object = *currentPos;
+		GameObject *object = *currentPos;
 		if (object->dead)continue;
-		if (object->GetParent() == 0)
-			object->Update(timeElapsed);
-	}	
+		if(object->GetParent() == 0)
+            object->Update(timeElapsed);
+    }
 	
 	RecalcObjectsHierarchy();
 	
@@ -242,7 +242,8 @@ void GameObjectManager::ProcessChangesStack()
 		{
 			ChangeObjectPriority(object);
 			object->priorityChanged = false;
-		}else if (object->dead)
+		}
+        else if (object->dead)
 		{
 			// delete objects 
 			for (List<GameObject*>::iterator t = objects.begin(); t != objects.end(); ++t)
@@ -277,7 +278,8 @@ void GameObjectManager::Draw()
         RenderManager::Instance()->SetDrawTranslate(cameraPosition);
         RenderManager::Instance()->SetDrawScale(cameraScale);
 
-	for(List<GameObject*>::iterator currentObj = objects.begin(); currentObj != objects.end(); ++currentObj)
+    const List<GameObject*>::iterator currentObjEnd = objects.end();
+	for(List<GameObject*>::iterator currentObj = objects.begin(); currentObj != currentObjEnd; ++currentObj)
 	{
 		GameObject *object = *currentObj;
 		if(object->dead)
