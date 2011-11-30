@@ -363,7 +363,7 @@ public:
 		Also for invisible controls didn't calls Draw() and DrawAfterChilds() methods.
 		But this methods calls for their children.
 		It's always better to remove part of controls hierarchy from the parent then to make them invisible. 
-		Visibility usually use for the single controls.	 
+		Visibility is usually used for the single control.	 
 	 \param[in] isVisible new control visibility.
 	 \param[in] hierarchic use true if you want to all control children change visiblity.
 	 */
@@ -377,11 +377,10 @@ public:
 	virtual bool GetInputEnabled();
 	/**
 	 \brief Sets contol input processing ability.
-		If input is disabled control don't process any inputs. But allows input processing for their children.
+		If input is disabled control don't process any inputs. If input is disabled all inputs events would comes to the parent control.
 		Please use input enabling/disabling for the single controls or forthe small parts of hierarchy.
 		It's always better to add transparent control that covers all screen and would process all 
 		incoming inputs to prevent input processing for the all screen controls or for the large part of hierarchy.
-	 Visibility usually use for the single controls.	 
 	 \param[in] isEnabled is control should process inputs?
 	 \param[in] hierarchic use true if you want to all control children change input ability.
 	 */
