@@ -299,6 +299,16 @@ void SceneNode::Draw()
 }
 
     
+Matrix4 SceneNode::AccamulateLocalTransform(SceneNode *fromParent)
+{
+    if (fromParent == this) 
+    {
+        return localTransform;
+    }
+    return localTransform * parent->AccamulateLocalTransform(fromParent);
+}
+
+    
 SceneNode* SceneNode::Clone(SceneNode *dstNode)
 {
     if (!dstNode) 

@@ -293,6 +293,7 @@ void MeshInstanceNode::Draw()
         RenderManager::Instance()->ResetColor();
     }
 
+    SceneNode::Draw();
 }
 
 

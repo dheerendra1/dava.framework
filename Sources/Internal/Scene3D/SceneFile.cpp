@@ -711,6 +711,10 @@ void SceneFile::ProcessLOD(SceneNode *forRootNode)
         {
             Logger::Debug("Processing LODs for %s", lodName.c_str());
         }
+        if (lodName.find("_lod0dummy") != lodName.npos)
+        {
+            lodName = lodName.substr(0, lodName.size() - 5);
+        }
         MeshInstanceNode *meshToAdd = (MeshInstanceNode *)(*it)->FindByName("instance_0");
         for (int i = 1; i < scene->GetLodLayersCount(); i++) 
         {
@@ -738,6 +742,10 @@ void SceneFile::ProcessLOD(SceneNode *forRootNode)
                 SceneNode *ln = (*it)->GetParent()->FindByName(lodName + "dummy");
                 if (ln) 
                 {
+                    if (debugLogEnabled) 
+                    {
+                        Logger::Debug("      Add dummy LOD layer %d", i);
+                    }
                     meshToAdd->AddDummyLODLayer(i);
                     ln->RemoveNode(ln);
                 }

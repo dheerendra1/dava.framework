@@ -109,6 +109,12 @@ public:
 	void ExtractCurrentNodeKeyForAnimation(SceneNodeAnimationKey & resultKey);
 	
     inline const Matrix4 & GetLocalTransform(); 
+
+    /**
+     \brief Accamulates local transform from the requested parent to this node.
+     */
+    Matrix4 AccamulateLocalTransform(SceneNode *fromParent);
+
     /**
      \brief This method means that you always modify geted matrix. 
         If you dont want to modify matrix call GetLocalTransform().
