@@ -28,7 +28,11 @@
         * Created by Vitaliy Borodovsky
 =====================================================================================*/
 #include "TestScreen.h"
+#if defined (__DAVAENGINE_WIN32__)
+#include <time.h>
+#else
 #include <sys/time.h>
+#endif
 
 TestScreen::TestScreen()
 {
@@ -1950,9 +1954,9 @@ void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
             
             SafeAddControl(valueText[0]);
             SafeAddControl(tfValue[0]);
+            valueText[0]->SetText(L"A:");
             vSliders[0]->SetValue(RadToDeg(emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion));
             tfValue[0]->SetText(Format(L"%.2f", RadToDeg(emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion)));
-            valueText[0]->SetText(L"X:");
             break;
             
         case LAYER_START_TIME:
@@ -1963,9 +1967,9 @@ void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
             
             SafeAddControl(valueText[0]);
             SafeAddControl(tfValue[0]);
+            valueText[0]->SetText(L"T:");
             vSliders[0]->SetValue(emitter->GetLayers().at(selectedEmitterElement-1)->startTime);
             tfValue[0]->SetText(Format(L"%.2f", emitter->GetLayers().at(selectedEmitterElement-1)->startTime));
-            valueText[0]->SetText(L"X:");
             break;
             
         case LAYER_END_TIME:
@@ -1976,9 +1980,9 @@ void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
             
             SafeAddControl(valueText[0]);
             SafeAddControl(tfValue[0]);
+            valueText[0]->SetText(L"T:");
             vSliders[0]->SetValue(emitter->GetLayers().at(selectedEmitterElement-1)->endTime);
             tfValue[0]->SetText(Format(L"%.2f", emitter->GetLayers().at(selectedEmitterElement-1)->endTime));
-            valueText[0]->SetText(L"X:");
             break;
             
         default:
@@ -2953,13 +2957,23 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         selectedAddPropElement = selectedCell->GetIndex();
         selectedCell->SetSelected(true);
 
+        float32 dblClickDTime = 0;
+        
+#if defined (__DAVAENGINE_WIN32__)
+        static unsigned long lastTime;
+        unsigned long t = timeGetTime();
+        dblClickDTime = Abs(t - lastTime);
+        lastTime = timeGetTime();
+#else
         static timeval lastTime;
         timeval t;
         gettimeofday(&t, 0);
-        if( Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000) < dblClickDelay)
-            AddSelectedProp();
+        dblClickDTime = Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000);
+        gettimeofday(&lastTime, 0);       
+#endif
         
-        gettimeofday(&lastTime, 0);
+        if(dblClickDTime < dblClickDelay)
+            AddSelectedProp();
     }
     
     if(forList == forcesList)

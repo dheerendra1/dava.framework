@@ -188,7 +188,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         else if (type == EMITTER_LINE)
         {
             // TODO: add emitter angle support
-            float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+            float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
             Vector3 lineDirection(0, 0, 0);
             if(size)
                 lineDirection = size->GetValue(time)*rand05;
@@ -217,7 +217,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
         //vel.y = (float32)((rand() & 255) - 128);
         //vel.Normalize();
         
-        float32 rand05 = ((float32)(Rand() & 255) / 255.0f) - 0.5f; // [-0.5f, 0.5f]
+        float32 rand05 = (float32)Random::Instance()->RandFloat() - 0.5f; // [-0.5f, 0.5f]
 
         float32 particleAngle = 0;
         if(emissionAngle)
@@ -343,10 +343,7 @@ void ParticleEmitter::PrepareEmitterParameters(Particle * particle, float32 velo
                 particle->position += qvq1_v * radius->GetValue(time);
         }
        
-        if(is3D)
-            particle->angle = 0.0f;
-        else
-            particle->angle = atan2f(qvq1_v.y, qvq1_v.x);
+        particle->angle = 0.0f;
     }
 }
 
