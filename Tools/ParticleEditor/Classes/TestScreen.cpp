@@ -67,6 +67,9 @@ TestScreen::TestScreen()
     layerProps.push_back("colorRandom");
     layerProps.push_back("alphaOverLife");
     layerProps.push_back("colorOverLife");
+    layerProps.push_back("alignToMotion");
+    layerProps.push_back("startTime");
+    layerProps.push_back("endTime");
     
     emitterTypes.push_back("POINT");
     emitterTypes.push_back("LINE");
@@ -76,7 +79,7 @@ TestScreen::TestScreen()
     deltaIndex = 0;
     curPropType = 0; //0 - value, 1 - Keyframed
     dblClickDelay = 500;
-    activePropEdit = 0;    
+    activePropEdit = 0;
 }
 
 void TestScreen::SafeAddControl(UIControl *control)
@@ -777,19 +780,7 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
     }
     if(obj == OKBut)
     {
-        layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
-        
-        if(selectedAddPropElement == LAYER_FORCES)
-            layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
-        
-        if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
-            layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
-        
-        deltaIndex = 0;
-        propList->RefreshList();
-        HideAddProps();
-        HideAndResetEditFields();
-        HideForcesList();
+        AddSelectedProp();
     }
     if(obj == cancelBut)
     {
@@ -877,6 +868,23 @@ void TestScreen::ButtonPressed(BaseObject *obj, void *data, void *callerData)
         SetDisabled(true);
         fsDlgProject->Show(this);
     }
+}
+
+void TestScreen::AddSelectedProp()
+{
+    layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
+    
+    if(selectedAddPropElement == LAYER_FORCES)
+        layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
+    
+    if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
+        layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
+    
+    deltaIndex = 0;
+    propList->RefreshList();
+    HideAddProps();
+    HideAndResetEditFields();
+    HideForcesList();
 }
 
 bool TestScreen::GetProp(PropertyLineValue<float32> *pv, int32 id, bool getLimits)
@@ -1422,6 +1430,7 @@ void TestScreen::GetEmitterPropValue(eProps id, bool getLimits)
             tfValue[0]->SetText(Format(L"%.2f", emitter->GetLifeTime()));
             valueText[0]->SetText(L"X:");            
             break;
+            
         default:
             break;
     }
@@ -1675,6 +1684,18 @@ void TestScreen::ResetLayerPropValue(lProps id)
             emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife = 0;  
             break;
             
+        case LAYER_ALIGN_TO_MOTION:
+            emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion = 0;
+            break;
+            
+        case LAYER_START_TIME:
+            emitter->GetLayers().at(selectedEmitterElement-1)->startTime = 0;
+            break;
+            
+        case LAYER_END_TIME:
+            emitter->GetLayers().at(selectedEmitterElement-1)->endTime = 100000000.0f;
+            break;
+            
         default:
             break;
     }    
@@ -1832,7 +1853,6 @@ void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
             break;
             
         case LAYER_SPIN_OVER_LIFE:
-            
             pk = dynamic_cast< PropertyLineKeyframes<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Get());
             pv = dynamic_cast< PropertyLineValue<float32> *>(emitter->GetLayers().at(selectedEmitterElement-1)->spinOverLife.Get());
             layers[selectedEmitterElement]->props.at(id)->isDefault = false;
@@ -1920,6 +1940,45 @@ void TestScreen::GetLayerPropValue(lProps id, bool getLimits)
             if(!GetProp(ck, id, getLimits))
                 if(!GetProp(cv, id, getLimits))
                     layers[selectedEmitterElement]->props.at(id)->isDefault = true;
+            break;
+            
+        case LAYER_ALIGN_TO_MOTION:
+            if(emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion == 0)
+                layers[selectedEmitterElement]->props.at(id)->isDefault = true;
+            else
+                layers[selectedEmitterElement]->props.at(id)->isDefault = false;
+            
+            SafeAddControl(valueText[0]);
+            SafeAddControl(tfValue[0]);
+            vSliders[0]->SetValue(RadToDeg(emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion));
+            tfValue[0]->SetText(Format(L"%.2f", RadToDeg(emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion)));
+            valueText[0]->SetText(L"X:");
+            break;
+            
+        case LAYER_START_TIME:
+            if(emitter->GetLayers().at(selectedEmitterElement-1)->startTime == 0)
+                layers[selectedEmitterElement]->props.at(id)->isDefault = true;
+            else
+                layers[selectedEmitterElement]->props.at(id)->isDefault = false;
+            
+            SafeAddControl(valueText[0]);
+            SafeAddControl(tfValue[0]);
+            vSliders[0]->SetValue(emitter->GetLayers().at(selectedEmitterElement-1)->startTime);
+            tfValue[0]->SetText(Format(L"%.2f", emitter->GetLayers().at(selectedEmitterElement-1)->startTime));
+            valueText[0]->SetText(L"X:");
+            break;
+            
+        case LAYER_END_TIME:
+            if(emitter->GetLayers().at(selectedEmitterElement-1)->endTime == 100000000.0f)
+                layers[selectedEmitterElement]->props.at(id)->isDefault = true;
+            else
+                layers[selectedEmitterElement]->props.at(id)->isDefault = false;
+            
+            SafeAddControl(valueText[0]);
+            SafeAddControl(tfValue[0]);
+            vSliders[0]->SetValue(emitter->GetLayers().at(selectedEmitterElement-1)->endTime);
+            tfValue[0]->SetText(Format(L"%.2f", emitter->GetLayers().at(selectedEmitterElement-1)->endTime));
+            valueText[0]->SetText(L"X:");
             break;
             
         default:
@@ -2089,6 +2148,18 @@ void TestScreen::SetLayerPropValue(lProps id, bool def)
             
         case LAYER_COLOR_OVER_LIFE:
             emitter->GetLayers().at(selectedEmitterElement-1)->colorOverLife = valueDim4;
+            break;
+            
+        case LAYER_ALIGN_TO_MOTION:
+            emitter->GetLayers().at(selectedEmitterElement-1)->alignToMotion = DegToRad(value[0]);
+            break;
+            
+        case LAYER_START_TIME:
+            emitter->GetLayers().at(selectedEmitterElement-1)->startTime = value[0];
+            break;
+            
+        case LAYER_END_TIME:
+            emitter->GetLayers().at(selectedEmitterElement-1)->endTime = value[0];
             break;
             
         default:
@@ -2501,8 +2572,6 @@ void TestScreen::ShowKeyedEditFields(int32 dim)
         
         tfValueLimits[i]->SetRect(tfPosKFEdit[i]);
     }
-    
-    
 }
 
 void TestScreen::ShowAddProps()
@@ -2705,6 +2774,7 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         
         return c;
     }
+    
     if (forList == propList)
     {
         PropListCell *c = (PropListCell *)forList->GetReusableCell("PropList Cell");
@@ -2720,11 +2790,17 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         }
         c->SetId(index+deltaIndex);
         
+        if (index == selectedPropElement) 
+            c->SetSelected(true);
+        else
+            c->SetSelected(false);
+        
         if(index+deltaIndex < n)
             c->SetText(StringToWString(*layers[selectedEmitterElement]->props.at(index+deltaIndex)->name));
         
         return c;
     }
+    
     if (forList == addPropList)
     {
         UIListCell *c = forList->GetReusableCell("AddPropList Cell");
@@ -2744,6 +2820,12 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         {
             c->SetStateText(UIListCell::STATE_NORMAL, StringToWString(layerProps[index]));       
         }
+        
+        if (index == selectedAddPropElement) 
+            c->SetSelected(true);
+        else
+            c->SetSelected(false);
+        
         return c;
     }
     
@@ -2769,10 +2851,12 @@ UIListCell *TestScreen::CellAtIndex(UIList *forList, int32 index)
         {
             c->SetStateText(UIListCell::STATE_NORMAL, Format(L"ForceOverLife %d", index));
         }
-        if(selectedForceElement == index)
-        {
+        
+        if (index == selectedForceElement) 
             c->SetSelected(true);
-        }
+        else
+            c->SetSelected(false);
+        
         return c;
     }
     
@@ -2873,21 +2957,8 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         timeval t;
         gettimeofday(&t, 0);
         if( Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000) < dblClickDelay)
-        {
-            layers[selectedEmitterElement]->props.at(selectedAddPropElement)->isDefault = false;
-            
-            if(selectedAddPropElement == LAYER_FORCES)
-                layers[selectedEmitterElement]->props.at(LAYER_FORCES_OVER_LIFE)->isDefault = false;
-            
-            if(selectedAddPropElement == LAYER_FORCES_OVER_LIFE)
-                layers[selectedEmitterElement]->props.at(LAYER_FORCES)->isDefault = false;
-            
-            deltaIndex = 0;
-            propList->RefreshList();
-            HideAddProps();
-            HideAndResetEditFields();
-            HideForcesList();
-        }
+            AddSelectedProp();
+        
         gettimeofday(&lastTime, 0);
     }
     
@@ -3268,6 +3339,16 @@ void TestScreen::SaveToYaml(const String &pathToFile)
         else if(cv)
             PrintPropValue(file, layerProps[propIndex], cv);
         propIndex++;
+        
+        file->WriteLine(Format("    %s: %f", layerProps[propIndex].c_str(), RadToDeg(emitter->GetLayers()[i]->alignToMotion)));
+        propIndex++;
+        
+        file->WriteLine(Format("    %s: %f", layerProps[propIndex].c_str(), emitter->GetLayers()[i]->startTime));
+        propIndex++;
+        
+        file->WriteLine(Format("    %s: %f", layerProps[propIndex].c_str(), emitter->GetLayers()[i]->endTime));
+        propIndex++;
+        
         file->WriteLine("");
     }
     SafeRelease(file);
