@@ -133,10 +133,16 @@ void Box2DGameObjectManager::Draw()
 
 	if(debugDraw)
 	{
-		debugDraw->SetCameraPos(drawState.position);
-        debugDraw->SetPTDRatio(pixelsInMeterRatio * GetCameraScale());
+        RenderManager::Instance()->PushDrawMatrix();
+        RenderManager::Instance()->SetDrawTranslate(cameraPosition);
+        RenderManager::Instance()->SetDrawScale(cameraScale);
+
+		//debugDraw->SetCameraPos(drawState.position);
+        //debugDraw->SetPTDRatio(pixelsInMeterRatio * GetCameraScale());
 		box2DWorld->SetDebugDraw(debugDraw);
 		box2DWorld->DrawDebugData();
+
+        RenderManager::Instance()->PopDrawMatrix();
 	}
 }
 	
