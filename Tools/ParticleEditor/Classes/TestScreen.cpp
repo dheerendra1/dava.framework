@@ -28,11 +28,6 @@
         * Created by Vitaliy Borodovsky
 =====================================================================================*/
 #include "TestScreen.h"
-#if defined (__DAVAENGINE_WIN32__)
-#include <time.h>
-#else
-#include <sys/time.h>
-#endif
 
 TestScreen::TestScreen()
 {
@@ -2957,20 +2952,12 @@ void TestScreen::OnCellSelected(UIList *forList, UIListCell *selectedCell)
         selectedAddPropElement = selectedCell->GetIndex();
         selectedCell->SetSelected(true);
 
-        float32 dblClickDTime = 0;
-        
-#if defined (__DAVAENGINE_WIN32__)
-        static unsigned long lastTime;
-        unsigned long t = timeGetTime();
+        uint64 dblClickDTime = 0;
+        static uint64 lastTime;
+        uint64 t = SystemTimer::Instance()->AbsoluteMS();
         dblClickDTime = Abs(t - lastTime);
-        lastTime = timeGetTime();
-#else
-        static timeval lastTime;
-        timeval t;
-        gettimeofday(&t, 0);
-        dblClickDTime = Abs(t.tv_usec/1000 + t.tv_sec*1000 - lastTime.tv_usec/1000 - lastTime.tv_sec*1000);
-        gettimeofday(&lastTime, 0);       
-#endif
+        std::cout<<dblClickDTime<<std::endl;
+        lastTime = SystemTimer::Instance()->AbsoluteMS();
         
         if(dblClickDTime < dblClickDelay)
             AddSelectedProp();
@@ -3040,7 +3027,7 @@ void TestScreen::Update(float32 timeElapsed)
 
 void TestScreen::Draw(const UIGeometricData &geometricData)
 {
-
+    
 }
 
 void TestScreen::SaveToYaml(const String &pathToFile)

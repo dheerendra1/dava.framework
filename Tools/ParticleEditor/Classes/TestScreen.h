@@ -263,7 +263,7 @@ protected:
     int32 deltaIndex;
     bool curPropType; //0 - value, 1 - Keyframed
     Font *cellFont, *f;
-    int32 dblClickDelay;
+    uint64 dblClickDelay;
     int32 activePropEdit;
     float32 curPropEditTime;
     float32 buttonW;
