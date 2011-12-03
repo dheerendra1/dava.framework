@@ -69,7 +69,16 @@ namespace DAVA
 		GetCursorPos(&pt);
 		
 	}*/
-	
+    
+	const Vector2 & Core::GetMouseLocation()
+    {
+        POINT ptCursor;
+        GetCursorPos( &ptCursor );
+        ScreenToClient(RenderManager::Instance()->hWnd, &ptCursor);
+        
+        return Vector2((float32)ptCursor.x, (float32)ptCursor.y);
+    }
+    
 	int Core::RunCmdTool(int argc, char * argv[], AppHandle handle)
 	{
 		CoreWin32Platform * core = new CoreWin32Platform();

@@ -249,11 +249,11 @@ public:
 	/* This code disabled for now and left for the future
 	MacOS X Version: it works right (commented in MainWindowController.mm) but it require convertaton to virtual coordinates
 	For Win32 function not implemented yet, and I do not have time to implement it right now, so left that for the future.
-
+     
+     */
 #if defined(__DAVAENGINE_MACOS__) || defined(__DAVAENGINE_WIN32__)
 	const Vector2 & GetMouseLocation();
-#endif 
-	*/
+#endif
 
 	/*
 		\brief Function that return number of frame from the launch of the application

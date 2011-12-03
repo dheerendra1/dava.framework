@@ -349,11 +349,17 @@ void MoveTouchsToVector(NSEvent *curEvent, int touchPhase, Vector<UIEvent> *outT
 - (void)mouseEntered:(NSEvent *)theEvent
 {
 	NSLog(@"mouse ENTERED");
+    if(RenderManager::Instance()->GetCursor()->IsShow())
+        [NSCursor unhide];
+    else
+        [NSCursor hide];
+    
 //	[self process:DAVA::UIEvent::PHASE_ENDED touch:theEvent];
 }
 - (void)mouseExited:(NSEvent *)theEvent
 {
 	NSLog(@"mouse EXITED");
+    [NSCursor unhide];
 //	[self process:DAVA::UIEvent::PHASE_ENDED touch:theEvent];
 }
 - (void)rightMouseDown:(NSEvent *)theEvent

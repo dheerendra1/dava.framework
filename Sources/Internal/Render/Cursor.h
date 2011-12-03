@@ -71,7 +71,7 @@ public:
 	 \param[in] show show cursor if true, else hide cursor
 	 */
 	void Show(bool show);
-
+    bool IsShow();
 	/**
 	 \brief Get current cursor position 
 	 \returns Vector2 containing position
@@ -82,6 +82,7 @@ public:
 	void * GetMacOSXCursor();
 #endif 
 	
+    
 private:
 	void HardwareSet();
 	
@@ -100,7 +101,7 @@ public:
 #endif
 	
 	friend class RenderManager;
-
+    
 	bool show;
 };
 
